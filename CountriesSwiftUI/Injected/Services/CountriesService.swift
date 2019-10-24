@@ -16,10 +16,11 @@ protocol CountriesServiceProtocol {
 }
 
 class RealCountriesService: CountriesServiceProtocol, Service {
-
+    
     private var runningCountriesRequest: Cancellable?
     let session: URLSession
     let baseURL: String
+    let bgQueue = DispatchQueue(label: "bg_parse_queue")
 
     let countries = Resource<[Country]>(.notRequested)
     
@@ -57,11 +58,13 @@ class RealCountriesService: CountriesServiceProtocol, Service {
             }
             .catch { Just<Loadable<Country.Details>>(.failed($0)) }
             .combineLatest(countriesArray)
+            .receive(on: bgQueue)
             .map { (loadableDetails, countries) -> Loadable<Country.Details> in
                 return loadableDetails.updatedValue {
                     return $0.substitutedCountriesAtBorders(countries: countries)
                 }
             }
+            .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
 }
