@@ -39,8 +39,8 @@ class ContentViewModel<T>: ObservableObject {
                 .removeDuplicates().assign(to: \.shouldShowError, on: self)
             $content.combineLatest($shouldShowError).map { $0.0.value != nil && !$0.1 }
                 .removeDuplicates().assign(to: \.shouldShowContent, on: self)
-            $content.map({ resource in
-                guard let error = resource.error else { return "" }
+            $content.map({ content in
+                guard let error = content.error else { return "" }
                 return "An error occured: \(error.localizedDescription)"
             }).removeDuplicates().assign(to: \.errorString, on: self)
         }

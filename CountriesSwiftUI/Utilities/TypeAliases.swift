@@ -10,5 +10,4 @@ import Combine
 import Foundation
 
 typealias ValueClosure<V> = (V) -> Void
-typealias Property<T> = AnyPublisher<T, Never>
 typealias Resource<T> = CurrentValueSubject<Loadable<T>, Never>
