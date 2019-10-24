@@ -13,6 +13,14 @@
 		F64495EB2360D66700C9BB1F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F64495EA2360D66700C9BB1F /* Assets.xcassets */; };
 		F64495EE2360D66700C9BB1F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F64495ED2360D66700C9BB1F /* Preview Assets.xcassets */; };
 		F64495F12360D66700C9BB1F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F64495EF2360D66700C9BB1F /* LaunchScreen.storyboard */; };
+		F64495FD2360D81F00C9BB1F /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495FC2360D81F00C9BB1F /* AppState.swift */; };
+		F64496002360D8B000C9BB1F /* CountriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495FF2360D8B000C9BB1F /* CountriesService.swift */; };
+		F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496022360D8EB00C9BB1F /* Loadable.swift */; };
+		F64496052360D93D00C9BB1F /* ResourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496042360D93D00C9BB1F /* ResourceViewModel.swift */; };
+		F64496082360DFB700C9BB1F /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496072360DFB700C9BB1F /* Country.swift */; };
+		F644960A2360E4A300C9BB1F /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496092360E4A300C9BB1F /* TypeAliases.swift */; };
+		F644960C2360EAD000C9BB1F /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960B2360EAD000C9BB1F /* APICall.swift */; };
+		F644960E2360EF6C00C9BB1F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960D2360EF6C00C9BB1F /* Service.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +32,14 @@
 		F64495ED2360D66700C9BB1F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F64495F02360D66700C9BB1F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F64495F22360D66700C9BB1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F64495FC2360D81F00C9BB1F /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		F64495FF2360D8B000C9BB1F /* CountriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesService.swift; sourceTree = "<group>"; };
+		F64496022360D8EB00C9BB1F /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
+		F64496042360D93D00C9BB1F /* ResourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceViewModel.swift; sourceTree = "<group>"; };
+		F64496072360DFB700C9BB1F /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		F64496092360E4A300C9BB1F /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
+		F644960B2360EAD000C9BB1F /* APICall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICall.swift; sourceTree = "<group>"; };
+		F644960D2360EF6C00C9BB1F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,8 +72,12 @@
 		F64495E32360D66400C9BB1F /* CountriesSwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				F64496062360DFAD00C9BB1F /* Model */,
+				F64495FE2360D88D00C9BB1F /* Services */,
+				F64495FB2360D80B00C9BB1F /* State */,
 				F64495F82360D67A00C9BB1F /* System */,
 				F64495F92360D68D00C9BB1F /* UI */,
+				F64496012360D8D800C9BB1F /* Utilities */,
 				F64495FA2360D69600C9BB1F /* Resources */,
 			);
 			path = CountriesSwiftUI;
@@ -89,6 +109,42 @@
 				F64495F22360D66700C9BB1F /* Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		F64495FB2360D80B00C9BB1F /* State */ = {
+			isa = PBXGroup;
+			children = (
+				F64495FC2360D81F00C9BB1F /* AppState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		F64495FE2360D88D00C9BB1F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F64495FF2360D8B000C9BB1F /* CountriesService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		F64496012360D8D800C9BB1F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				F64496092360E4A300C9BB1F /* TypeAliases.swift */,
+				F64496022360D8EB00C9BB1F /* Loadable.swift */,
+				F64496042360D93D00C9BB1F /* ResourceViewModel.swift */,
+				F644960B2360EAD000C9BB1F /* APICall.swift */,
+				F644960D2360EF6C00C9BB1F /* Service.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		F64496062360DFAD00C9BB1F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F64496072360DFB700C9BB1F /* Country.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,8 +219,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */,
+				F64496052360D93D00C9BB1F /* ResourceViewModel.swift in Sources */,
 				F64495E72360D66400C9BB1F /* SceneDelegate.swift in Sources */,
 				F64495E92360D66400C9BB1F /* ContentView.swift in Sources */,
+				F644960C2360EAD000C9BB1F /* APICall.swift in Sources */,
+				F644960A2360E4A300C9BB1F /* TypeAliases.swift in Sources */,
+				F64496082360DFB700C9BB1F /* Country.swift in Sources */,
+				F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */,
+				F644960E2360EF6C00C9BB1F /* Service.swift in Sources */,
+				F64496002360D8B000C9BB1F /* CountriesService.swift in Sources */,
+				F64495FD2360D81F00C9BB1F /* AppState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
