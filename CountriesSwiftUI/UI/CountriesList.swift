@@ -17,10 +17,10 @@ struct CountriesList: View {
     }
     
     var body: some View {
-        return content
-            .onAppear {
-                self.viewModel.loadCountries()
-            }
+        NavigationView {
+            content
+                .navigationBarTitle("Countries")
+        }
     }
     
     // MARK: - Views
@@ -35,19 +35,35 @@ struct CountriesList: View {
     }
     
     private var notRequestedView: some View {
-        EmptyView()
+        Text("").onAppear {
+            self.viewModel.loadCountries()
+        }
     }
     
     private func loadingView(_ previouslyLoaded: [Country]?) -> some View {
-        Text("Loading")
+        VStack {
+            Text("Loading...").padding()
+            previouslyLoaded.map {
+                loadedView($0)
+            }
+        }
     }
     
     private func loadedView(_ countries: [Country]) -> some View {
-        Text("Loaded")
+        List(countries) { country in
+            Text(country.name)
+        }
     }
     
     private func failedView(_ error: Error) -> some View {
-        Text("Error: \(error.localizedDescription)")
+        VStack {
+            Text(error.localizedDescription)
+                .multilineTextAlignment(.center)
+                .padding()
+            Button(action: {
+                self.viewModel.loadCountries()
+            }, label: { Text("Retry").bold() })
+        }
     }
 }
 
