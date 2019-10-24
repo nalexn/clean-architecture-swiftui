@@ -10,22 +10,13 @@ import SwiftUI
 import Combine
 
 struct CountriesList: View {
-    var viewModel: ViewModel
-    @State private var countries: Loadable<[Country]> = .notRequested
-    var subscriptions = Set<AnyCancellable>()
+    @ObservedObject var viewModel: ViewModel
     
     init(viewModel: ViewModel) {
-        print("Rebuilt")
         self.viewModel = viewModel
-        let resource = viewModel.countries.resource
-        resource.assign(to: \.countries, on: self).store(in: &subscriptions)
-        resource.sink { value in
-            print("resource \(value)")
-        }.store(in: &subscriptions)
     }
     
     var body: some View {
-        print("vvv \(countries)")
         return content
             .onAppear {
                 self.viewModel.loadCountries()
@@ -35,7 +26,7 @@ struct CountriesList: View {
     // MARK: - Views
     
     private var content: AnyView {
-        switch countries {
+        switch viewModel.content {
         case .notRequested: return AnyView(notRequestedView)
         case let .isLoading(last): return AnyView(loadingView(last))
         case let .loaded(countries): return AnyView(loadedView(countries))
@@ -44,7 +35,7 @@ struct CountriesList: View {
     }
     
     private var notRequestedView: some View {
-        Text("Empty")//EmptyView()
+        EmptyView()
     }
     
     private func loadingView(_ previouslyLoaded: [Country]?) -> some View {
@@ -61,14 +52,12 @@ struct CountriesList: View {
 }
 
 extension CountriesList {
-    struct ViewModel {
+    class ViewModel: ContentViewModel<[Country]> {
         private let service: CountriesServiceProtocol
-        let countries: ResourceViewModel<[Country]>
         
         init(container: DIContainer) {
             service = container.countriesService
-            countries = ResourceViewModel<[Country]>(
-                resource: service.countries, hasDataToDisplay: {
+            super.init(publisher: service.countries.eraseToAnyPublisher(), hasDataToDisplay: {
                     ($0.value?.count ?? 0) > 0
                 })
         }
