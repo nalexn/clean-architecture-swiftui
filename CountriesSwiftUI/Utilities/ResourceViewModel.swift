@@ -6,8 +6,8 @@
 //  Copyright © 2019 Alexey Naumov. All rights reserved.
 //
 
-import Combine
 import Foundation
+import Combine
 
 struct ResourceViewModel<T> {
     let resource: Resource<T>

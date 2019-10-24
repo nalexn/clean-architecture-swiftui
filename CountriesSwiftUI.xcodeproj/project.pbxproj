@@ -21,6 +21,8 @@
 		F644960A2360E4A300C9BB1F /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496092360E4A300C9BB1F /* TypeAliases.swift */; };
 		F644960C2360EAD000C9BB1F /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960B2360EAD000C9BB1F /* APICall.swift */; };
 		F644960E2360EF6C00C9BB1F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960D2360EF6C00C9BB1F /* Service.swift */; };
+		F64496102361B64700C9BB1F /* CountriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960F2361B64700C9BB1F /* CountriesList.swift */; };
+		F64496122361BB4900C9BB1F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496112361BB4900C9BB1F /* DIContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		F64496092360E4A300C9BB1F /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		F644960B2360EAD000C9BB1F /* APICall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICall.swift; sourceTree = "<group>"; };
 		F644960D2360EF6C00C9BB1F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		F644960F2361B64700C9BB1F /* CountriesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesList.swift; sourceTree = "<group>"; };
+		F64496112361BB4900C9BB1F /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,8 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				F64496062360DFAD00C9BB1F /* Model */,
-				F64495FE2360D88D00C9BB1F /* Services */,
-				F64495FB2360D80B00C9BB1F /* State */,
+				F64495FB2360D80B00C9BB1F /* Injected */,
 				F64495F82360D67A00C9BB1F /* System */,
 				F64495F92360D68D00C9BB1F /* UI */,
 				F64496012360D8D800C9BB1F /* Utilities */,
@@ -96,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				F64495E82360D66400C9BB1F /* ContentView.swift */,
+				F644960F2361B64700C9BB1F /* CountriesList.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -111,12 +115,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		F64495FB2360D80B00C9BB1F /* State */ = {
+		F64495FB2360D80B00C9BB1F /* Injected */ = {
 			isa = PBXGroup;
 			children = (
+				F64496112361BB4900C9BB1F /* DIContainer.swift */,
 				F64495FC2360D81F00C9BB1F /* AppState.swift */,
+				F64495FE2360D88D00C9BB1F /* Services */,
 			);
-			path = State;
+			path = Injected;
 			sourceTree = "<group>";
 		};
 		F64495FE2360D88D00C9BB1F /* Services */ = {
@@ -220,9 +226,11 @@
 			files = (
 				F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */,
 				F64496052360D93D00C9BB1F /* ResourceViewModel.swift in Sources */,
+				F64496102361B64700C9BB1F /* CountriesList.swift in Sources */,
 				F64495E72360D66400C9BB1F /* SceneDelegate.swift in Sources */,
 				F64495E92360D66400C9BB1F /* ContentView.swift in Sources */,
 				F644960C2360EAD000C9BB1F /* APICall.swift in Sources */,
+				F64496122361BB4900C9BB1F /* DIContainer.swift in Sources */,
 				F644960A2360E4A300C9BB1F /* TypeAliases.swift in Sources */,
 				F64496082360DFB700C9BB1F /* Country.swift in Sources */,
 				F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */,

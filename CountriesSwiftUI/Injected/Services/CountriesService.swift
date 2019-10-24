@@ -9,13 +9,13 @@
 import Combine
 import Foundation
 
-protocol CountriesServiceProtocol: Service {
+protocol CountriesServiceProtocol {
     var countries: Resource<[Country]> { get }
     func loadCountriesList()
     func countryDetails(country: Country) -> AnyPublisher<Loadable<Country.Details>, Never>
 }
 
-class RealCountriesService: CountriesServiceProtocol {
+class RealCountriesService: CountriesServiceProtocol, Service {
 
     private var runningCountriesRequest: Cancellable?
     let session: URLSession
@@ -99,3 +99,22 @@ extension CountriesService.APICall: APICall {
         return nil
     }
 }
+
+#if DEBUG
+struct MockedCountriesService: CountriesServiceProtocol {
+    
+    let countries: Resource<[Country]>
+    
+    func loadCountriesList() {
+        
+    }
+    
+    func countryDetails(country: Country) -> AnyPublisher<Loadable<Country.Details>, Never> {
+        return Just<Loadable<Country.Details>>(.notRequested).eraseToAnyPublisher()
+    }
+    
+    init(countries: Loadable<[Country]>) {
+        self.countries = CurrentValueSubject(countries)
+    }
+}
+#endif

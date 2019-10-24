@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Country: Codable, Hashable {
+struct Country: Codable {
     let name: String
     let population: Int
     let flag: URL?
@@ -29,6 +29,12 @@ extension Country {
         let symbol: String?
         let name: String
     }
+}
+
+// MARK: - Helpers
+
+extension Country: Identifiable, Equatable {
+    var id: String { alpha3Code }
 }
 
 extension Country.Details {
