@@ -15,7 +15,7 @@ protocol APICall {
     func body() throws -> Data?
 }
 
-enum APICallError: Swift.Error {
+enum APIError: Swift.Error {
     case invalidURL
     case httpCode(HTTPCode)
     case unexpectedResponse
@@ -24,7 +24,7 @@ enum APICallError: Swift.Error {
 extension APICall {
     func urlRequest(baseURL: String) throws -> URLRequest {
         guard let url = URL(string: baseURL + path) else {
-            throw APICallError.invalidURL
+            throw APIError.invalidURL
         }
         var request = URLRequest(url: url)
         request.httpMethod = method

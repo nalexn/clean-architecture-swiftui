@@ -53,7 +53,7 @@ class RealCountriesService: CountriesServiceProtocol, Service {
                 if let details = array.first {
                     return .loaded(details)
                 } else {
-                    return .failed(APICallError.unexpectedResponse)
+                    return .failed(APIError.unexpectedResponse)
                 }
             }
             .catch { Just<Loadable<Country.Details>>(.failed($0)) }

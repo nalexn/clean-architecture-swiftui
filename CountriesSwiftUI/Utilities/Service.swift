@@ -22,6 +22,7 @@ extension Service {
             return session
                 .dataTaskPublisher(for: request)
                 .subscribe(on: bgQueue)
+                // Response is intentionally delayed, remove for a real app:
                 .delay(for: .seconds(1), scheduler: bgQueue)
                 .requestJSON(httpCodes: httpCodes)
         } catch let error {
@@ -36,7 +37,7 @@ private extension Publisher where Output == URLSession.DataTaskPublisher.Output 
                 assert(!Thread.isMainThread)
                 let code = ($0.1 as? HTTPURLResponse)?.statusCode ?? 200
                 guard httpCodes.contains(code) else {
-                    throw APICallError.httpCode(code)
+                    throw APIError.httpCode(code)
                 }
                 return $0.0
             })
