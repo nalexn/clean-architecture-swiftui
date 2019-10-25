@@ -10,44 +10,39 @@ import Combine
 import Foundation
 
 protocol CountriesServiceProtocol {
-    var countries: Resource<[Country]> { get }
-    func loadCountriesList()
+    func loadCountries() -> Cancellable
     func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable
 }
 
-class RealCountriesService: CountriesServiceProtocol, Service {
+struct RealCountriesService: CountriesServiceProtocol, Service {
     
-    private var runningCountriesRequest: Cancellable?
     let session: URLSession
     let baseURL: String
+    let appState: AppState
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
-
-    let countries = Resource<[Country]>(.notRequested)
     
-    init(session: URLSession, baseURL: String) {
+    init(session: URLSession, baseURL: String, appState: AppState) {
         self.session = session
         self.baseURL = baseURL
+        self.appState = appState
     }
     
     typealias API = CountriesService.APICall
 
-    func loadCountriesList() {
-        runningCountriesRequest?.cancel()
+    func loadCountries() -> Cancellable {
+        let countries = appState.countries
         countries.send(.isLoading(last: countries.value.value))
         let request: AnyPublisher<[Country], Error> = call(endpoint: API.allCountries)
-        runningCountriesRequest = request
+        return request
             .map { Loadable<[Country]>.loaded($0) }
             .catch { Just<Loadable<[Country]>>(.failed($0)) }
-            .sink { [weak self] countries in
-                self?.countries.send(countries)
-                self?.runningCountriesRequest = nil
-            }
+            .sink { countries.send($0) }
     }
 
     func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable {
         countryDetails.send(.isLoading(last: countryDetails.value.value))
         let request: AnyPublisher<[Country.Details], Error> = call(endpoint: API.countryDetails(country))
-        let countriesArray = countries.map({ $0.value ?? [] }).removeDuplicates()
+        let countriesArray = appState.countries.map({ $0.value ?? [] }).removeDuplicates()
         return request
             .map { array -> Loadable<Country.Details> in
                 if let details = array.first {
@@ -65,9 +60,7 @@ class RealCountriesService: CountriesServiceProtocol, Service {
                 }
             }
             .receive(on: RunLoop.main)
-            .sink { details in
-                countryDetails.send(details)
-            }
+            .sink { countryDetails.send($0) }
     }
 }
 
@@ -106,23 +99,14 @@ extension CountriesService.APICall: APICall {
 }
 
 #if DEBUG
-struct MockedCountriesService: CountriesServiceProtocol {
+struct FakeCountriesService: CountriesServiceProtocol {
     
-    let countries: Resource<[Country]>
-    
-    func loadCountriesList() {
-        
-    }
-    
-    func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable {
-        DispatchQueue.main.async {
-            countryDetails.send(.notRequested)
-        }
+    func loadCountries() -> Cancellable {
         return AnyCancellable.init { }
     }
     
-    init(countries: Loadable<[Country]>) {
-        self.countries = CurrentValueSubject(countries)
+    func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable {
+        return AnyCancellable.init { }
     }
 }
 #endif

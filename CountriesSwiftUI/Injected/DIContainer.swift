@@ -17,7 +17,7 @@ struct DIContainer {
 extension DIContainer {
     init(presetCountries: Loadable<[Country]>) {
         self.appState = AppState()
-        self.countriesService = MockedCountriesService(countries: presetCountries)
+        self.countriesService = FakeCountriesService()
     }
 }
 #endif

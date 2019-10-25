@@ -9,5 +9,5 @@
 import Foundation
 
 struct AppState {
-    
+    let countries = Resource<[Country]>(.notRequested)
 }

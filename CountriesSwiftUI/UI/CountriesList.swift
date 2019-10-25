@@ -80,16 +80,18 @@ extension CountriesList {
     class ViewModel: ContentViewModel<[Country]> {
         
         let container: DIContainer
+        private var requestToken: Cancellable?
         
         init(container: DIContainer) {
             self.container = container
-            super.init(publisher: container.countriesService.countries.eraseToAnyPublisher(), hasDataToDisplay: {
+            super.init(publisher: container.appState.countries.eraseToAnyPublisher(), hasDataToDisplay: {
                     ($0.value?.count ?? 0) > 0
                 })
         }
         
         func loadCountries() {
-            container.countriesService.loadCountriesList()
+            requestToken?.cancel()
+            requestToken = container.countriesService.loadCountries()
         }
     }
 }

@@ -17,7 +17,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let appState = AppState()
         let session = URLSession.shared
         let countriesService = RealCountriesService(
-            session: session, baseURL: "https://restcountries.eu/rest/v2")
+            session: session,
+            baseURL: "https://restcountries.eu/rest/v2",
+            appState: appState)
         return DIContainer(appState: appState, countriesService: countriesService)
     }()
 
