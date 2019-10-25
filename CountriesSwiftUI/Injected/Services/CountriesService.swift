@@ -12,7 +12,7 @@ import Foundation
 protocol CountriesServiceProtocol {
     var countries: Resource<[Country]> { get }
     func loadCountriesList()
-    func countryDetails(country: Country) -> AnyPublisher<Loadable<Country.Details>, Never>
+    func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable
 }
 
 class RealCountriesService: CountriesServiceProtocol, Service {
@@ -44,8 +44,8 @@ class RealCountriesService: CountriesServiceProtocol, Service {
             }
     }
 
-    func countryDetails(country: Country) -> AnyPublisher<Loadable<Country.Details>, Never> {
-        
+    func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable {
+        countryDetails.send(.isLoading(last: countryDetails.value.value))
         let request: AnyPublisher<[Country.Details], Error> = call(endpoint: API.countryDetails(country))
         let countriesArray = countries.map({ $0.value ?? [] }).removeDuplicates()
         return request
@@ -65,7 +65,9 @@ class RealCountriesService: CountriesServiceProtocol, Service {
                 }
             }
             .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
+            .sink { details in
+                countryDetails.send(details)
+            }
     }
 }
 
@@ -112,8 +114,11 @@ struct MockedCountriesService: CountriesServiceProtocol {
         
     }
     
-    func countryDetails(country: Country) -> AnyPublisher<Loadable<Country.Details>, Never> {
-        return Just<Loadable<Country.Details>>(.notRequested).eraseToAnyPublisher()
+    func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable {
+        DispatchQueue.main.async {
+            countryDetails.send(.notRequested)
+        }
+        return AnyCancellable.init { }
     }
     
     init(countries: Loadable<[Country]>) {

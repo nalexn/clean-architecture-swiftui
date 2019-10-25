@@ -21,7 +21,6 @@ extension Service {
             let request = try endpoint.urlRequest(baseURL: baseURL)
             return session
                 .dataTaskPublisher(for: request)
-                .subscribe(on: bgQueue)
                 // Response is intentionally delayed, remove for a real app:
                 .delay(for: .seconds(1), scheduler: bgQueue)
                 .requestJSON(httpCodes: httpCodes)

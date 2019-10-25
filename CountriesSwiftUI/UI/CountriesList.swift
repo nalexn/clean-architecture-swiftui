@@ -52,11 +52,15 @@ struct CountriesList: View {
     
     private func loadedView(_ countries: [Country]) -> some View {
         List(countries) { country in
-            NavigationLink(destination: CountryDetails(country: country),
-                           tag: country.alpha3Code,
-                           selection: self.$selectedCounrtyCode) {
-                CountryCell(country: country)
-            }
+            NavigationLink(
+                destination: CountryDetails(
+                    viewModel: CountryDetails.ViewModel(
+                        container: self.viewModel.container,
+                        country: country)),
+                tag: country.alpha3Code,
+                selection: self.$selectedCounrtyCode) {
+                    CountryCell(country: country)
+                }
         }
     }
     
@@ -74,17 +78,18 @@ struct CountriesList: View {
 
 extension CountriesList {
     class ViewModel: ContentViewModel<[Country]> {
-        private let service: CountriesServiceProtocol
+        
+        let container: DIContainer
         
         init(container: DIContainer) {
-            service = container.countriesService
-            super.init(publisher: service.countries.eraseToAnyPublisher(), hasDataToDisplay: {
+            self.container = container
+            super.init(publisher: container.countriesService.countries.eraseToAnyPublisher(), hasDataToDisplay: {
                     ($0.value?.count ?? 0) > 0
                 })
         }
         
         func loadCountries() {
-            service.loadCountriesList()
+            container.countriesService.loadCountriesList()
         }
     }
 }
