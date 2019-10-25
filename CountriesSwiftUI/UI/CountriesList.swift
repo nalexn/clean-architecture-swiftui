@@ -51,7 +51,7 @@ struct CountriesList: View {
     
     private func loadedView(_ countries: [Country]) -> some View {
         List(countries) { country in
-            Text(country.name)
+            CountryCell(country: country)
         }
     }
     
@@ -89,7 +89,7 @@ struct CountriesList_Previews: PreviewProvider {
     static var previews: some View {
         CountriesList(viewModel:
             CountriesList.ViewModel(container:
-                DIContainer(presetCountries: .notRequested)
+                DIContainer(presetCountries: .loaded(Country.sampleData))
             )
         )
     }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F6218DB02361F5E700917938 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DAF2361F5E700917938 /* CancelBag.swift */; };
+		F6218DB22362FD3100917938 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB12362FD3100917938 /* CountryCell.swift */; };
 		F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495E42360D66400C9BB1F /* AppDelegate.swift */; };
 		F64495E72360D66400C9BB1F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495E62360D66400C9BB1F /* SceneDelegate.swift */; };
 		F64495E92360D66400C9BB1F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495E82360D66400C9BB1F /* ContentView.swift */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		F6218DAF2361F5E700917938 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
+		F6218DB12362FD3100917938 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		F64495E12360D66400C9BB1F /* CountriesSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CountriesSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64495E42360D66400C9BB1F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F64495E62360D66400C9BB1F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			children = (
 				F64495E82360D66400C9BB1F /* ContentView.swift */,
 				F644960F2361B64700C9BB1F /* CountriesList.swift */,
+				F6218DB12362FD3100917938 /* CountryCell.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 			files = (
 				F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */,
 				F64496052360D93D00C9BB1F /* ContentViewModel.swift in Sources */,
+				F6218DB22362FD3100917938 /* CountryCell.swift in Sources */,
 				F64496102361B64700C9BB1F /* CountriesList.swift in Sources */,
 				F64495E72360D66400C9BB1F /* SceneDelegate.swift in Sources */,
 				F64495E92360D66400C9BB1F /* ContentView.swift in Sources */,

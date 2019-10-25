@@ -45,3 +45,15 @@ extension Country.Details {
         return Country.Details(capital: capital, currencies: currencies, borders: borders)
     }
 }
+
+#if DEBUG
+
+extension Country {
+    static let sampleData: [Country] = [
+        Country(name: "United States", population: 125000000, flag: nil, alpha3Code: "USA"),
+        Country(name: "Georgia", population: 2340000, flag: nil, alpha3Code: "GEO"),
+        Country(name: "Canada", population: 57600000, flag: nil, alpha3Code: "CAN")
+    ]
+}
+
+#endif
