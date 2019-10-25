@@ -28,6 +28,7 @@
 		F64496102361B64700C9BB1F /* CountriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960F2361B64700C9BB1F /* CountriesList.swift */; };
 		F64496122361BB4900C9BB1F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496112361BB4900C9BB1F /* DIContainer.swift */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
+		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		F644960F2361B64700C9BB1F /* CountriesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesList.swift; sourceTree = "<group>"; };
 		F64496112361BB4900C9BB1F /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
+		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				F6218DB523634D4100917938 /* ErrorView.swift */,
 				F6218DB32363051D00917938 /* CountryDetails.swift */,
 				F6BDB91523636865003E69F2 /* DetailRow.swift */,
+				F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				F64496122361BB4900C9BB1F /* DIContainer.swift in Sources */,
 				F644960A2360E4A300C9BB1F /* TypeAliases.swift in Sources */,
 				F6218DB42363051D00917938 /* CountryDetails.swift in Sources */,
+				F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */,
 				F64496082360DFB700C9BB1F /* Country.swift in Sources */,
 				F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */,
 				F644960E2360EF6C00C9BB1F /* Service.swift in Sources */,

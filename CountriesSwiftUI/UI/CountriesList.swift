@@ -43,7 +43,7 @@ struct CountriesList: View {
     
     private func loadingView(_ previouslyLoaded: [Country]?) -> some View {
         VStack {
-            Text("Loading...").padding()
+            ActivityIndicatorView().padding()
             previouslyLoaded.map {
                 loadedView($0)
             }

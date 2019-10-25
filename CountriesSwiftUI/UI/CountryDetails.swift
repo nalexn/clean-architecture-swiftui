@@ -33,7 +33,7 @@ struct CountryDetails: View {
     }
     
     private var loadingView: some View {
-        Text("Loading...")
+        ActivityIndicatorView()
     }
     
     private func loadedView(_ countryDetails: Country.Details) -> some View {
