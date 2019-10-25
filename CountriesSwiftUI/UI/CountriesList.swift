@@ -53,10 +53,7 @@ struct CountriesList: View {
     private func loadedView(_ countries: [Country]) -> some View {
         List(countries) { country in
             NavigationLink(
-                destination: CountryDetails(
-                    viewModel: CountryDetails.ViewModel(
-                        container: self.viewModel.container,
-                        country: country)),
+                destination: self.detailsView(country: country),
                 tag: country.alpha3Code,
                 selection: self.$selectedCounrtyCode) {
                     CountryCell(country: country)
@@ -68,6 +65,11 @@ struct CountriesList: View {
         ErrorView(error: error, retryAction: {
             self.viewModel.loadCountries()
         })
+    }
+    
+    private func detailsView(country: Country) -> some View {
+        CountryDetails(viewModel: CountryDetails.ViewModel(
+            container: viewModel.container, country: country))
     }
 }
 

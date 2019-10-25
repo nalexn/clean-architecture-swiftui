@@ -53,7 +53,9 @@ struct CountryDetails: View {
             if countryDetails.neighbors.count > 0 {
                 Section(header: Text("Neighboring countries")) {
                     ForEach(countryDetails.neighbors) { country in
-                        DetailRow(title: country.name, value: "")
+                        NavigationLink(destination: self.detailsView(country: country)) {
+                            DetailRow(title: country.name, value: "")
+                        }
                     }
                 }
             }
@@ -65,6 +67,11 @@ struct CountryDetails: View {
             self.viewModel.loadCountryDetails()
         })
     }
+    
+    private func detailsView(country: Country) -> some View {
+        CountryDetails(viewModel: CountryDetails.ViewModel(
+            container: viewModel.container, country: country))
+    }
 }
 
 
@@ -72,7 +79,7 @@ extension CountryDetails {
     class ViewModel: ContentViewModel<Country.Details> {
         
         let country: Country
-        private let container: DIContainer
+        let container: DIContainer
         private let details = CurrentValueSubject<Loadable<Country.Details>, Never>(.notRequested)
         private var requestToken: Cancellable?
         
