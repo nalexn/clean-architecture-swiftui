@@ -81,7 +81,8 @@ extension CountriesService.APICall: APICall {
         case .allCountries:
             return "/all"
         case let .countryDetails(country):
-            return "/name/\(country.name)"
+            let encodedName = country.name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+            return "/name/\(encodedName ?? country.name)"
         }
     }
     var method: String {
