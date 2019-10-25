@@ -10,6 +10,7 @@
 		F6218DB02361F5E700917938 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DAF2361F5E700917938 /* CancelBag.swift */; };
 		F6218DB22362FD3100917938 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB12362FD3100917938 /* CountryCell.swift */; };
 		F6218DB42363051D00917938 /* CountryDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB32363051D00917938 /* CountryDetails.swift */; };
+		F6218DB623634D4100917938 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB523634D4100917938 /* ErrorView.swift */; };
 		F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495E42360D66400C9BB1F /* AppDelegate.swift */; };
 		F64495E72360D66400C9BB1F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495E62360D66400C9BB1F /* SceneDelegate.swift */; };
 		F64495E92360D66400C9BB1F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495E82360D66400C9BB1F /* ContentView.swift */; };
@@ -26,12 +27,14 @@
 		F644960E2360EF6C00C9BB1F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960D2360EF6C00C9BB1F /* Service.swift */; };
 		F64496102361B64700C9BB1F /* CountriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960F2361B64700C9BB1F /* CountriesList.swift */; };
 		F64496122361BB4900C9BB1F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496112361BB4900C9BB1F /* DIContainer.swift */; };
+		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F6218DAF2361F5E700917938 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		F6218DB12362FD3100917938 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		F6218DB32363051D00917938 /* CountryDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetails.swift; sourceTree = "<group>"; };
+		F6218DB523634D4100917938 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		F64495E12360D66400C9BB1F /* CountriesSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CountriesSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64495E42360D66400C9BB1F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F64495E62360D66400C9BB1F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +53,7 @@
 		F644960D2360EF6C00C9BB1F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		F644960F2361B64700C9BB1F /* CountriesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesList.swift; sourceTree = "<group>"; };
 		F64496112361BB4900C9BB1F /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
+		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +111,9 @@
 				F64495E82360D66400C9BB1F /* ContentView.swift */,
 				F644960F2361B64700C9BB1F /* CountriesList.swift */,
 				F6218DB12362FD3100917938 /* CountryCell.swift */,
+				F6218DB523634D4100917938 /* ErrorView.swift */,
 				F6218DB32363051D00917938 /* CountryDetails.swift */,
+				F6BDB91523636865003E69F2 /* DetailRow.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -235,8 +241,10 @@
 			files = (
 				F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */,
 				F64496052360D93D00C9BB1F /* ContentViewModel.swift in Sources */,
+				F6218DB623634D4100917938 /* ErrorView.swift in Sources */,
 				F6218DB22362FD3100917938 /* CountryCell.swift in Sources */,
 				F64496102361B64700C9BB1F /* CountriesList.swift in Sources */,
+				F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */,
 				F64495E72360D66400C9BB1F /* SceneDelegate.swift in Sources */,
 				F64495E92360D66400C9BB1F /* ContentView.swift in Sources */,
 				F644960C2360EAD000C9BB1F /* APICall.swift in Sources */,

@@ -65,14 +65,9 @@ struct CountriesList: View {
     }
     
     private func failedView(_ error: Error) -> some View {
-        VStack {
-            Text(error.localizedDescription)
-                .multilineTextAlignment(.center)
-                .padding()
-            Button(action: {
-                self.viewModel.loadCountries()
-            }, label: { Text("Retry").bold() })
-        }
+        ErrorView(error: error, retryAction: {
+            self.viewModel.loadCountries()
+        })
     }
 }
 
@@ -97,13 +92,18 @@ extension CountriesList {
 }
 
 #if DEBUG
+
+extension CountriesList.ViewModel {
+    static var preview: CountriesList.ViewModel {
+        return CountriesList.ViewModel(container:
+            DIContainer(presetCountries: .loaded(Country.sampleData))
+        )
+    }
+}
+
 struct CountriesList_Previews: PreviewProvider {
     static var previews: some View {
-        CountriesList(viewModel:
-            CountriesList.ViewModel(container:
-                DIContainer(presetCountries: .loaded(Country.sampleData))
-            )
-        )
+        CountriesList(viewModel: CountriesList.ViewModel.preview)
     }
 }
 #endif

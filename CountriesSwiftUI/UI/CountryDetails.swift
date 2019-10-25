@@ -10,18 +10,60 @@ import SwiftUI
 import Combine
 
 struct CountryDetails: View {
-    let viewModel: ViewModel
+    @ObservedObject var viewModel: ViewModel
     
     var body: some View {
         content
-            .onAppear {
-                self.viewModel.loadCountryDetails()
-            }
+            .navigationBarTitle(viewModel.country.name)
     }
     
-    private var content: some View {
-        Text(viewModel.country.name)
-            .navigationBarTitle(viewModel.country.name)
+    private var content: AnyView {
+        switch viewModel.content {
+        case .notRequested: return AnyView(notRequestedView)
+        case .isLoading: return AnyView(loadingView)
+        case let .loaded(countryDetails): return AnyView(loadedView(countryDetails))
+        case let .failed(error): return AnyView(failedView(error))
+        }
+    }
+    
+    private var notRequestedView: some View {
+        Text("").onAppear {
+            self.viewModel.loadCountryDetails()
+        }
+    }
+    
+    private var loadingView: some View {
+        Text("Loading...")
+    }
+    
+    private func loadedView(_ countryDetails: Country.Details) -> some View {
+        List {
+            Section(header: Text("Basic Info")) {
+                DetailRow(title: "Code", value: viewModel.country.alpha3Code)
+                DetailRow(title: "Population", value: "\(viewModel.country.population)")
+                DetailRow(title: "Capital", value: "\(countryDetails.capital)")
+            }
+            if countryDetails.currencies.count > 0 {
+                Section(header: Text("Currencies")) {
+                    ForEach(countryDetails.currencies) { currency in
+                        DetailRow(title: currency.name, value: currency.code)
+                    }
+                }
+            }
+//            if countryDetails.borders.count > 0 {
+//                Section(header: Text("Common Borders")) {
+//                    ForEach(countryDetails.borders) { border in
+//                        Text(border)
+//                    }
+//                }
+//            }
+        }.listStyle(GroupedListStyle())
+    }
+    
+    private func failedView(_ error: Error) -> some View {
+        ErrorView(error: error, retryAction: {
+            self.viewModel.loadCountryDetails()
+        })
     }
 }
 
@@ -50,14 +92,20 @@ extension CountryDetails {
 }
 
 #if DEBUG
+
+extension CountryDetails.ViewModel {
+    static var preview: CountryDetails.ViewModel {
+        let viewModel = CountryDetails.ViewModel(container:
+            DIContainer(presetCountries: .loaded(Country.sampleData)),
+                                 country: Country.sampleData[0])
+        viewModel.details.send(.loaded(Country.Details.sampleData[0]))
+        return viewModel
+    }
+}
+
 struct CountryDetails_Previews: PreviewProvider {
     static var previews: some View {
-        CountryDetails(viewModel:
-            CountryDetails.ViewModel(container:
-                DIContainer(presetCountries: .loaded(Country.sampleData)),
-                                     country: Country.sampleData[0]
-            )
-        )
+        CountryDetails(viewModel: CountryDetails.ViewModel.preview)
     }
 }
 #endif
