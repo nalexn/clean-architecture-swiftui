@@ -39,14 +39,14 @@ struct CountryDetails: View {
     private func loadedView(_ countryDetails: Country.Details) -> some View {
         List {
             Section(header: Text("Basic Info")) {
-                DetailRow(title: "Code", value: viewModel.country.alpha3Code)
-                DetailRow(title: "Population", value: "\(viewModel.country.population)")
-                DetailRow(title: "Capital", value: "\(countryDetails.capital)")
+                DetailRow(leftLabel: viewModel.country.alpha3Code, rightLabel: "Code")
+                DetailRow(leftLabel: "\(viewModel.country.population)", rightLabel: "Population")
+                DetailRow(leftLabel: "\(countryDetails.capital)", rightLabel: "Capital")
             }
             if countryDetails.currencies.count > 0 {
                 Section(header: Text("Currencies")) {
                     ForEach(countryDetails.currencies) { currency in
-                        DetailRow(title: currency.name, value: currency.code)
+                        DetailRow(leftLabel: currency.title, rightLabel: currency.code)
                     }
                 }
             }
@@ -54,7 +54,7 @@ struct CountryDetails: View {
                 Section(header: Text("Neighboring countries")) {
                     ForEach(countryDetails.neighbors) { country in
                         NavigationLink(destination: self.detailsView(country: country)) {
-                            DetailRow(title: country.name, value: "")
+                            DetailRow(leftLabel: country.name, rightLabel: "")
                         }
                     }
                 }
@@ -74,6 +74,13 @@ struct CountryDetails: View {
     }
 }
 
+private extension Country.Currency {
+    var title: String {
+        if let symbol = symbol {
+            return name + " \(symbol)"
+        } else { return name }
+    }
+}
 
 extension CountryDetails {
     class ViewModel: ContentViewModel<Country.Details> {
