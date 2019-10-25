@@ -41,22 +41,22 @@ struct RealCountriesService: CountriesServiceProtocol, Service {
 
     func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable {
         countryDetails.send(.isLoading(last: countryDetails.value.value))
-        let request: AnyPublisher<[Country.Details], Error> = call(endpoint: API.countryDetails(country))
+        let request: AnyPublisher<[Country.Details.Intermediate], Error> = call(endpoint: API.countryDetails(country))
         let countriesArray = appState.countries.map({ $0.value ?? [] }).removeDuplicates()
         return request
-            .map { array -> Loadable<Country.Details> in
+            .map { array -> Loadable<Country.Details.Intermediate> in
                 if let details = array.first {
                     return .loaded(details)
                 } else {
                     return .failed(APIError.unexpectedResponse)
                 }
             }
-            .catch { Just<Loadable<Country.Details>>(.failed($0)) }
+            .catch { Just<Loadable<Country.Details.Intermediate>>(.failed($0)) }
             .combineLatest(countriesArray)
             .receive(on: bgQueue)
-            .map { (loadableDetails, countries) -> Loadable<Country.Details> in
-                return loadableDetails.updatedValue {
-                    return $0.substitutedCountriesAtBorders(countries: countries)
+            .map { (detailsIntermediate, countries) -> Loadable<Country.Details> in
+                detailsIntermediate.map {
+                    $0.substituteNeighbors(countries: countries)
                 }
             }
             .receive(on: RunLoop.main)

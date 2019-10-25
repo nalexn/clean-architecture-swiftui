@@ -21,7 +21,7 @@ struct DetailRow: View {
                 .font(.callout)
         }
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: 44, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
     }
 }
 
@@ -29,7 +29,7 @@ struct DetailRow: View {
 struct DetailRow_Previews: PreviewProvider {
     static var previews: some View {
         DetailRow(title: "Rate", value: "$123.99")
-            .previewLayout(.fixed(width: 375, height: 44))
+            .previewLayout(.fixed(width: 375, height: 40))
     }
 }
 #endif

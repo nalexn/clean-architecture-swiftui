@@ -50,13 +50,13 @@ struct CountryDetails: View {
                     }
                 }
             }
-//            if countryDetails.borders.count > 0 {
-//                Section(header: Text("Common Borders")) {
-//                    ForEach(countryDetails.borders) { border in
-//                        Text(border)
-//                    }
-//                }
-//            }
+            if countryDetails.neighbors.count > 0 {
+                Section(header: Text("Neighboring countries")) {
+                    ForEach(countryDetails.neighbors) { country in
+                        DetailRow(title: country.name, value: "")
+                    }
+                }
+            }
         }.listStyle(GroupedListStyle())
     }
     

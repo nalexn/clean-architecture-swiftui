@@ -43,16 +43,17 @@ enum Loadable<T> {
 }
 
 extension Loadable {
-    func updatedValue(_ mutation: (T) -> (T)) -> Loadable<T> {
+    func map<V>(_ transform: (T) -> (V)) -> Loadable<V> {
         switch self {
-        case let .loaded(value): return .loaded(mutation(value))
+        case .notRequested: return .notRequested
+        case let .failed(error): return .failed(error)
+        case let .loaded(value): return .loaded(transform(value))
         case let .isLoading(value):
             if let value = value {
-                return .isLoading(last: mutation(value))
+                return .isLoading(last: transform(value))
             } else {
                 return .isLoading(last: nil)
             }
-        default: return self
         }
     }
 }
