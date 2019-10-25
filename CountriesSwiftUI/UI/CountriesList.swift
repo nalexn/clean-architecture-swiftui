@@ -11,6 +11,7 @@ import Combine
 
 struct CountriesList: View {
     @ObservedObject var viewModel: ViewModel
+    @State var selectedCounrtyCode: Country.Code?
     
     init(viewModel: ViewModel) {
         self.viewModel = viewModel
@@ -51,7 +52,11 @@ struct CountriesList: View {
     
     private func loadedView(_ countries: [Country]) -> some View {
         List(countries) { country in
-            CountryCell(country: country)
+            NavigationLink(destination: CountryDetails(country: country),
+                           tag: country.alpha3Code,
+                           selection: self.$selectedCounrtyCode) {
+                CountryCell(country: country)
+            }
         }
     }
     

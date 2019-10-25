@@ -12,7 +12,9 @@ struct Country: Codable {
     let name: String
     let population: Int
     let flag: URL?
-    let alpha3Code: String
+    let alpha3Code: Code
+    
+    typealias Code = String
 }
 
 extension Country {
