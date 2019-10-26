@@ -73,6 +73,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F62822B523647F8300823BA1 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				F64495E82360D66400C9BB1F /* ContentView.swift */,
+				F644960F2361B64700C9BB1F /* CountriesList.swift */,
+				F6218DB32363051D00917938 /* CountryDetails.swift */,
+				F62822B3236478DE00823BA1 /* ModalDetailsView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		F62822B623647FA700823BA1 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F6218DB12362FD3100917938 /* CountryCell.swift */,
+				F6BDB91523636865003E69F2 /* DetailRow.swift */,
+				F6218DB523634D4100917938 /* ErrorView.swift */,
+				F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */,
+				F6BDB919236382E7003E69F2 /* SVGImageView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		F64495D82360D66400C9BB1F = {
 			isa = PBXGroup;
 			children = (
@@ -114,15 +137,8 @@
 		F64495F92360D68D00C9BB1F /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				F64495E82360D66400C9BB1F /* ContentView.swift */,
-				F644960F2361B64700C9BB1F /* CountriesList.swift */,
-				F6218DB12362FD3100917938 /* CountryCell.swift */,
-				F6218DB523634D4100917938 /* ErrorView.swift */,
-				F6218DB32363051D00917938 /* CountryDetails.swift */,
-				F6BDB91523636865003E69F2 /* DetailRow.swift */,
-				F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */,
-				F6BDB919236382E7003E69F2 /* SVGImageView.swift */,
-				F62822B3236478DE00823BA1 /* ModalDetailsView.swift */,
+				F62822B523647F8300823BA1 /* Screens */,
+				F62822B623647FA700823BA1 /* Components */,
 			);
 			path = UI;
 			sourceTree = "<group>";
