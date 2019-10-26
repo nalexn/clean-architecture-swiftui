@@ -93,7 +93,7 @@ struct CountryDetails: View {
     }
     
     private func loadCountryDetails() {
-//        services.countriesService.load(countryDetails: <#T##Resource<Country.Details>#>, country: <#T##Country#>)
+        services.countriesService.load(countryDetails: $details, country: country)
     }
 }
 

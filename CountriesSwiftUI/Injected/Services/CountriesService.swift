@@ -11,8 +11,8 @@ import Foundation
 import SwiftUI
 
 protocol CountriesServiceProtocol {
-    func loadCountries() -> Cancellable
-    func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable
+    func loadCountries()
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country)
 }
 
 struct RealCountriesService: CountriesServiceProtocol, Service {
@@ -30,21 +30,21 @@ struct RealCountriesService: CountriesServiceProtocol, Service {
     
     typealias API = CountriesService.APICall
 
-    func loadCountries() -> Cancellable {
+    func loadCountries() {
         appState.countries = .isLoading(last: appState.countries.value)
         weak var weakAppState = appState
         let request: AnyPublisher<[Country], Error> = call(endpoint: API.allCountries)
-        return request
+        _ = request
             .map { Loadable<[Country]>.loaded($0) }
             .catch { Just<Loadable<[Country]>>(.failed($0)) }
             .sink { weakAppState?.countries = $0 }
     }
 
-    func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable {
-        countryDetails.send(.isLoading(last: countryDetails.value.value))
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
+        countryDetails.wrappedValue = .isLoading(last: countryDetails.wrappedValue.value)
         let request: AnyPublisher<[Country.Details.Intermediate], Error> = call(endpoint: API.countryDetails(country))
         let countriesArray = appState.$countries.map({ $0.value ?? [] }).removeDuplicates()
-        return request
+        _ = request
             .map { array -> Loadable<Country.Details.Intermediate> in
                 if let details = array.first {
                     return .loaded(details)
@@ -61,7 +61,7 @@ struct RealCountriesService: CountriesServiceProtocol, Service {
                 }
             }
             .receive(on: RunLoop.main)
-            .sink { countryDetails.send($0) }
+            .sink { countryDetails.wrappedValue = $0 }
     }
 }
 
@@ -102,11 +102,9 @@ extension CountriesService.APICall: APICall {
 
 struct FakeCountriesService: CountriesServiceProtocol {
     
-    func loadCountries() -> Cancellable {
-        return AnyCancellable.init { }
+    func loadCountries() {
     }
     
-    func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable {
-        return AnyCancellable.init { }
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
     }
 }
