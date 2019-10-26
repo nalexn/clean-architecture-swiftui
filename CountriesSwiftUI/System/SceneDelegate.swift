@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        let (appState, services) = setupEnvironment()
+        let (appState, services) = injectedDependencies()
         let contentView = ContentView()
             .environment(\.services, services)
             .environmentObject(appState)
@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-    private func setupEnvironment() -> (AppState, ServicesContainer) {
+    private func injectedDependencies() -> (AppState, ServicesContainer) {
         let appState = AppState()
         let session = URLSession.shared
         let countriesService = RealCountriesService(
