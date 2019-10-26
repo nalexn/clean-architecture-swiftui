@@ -9,6 +9,16 @@
 import SwiftUI
 import Combine
 
+// MARK: - Routing
+
+extension CountryDetails {
+    struct Routing {
+        var detailsSheet: Bool = false
+    }
+}
+
+// MARK: - CountryDetails
+
 struct CountryDetails: View {
     
     let country: Country
@@ -29,78 +39,106 @@ struct CountryDetails: View {
         case let .failed(error): return AnyView(failedView(error))
         }
     }
-    
-    private var notRequestedView: some View {
+}
+
+// MARK: - Side Effects
+
+private extension CountryDetails {
+    func loadCountryDetails() {
+        services.countriesService.load(countryDetails: $details, country: country)
+    }
+}
+
+// MARK: - Loading Content
+
+private extension CountryDetails {
+    var notRequestedView: some View {
         Text("").onAppear {
             self.loadCountryDetails()
         }
     }
     
-    private var loadingView: some View {
+    var loadingView: some View {
         ActivityIndicatorView()
     }
     
-    private func loadedView(_ countryDetails: Country.Details) -> some View {
-        List {
-            country.flag.map { url in
-                HStack {
-                    Spacer()
-                    SVGImageView(imageURL: url)
-                        .frame(width: 120, height: 80)
-                        .onTapGesture {
-                            self.appState.routing.countryDetails.detailsSheet = true
-                        }
-                    Spacer()
-                }
-            }
-            Section(header: Text("Basic Info")) {
-                DetailRow(leftLabel: country.alpha3Code, rightLabel: "Code")
-                DetailRow(leftLabel: "\(country.population)", rightLabel: "Population")
-                DetailRow(leftLabel: "\(countryDetails.capital)", rightLabel: "Capital")
-            }
-            if countryDetails.currencies.count > 0 {
-                Section(header: Text("Currencies")) {
-                    ForEach(countryDetails.currencies) { currency in
-                        DetailRow(leftLabel: currency.title, rightLabel: currency.code)
-                    }
-                }
-            }
-            if countryDetails.neighbors.count > 0 {
-                Section(header: Text("Neighboring countries")) {
-                    ForEach(countryDetails.neighbors) { country in
-                        NavigationLink(destination: self.detailsView(country: country)) {
-                            DetailRow(leftLabel: country.name, rightLabel: "")
-                        }
-                    }
-                }
-            }
-        }
-        .listStyle(GroupedListStyle())
-        .sheet(isPresented: self.$appState.routing.countryDetails.detailsSheet, content: {
-            ModalDetailsView(country: self.country, isDisplayed: self.$appState.routing.countryDetails.detailsSheet)
-        })
-    }
-    
-    private func failedView(_ error: Error) -> some View {
+    func failedView(_ error: Error) -> some View {
         ErrorView(error: error, retryAction: {
             self.loadCountryDetails()
         })
     }
+}
+
+// MARK: - Displaying Content
+
+private extension CountryDetails {
+    func loadedView(_ countryDetails: Country.Details) -> some View {
+        List {
+            country.flag.map { url in
+                flagView(url: url)
+            }
+            basicInfoSectionView(countryDetails: countryDetails)
+            if countryDetails.currencies.count > 0 {
+                currenciesSectionView(currencies: countryDetails.currencies)
+            }
+            if countryDetails.neighbors.count > 0 {
+                neighborsSectionView(neighbors: countryDetails.neighbors)
+            }
+        }
+        .listStyle(GroupedListStyle())
+        .sheet(isPresented: self.$appState.routing.countryDetails.detailsSheet,
+               content: { self.modalDetailsView() })
+    }
     
-    private func detailsView(country: Country) -> some View {
+    func flagView(url: URL) -> some View {
+        HStack {
+            Spacer()
+            SVGImageView(imageURL: url)
+                .frame(width: 120, height: 80)
+                .onTapGesture {
+                    self.appState.routing.countryDetails.detailsSheet = true
+                }
+            Spacer()
+        }
+    }
+    
+    func basicInfoSectionView(countryDetails: Country.Details) -> some View {
+        Section(header: Text("Basic Info")) {
+            DetailRow(leftLabel: country.alpha3Code, rightLabel: "Code")
+            DetailRow(leftLabel: "\(country.population)", rightLabel: "Population")
+            DetailRow(leftLabel: "\(countryDetails.capital)", rightLabel: "Capital")
+        }
+    }
+    
+    func currenciesSectionView(currencies: [Country.Currency]) -> some View {
+        Section(header: Text("Currencies")) {
+            ForEach(currencies) { currency in
+                DetailRow(leftLabel: currency.title, rightLabel: currency.code)
+            }
+        }
+    }
+    
+    func neighborsSectionView(neighbors: [Country]) -> some View {
+        Section(header: Text("Neighboring countries")) {
+            ForEach(neighbors) { country in
+                NavigationLink(destination: self.neighbourDetailsView(country: country)) {
+                    DetailRow(leftLabel: country.name, rightLabel: "")
+                }
+            }
+        }
+    }
+    
+    func neighbourDetailsView(country: Country) -> some View {
         CountryDetails(country: country)
     }
     
-    private func loadCountryDetails() {
-        services.countriesService.load(countryDetails: $details, country: country)
+    func modalDetailsView() -> some View {
+        ModalDetailsView(country: country,
+                         isDisplayed: $appState.routing.countryDetails.detailsSheet)
     }
 }
 
-extension CountryDetails {
-    struct Routing {
-        var detailsSheet: Bool = false
-    }
-}
+// MARK: - Helpers
 
 private extension Country.Currency {
     var title: String {
@@ -110,8 +148,9 @@ private extension Country.Currency {
     }
 }
 
-#if DEBUG
+// MARK: - Preview
 
+#if DEBUG
 struct CountryDetails_Previews: PreviewProvider {
     static var previews: some View {
         CountryDetails(country: Country.mockedData[0])

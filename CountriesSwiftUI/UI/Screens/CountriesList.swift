@@ -9,6 +9,16 @@
 import SwiftUI
 import Combine
 
+// MARK: - Routing
+
+extension CountriesList {
+    struct Routing {
+        var countryDetails: Country.Code? = nil
+    }
+}
+
+// MARK: - CountriesList
+
 struct CountriesList: View {
     
     @EnvironmentObject var appState: AppState
@@ -21,8 +31,6 @@ struct CountriesList: View {
         }
     }
     
-    // MARK: - Views
-    
     private var content: AnyView {
         switch appState.countries {
         case .notRequested: return AnyView(notRequestedView)
@@ -31,14 +39,26 @@ struct CountriesList: View {
         case let .failed(error): return AnyView(failedView(error))
         }
     }
-    
-    private var notRequestedView: some View {
+}
+
+// MARK: - Side Effects
+
+private extension CountriesList {
+    func loadCountries() {
+        services.countriesService.loadCountries()
+    }
+}
+
+// MARK: - Loading Content
+
+private extension CountriesList {
+    var notRequestedView: some View {
         Text("").onAppear {
             self.loadCountries()
         }
     }
     
-    private func loadingView(_ previouslyLoaded: [Country]?) -> some View {
+    func loadingView(_ previouslyLoaded: [Country]?) -> some View {
         VStack {
             ActivityIndicatorView().padding()
             previouslyLoaded.map {
@@ -47,7 +67,17 @@ struct CountriesList: View {
         }
     }
     
-    private func loadedView(_ countries: [Country]) -> some View {
+    func failedView(_ error: Error) -> some View {
+        ErrorView(error: error, retryAction: {
+            self.loadCountries()
+        })
+    }
+}
+
+// MARK: - Displaying Content
+
+private extension CountriesList {
+    func loadedView(_ countries: [Country]) -> some View {
         List(countries) { country in
             NavigationLink(
                 destination: self.detailsView(country: country),
@@ -58,29 +88,12 @@ struct CountriesList: View {
         }
     }
     
-    private func failedView(_ error: Error) -> some View {
-        ErrorView(error: error, retryAction: {
-            self.loadCountries()
-        })
-    }
-    
-    private func detailsView(country: Country) -> some View {
+    func detailsView(country: Country) -> some View {
         CountryDetails(country: country)
-    }
-    
-    private func loadCountries() {
-        services.countriesService.loadCountries()
-    }
-}
-
-extension CountriesList {
-    struct Routing {
-        var countryDetails: Country.Code? = nil
     }
 }
 
 #if DEBUG
-
 struct CountriesList_Previews: PreviewProvider {
     static var previews: some View {
         CountriesList()
