@@ -10,6 +10,16 @@ import SwiftUI
 
 class AppState: ObservableObject {
     @Published var countries: Loadable<[Country]> = .notRequested
+    var routing = ViewRouting() {
+        willSet { self.objectWillChange.send() }
+    }
+}
+
+extension AppState {
+    struct ViewRouting {
+        var countriesList = CountriesList.Routing()
+        var countryDetails = CountryDetails.Routing()
+    }
 }
 
 #if DEBUG

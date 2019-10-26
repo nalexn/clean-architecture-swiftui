@@ -13,7 +13,6 @@ struct CountriesList: View {
     
     @EnvironmentObject var appState: AppState
     @Environment(\.services) var services: ServicesContainer
-    @State private var selectedCounrtyCode: Country.Code? = nil
     
     var body: some View {
         NavigationView {
@@ -53,7 +52,7 @@ struct CountriesList: View {
             NavigationLink(
                 destination: self.detailsView(country: country),
                 tag: country.alpha3Code,
-                selection: self.$selectedCounrtyCode) {
+                selection: self.$appState.routing.countriesList.countryDetails) {
                     CountryCell(country: country)
                 }
         }
@@ -71,6 +70,12 @@ struct CountriesList: View {
     
     private func loadCountries() {
         services.countriesService.loadCountries()
+    }
+}
+
+extension CountriesList {
+    struct Routing {
+        var countryDetails: Country.Code? = nil
     }
 }
 

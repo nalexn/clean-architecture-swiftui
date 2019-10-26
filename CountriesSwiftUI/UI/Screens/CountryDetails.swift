@@ -15,7 +15,6 @@ struct CountryDetails: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.services) var services: ServicesContainer
     @State private var details: Loadable<Country.Details> = .notRequested
-    @State private var isDetailsSheetDisplayed: Bool = false
     
     var body: some View {
         content
@@ -49,7 +48,7 @@ struct CountryDetails: View {
                     SVGImageView(imageURL: url)
                         .frame(width: 120, height: 80)
                         .onTapGesture {
-                            self.isDetailsSheetDisplayed = true
+                            self.appState.routing.countryDetails.detailsSheet = true
                         }
                     Spacer()
                 }
@@ -77,8 +76,8 @@ struct CountryDetails: View {
             }
         }
         .listStyle(GroupedListStyle())
-        .sheet(isPresented: $isDetailsSheetDisplayed, content: {
-            ModalDetailsView(country: self.country, isDisplayed: self.$isDetailsSheetDisplayed)
+        .sheet(isPresented: self.$appState.routing.countryDetails.detailsSheet, content: {
+            ModalDetailsView(country: self.country, isDisplayed: self.$appState.routing.countryDetails.detailsSheet)
         })
     }
     
@@ -94,6 +93,12 @@ struct CountryDetails: View {
     
     private func loadCountryDetails() {
         services.countriesService.load(countryDetails: $details, country: country)
+    }
+}
+
+extension CountryDetails {
+    struct Routing {
+        var detailsSheet: Bool = false
     }
 }
 
