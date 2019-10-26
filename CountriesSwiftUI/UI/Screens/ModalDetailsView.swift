@@ -40,7 +40,7 @@ struct ModalDetailsView: View {
 struct ModalDetailsView_Previews: PreviewProvider {
     @State static var isDisplayed: Bool = true
     static var previews: some View {
-        ModalDetailsView(country: Country.sampleData[0], isDisplayed: $isDisplayed)
+        ModalDetailsView(country: Country.mockedData[0], isDisplayed: $isDisplayed)
     }
 }
 #endif

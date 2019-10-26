@@ -26,7 +26,7 @@ struct CountryCell: View {
 #if DEBUG
 struct CountryCell_Previews: PreviewProvider {
     static var previews: some View {
-        CountryCell(country: Country.sampleData[0])
+        CountryCell(country: Country.mockedData[0])
             .previewLayout(.fixed(width: 375, height: 60))
     }
 }

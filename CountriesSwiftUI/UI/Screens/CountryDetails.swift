@@ -114,7 +114,7 @@ private extension Country.Currency {
 
 struct CountryDetails_Previews: PreviewProvider {
     static var previews: some View {
-        CountryDetails(country: Country.sampleData[0])
+        CountryDetails(country: Country.mockedData[0])
             .environmentObject(AppState.preview)
     }
 }
