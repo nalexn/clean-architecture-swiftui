@@ -10,12 +10,10 @@ import SwiftUI
 import Combine
 
 struct CountriesList: View {
-    @ObservedObject var viewModel: ViewModel
-    @State var selectedCounrtyCode: Country.Code?
     
-    init(viewModel: ViewModel) {
-        self.viewModel = viewModel
-    }
+    @EnvironmentObject var appState: AppState
+    @Environment(\.services) var services: ServicesContainer
+    @State private var selectedCounrtyCode: Country.Code? = nil
     
     var body: some View {
         NavigationView {
@@ -27,7 +25,7 @@ struct CountriesList: View {
     // MARK: - Views
     
     private var content: AnyView {
-        switch viewModel.content {
+        switch appState.countries {
         case .notRequested: return AnyView(notRequestedView)
         case let .isLoading(last): return AnyView(loadingView(last))
         case let .loaded(countries): return AnyView(loadedView(countries))
@@ -37,7 +35,7 @@ struct CountriesList: View {
     
     private var notRequestedView: some View {
         Text("").onAppear {
-            self.viewModel.loadCountries()
+            self.loadCountries()
         }
     }
     
@@ -63,49 +61,25 @@ struct CountriesList: View {
     
     private func failedView(_ error: Error) -> some View {
         ErrorView(error: error, retryAction: {
-            self.viewModel.loadCountries()
+            self.loadCountries()
         })
     }
     
     private func detailsView(country: Country) -> some View {
-        CountryDetails(viewModel: CountryDetails.ViewModel(
-            container: viewModel.container, country: country))
+        CountryDetails(country: country)
     }
-}
-
-extension CountriesList {
-    class ViewModel: ContentViewModel<[Country]> {
-        
-        let container: DIContainer
-        private var requestToken: Cancellable?
-        
-        init(container: DIContainer) {
-            self.container = container
-            super.init(publisher: container.appState.countries.eraseToAnyPublisher(), hasDataToDisplay: {
-                    ($0.value?.count ?? 0) > 0
-                })
-        }
-        
-        func loadCountries() {
-            requestToken?.cancel()
-            requestToken = container.countriesService.loadCountries()
-        }
+    
+    private func loadCountries() {
+        services.countriesService.loadCountries()
     }
 }
 
 #if DEBUG
 
-extension CountriesList.ViewModel {
-    static var preview: CountriesList.ViewModel {
-        return CountriesList.ViewModel(container:
-            DIContainer(presetCountries: .loaded(Country.sampleData))
-        )
-    }
-}
-
 struct CountriesList_Previews: PreviewProvider {
     static var previews: some View {
-        CountriesList(viewModel: CountriesList.ViewModel.preview)
+        CountriesList()
+            .environmentObject(AppState.preview)
     }
 }
 #endif

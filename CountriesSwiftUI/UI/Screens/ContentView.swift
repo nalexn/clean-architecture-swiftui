@@ -9,19 +9,17 @@
 import SwiftUI
 
 struct ContentView: View {
-    let container: DIContainer
     
     var body: some View {
-        CountriesList(viewModel:
-            CountriesList.ViewModel(container: container)
-        )
+        CountriesList()
     }
 }
 
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(container: DIContainer(presetCountries: .notRequested))
+        ContentView()
+            .environmentObject(AppState.preview)
     }
 }
 #endif

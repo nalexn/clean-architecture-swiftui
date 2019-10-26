@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import SwiftUI
 
 protocol CountriesServiceProtocol {
     func loadCountries() -> Cancellable
@@ -30,19 +31,19 @@ struct RealCountriesService: CountriesServiceProtocol, Service {
     typealias API = CountriesService.APICall
 
     func loadCountries() -> Cancellable {
-        let countries = appState.countries
-        countries.send(.isLoading(last: countries.value.value))
+        appState.countries = .isLoading(last: appState.countries.value)
+        weak var weakAppState = appState
         let request: AnyPublisher<[Country], Error> = call(endpoint: API.allCountries)
         return request
             .map { Loadable<[Country]>.loaded($0) }
             .catch { Just<Loadable<[Country]>>(.failed($0)) }
-            .sink { countries.send($0) }
+            .sink { weakAppState?.countries = $0 }
     }
 
     func load(countryDetails: Resource<Country.Details>, country: Country) -> Cancellable {
         countryDetails.send(.isLoading(last: countryDetails.value.value))
         let request: AnyPublisher<[Country.Details.Intermediate], Error> = call(endpoint: API.countryDetails(country))
-        let countriesArray = appState.countries.map({ $0.value ?? [] }).removeDuplicates()
+        let countriesArray = appState.$countries.map({ $0.value ?? [] }).removeDuplicates()
         return request
             .map { array -> Loadable<Country.Details.Intermediate> in
                 if let details = array.first {
@@ -99,7 +100,6 @@ extension CountriesService.APICall: APICall {
     }
 }
 
-#if DEBUG
 struct FakeCountriesService: CountriesServiceProtocol {
     
     func loadCountries() -> Cancellable {
@@ -110,4 +110,3 @@ struct FakeCountriesService: CountriesServiceProtocol {
         return AnyCancellable.init { }
     }
 }
-#endif

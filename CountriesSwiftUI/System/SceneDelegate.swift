@@ -13,23 +13,28 @@ import Foundation
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    private lazy var container: DIContainer = {
-        let appState = AppState()
-        let session = URLSession.shared
-        let countriesService = RealCountriesService(
-            session: session,
-            baseURL: "https://restcountries.eu/rest/v2",
-            appState: appState)
-        return DIContainer(appState: appState, countriesService: countriesService)
-    }()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        let contentView = ContentView(container: container)
+        let (appState, services) = setupEnvironment()
+        let contentView = ContentView()
+            .environment(\.services, services)
+            .environmentObject(appState)
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
             window.makeKeyAndVisible()
         }
+    }
+    
+    private func setupEnvironment() -> (AppState, ServicesContainer) {
+        let appState = AppState()
+        let session = URLSession.shared
+        let countriesService = RealCountriesService(
+            session: session,
+            baseURL: "https://restcountries.eu/rest/v2",
+            appState: appState)
+        let services = ServicesContainer(countriesService: countriesService)
+        return (appState, services)
     }
 }

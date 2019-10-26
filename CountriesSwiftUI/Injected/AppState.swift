@@ -6,8 +6,18 @@
 //  Copyright © 2019 Alexey Naumov. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
 
-struct AppState {
-    let countries = Resource<[Country]>(.notRequested)
+class AppState: ObservableObject {
+    @Published var countries: Loadable<[Country]> = .notRequested
 }
+
+#if DEBUG
+extension AppState {
+    static var preview: AppState {
+        let state = AppState()
+        state.countries = .loaded(Country.sampleData)
+        return state
+    }
+}
+#endif
