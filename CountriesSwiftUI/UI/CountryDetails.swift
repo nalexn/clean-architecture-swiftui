@@ -38,6 +38,14 @@ struct CountryDetails: View {
     
     private func loadedView(_ countryDetails: Country.Details) -> some View {
         List {
+            viewModel.country.flag.map { url in
+                HStack {
+                    Spacer()
+                    SVGImageView(imageURL: url)
+                        .frame(width: 120, height: 80)
+                    Spacer()
+                }
+            }
             Section(header: Text("Basic Info")) {
                 DetailRow(leftLabel: viewModel.country.alpha3Code, rightLabel: "Code")
                 DetailRow(leftLabel: "\(viewModel.country.population)", rightLabel: "Population")
