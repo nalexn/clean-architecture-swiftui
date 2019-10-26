@@ -11,6 +11,7 @@ import Combine
 
 struct CountryDetails: View {
     @ObservedObject var viewModel: ViewModel
+    @State var isDetailsSheetDisplayed: Bool = false
     
     var body: some View {
         content
@@ -43,6 +44,9 @@ struct CountryDetails: View {
                     Spacer()
                     SVGImageView(imageURL: url)
                         .frame(width: 120, height: 80)
+                        .onTapGesture {
+                            self.isDetailsSheetDisplayed = true
+                        }
                     Spacer()
                 }
             }
@@ -67,7 +71,11 @@ struct CountryDetails: View {
                     }
                 }
             }
-        }.listStyle(GroupedListStyle())
+        }
+        .listStyle(GroupedListStyle())
+        .sheet(isPresented: $isDetailsSheetDisplayed, content: {
+            ModalDetailsView(country: self.viewModel.country, isDisplayed: self.$isDetailsSheetDisplayed)
+        })
     }
     
     private func failedView(_ error: Error) -> some View {
