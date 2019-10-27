@@ -27,6 +27,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        // Parse the link
+    }
+    
     private func injectedDependencies() -> (AppState, ServicesContainer) {
         let appState = AppState()
         let session = URLSession.shared
