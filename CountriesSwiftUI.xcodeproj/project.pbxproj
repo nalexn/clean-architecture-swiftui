@@ -25,6 +25,8 @@
 		F644960E2360EF6C00C9BB1F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960D2360EF6C00C9BB1F /* Service.swift */; };
 		F64496102361B64700C9BB1F /* CountriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960F2361B64700C9BB1F /* CountriesList.swift */; };
 		F64496122361BB4900C9BB1F /* ServicesContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496112361BB4900C9BB1F /* ServicesContainer.swift */; };
+		F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */; };
+		F67DBD542366E2E200C83258 /* RootViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* RootViewModifier.swift */; };
 		F6863E462364FCC800E9B227 /* MockedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6863E452364FCC800E9B227 /* MockedData.swift */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
@@ -52,6 +54,8 @@
 		F644960D2360EF6C00C9BB1F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		F644960F2361B64700C9BB1F /* CountriesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesList.swift; sourceTree = "<group>"; };
 		F64496112361BB4900C9BB1F /* ServicesContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesContainer.swift; sourceTree = "<group>"; };
+		F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
+		F67DBD532366E2E200C83258 /* RootViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModifier.swift; sourceTree = "<group>"; };
 		F6863E452364FCC800E9B227 /* MockedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedData.swift; sourceTree = "<group>"; };
 		F6863E4723650E7900E9B227 /* CountriesSwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountriesSwiftUI.entitlements; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 			children = (
 				F64495E42360D66400C9BB1F /* AppDelegate.swift */,
 				F64495E62360D66400C9BB1F /* SceneDelegate.swift */,
+				F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -158,6 +163,7 @@
 			children = (
 				F64495FC2360D81F00C9BB1F /* AppState.swift */,
 				F64496112361BB4900C9BB1F /* ServicesContainer.swift */,
+				F67DBD532366E2E200C83258 /* RootViewModifier.swift */,
 			);
 			path = Injected;
 			sourceTree = "<group>";
@@ -264,6 +270,7 @@
 				F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */,
 				F6218DB623634D4100917938 /* ErrorView.swift in Sources */,
 				F6218DB22362FD3100917938 /* CountryCell.swift in Sources */,
+				F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */,
 				F64496102361B64700C9BB1F /* CountriesList.swift in Sources */,
 				F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */,
 				F64495E72360D66400C9BB1F /* SceneDelegate.swift in Sources */,
@@ -273,6 +280,7 @@
 				F6218DB42363051D00917938 /* CountryDetails.swift in Sources */,
 				F62822B4236478DE00823BA1 /* ModalDetailsView.swift in Sources */,
 				F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */,
+				F67DBD542366E2E200C83258 /* RootViewModifier.swift in Sources */,
 				F64496082360DFB700C9BB1F /* Models.swift in Sources */,
 				F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */,
 				F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */,

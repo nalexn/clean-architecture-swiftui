@@ -13,24 +13,36 @@ import Foundation
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    private var systemEventsHandler: SystemEventsHandlerProtocol?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         let (appState, services) = injectedDependencies()
         let contentView = ContentView()
-            .environment(\.services, services)
-            .environmentObject(appState)
+            .modifier(RootViewModifier(appState: appState,
+                                       services: services))
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
             window.makeKeyAndVisible()
         }
+        systemEventsHandler = SystemEventsHandler(appState: appState)
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        // Parse the link
+        systemEventsHandler?.sceneOpenURLContexts(URLContexts)
     }
     
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        systemEventsHandler?.sceneDidBecomeActive()
+    }
+    
+    func sceneWillResignActive(_ scene: UIScene) {
+        systemEventsHandler?.sceneWillResignActive()
+    }
+}
+
+private extension SceneDelegate {
     private func injectedDependencies() -> (AppState, ServicesContainer) {
         let appState = AppState()
         let session = URLSession.shared

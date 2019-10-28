@@ -135,6 +135,8 @@ private extension CountryDetails {
     func modalDetailsView() -> some View {
         ModalDetailsView(country: country,
                          isDisplayed: $appState.routing.countryDetails.detailsSheet)
+            .modifier(RootViewModifier(appState: appState,
+                                       services: services))
     }
 }
 
