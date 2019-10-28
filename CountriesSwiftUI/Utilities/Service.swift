@@ -21,9 +21,8 @@ extension Service {
             let request = try endpoint.urlRequest(baseURL: baseURL)
             return session
                 .dataTaskPublisher(for: request)
-                // Response is intentionally delayed, remove for a real app:
-                .delay(for: .seconds(1), scheduler: bgQueue)
                 .requestJSON(httpCodes: httpCodes)
+                .ensureTimeSpan(0.5) // Hold the response if it arrives too quickly
         } catch let error {
             return Fail<Value, Error>(error: error).eraseToAnyPublisher()
         }
@@ -54,5 +53,24 @@ extension Subscribers.Completion {
         case .finished: return nil
         case let .failure(error): return error
         }
+    }
+}
+
+private extension AnyPublisher {
+    
+    /// Holds the downstream delivery of output until the specified time interval passed after the subscription
+    /// Does not hold the output if it arrives later than the time threshold
+    ///
+    /// - Parameters:
+    ///   - interval: The minimum time interval that should elapse after the subscription.
+    /// - Returns: A publisher that optionally delays delivery of elements to the downstream receiver.
+    
+    func ensureTimeSpan(_ interval: TimeInterval) -> AnyPublisher<Output, Failure> {
+        let timer = Just<Void>(())
+            .delay(for: .seconds(interval), scheduler: RunLoop.main)
+            .mapError({ $0 as! Failure })
+        return zip(timer)
+            .map({ $0.0 })
+            .eraseToAnyPublisher()
     }
 }
