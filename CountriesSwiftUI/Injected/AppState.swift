@@ -10,8 +10,8 @@ import SwiftUI
 
 class AppState: ObservableObject {
     @Published var countries: Loadable<[Country]> = .notRequested
-    var routing = ViewRouting() { willSet { self.objectWillChange.send() } }
-    var system = System() { willSet { self.objectWillChange.send() } }
+    @Published var routing = ViewRouting()
+    @Published var system = System()
 }
 
 extension AppState {
