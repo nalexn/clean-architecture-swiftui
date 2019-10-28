@@ -1,6 +1,6 @@
 # Clean Architecture for SwiftUI + Combine
 
-A demo project showcasing a setup of the SwiftUI app with Clean Architecture.
+A demo project showcasing the setup of the SwiftUI app with Clean Architecture.
 
 The app uses the [restcountries.eu](restcountries.eu) REST API to show the list of countries and details about them.
 
@@ -21,7 +21,7 @@ The app uses the [restcountries.eu](restcountries.eu) REST API to show the list 
 
 This is a work-in-progress repository. ToDo:
 * 99% test coverege
-* REDUX state management (in a separate brunch)
+* REDUX state management (in a separate branch)
 
 ### License
 MIT
