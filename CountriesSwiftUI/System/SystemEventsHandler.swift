@@ -23,10 +23,10 @@ struct SystemEventsHandler: SystemEventsHandlerProtocol {
     }
     
     func sceneDidBecomeActive() {
-        
+        appState.system.isActive = true
     }
     
     func sceneWillResignActive() {
-        
+        appState.system.isActive = false
     }
 }
