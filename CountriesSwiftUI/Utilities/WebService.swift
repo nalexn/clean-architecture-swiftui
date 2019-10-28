@@ -1,5 +1,5 @@
 //
-//  Service.swift
+//  WebService.swift
 //  CountriesSwiftUI
 //
 //  Created by Alexey Naumov on 23.10.2019.
@@ -9,13 +9,13 @@
 import Foundation
 import Combine
 
-protocol Service {
+protocol WebService {
     var session: URLSession { get }
     var baseURL: String { get }
     var bgQueue: DispatchQueue { get }
 }
 
-extension Service {
+extension WebService {
     func call<Value>(endpoint: APICall, httpCodes: HTTPCodes = .success) -> AnyPublisher<Value, Error> where Value: Decodable {
         do {
             let request = try endpoint.urlRequest(baseURL: baseURL)
@@ -45,16 +45,7 @@ private extension Publisher where Output == URLSession.DataTaskPublisher.Output 
     }
 }
 
-// MARK: - Subscribers.Completion helper
-
-extension Subscribers.Completion {
-    var error: Error? {
-        switch self {
-        case .finished: return nil
-        case let .failure(error): return error
-        }
-    }
-}
+// MARK: - Helpers
 
 private extension AnyPublisher {
     

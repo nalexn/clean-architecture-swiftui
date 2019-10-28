@@ -15,7 +15,7 @@ protocol CountriesServiceProtocol {
     func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country)
 }
 
-struct RealCountriesService: CountriesServiceProtocol, Service {
+struct RealCountriesService: CountriesServiceProtocol, WebService {
     
     let session: URLSession
     let baseURL: String
