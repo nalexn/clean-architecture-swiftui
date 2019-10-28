@@ -31,14 +31,14 @@ extension WebService {
 
 private extension Publisher where Output == URLSession.DataTaskPublisher.Output {
     func requestJSON<Value>(httpCodes: HTTPCodes) -> AnyPublisher<Value, Error> where Value: Decodable {
-        return tryMap({
+        return tryMap {
                 assert(!Thread.isMainThread)
                 let code = ($0.1 as? HTTPURLResponse)?.statusCode ?? 200
                 guard httpCodes.contains(code) else {
                     throw APIError.httpCode(code)
                 }
                 return $0.0
-            })
+            }
             .decode(type: Value.self, decoder: JSONDecoder())
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
@@ -59,9 +59,9 @@ private extension AnyPublisher {
     func ensureTimeSpan(_ interval: TimeInterval) -> AnyPublisher<Output, Failure> {
         let timer = Just<Void>(())
             .delay(for: .seconds(interval), scheduler: RunLoop.main)
-            .mapError({ $0 as! Failure })
+            .mapError { $0 as! Failure }
         return zip(timer)
-            .map({ $0.0 })
+            .map { $0.0 }
             .eraseToAnyPublisher()
     }
 }

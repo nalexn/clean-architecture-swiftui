@@ -53,9 +53,9 @@ extension Country.Currency: Identifiable, Equatable {
 
 extension Country.Details.Intermediate {
     func substituteNeighbors(countries: [Country]) -> Country.Details {
-        let countries = self.borders.compactMap({ code in
+        let countries = self.borders.compactMap { code in
             return countries.first(where: { $0.alpha3Code == code })
-        })
+        }
         return Country.Details(capital: capital, currencies: currencies, neighbors: countries)
     }
 }

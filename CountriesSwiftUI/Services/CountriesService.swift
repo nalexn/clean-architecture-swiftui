@@ -43,7 +43,9 @@ struct RealCountriesService: CountriesServiceProtocol, WebService {
     func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
         countryDetails.wrappedValue = .isLoading(last: countryDetails.wrappedValue.value)
         let request: AnyPublisher<[Country.Details.Intermediate], Error> = call(endpoint: API.countryDetails(country))
-        let countriesArray = appState.$userData.map({ $0.countries.value ?? [] }).removeDuplicates()
+        let countriesArray = appState.$userData
+            .map { $0.countries.value ?? [] }
+            .removeDuplicates()
         _ = request
             .map { array -> Loadable<Country.Details.Intermediate> in
                 if let details = array.first {
