@@ -9,9 +9,15 @@
 import SwiftUI
 
 class AppState: ObservableObject {
-    @Published var countries: Loadable<[Country]> = .notRequested
+    @Published var userData = UserData()
     @Published var routing = ViewRouting()
     @Published var system = System()
+}
+
+extension AppState {
+    struct UserData {
+        var countries: Loadable<[Country]> = .notRequested
+    }
 }
 
 extension AppState {
@@ -31,7 +37,7 @@ extension AppState {
 extension AppState {
     static var preview: AppState {
         let state = AppState()
-        state.countries = .loaded(Country.mockedData)
+        state.userData.countries = .loaded(Country.mockedData)
         return state
     }
 }

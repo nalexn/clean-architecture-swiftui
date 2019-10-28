@@ -32,7 +32,7 @@ struct CountriesList: View {
     }
     
     private var content: AnyView {
-        switch appState.countries {
+        switch appState.userData.countries {
         case .notRequested: return AnyView(notRequestedView)
         case let .isLoading(last): return AnyView(loadingView(last))
         case let .loaded(countries): return AnyView(loadedView(countries))

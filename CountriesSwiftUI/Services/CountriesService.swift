@@ -31,19 +31,19 @@ struct RealCountriesService: CountriesServiceProtocol, Service {
     typealias API = CountriesService.APICall
 
     func loadCountries() {
-        appState.countries = .isLoading(last: appState.countries.value)
+        appState.userData.countries = .isLoading(last: appState.userData.countries.value)
         weak var weakAppState = appState
         let request: AnyPublisher<[Country], Error> = call(endpoint: API.allCountries)
         _ = request
             .map { Loadable<[Country]>.loaded($0) }
             .catch { Just<Loadable<[Country]>>(.failed($0)) }
-            .sink { weakAppState?.countries = $0 }
+            .sink { weakAppState?.userData.countries = $0 }
     }
 
     func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
         countryDetails.wrappedValue = .isLoading(last: countryDetails.wrappedValue.value)
         let request: AnyPublisher<[Country.Details.Intermediate], Error> = call(endpoint: API.countryDetails(country))
-        let countriesArray = appState.$countries.map({ $0.value ?? [] }).removeDuplicates()
+        let countriesArray = appState.$userData.map({ $0.countries.value ?? [] }).removeDuplicates()
         _ = request
             .map { array -> Loadable<Country.Details.Intermediate> in
                 if let details = array.first {
