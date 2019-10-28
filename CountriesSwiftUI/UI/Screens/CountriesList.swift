@@ -78,7 +78,7 @@ private extension CountriesList {
 
 private extension CountriesList {
     func loadedView(_ countries: [Country]) -> some View {
-        List(countries) { country in
+        return List(countries) { country in
             NavigationLink(
                 destination: self.detailsView(country: country),
                 tag: country.alpha3Code,
