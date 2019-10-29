@@ -14,10 +14,13 @@ The app uses the [restcountries.eu](restcountries.eu) REST API to show the list 
 * Dependency injection of `Interactors` and `AppState`
 * Simple yet flexible networking layer built on Generics
 * Handling of system events (such as `didBecomeActive`, `willResignActive`)
-* Built with SOLID, DRY, KISS, YAGNI, (and so on) in mind.
-
+* Built with SOLID, DRY, KISS, YAGNI in mind.
 
 ## Architecture overview
+
+<p align="center">
+  <img src="https://github.com/nalexn/blob_files/blob/master/images/swiftui_arc_001.png?raw=true" alt="Diagram"/>
+</p>
 
 ### Presentation Layer
 
@@ -46,7 +49,7 @@ Repositories provide asynchronous API (`Publisher` from Combine) for making [CRU
 
 This is a work-in-progress repository. ToDo:
 
-* Caching of data in a local database
+* Local database
 * 99% test coverage
 * REDUX state management
 
