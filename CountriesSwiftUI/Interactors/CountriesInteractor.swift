@@ -1,5 +1,5 @@
 //
-//  CountriesService.swift
+//  CountriesInteractor.swift
 //  CountriesSwiftUI
 //
 //  Created by Alexey Naumov on 23.10.2019.
@@ -10,12 +10,12 @@ import Combine
 import Foundation
 import SwiftUI
 
-protocol CountriesService {
+protocol CountriesInteractor {
     func loadCountries()
     func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country)
 }
 
-struct RealCountriesService: CountriesService {
+struct RealCountriesInteractor: CountriesInteractor {
     
     let webRepository: CountriesWebRepository
     let appState: AppState
@@ -43,7 +43,7 @@ struct RealCountriesService: CountriesService {
     }
 }
 
-struct FakeCountriesService: CountriesService {
+struct FakeCountriesInteractor: CountriesInteractor {
     
     func loadCountries() {
     }

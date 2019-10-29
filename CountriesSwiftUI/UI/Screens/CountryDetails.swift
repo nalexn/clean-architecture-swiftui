@@ -23,7 +23,7 @@ struct CountryDetails: View {
     
     let country: Country
     @EnvironmentObject var appState: AppState
-    @Environment(\.services) var services: ServicesContainer
+    @Environment(\.interactors) var interactors: InteractorsContainer
     @State private var details: Loadable<Country.Details> = .notRequested
     
     var body: some View {
@@ -45,7 +45,7 @@ struct CountryDetails: View {
 
 private extension CountryDetails {
     func loadCountryDetails() {
-        services.countriesService.load(countryDetails: $details, country: country)
+        interactors.countriesInteractor.load(countryDetails: $details, country: country)
     }
 }
 
@@ -136,7 +136,7 @@ private extension CountryDetails {
         ModalDetailsView(country: country,
                          isDisplayed: $appState.routing.countryDetails.detailsSheet)
             .modifier(RootViewModifier(appState: appState,
-                                       services: services))
+                                       interactors: interactors))
     }
 }
 

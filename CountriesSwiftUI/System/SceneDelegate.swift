@@ -13,20 +13,20 @@ import Foundation
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    private var systemEventsHandler: SystemEventsHandlerProtocol?
+    private var systemEventsHandler: SystemEventsHandler?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        let (appState, services) = injectedDependencies()
+        let (appState, interactors, systemEventsHandler) = createDependencies()
         let contentView = ContentView()
             .modifier(RootViewModifier(appState: appState,
-                                       services: services))
+                                       interactors: interactors))
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
             window.makeKeyAndVisible()
         }
-        systemEventsHandler = SystemEventsHandler(appState: appState)
+        self.systemEventsHandler = systemEventsHandler
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -43,17 +43,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 }
 
 private extension SceneDelegate {
-    private func injectedDependencies() -> (AppState, ServicesContainer) {
+    func createDependencies() -> (AppState, InteractorsContainer, SystemEventsHandler) {
         let appState = AppState()
         let session = URLSession.shared
         let countriesWebRepository = RealCountriesWebRepository(
             session: session,
             baseURL: "https://restcountries.eu/rest/v2",
             appState: appState)
-        let countriesService = RealCountriesService(
+        let countriesInteractor = RealCountriesInteractor(
             webRepository: countriesWebRepository,
             appState: appState)
-        let services = ServicesContainer(countriesService: countriesService)
-        return (appState, services)
+        let interactors = InteractorsContainer(countriesInteractor: countriesInteractor)
+        let systemEventsHandler = RealSystemEventsHandler(appState: appState)
+        return (appState, interactors, systemEventsHandler)
     }
 }

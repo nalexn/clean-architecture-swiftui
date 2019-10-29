@@ -11,11 +11,11 @@ import SwiftUI
 struct RootViewModifier: ViewModifier {
     
     let appState: AppState
-    let services: ServicesContainer
+    let interactors: InteractorsContainer
     
     func body(content: Content) -> some View {
         content
-            .environment(\.services, services)
+            .environment(\.interactors, interactors)
             .environmentObject(appState)
             .modifier(Appearance(appState: appState))
     }

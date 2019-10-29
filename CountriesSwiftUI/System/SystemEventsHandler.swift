@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol SystemEventsHandlerProtocol {
+protocol SystemEventsHandler {
     func sceneOpenURLContexts(_ urlContexts: Set<UIOpenURLContext>)
     func sceneDidBecomeActive()
     func sceneWillResignActive()
 }
 
-struct SystemEventsHandler: SystemEventsHandlerProtocol {
+struct RealSystemEventsHandler: SystemEventsHandler {
     
     let appState: AppState
     
@@ -43,7 +43,7 @@ struct SystemEventsHandler: SystemEventsHandlerProtocol {
 
 // MARK: - Deep Links
 
-private extension SystemEventsHandler {
+private extension RealSystemEventsHandler {
     enum DeepLink {
         case showCountryFlag(alpha3Code: Country.Code)
     }

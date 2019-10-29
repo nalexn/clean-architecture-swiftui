@@ -22,7 +22,7 @@ extension CountriesList {
 struct CountriesList: View {
     
     @EnvironmentObject var appState: AppState
-    @Environment(\.services) var services: ServicesContainer
+    @Environment(\.interactors) var interactors: InteractorsContainer
     
     var body: some View {
         NavigationView {
@@ -45,7 +45,7 @@ struct CountriesList: View {
 
 private extension CountriesList {
     func loadCountries() {
-        services.countriesService.loadCountries()
+        interactors.countriesInteractor.loadCountries()
     }
 }
 
