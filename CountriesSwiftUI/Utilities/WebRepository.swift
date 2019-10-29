@@ -1,5 +1,5 @@
 //
-//  WebService.swift
+//  WebRepository.swift
 //  CountriesSwiftUI
 //
 //  Created by Alexey Naumov on 23.10.2019.
@@ -9,13 +9,13 @@
 import Foundation
 import Combine
 
-protocol WebService {
+protocol WebRepository {
     var session: URLSession { get }
     var baseURL: String { get }
     var bgQueue: DispatchQueue { get }
 }
 
-extension WebService {
+extension WebRepository {
     func call<Value>(endpoint: APICall, httpCodes: HTTPCodes = .success) -> AnyPublisher<Value, Error> where Value: Decodable {
         do {
             let request = try endpoint.urlRequest(baseURL: baseURL)

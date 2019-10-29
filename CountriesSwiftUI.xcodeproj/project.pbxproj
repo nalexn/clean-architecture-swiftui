@@ -22,11 +22,12 @@
 		F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496022360D8EB00C9BB1F /* Loadable.swift */; };
 		F64496082360DFB700C9BB1F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496072360DFB700C9BB1F /* Models.swift */; };
 		F644960C2360EAD000C9BB1F /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960B2360EAD000C9BB1F /* APICall.swift */; };
-		F644960E2360EF6C00C9BB1F /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960D2360EF6C00C9BB1F /* WebService.swift */; };
+		F644960E2360EF6C00C9BB1F /* WebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960D2360EF6C00C9BB1F /* WebRepository.swift */; };
 		F64496102361B64700C9BB1F /* CountriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960F2361B64700C9BB1F /* CountriesList.swift */; };
 		F64496122361BB4900C9BB1F /* ServicesContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496112361BB4900C9BB1F /* ServicesContainer.swift */; };
 		F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */; };
 		F67DBD542366E2E200C83258 /* RootViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* RootViewModifier.swift */; };
+		F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD642368875A00C83258 /* CountriesWebRepository.swift */; };
 		F6863E462364FCC800E9B227 /* MockedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6863E452364FCC800E9B227 /* MockedData.swift */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
@@ -51,11 +52,12 @@
 		F64496022360D8EB00C9BB1F /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
 		F64496072360DFB700C9BB1F /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		F644960B2360EAD000C9BB1F /* APICall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICall.swift; sourceTree = "<group>"; };
-		F644960D2360EF6C00C9BB1F /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		F644960D2360EF6C00C9BB1F /* WebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRepository.swift; sourceTree = "<group>"; };
 		F644960F2361B64700C9BB1F /* CountriesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesList.swift; sourceTree = "<group>"; };
 		F64496112361BB4900C9BB1F /* ServicesContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesContainer.swift; sourceTree = "<group>"; };
 		F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
 		F67DBD532366E2E200C83258 /* RootViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModifier.swift; sourceTree = "<group>"; };
+		F67DBD642368875A00C83258 /* CountriesWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesWebRepository.swift; sourceTree = "<group>"; };
 		F6863E452364FCC800E9B227 /* MockedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedData.swift; sourceTree = "<group>"; };
 		F6863E4723650E7900E9B227 /* CountriesSwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountriesSwiftUI.entitlements; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				F64495F82360D67A00C9BB1F /* System */,
 				F64496012360D8D800C9BB1F /* Utilities */,
 				F64495FB2360D80B00C9BB1F /* Injected */,
+				F67DBD632368873500C83258 /* Repositories */,
 				F64495FE2360D88D00C9BB1F /* Services */,
 				F64496062360DFAD00C9BB1F /* Models */,
 				F64495F92360D68D00C9BB1F /* UI */,
@@ -181,7 +184,7 @@
 			children = (
 				F64496022360D8EB00C9BB1F /* Loadable.swift */,
 				F644960B2360EAD000C9BB1F /* APICall.swift */,
-				F644960D2360EF6C00C9BB1F /* WebService.swift */,
+				F644960D2360EF6C00C9BB1F /* WebRepository.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -193,6 +196,14 @@
 				F6863E452364FCC800E9B227 /* MockedData.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		F67DBD632368873500C83258 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				F67DBD642368875A00C83258 /* CountriesWebRepository.swift */,
+			);
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -275,6 +286,7 @@
 				F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */,
 				F64495E72360D66400C9BB1F /* SceneDelegate.swift in Sources */,
 				F64495E92360D66400C9BB1F /* ContentView.swift in Sources */,
+				F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */,
 				F644960C2360EAD000C9BB1F /* APICall.swift in Sources */,
 				F64496122361BB4900C9BB1F /* ServicesContainer.swift in Sources */,
 				F6218DB42363051D00917938 /* CountryDetails.swift in Sources */,
@@ -284,7 +296,7 @@
 				F64496082360DFB700C9BB1F /* Models.swift in Sources */,
 				F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */,
 				F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */,
-				F644960E2360EF6C00C9BB1F /* WebService.swift in Sources */,
+				F644960E2360EF6C00C9BB1F /* WebRepository.swift in Sources */,
 				F64496002360D8B000C9BB1F /* CountriesService.swift in Sources */,
 				F64495FD2360D81F00C9BB1F /* AppState.swift in Sources */,
 			);

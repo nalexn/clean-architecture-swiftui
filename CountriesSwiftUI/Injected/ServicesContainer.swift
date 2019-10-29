@@ -10,9 +10,9 @@ import SwiftUI
 
 struct ServicesContainer: EnvironmentKey {
     
-    let countriesService: CountriesServiceProtocol
+    let countriesService: CountriesService
     
-    init(countriesService: CountriesServiceProtocol) {
+    init(countriesService: CountriesService) {
         self.countriesService = countriesService
     }
     

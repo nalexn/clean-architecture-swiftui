@@ -46,9 +46,12 @@ private extension SceneDelegate {
     private func injectedDependencies() -> (AppState, ServicesContainer) {
         let appState = AppState()
         let session = URLSession.shared
-        let countriesService = RealCountriesService(
+        let countriesWebRepository = RealCountriesWebRepository(
             session: session,
             baseURL: "https://restcountries.eu/rest/v2",
+            appState: appState)
+        let countriesService = RealCountriesService(
+            webRepository: countriesWebRepository,
             appState: appState)
         let services = ServicesContainer(countriesService: countriesService)
         return (appState, services)
