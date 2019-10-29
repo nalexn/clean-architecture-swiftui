@@ -29,6 +29,16 @@ extension WebRepository {
     }
 }
 
+// MARK: - Helpers
+
+extension Publisher {
+    func mapToLoadable() -> AnyPublisher<Loadable<Output>, Never> {
+        return map { Loadable<Output>.loaded($0) }
+            .catch { Just<Loadable<Output>>(.failed($0)) }
+            .eraseToAnyPublisher()
+    }
+}
+
 private extension Publisher where Output == URLSession.DataTaskPublisher.Output {
     func requestJSON<Value>(httpCodes: HTTPCodes) -> AnyPublisher<Value, Error> where Value: Decodable {
         return tryMap {
@@ -45,9 +55,7 @@ private extension Publisher where Output == URLSession.DataTaskPublisher.Output 
     }
 }
 
-// MARK: - Helpers
-
-private extension AnyPublisher {
+private extension Publisher {
     
     /// Holds the downstream delivery of output until the specified time interval passed after the subscription
     /// Does not hold the output if it arrives later than the time threshold
