@@ -45,7 +45,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 private extension SceneDelegate {
     func createDependencies() -> (AppState, InteractorsContainer, SystemEventsHandler) {
         let appState = AppState()
-        let session = URLSession.shared
+        let session = configuredURLSession()
         let countriesWebRepository = RealCountriesWebRepository(
             session: session,
             baseURL: "https://restcountries.eu/rest/v2",
@@ -56,5 +56,10 @@ private extension SceneDelegate {
         let interactors = InteractorsContainer(countriesInteractor: countriesInteractor)
         let systemEventsHandler = RealSystemEventsHandler(appState: appState)
         return (appState, interactors, systemEventsHandler)
+    }
+    
+    func configuredURLSession() -> URLSession {
+        let configuration = URLSessionConfiguration.default
+        return URLSession(configuration: configuration)
     }
 }
