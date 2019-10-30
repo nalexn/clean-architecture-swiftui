@@ -148,7 +148,7 @@ extension TestWebRepository {
         case test
         case urlError
         case bodyError
-        case noHttpCode
+        case noHttpCodeError
         
         var path: String {
             if self == .urlError {
