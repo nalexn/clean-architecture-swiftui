@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F60829712369CE0100DB292E /* RequestMocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829702369CE0100DB292E /* RequestMocking.swift */; };
+		F60829732369CE5300DB292E /* MockedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829722369CE5300DB292E /* MockedResponse.swift */; };
 		F6218DB22362FD3100917938 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB12362FD3100917938 /* CountryCell.swift */; };
 		F6218DB42363051D00917938 /* CountryDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB32363051D00917938 /* CountryDetails.swift */; };
 		F6218DB623634D4100917938 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB523634D4100917938 /* ErrorView.swift */; };
@@ -45,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F60829702369CE0100DB292E /* RequestMocking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestMocking.swift; sourceTree = "<group>"; };
+		F60829722369CE5300DB292E /* MockedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedResponse.swift; sourceTree = "<group>"; };
 		F6218DB12362FD3100917938 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		F6218DB32363051D00917938 /* CountryDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetails.swift; sourceTree = "<group>"; };
 		F6218DB523634D4100917938 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -222,9 +226,19 @@
 		F67833D32369CCBD0065272F /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				F67833DE2369CD020065272F /* Mocks */,
 				F67833D62369CCBD0065272F /* Info.plist */,
 			);
 			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		F67833DE2369CD020065272F /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				F60829722369CE5300DB292E /* MockedResponse.swift */,
+				F60829702369CE0100DB292E /* RequestMocking.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		F67DBD632368873500C83258 /* Repositories */ = {
@@ -365,6 +379,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F60829712369CE0100DB292E /* RequestMocking.swift in Sources */,
+				F60829732369CE5300DB292E /* MockedResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
