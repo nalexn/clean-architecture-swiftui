@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Country: Codable {
+struct Country: Codable, Equatable {
     let name: String
     let population: Int
     let flag: URL?
@@ -18,7 +18,7 @@ struct Country: Codable {
 }
 
 extension Country {
-    struct Details {
+    struct Details: Equatable {
         let capital: String
         let currencies: [Currency]
         let neighbors: [Country]
@@ -26,7 +26,7 @@ extension Country {
 }
 
 extension Country.Details {
-    struct Intermediate: Codable {
+    struct Intermediate: Codable, Equatable {
         let capital: String
         let currencies: [Country.Currency]
         let borders: [String]
@@ -34,7 +34,7 @@ extension Country.Details {
 }
 
 extension Country {
-    struct Currency: Codable {
+    struct Currency: Codable, Equatable {
         let code: String
         let symbol: String?
         let name: String
@@ -43,11 +43,11 @@ extension Country {
 
 // MARK: - Helpers
 
-extension Country: Identifiable, Equatable {
+extension Country: Identifiable {
     var id: String { alpha3Code }
 }
 
-extension Country.Currency: Identifiable, Equatable {
+extension Country.Currency: Identifiable {
     var id: String { code }
 }
 

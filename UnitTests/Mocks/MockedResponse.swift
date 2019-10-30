@@ -12,10 +12,10 @@ import Foundation
 extension RequestMocking {
     struct MockedResponse {
         let url: URL
-        let result: Result<Data, Error>
+        let result: Result<Data, Swift.Error>
         let httpCode: HTTPCode
-        var headers: [String: String] = ["Content-Type": "application/json"]
-        var loadingTime: TimeInterval = 0.1
+        let headers: [String: String]
+        let loadingTime: TimeInterval
     }
 }
 
@@ -25,8 +25,11 @@ extension RequestMocking.MockedResponse {
     }
     
     init<T>(apiCall: APICall, baseURL: String,
-            result: Result<T, Error>,
-            httpCode: HTTPCode = HTTPCodes.success[0]) throws where T: Encodable {
+            result: Result<T, Swift.Error>,
+            httpCode: HTTPCode = 200,
+            headers: [String: String] = ["Content-Type": "application/json"],
+            loadingTime: TimeInterval = 0.1
+    ) throws where T: Encodable {
         guard let url = try apiCall.urlRequest(baseURL: baseURL).url
             else { throw Error.failedMockCreation }
         self.url = url
@@ -37,5 +40,7 @@ extension RequestMocking.MockedResponse {
             self.result = .failure(error)
         }
         self.httpCode = httpCode
+        self.headers = headers
+        self.loadingTime = loadingTime
     }
 }
