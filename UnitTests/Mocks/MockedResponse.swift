@@ -16,6 +16,7 @@ extension RequestMocking {
         let httpCode: HTTPCode
         let headers: [String: String]
         let loadingTime: TimeInterval
+        let customResponse: URLResponse?
     }
 }
 
@@ -42,5 +43,17 @@ extension RequestMocking.MockedResponse {
         self.httpCode = httpCode
         self.headers = headers
         self.loadingTime = loadingTime
+        customResponse = nil
+    }
+    
+    init(apiCall: APICall, baseURL: String, customResponse: URLResponse) throws {
+        guard let url = try apiCall.urlRequest(baseURL: baseURL).url
+            else { throw Error.failedMockCreation }
+        self.url = url
+        result = .success(Data())
+        httpCode = 200
+        headers = [String: String]()
+        loadingTime = 0
+        self.customResponse = customResponse
     }
 }

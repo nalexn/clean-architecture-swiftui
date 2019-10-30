@@ -40,7 +40,6 @@ extension Result {
         case let .success(value):
             XCTFail("Unexpected success: \(value)", file: file, line: line)
         case let .failure(error):
-            Swift.print(">>> \(error)")
             XCTAssertEqual(error.localizedDescription, message, file: file, line: line)
         }
     }

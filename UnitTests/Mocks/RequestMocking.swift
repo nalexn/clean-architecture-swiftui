@@ -53,10 +53,11 @@ class RequestMocking: URLProtocol {
     override func startLoading() {
         if let mock = RequestMocking.mock(for: request),
             let url = request.url,
-            let response = HTTPURLResponse(url: url,
-                                           statusCode: mock.httpCode,
-                                           httpVersion: "HTTP/1.1",
-                                           headerFields: mock.headers) {
+            let response = mock.customResponse ??
+                HTTPURLResponse(url: url,
+                statusCode: mock.httpCode,
+                httpVersion: "HTTP/1.1",
+                headerFields: mock.headers) {
             DispatchQueue.main.asyncAfter(deadline: .now() + mock.loadingTime) { [weak self] in
                 guard let self = self else { return }
                 self.client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: URLCache.StoragePolicy.notAllowed)
