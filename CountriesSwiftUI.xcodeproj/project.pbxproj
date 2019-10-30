@@ -36,6 +36,7 @@
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
 		F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB919236382E7003E69F2 /* SVGImageView.swift */; };
+		F6F003AF236A290E00AAC7C6 /* WebRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F003AE236A290E00AAC7C6 /* WebRepositoryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
+		F6F003AE236A290E00AAC7C6 /* WebRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRepositoryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 		F60829742369D55700DB292E /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				F6F003AE236A290E00AAC7C6 /* WebRepositoryTests.swift */,
 				F60829752369D58A00DB292E /* CountriesWebRepositoryTests.swift */,
 			);
 			path = Repositories;
@@ -397,6 +400,7 @@
 				F60829762369D58A00DB292E /* CountriesWebRepositoryTests.swift in Sources */,
 				F60829732369CE5300DB292E /* MockedResponse.swift in Sources */,
 				F60829782369DCD200DB292E /* TestHelpers.swift in Sources */,
+				F6F003AF236A290E00AAC7C6 /* WebRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

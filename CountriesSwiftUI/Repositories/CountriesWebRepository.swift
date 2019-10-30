@@ -9,12 +9,12 @@
 import Combine
 import Foundation
 
-protocol CountriesWebRepository {
+protocol CountriesWebRepository: WebRepository {
     func loadCountries() -> AnyPublisher<[Country], Error>
     func loadCountryDetails(country: Country) -> AnyPublisher<Country.Details, Error>
 }
 
-struct RealCountriesWebRepository: CountriesWebRepository, WebRepository {
+struct RealCountriesWebRepository: CountriesWebRepository {
     
     let session: URLSession
     let baseURL: String

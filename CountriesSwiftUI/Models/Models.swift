@@ -18,7 +18,7 @@ struct Country: Codable, Equatable {
 }
 
 extension Country {
-    struct Details: Equatable {
+    struct Details: Codable, Equatable {
         let capital: String
         let currencies: [Currency]
         let neighbors: [Country]

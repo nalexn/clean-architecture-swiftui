@@ -12,7 +12,7 @@ import Combine
 // MARK: - Routing
 
 extension CountriesList {
-    struct Routing {
+    struct Routing: Equatable {
         var countryDetails: Country.Code? = nil
     }
 }

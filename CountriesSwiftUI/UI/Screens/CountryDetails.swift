@@ -12,7 +12,7 @@ import Combine
 // MARK: - Routing
 
 extension CountryDetails {
-    struct Routing {
+    struct Routing: Equatable {
         var detailsSheet: Bool = false
     }
 }

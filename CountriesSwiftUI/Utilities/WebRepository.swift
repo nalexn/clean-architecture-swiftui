@@ -49,6 +49,9 @@ private extension Publisher where Output == URLSession.DataTaskPublisher.Output 
                 }
                 return $0.0
             }
+            .mapError {
+                (($0 as NSError).userInfo[NSUnderlyingErrorKey] as? Error) ?? $0
+            }
             .decode(type: Value.self, decoder: JSONDecoder())
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()

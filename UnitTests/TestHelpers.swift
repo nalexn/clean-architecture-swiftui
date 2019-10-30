@@ -32,14 +32,16 @@ extension Result where Success: Equatable {
             XCTFail("Unexpected error: \(error)", file: file, line: line)
         }
     }
-    
-    func assertFailure(error: Failure, file: StaticString = #file, line: UInt = #line) {
+}
+
+extension Result {
+    func assertFailure(_ message: String, file: StaticString = #file, line: UInt = #line) {
         switch self {
         case let .success(value):
             XCTFail("Unexpected success: \(value)", file: file, line: line)
-        case let .failure(resultError):
-            XCTAssertEqual(resultError.localizedDescription,
-                           error.localizedDescription, file: file, line: line)
+        case let .failure(error):
+            Swift.print(">>> \(error)")
+            XCTAssertEqual(error.localizedDescription, message, file: file, line: line)
         }
     }
 }
