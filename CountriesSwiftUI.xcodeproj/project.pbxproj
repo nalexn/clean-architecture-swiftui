@@ -37,6 +37,7 @@
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
 		F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB919236382E7003E69F2 /* SVGImageView.swift */; };
 		F6F003AF236A290E00AAC7C6 /* WebRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F003AE236A290E00AAC7C6 /* WebRepositoryTests.swift */; };
+		F6F003B1236AF31400AAC7C6 /* SystemEventsHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F003B0236AF31400AAC7C6 /* SystemEventsHandlerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
 		F6F003AE236A290E00AAC7C6 /* WebRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRepositoryTests.swift; sourceTree = "<group>"; };
+		F6F003B0236AF31400AAC7C6 /* SystemEventsHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandlerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +243,7 @@
 		F67833D32369CCBD0065272F /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				F6F003B0236AF31400AAC7C6 /* SystemEventsHandlerTests.swift */,
 				F60829742369D55700DB292E /* Repositories */,
 				F67833DE2369CD020065272F /* Mocks */,
 				F60829772369DCD200DB292E /* TestHelpers.swift */,
@@ -398,6 +401,7 @@
 			files = (
 				F60829712369CE0100DB292E /* RequestMocking.swift in Sources */,
 				F60829762369D58A00DB292E /* CountriesWebRepositoryTests.swift in Sources */,
+				F6F003B1236AF31400AAC7C6 /* SystemEventsHandlerTests.swift in Sources */,
 				F60829732369CE5300DB292E /* MockedResponse.swift in Sources */,
 				F60829782369DCD200DB292E /* TestHelpers.swift in Sources */,
 				F6F003AF236A290E00AAC7C6 /* WebRepositoryTests.swift in Sources */,
