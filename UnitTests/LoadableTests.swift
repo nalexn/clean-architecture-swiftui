@@ -11,7 +11,7 @@ import XCTest
 
 class LoadableTests: XCTestCase {
 
-    func testEquality() {
+    func test_equality() {
         let possibleValues: [Loadable<Int>] = [
             .notRequested,
             .isLoading(last: nil),
@@ -31,7 +31,7 @@ class LoadableTests: XCTestCase {
         }
     }
 
-    func testHelpers() {
+    func test_helperFunctions() {
         let notRequested = Loadable<Int>.notRequested
         let loadingNil = Loadable<Int>.isLoading(last: nil)
         let loadingValue = Loadable<Int>.isLoading(last: 9)
