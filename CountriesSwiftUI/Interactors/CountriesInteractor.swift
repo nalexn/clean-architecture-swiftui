@@ -29,15 +29,24 @@ struct RealCountriesInteractor: CountriesInteractor {
         appState.userData.countries = .isLoading(last: appState.userData.countries.value)
         weak var weakAppState = appState
         _ = webRepository.loadCountries()
-            .mapToLoadable()
-            .sink { weakAppState?.userData.countries = $0 }
+            .sinkToLoadable { weakAppState?.userData.countries = $0 }
     }
 
     func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
         countryDetails.wrappedValue = .isLoading(last: countryDetails.wrappedValue.value)
+        let countriesArray = appState.$userData
+            .tryMap { userData -> [Country] in
+                if let error = userData.countries.error {
+                    throw error
+                }
+                return userData.countries.value ?? []
+            }
         _ = webRepository.loadCountryDetails(country: country)
-            .mapToLoadable()
-            .sink { countryDetails.wrappedValue = $0 }
+            .combineLatest(countriesArray)
+            .map { (intermediate, countries) -> Country.Details in
+                intermediate.substituteNeighbors(countries: countries)
+            }
+            .sinkToLoadable { countryDetails.wrappedValue = $0 }
     }
 }
 

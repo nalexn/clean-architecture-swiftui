@@ -11,7 +11,7 @@ import Foundation
 
 protocol CountriesWebRepository: WebRepository {
     func loadCountries() -> AnyPublisher<[Country], Error>
-    func loadCountryDetails(country: Country) -> AnyPublisher<Country.Details, Error>
+    func loadCountryDetails(country: Country) -> AnyPublisher<Country.Details.Intermediate, Error>
 }
 
 struct RealCountriesWebRepository: CountriesWebRepository {
@@ -31,27 +31,14 @@ struct RealCountriesWebRepository: CountriesWebRepository {
         return call(endpoint: API.allCountries)
     }
 
-    func loadCountryDetails(country: Country) -> AnyPublisher<Country.Details, Error> {
+    func loadCountryDetails(country: Country) -> AnyPublisher<Country.Details.Intermediate, Error> {
         let request: AnyPublisher<[Country.Details.Intermediate], Error> = call(endpoint: API.countryDetails(country))
-        let countriesArray = appState.$userData
-            .tryMap { userData -> [Country] in
-                if let error = userData.countries.error {
-                    throw error
-                }
-                return userData.countries.value ?? []
-            }
         return request
             .tryMap { array -> Country.Details.Intermediate in
                 guard let details = array.first
                     else { throw APIError.unexpectedResponse }
                 return details
             }
-            .combineLatest(countriesArray)
-            .receive(on: bgQueue)
-            .map { (intermediate, countries) -> Country.Details in
-                intermediate.substituteNeighbors(countries: countries)
-            }
-            .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
 }

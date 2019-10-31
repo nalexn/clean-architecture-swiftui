@@ -10,7 +10,15 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        CountriesList()
+        if isRunningTests {
+            return AnyView(EmptyView())
+        } else {
+            return AnyView(CountriesList())
+        }
+    }
+    
+    private var isRunningTests: Bool {
+        return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 }
 

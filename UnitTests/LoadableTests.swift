@@ -18,7 +18,7 @@ class LoadableTests: XCTestCase {
             .isLoading(last: 9),
             .loaded(5),
             .loaded(6),
-            .failed(NSError(domain: "", code: 0, userInfo: nil))
+            .failed(NSError.test)
         ]
         possibleValues.enumerated().forEach { (index1, value1) in
             possibleValues.enumerated().forEach { (index2, value2) in
@@ -36,7 +36,7 @@ class LoadableTests: XCTestCase {
         let loadingNil = Loadable<Int>.isLoading(last: nil)
         let loadingValue = Loadable<Int>.isLoading(last: 9)
         let loaded = Loadable<Int>.loaded(5)
-        let failedErrValue = Loadable<Int>.failed(NSError(domain: "", code: 0, userInfo: nil))
+        let failedErrValue = Loadable<Int>.failed(NSError.test)
         [notRequested, loadingNil].forEach {
             XCTAssertNil($0.value)
         }

@@ -7,7 +7,12 @@
 //
 
 import XCTest
+import SwiftUI
 import Combine
+
+enum MockError: Swift.Error {
+    case valueNotSet
+}
 
 extension Publisher {
     func sinkResult(_ result: @escaping (Result<Output, Failure>) -> Void) -> AnyCancellable {
@@ -42,5 +47,30 @@ extension Result {
         case let .failure(error):
             XCTAssertEqual(error.localizedDescription, message, file: file, line: line)
         }
+    }
+}
+
+struct BindingWithPublisher<Value> {
+    
+    let binding: Binding<Value>
+    let updatesRecorder: AnyPublisher<[Value], Never>
+    
+    init(value: Value, recordingTimeInterval: TimeInterval = 0.5) {
+        var value = value
+        var updates = [value]
+        binding = Binding<Value>(
+            get: { value },
+            set: { value = $0; updates.append($0) })
+        updatesRecorder = Future<[Value], Never> { completion in
+            DispatchQueue.main.asyncAfter(deadline: .now() + recordingTimeInterval) {
+                completion(.success(updates))
+            }
+        }.eraseToAnyPublisher()
+    }
+}
+
+extension NSError {
+    static var test: NSError {
+        return NSError(domain: "test", code: 0, userInfo: [NSLocalizedDescriptionKey: "Test error"])
     }
 }

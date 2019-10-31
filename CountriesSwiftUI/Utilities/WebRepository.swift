@@ -32,10 +32,23 @@ extension WebRepository {
 // MARK: - Helpers
 
 extension Publisher {
-    func mapToLoadable() -> AnyPublisher<Loadable<Output>, Never> {
-        return map { Loadable<Output>.loaded($0) }
-            .catch { Just<Loadable<Output>>(.failed($0)) }
-            .eraseToAnyPublisher()
+    func sinkToLoadable(_ completion: @escaping (Loadable<Output>) -> Void) -> AnyCancellable {
+        return sink(receiveCompletion: { subscriptionCompletion in
+            if let error = subscriptionCompletion.error {
+                completion(.failed(error))
+            }
+        }, receiveValue: { value in
+            completion(.loaded(value))
+        })
+    }
+}
+
+extension Subscribers.Completion {
+    var error: Failure? {
+        switch self {
+        case let .failure(error): return error
+        default: return nil
+        }
     }
 }
 
@@ -55,7 +68,7 @@ private extension Publisher where Output == URLSession.DataTaskPublisher.Output 
                 (($0 as NSError).userInfo[NSUnderlyingErrorKey] as? Error) ?? $0
             }
             .decode(type: Value.self, decoder: JSONDecoder())
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 }
