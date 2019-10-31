@@ -15,18 +15,6 @@ enum Loadable<T> {
     case loaded(T)
     case failed(Error)
 
-    var isNotRequested: Bool {
-        switch self {
-        case .notRequested: return true
-        default: return false
-        }
-    }
-    var isLoading: Bool {
-        switch self {
-        case .isLoading: return true
-        default: return false
-        }
-    }
     var value: T? {
         switch self {
         case let .loaded(value): return value
@@ -38,22 +26,6 @@ enum Loadable<T> {
         switch self {
         case let .failed(error): return error
         default: return nil
-        }
-    }
-}
-
-extension Loadable {
-    func map<V>(_ transform: (T) -> (V)) -> Loadable<V> {
-        switch self {
-        case .notRequested: return .notRequested
-        case let .failed(error): return .failed(error)
-        case let .loaded(value): return .loaded(transform(value))
-        case let .isLoading(value):
-            if let value = value {
-                return .isLoading(last: transform(value))
-            } else {
-                return .isLoading(last: nil)
-            }
         }
     }
 }
