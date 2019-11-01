@@ -30,7 +30,7 @@ struct ErrorView_Previews: PreviewProvider {
     static var previews: some View {
         ErrorView(error: NSError(domain: "", code: 0, userInfo: [
             NSLocalizedDescriptionKey: "Something went wrong"]),
-                  retryAction: {  })
+                  retryAction: { })
     }
 }
 #endif

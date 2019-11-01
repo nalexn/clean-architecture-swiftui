@@ -16,6 +16,8 @@
 		F60CC507236C5CFA007E84B2 /* CountryDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */; };
 		F60CC509236C6084007E84B2 /* ViewPreviewsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC508236C6084007E84B2 /* ViewPreviewsTests.swift */; };
 		F60CC50B236C622C007E84B2 /* ModalDetailsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */; };
+		F60CC50D236C8629007E84B2 /* SVGImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC50C236C8629007E84B2 /* SVGImageViewTests.swift */; };
+		F60CC512236C8EDD007E84B2 /* svg_document.svg in Resources */ = {isa = PBXBuildFile; fileRef = F60CC511236C8EDD007E84B2 /* svg_document.svg */; };
 		F6218DB22362FD3100917938 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB12362FD3100917938 /* CountryCell.swift */; };
 		F6218DB42363051D00917938 /* CountryDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB32363051D00917938 /* CountryDetails.swift */; };
 		F6218DB623634D4100917938 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB523634D4100917938 /* ErrorView.swift */; };
@@ -68,6 +70,8 @@
 		F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetailsTests.swift; sourceTree = "<group>"; };
 		F60CC508236C6084007E84B2 /* ViewPreviewsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPreviewsTests.swift; sourceTree = "<group>"; };
 		F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalDetailsViewTests.swift; sourceTree = "<group>"; };
+		F60CC50C236C8629007E84B2 /* SVGImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageViewTests.swift; sourceTree = "<group>"; };
+		F60CC511236C8EDD007E84B2 /* svg_document.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = svg_document.svg; sourceTree = "<group>"; };
 		F6218DB12362FD3100917938 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		F6218DB32363051D00917938 /* CountryDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetails.swift; sourceTree = "<group>"; };
 		F6218DB523634D4100917938 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -138,9 +142,18 @@
 				F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */,
 				F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */,
 				F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */,
+				F60CC50C236C8629007E84B2 /* SVGImageViewTests.swift */,
 				F60CC508236C6084007E84B2 /* ViewPreviewsTests.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		F60CC50E236C8963007E84B2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F60CC511236C8EDD007E84B2 /* svg_document.svg */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		F62822B523647F8300823BA1 /* Screens */ = {
@@ -277,6 +290,7 @@
 				F6F003B4236B034A00AAC7C6 /* Interactors */,
 				F60CC501236C3C80007E84B2 /* UI */,
 				F67833DE2369CD020065272F /* Mocks */,
+				F60CC50E236C8963007E84B2 /* Resources */,
 				F60829772369DCD200DB292E /* TestHelpers.swift */,
 				F67833D62369CCBD0065272F /* Info.plist */,
 			);
@@ -400,6 +414,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F60CC512236C8EDD007E84B2 /* svg_document.svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,6 +462,7 @@
 				F6F003B6236B036800AAC7C6 /* CountriesInteractorTests.swift in Sources */,
 				F60CC509236C6084007E84B2 /* ViewPreviewsTests.swift in Sources */,
 				F6F003B1236AF31400AAC7C6 /* SystemEventsHandlerTests.swift in Sources */,
+				F60CC50D236C8629007E84B2 /* SVGImageViewTests.swift in Sources */,
 				F6F003B8236B04B400AAC7C6 /* MockedCountriesWebRepository.swift in Sources */,
 				F60829732369CE5300DB292E /* MockedResponse.swift in Sources */,
 				F60CC503236C3CA8007E84B2 /* CountriesListTests.swift in Sources */,

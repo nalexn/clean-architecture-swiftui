@@ -18,16 +18,16 @@ struct SVGImageView: View {
     }
 }
 
-private extension SVGImageView {
+extension SVGImageView {
     struct Wrapper: UIViewRepresentable {
         
         let imageURL: URL
+        let webView = WKWebView()
 
         func makeUIView(context: UIViewRepresentableContext<SVGImageView.Wrapper>) -> WKWebView {
-            let view = WKWebView()
-            view.navigationDelegate = WebViewDelegate.shared
-            view.isUserInteractionEnabled = false
-            return view
+            webView.navigationDelegate = WebViewDelegate.shared
+            webView.isUserInteractionEnabled = false
+            return webView
         }
 
         func updateUIView(_ uiView: WKWebView, context: UIViewRepresentableContext<SVGImageView.Wrapper>) {
@@ -40,7 +40,7 @@ private extension SVGImageView {
         }
     }
     
-    class WebViewDelegate: NSObject, WKNavigationDelegate {
+    private class WebViewDelegate: NSObject, WKNavigationDelegate {
         
         static let shared = WebViewDelegate()
         
@@ -58,7 +58,7 @@ private extension SVGImageView {
 
 private extension WKWebView {
     func scaleToFit(contentSize: CGSize) {
-        let webViewSize = bounds.size
+        let webViewSize = frame.size
         let hZoom = webViewSize.width / contentSize.width
         let vZoom = webViewSize.height / contentSize.height
         let zoom = min(hZoom, vZoom)
