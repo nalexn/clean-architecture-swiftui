@@ -36,9 +36,9 @@ class SVGImageViewTests: XCTestCase {
         let contentSize = CGSize(width: 900, height: 600)
         let scaledContentSize = CGSize(width: contentSize.width * scale.x, height: contentSize.height * scale.y)
         let boundsSize = scrollView.frame.size
-        XCTAssertGreaterThanOrEqual(boundsSize.width, scaledContentSize.width,
+        XCTAssertLessThanOrEqual(scaledContentSize.width, boundsSize.width,
                                  "Scaled content should not go beyond view's bounds", file: file, line: line)
-        XCTAssertGreaterThanOrEqual(boundsSize.height, scaledContentSize.height,
+        XCTAssertLessThanOrEqual(scaledContentSize.height, boundsSize.height,
         "Scaled content should not go beyond view's bounds", file: file, line: line)
         let offset = scrollView.contentOffset
         XCTAssertLessThanOrEqual(abs(offset.x + 0.5 * (boundsSize.width / scale.x - contentSize.width)), 0.5,
