@@ -1,0 +1,6 @@
+os: osx
+language: swift
+osx_image: xcode11.1
+xcode_project: CountriesSwiftUI.xcodeproj
+xcode_scheme: CountriesSwiftUI
+xcode_destination: platform=iOS Simulator,OS=13.1,name=iPhone 8
