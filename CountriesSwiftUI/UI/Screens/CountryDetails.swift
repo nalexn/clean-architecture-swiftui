@@ -24,7 +24,12 @@ struct CountryDetails: View {
     let country: Country
     @EnvironmentObject var appState: AppState
     @Environment(\.interactors) var interactors: InteractorsContainer
-    @State private var details: Loadable<Country.Details> = .notRequested
+    @State private var details: Loadable<Country.Details>
+    
+    init(country: Country, details: Loadable<Country.Details> = .notRequested) {
+        self.country = country
+        self._details = .init(initialValue: details)
+    }
     
     var body: some View {
         content

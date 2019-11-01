@@ -13,6 +13,7 @@
 		F60829782369DCD200DB292E /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829772369DCD200DB292E /* TestHelpers.swift */; };
 		F60CC503236C3CA8007E84B2 /* CountriesListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */; };
 		F60CC505236C5978007E84B2 /* RootViewInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC504236C5978007E84B2 /* RootViewInjection.swift */; };
+		F60CC507236C5CFA007E84B2 /* CountryDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */; };
 		F6218DB22362FD3100917938 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB12362FD3100917938 /* CountryCell.swift */; };
 		F6218DB42363051D00917938 /* CountryDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB32363051D00917938 /* CountryDetails.swift */; };
 		F6218DB623634D4100917938 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB523634D4100917938 /* ErrorView.swift */; };
@@ -62,6 +63,7 @@
 		F60829772369DCD200DB292E /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesListTests.swift; sourceTree = "<group>"; };
 		F60CC504236C5978007E84B2 /* RootViewInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewInjection.swift; sourceTree = "<group>"; };
+		F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetailsTests.swift; sourceTree = "<group>"; };
 		F6218DB12362FD3100917938 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		F6218DB32363051D00917938 /* CountryDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetails.swift; sourceTree = "<group>"; };
 		F6218DB523634D4100917938 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */,
+				F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -431,6 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F60CC507236C5CFA007E84B2 /* CountryDetailsTests.swift in Sources */,
 				F60829712369CE0100DB292E /* RequestMocking.swift in Sources */,
 				F6F003B3236AF9F100AAC7C6 /* LoadableTests.swift in Sources */,
 				F60829762369D58A00DB292E /* CountriesWebRepositoryTests.swift in Sources */,
