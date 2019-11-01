@@ -20,10 +20,14 @@ class MockedCountriesWebRepository: CountriesWebRepository {
     var detailsResponse: Result<Country.Details.Intermediate, Error> = .failure(MockError.valueNotSet)
     
     func loadCountries() -> AnyPublisher<[Country], Error> {
-        return countriesResponse.publisher.eraseToAnyPublisher()
+        return countriesResponse.publisher
+            .buffer(size: 1, prefetch: .byRequest, whenFull: .dropOldest)
+            .eraseToAnyPublisher()
     }
     
     func loadCountryDetails(country: Country) -> AnyPublisher<Country.Details.Intermediate, Error> {
-        return detailsResponse.publisher.eraseToAnyPublisher()
+        return detailsResponse.publisher
+            .buffer(size: 1, prefetch: .byRequest, whenFull: .dropOldest)
+            .eraseToAnyPublisher()
     }
 }

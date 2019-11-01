@@ -43,9 +43,11 @@ struct RealCountriesInteractor: CountriesInteractor {
             }
         _ = webRepository.loadCountryDetails(country: country)
             .combineLatest(countriesArray)
+            .receive(on: webRepository.bgQueue)
             .map { (intermediate, countries) -> Country.Details in
                 intermediate.substituteNeighbors(countries: countries)
             }
+            .receive(on: DispatchQueue.main)
             .sinkToLoadable { countryDetails.wrappedValue = $0 }
     }
 }
