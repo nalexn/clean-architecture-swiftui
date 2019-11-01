@@ -11,6 +11,8 @@
 		F60829732369CE5300DB292E /* MockedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829722369CE5300DB292E /* MockedResponse.swift */; };
 		F60829762369D58A00DB292E /* CountriesWebRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829752369D58A00DB292E /* CountriesWebRepositoryTests.swift */; };
 		F60829782369DCD200DB292E /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829772369DCD200DB292E /* TestHelpers.swift */; };
+		F60CC503236C3CA8007E84B2 /* CountriesListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */; };
+		F60CC505236C5978007E84B2 /* RootViewInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC504236C5978007E84B2 /* RootViewInjection.swift */; };
 		F6218DB22362FD3100917938 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB12362FD3100917938 /* CountryCell.swift */; };
 		F6218DB42363051D00917938 /* CountryDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB32363051D00917938 /* CountryDetails.swift */; };
 		F6218DB623634D4100917938 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB523634D4100917938 /* ErrorView.swift */; };
@@ -58,6 +60,8 @@
 		F60829722369CE5300DB292E /* MockedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedResponse.swift; sourceTree = "<group>"; };
 		F60829752369D58A00DB292E /* CountriesWebRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesWebRepositoryTests.swift; sourceTree = "<group>"; };
 		F60829772369DCD200DB292E /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
+		F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesListTests.swift; sourceTree = "<group>"; };
+		F60CC504236C5978007E84B2 /* RootViewInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewInjection.swift; sourceTree = "<group>"; };
 		F6218DB12362FD3100917938 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		F6218DB32363051D00917938 /* CountryDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetails.swift; sourceTree = "<group>"; };
 		F6218DB523634D4100917938 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -120,6 +124,14 @@
 				F60829752369D58A00DB292E /* CountriesWebRepositoryTests.swift */,
 			);
 			path = Repositories;
+			sourceTree = "<group>";
+		};
+		F60CC501236C3C80007E84B2 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 		F62822B523647F8300823BA1 /* Screens */ = {
@@ -215,6 +227,7 @@
 				F64495FC2360D81F00C9BB1F /* AppState.swift */,
 				F64496112361BB4900C9BB1F /* InteractorsContainer.swift */,
 				F67DBD532366E2E200C83258 /* RootViewModifier.swift */,
+				F60CC504236C5978007E84B2 /* RootViewInjection.swift */,
 			);
 			path = Injected;
 			sourceTree = "<group>";
@@ -253,6 +266,7 @@
 				F6F003B2236AF9F100AAC7C6 /* LoadableTests.swift */,
 				F60829742369D55700DB292E /* Repositories */,
 				F6F003B4236B034A00AAC7C6 /* Interactors */,
+				F60CC501236C3C80007E84B2 /* UI */,
 				F67833DE2369CD020065272F /* Mocks */,
 				F60829772369DCD200DB292E /* TestHelpers.swift */,
 				F67833D62369CCBD0065272F /* Info.plist */,
@@ -389,6 +403,7 @@
 			files = (
 				F6863E462364FCC800E9B227 /* MockedData.swift in Sources */,
 				F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */,
+				F60CC505236C5978007E84B2 /* RootViewInjection.swift in Sources */,
 				F6218DB623634D4100917938 /* ErrorView.swift in Sources */,
 				F6218DB22362FD3100917938 /* CountryCell.swift in Sources */,
 				F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */,
@@ -423,6 +438,7 @@
 				F6F003B1236AF31400AAC7C6 /* SystemEventsHandlerTests.swift in Sources */,
 				F6F003B8236B04B400AAC7C6 /* MockedCountriesWebRepository.swift in Sources */,
 				F60829732369CE5300DB292E /* MockedResponse.swift in Sources */,
+				F60CC503236C3CA8007E84B2 /* CountriesListTests.swift in Sources */,
 				F60829782369DCD200DB292E /* TestHelpers.swift in Sources */,
 				F6F003AF236A290E00AAC7C6 /* WebRepositoryTests.swift in Sources */,
 			);

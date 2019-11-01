@@ -95,9 +95,10 @@ private extension CountriesList {
 
 #if DEBUG
 struct CountriesList_Previews: PreviewProvider {
+    static var appState = AppState.preview
     static var previews: some View {
         CountriesList()
-            .environmentObject(AppState.preview)
+            .environmentObject(appState)
     }
 }
 #endif

@@ -13,6 +13,11 @@ struct RootViewModifier: ViewModifier {
     let appState: AppState
     let interactors: InteractorsContainer
     
+    init(appState: AppState, interactors: InteractorsContainer = .defaultValue) {
+        self.appState = appState
+        self.interactors = interactors
+    }
+    
     func body(content: Content) -> some View {
         content
             .environment(\.interactors, interactors)

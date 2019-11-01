@@ -17,9 +17,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         let (appState, interactors, systemEventsHandler) = createDependencies()
-        let contentView = ContentView()
-            .modifier(RootViewModifier(appState: appState,
-                                       interactors: interactors))
+        let environment = RootViewModifier(appState: appState, interactors: interactors)
+        let contentView = ContentView(environment: environment)
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: contentView)

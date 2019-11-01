@@ -9,12 +9,32 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        if isRunningTests {
-            return AnyView(EmptyView())
-        } else {
-            return AnyView(CountriesList())
+    
+    #if DEBUG
+    @ObservedObject private var root: RootViewInjection = .shared
+    #endif
+    
+    private let environment: RootViewModifier
+    
+    init(environment: RootViewModifier) {
+        self.environment = environment
+        #if DEBUG
+        if !isRunningTests {
+            RootViewInjection.mount(view: realContent, environment: environment)
         }
+        #endif
+    }
+    
+    var body: some View {
+        #if DEBUG
+        return root.view
+        #else
+        return realContent.modifier(environment)
+        #endif
+    }
+    
+    private var realContent: some View {
+        CountriesList()
     }
     
     private var isRunningTests: Bool {
@@ -25,8 +45,9 @@ struct ContentView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .environmentObject(AppState.preview)
+        ContentView(environment:
+            RootViewModifier(appState: AppState.preview,
+                             interactors: InteractorsContainer.defaultValue))
     }
 }
 #endif

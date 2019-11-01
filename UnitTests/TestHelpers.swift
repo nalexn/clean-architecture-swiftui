@@ -10,6 +10,14 @@ import XCTest
 import SwiftUI
 import Combine
 
+extension View {
+    func asyncOnAppear(perform action: @escaping () -> Void) -> some View {
+        onAppear {
+            DispatchQueue.main.async(execute: action)
+        }
+    }
+}
+
 enum MockError: Swift.Error {
     case valueNotSet
 }
