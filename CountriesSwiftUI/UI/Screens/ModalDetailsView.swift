@@ -26,7 +26,7 @@ struct ModalDetailsView: View {
             }
             .navigationBarTitle(Text(country.name), displayMode: .inline)
             .navigationBarItems(trailing: closeButton)
-        }
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
     
     private var closeButton: some View {

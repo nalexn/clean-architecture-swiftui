@@ -25,9 +25,11 @@ struct CountriesList: View {
     @Environment(\.interactors) var interactors: InteractorsContainer
     
     var body: some View {
-        NavigationView {
-            content
-                .navigationBarTitle("Countries")
+        GeometryReader { geometry in
+            NavigationView {
+                self.content
+                    .navigationBarTitle("Countries")
+            }.padding(.leading, self.leadingPadding(geometry))
         }
     }
     
@@ -38,6 +40,14 @@ struct CountriesList: View {
         case let .loaded(countries): return AnyView(loadedView(countries))
         case let .failed(error): return AnyView(failedView(error))
         }
+    }
+    
+    private func leadingPadding(_ geometry: GeometryProxy) -> CGFloat {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return 0
+        }
+        // A hack for correct display of the SplitView in SwiftUI on iPad
+        return geometry.size.width < geometry.size.height ? 0.5 : -0.5
     }
 }
 
