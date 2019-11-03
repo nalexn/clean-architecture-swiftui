@@ -43,11 +43,11 @@ struct CountriesList: View {
     }
     
     private func leadingPadding(_ geometry: GeometryProxy) -> CGFloat {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return 0
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            // A hack for correct display of the SplitView on iPads
+            return geometry.size.width < geometry.size.height ? 0.5 : -0.5
         }
-        // A hack for correct display of the SplitView in SwiftUI on iPad
-        return geometry.size.width < geometry.size.height ? 0.5 : -0.5
+        return 0
     }
 }
 
