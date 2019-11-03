@@ -54,7 +54,7 @@ class CountryDetailsTests: XCTestCase {
                 exp.fulfill()
             }
         RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState()))
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 3)
     }
     
     func test_details_failed() {
