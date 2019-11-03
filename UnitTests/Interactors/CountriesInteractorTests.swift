@@ -41,7 +41,7 @@ class CountriesInteractorTests: XCTestCase {
             ])
             exp.fulfill()
         }.store(in: &subscriptions)
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_loadCountries_loaded_to_loaded() {
@@ -60,7 +60,7 @@ class CountriesInteractorTests: XCTestCase {
             ])
             exp.fulfill()
         }.store(in: &subscriptions)
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_loadCountries_notRequested_to_failed() {
@@ -77,7 +77,7 @@ class CountriesInteractorTests: XCTestCase {
             ])
             exp.fulfill()
         }.store(in: &subscriptions)
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     // MARK: - loadCountryDetails
@@ -97,7 +97,7 @@ class CountriesInteractorTests: XCTestCase {
             ])
             exp.fulfill()
         }.store(in: &subscriptions)
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_loadCountryDetails_countries_loaded() {
@@ -116,7 +116,7 @@ class CountriesInteractorTests: XCTestCase {
             ])
             exp.fulfill()
         }.store(in: &subscriptions)
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_loadCountryDetails_countries_failed() {
@@ -136,7 +136,7 @@ class CountriesInteractorTests: XCTestCase {
             ])
             exp.fulfill()
         }.store(in: &subscriptions)
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_loadCountryDetails_refresh() {
@@ -155,7 +155,7 @@ class CountriesInteractorTests: XCTestCase {
             ])
             exp.fulfill()
         }.store(in: &subscriptions)
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_loadCountryDetails_failure() {
@@ -174,7 +174,7 @@ class CountriesInteractorTests: XCTestCase {
             ])
             exp.fulfill()
         }.store(in: &subscriptions)
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     // MARK: - Helper

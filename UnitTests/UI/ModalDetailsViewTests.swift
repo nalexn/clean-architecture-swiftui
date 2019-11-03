@@ -21,6 +21,6 @@ class ModalDetailsViewTests: XCTestCase {
                 exp.fulfill()
             }
         RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState()))
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
 }

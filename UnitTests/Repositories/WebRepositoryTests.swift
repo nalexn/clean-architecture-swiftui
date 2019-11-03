@@ -35,7 +35,7 @@ class WebRepositoryTests: XCTestCase {
                 result.assertSuccess(value: data)
                 exp.fulfill()
             }
-            wait(for: [exp], timeout: 1)
+            wait(for: [exp], timeout: 2)
         } catch let error { XCTFail("\(error)") }
     }
     
@@ -49,7 +49,7 @@ class WebRepositoryTests: XCTestCase {
                 result.assertFailure("The data couldn’t be read because it isn’t in the correct format.")
                 exp.fulfill()
             }
-            wait(for: [exp], timeout: 1)
+            wait(for: [exp], timeout: 2)
         } catch let error { XCTFail("\(error)") }
     }
     
@@ -63,7 +63,7 @@ class WebRepositoryTests: XCTestCase {
                 result.assertFailure("Unexpected HTTP code: 500")
                 exp.fulfill()
             }
-            wait(for: [exp], timeout: 1)
+            wait(for: [exp], timeout: 2)
         } catch let error { XCTFail("\(error)") }
     }
     
@@ -77,7 +77,7 @@ class WebRepositoryTests: XCTestCase {
                 result.assertFailure(error.localizedDescription)
                 exp.fulfill()
             }
-            wait(for: [exp], timeout: 1)
+            wait(for: [exp], timeout: 2)
         } catch let error { XCTFail("\(error)") }
     }
     
@@ -88,7 +88,7 @@ class WebRepositoryTests: XCTestCase {
             result.assertFailure(APIError.invalidURL.localizedDescription)
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_webRepository_requestBodyError() {
@@ -98,7 +98,7 @@ class WebRepositoryTests: XCTestCase {
             result.assertFailure(TestWebRepository.APIError.fail.localizedDescription)
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_webRepository_loadableError() {
@@ -110,7 +110,7 @@ class WebRepositoryTests: XCTestCase {
                 XCTAssertEqual(loadable.error?.localizedDescription, expected)
                 exp.fulfill()
             }
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_webRepository_noHttpCodeError() {
@@ -125,7 +125,7 @@ class WebRepositoryTests: XCTestCase {
                 result.assertFailure(APIError.unexpectedResponse.localizedDescription)
                 exp.fulfill()
             }
-            wait(for: [exp], timeout: 1)
+            wait(for: [exp], timeout: 2)
         } catch let error { XCTFail("\(error)") }
     }
     

@@ -22,7 +22,7 @@ extension SVGImageView {
     struct Wrapper: UIViewRepresentable {
         
         let imageURL: URL
-        let webView = WKWebView()
+        let webView = ImageWebView()
 
         func makeUIView(context: UIViewRepresentableContext<SVGImageView.Wrapper>) -> WKWebView {
             webView.navigationDelegate = WebViewDelegate.shared
@@ -40,6 +40,10 @@ extension SVGImageView {
         }
     }
     
+    class ImageWebView: WKWebView {
+        var didScaleImage: (() -> Void)?
+    }
+    
     private class WebViewDelegate: NSObject, WKNavigationDelegate {
         
         static let shared = WebViewDelegate()
@@ -50,6 +54,9 @@ extension SVGImageView {
                 webView.evaluateJavaScript("document.documentElement.getAttribute(\"height\")") { (heightValue, error) in
                     guard let height = heightValue.floatValue else { return }
                     webView.scaleToFit(contentSize: CGSize(width: width, height: height))
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        (webView as? ImageWebView)?.didScaleImage?()
+                    }
                 }
             }
         }

@@ -38,7 +38,7 @@ class CountriesWebRepositoryTests: XCTestCase {
                 XCTAssertEqual(self.sut.appState, AppState())
                 exp.fulfill()
             }
-            wait(for: [exp], timeout: 1)
+            wait(for: [exp], timeout: 2)
         } catch let error { XCTFail("\(error)") }
     }
     
@@ -55,7 +55,7 @@ class CountriesWebRepositoryTests: XCTestCase {
                 result.assertSuccess(value: value)
                 exp.fulfill()
             }
-            wait(for: [exp], timeout: 1)
+            wait(for: [exp], timeout: 2)
         } catch let error { XCTFail("\(error)") }
     }
     
@@ -68,7 +68,7 @@ class CountriesWebRepositoryTests: XCTestCase {
                 result.assertFailure(APIError.unexpectedResponse.localizedDescription)
                 exp.fulfill()
             }
-            wait(for: [exp], timeout: 1)
+            wait(for: [exp], timeout: 2)
         } catch let error { XCTFail("\(error)") }
     }
     

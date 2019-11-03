@@ -20,7 +20,7 @@ class CountriesListTests: XCTestCase {
             exp.fulfill()
         }
         RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState))
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_countries_isLoading_initial() {
@@ -32,7 +32,7 @@ class CountriesListTests: XCTestCase {
             exp.fulfill()
         }
         RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState))
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_countries_isLoading_refresh() {
@@ -44,7 +44,7 @@ class CountriesListTests: XCTestCase {
             exp.fulfill()
         }
         RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState))
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_countries_loaded() {
@@ -56,7 +56,7 @@ class CountriesListTests: XCTestCase {
             exp.fulfill()
         }
         RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState))
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
     
     func test_countries_failed() {
@@ -68,6 +68,6 @@ class CountriesListTests: XCTestCase {
             exp.fulfill()
         }
         RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState))
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 2)
     }
 }

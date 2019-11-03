@@ -21,13 +21,13 @@ class SVGImageViewTests: XCTestCase {
     func test_svgImageLoading() {
         let exp = XCTestExpectation(description: "onAppear")
         let sut = SVGImageViewTest(imageURL: url)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        sut.wrapper.webView.didScaleImage = {
             self.verifyScrollViewState(sut.wrapper.webView.scrollView)
             RootViewInjection.unmount()
             exp.fulfill()
         }
         RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState()))
-        wait(for: [exp], timeout: 5.5)
+        wait(for: [exp], timeout: 10)
     }
     
     private func verifyScrollViewState(_ scrollView: UIScrollView, file: StaticString = #file, line: UInt = #line) {
