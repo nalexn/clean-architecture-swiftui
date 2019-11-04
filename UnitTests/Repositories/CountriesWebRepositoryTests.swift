@@ -18,8 +18,7 @@ class CountriesWebRepositoryTests: XCTestCase {
 
     override func setUp() {
         sut = RealCountriesWebRepository(session: .mockedResponsesOnly,
-                                         baseURL: "https://test.com",
-                                         appState: AppState())
+                                         baseURL: "https://test.com")
     }
 
     override func tearDown() {
@@ -35,7 +34,6 @@ class CountriesWebRepositoryTests: XCTestCase {
             let exp = XCTestExpectation(description: "Completion")
             _ = sut.loadCountries().sinkResult { result in
                 result.assertSuccess(value: data)
-                XCTAssertEqual(self.sut.appState, AppState())
                 exp.fulfill()
             }
             wait(for: [exp], timeout: 2)

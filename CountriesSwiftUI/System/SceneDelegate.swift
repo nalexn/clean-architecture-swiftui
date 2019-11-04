@@ -47,8 +47,7 @@ private extension SceneDelegate {
         let session = configuredURLSession()
         let countriesWebRepository = RealCountriesWebRepository(
             session: session,
-            baseURL: "https://restcountries.eu/rest/v2",
-            appState: appState)
+            baseURL: "https://restcountries.eu/rest/v2")
         let countriesInteractor = RealCountriesInteractor(
             webRepository: countriesWebRepository,
             appState: appState)

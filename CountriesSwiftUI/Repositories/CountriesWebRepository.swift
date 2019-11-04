@@ -18,13 +18,11 @@ struct RealCountriesWebRepository: CountriesWebRepository {
     
     let session: URLSession
     let baseURL: String
-    let appState: AppState
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
     
-    init(session: URLSession, baseURL: String, appState: AppState) {
+    init(session: URLSession, baseURL: String) {
         self.session = session
         self.baseURL = baseURL
-        self.appState = appState
     }
     
     func loadCountries() -> AnyPublisher<[Country], Error> {
