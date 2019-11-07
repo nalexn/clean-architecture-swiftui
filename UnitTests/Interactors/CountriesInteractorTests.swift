@@ -177,6 +177,13 @@ class CountriesInteractorTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    func test_stubInteractor() {
+        let sut = StubCountriesInteractor()
+        sut.loadCountries()
+        let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
+        sut.load(countryDetails: details.binding, country: Country.mockedData[0])
+    }
+    
     // MARK: - Helper
     
     private func recordAppStateUserDataUpdates(for timeInterval: TimeInterval = 0.5) -> AnyPublisher<[AppState.UserData], Never> {

@@ -17,7 +17,7 @@ struct InteractorsContainer: EnvironmentKey {
     }
     
     static var defaultValue: InteractorsContainer {
-        return .init(countriesInteractor: FakeCountriesInteractor())
+        return .init(countriesInteractor: StubCountriesInteractor())
     }
 }
 

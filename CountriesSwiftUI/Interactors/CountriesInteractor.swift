@@ -52,7 +52,7 @@ struct RealCountriesInteractor: CountriesInteractor {
     }
 }
 
-struct FakeCountriesInteractor: CountriesInteractor {
+struct StubCountriesInteractor: CountriesInteractor {
     
     func loadCountries() {
     }
