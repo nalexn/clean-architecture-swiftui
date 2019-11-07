@@ -13,7 +13,7 @@ struct RootViewModifier: ViewModifier {
     let appState: AppState
     let interactors: InteractorsContainer
     
-    init(appState: AppState, interactors: InteractorsContainer = .defaultValue) {
+    init(appState: AppState, interactors: InteractorsContainer) {
         self.appState = appState
         self.interactors = interactors
     }

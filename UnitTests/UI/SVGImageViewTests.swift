@@ -19,14 +19,16 @@ class SVGImageViewTests: XCTestCase {
     }()
 
     func test_svgImageLoading() {
+        let interactors = InteractorsContainer.mocked()
         let exp = XCTestExpectation(description: "didDisplayImage")
         let sut = SVGImageViewTest(imageURL: url)
         sut.wrapper.webView.didScaleImage = {
+            interactors.verify()
             self.verifyScrollViewState(sut.wrapper.webView.scrollView)
             RootViewInjection.unmount()
             exp.fulfill()
         }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState()))
+        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState(), interactors: interactors))
         wait(for: [exp], timeout: 60)
     }
     

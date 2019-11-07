@@ -13,14 +13,16 @@ import SwiftUI
 class ModalDetailsViewTests: XCTestCase {
 
     func test_modalDetails() {
+        let interactors = InteractorsContainer.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let isDisplayed = State<Bool>(initialValue: true)
         let sut = ModalDetailsView(country: Country.mockedData[0], isDisplayed: isDisplayed.projectedValue)
             .asyncOnAppear {
+                interactors.verify()
                 RootViewInjection.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState()))
+        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState(), interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
 }

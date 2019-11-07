@@ -40,6 +40,8 @@
 		F67DBD542366E2E200C83258 /* RootViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* RootViewModifier.swift */; };
 		F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD642368875A00C83258 /* CountriesWebRepository.swift */; };
 		F6863E462364FCC800E9B227 /* MockedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6863E452364FCC800E9B227 /* MockedData.swift */; };
+		F68B530523743D8600D6337C /* MockedInteractors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530423743D8600D6337C /* MockedInteractors.swift */; };
+		F68B5308237441AD00D6337C /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B5307237441AD00D6337C /* Mock.swift */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
 		F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB919236382E7003E69F2 /* SVGImageView.swift */; };
@@ -99,6 +101,8 @@
 		F67DBD642368875A00C83258 /* CountriesWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesWebRepository.swift; sourceTree = "<group>"; };
 		F6863E452364FCC800E9B227 /* MockedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedData.swift; sourceTree = "<group>"; };
 		F6863E4723650E7900E9B227 /* CountriesSwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountriesSwiftUI.entitlements; sourceTree = "<group>"; };
+		F68B530423743D8600D6337C /* MockedInteractors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedInteractors.swift; sourceTree = "<group>"; };
+		F68B5307237441AD00D6337C /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
@@ -290,6 +294,7 @@
 				F6F003B4236B034A00AAC7C6 /* Interactors */,
 				F60CC501236C3C80007E84B2 /* UI */,
 				F67833DE2369CD020065272F /* Mocks */,
+				F68B53062374417200D6337C /* NetworkMocking */,
 				F60CC50E236C8963007E84B2 /* Resources */,
 				F60829772369DCD200DB292E /* TestHelpers.swift */,
 				F67833D62369CCBD0065272F /* Info.plist */,
@@ -300,8 +305,8 @@
 		F67833DE2369CD020065272F /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				F60829722369CE5300DB292E /* MockedResponse.swift */,
-				F60829702369CE0100DB292E /* RequestMocking.swift */,
+				F68B5307237441AD00D6337C /* Mock.swift */,
+				F68B530423743D8600D6337C /* MockedInteractors.swift */,
 				F6F003B7236B04B400AAC7C6 /* MockedCountriesWebRepository.swift */,
 			);
 			path = Mocks;
@@ -313,6 +318,15 @@
 				F67DBD642368875A00C83258 /* CountriesWebRepository.swift */,
 			);
 			path = Repositories;
+			sourceTree = "<group>";
+		};
+		F68B53062374417200D6337C /* NetworkMocking */ = {
+			isa = PBXGroup;
+			children = (
+				F60829722369CE5300DB292E /* MockedResponse.swift */,
+				F60829702369CE0100DB292E /* RequestMocking.swift */,
+			);
+			path = NetworkMocking;
 			sourceTree = "<group>";
 		};
 		F6F003B4236B034A00AAC7C6 /* Interactors */ = {
@@ -461,6 +475,7 @@
 				F60829762369D58A00DB292E /* CountriesWebRepositoryTests.swift in Sources */,
 				F6F003B6236B036800AAC7C6 /* CountriesInteractorTests.swift in Sources */,
 				F60CC509236C6084007E84B2 /* ViewPreviewsTests.swift in Sources */,
+				F68B530523743D8600D6337C /* MockedInteractors.swift in Sources */,
 				F6F003B1236AF31400AAC7C6 /* SystemEventsHandlerTests.swift in Sources */,
 				F60CC50D236C8629007E84B2 /* SVGImageViewTests.swift in Sources */,
 				F6F003B8236B04B400AAC7C6 /* MockedCountriesWebRepository.swift in Sources */,
@@ -469,6 +484,7 @@
 				F60829782369DCD200DB292E /* TestHelpers.swift in Sources */,
 				F6F003AF236A290E00AAC7C6 /* WebRepositoryTests.swift in Sources */,
 				F60CC50B236C622C007E84B2 /* ModalDetailsViewTests.swift in Sources */,
+				F68B5308237441AD00D6337C /* Mock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
