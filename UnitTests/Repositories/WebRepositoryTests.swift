@@ -137,12 +137,7 @@ class WebRepositoryTests: XCTestCase {
     }
 }
 
-private struct TestWebRepository: WebRepository {
-    
-    let session: URLSession = .mockedResponsesOnly
-    let baseURL = "https://test.com"
-    let bgQueue = DispatchQueue(label: "test")
-    
+private extension TestWebRepository {
     func load(_ api: API) -> AnyPublisher<TestData, Error> {
         call(endpoint: api)
     }

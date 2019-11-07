@@ -24,6 +24,8 @@ extension InteractorsContainer {
     }
 }
 
+// MARK: - CountriesInteractor
+
 struct MockedCountriesInteractor: Mock, CountriesInteractor {
     
     enum Action: Equatable {

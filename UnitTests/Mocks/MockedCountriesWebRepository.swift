@@ -10,24 +10,24 @@ import XCTest
 import Combine
 @testable import CountriesSwiftUI
 
-class MockedCountriesWebRepository: CountriesWebRepository {
-
+class TestWebRepository: WebRepository {
     let session: URLSession = .mockedResponsesOnly
     let baseURL = "https://test.com"
     let bgQueue = DispatchQueue(label: "test")
+}
+
+// MARK: - CountriesWebRepository
+
+class MockedCountriesWebRepository: TestWebRepository, CountriesWebRepository {
     
     var countriesResponse: Result<[Country], Error> = .failure(MockError.valueNotSet)
     var detailsResponse: Result<Country.Details.Intermediate, Error> = .failure(MockError.valueNotSet)
     
     func loadCountries() -> AnyPublisher<[Country], Error> {
-        return countriesResponse.publisher
-            .buffer(size: 1, prefetch: .byRequest, whenFull: .dropOldest)
-            .eraseToAnyPublisher()
+        return countriesResponse.publish()
     }
     
     func loadCountryDetails(country: Country) -> AnyPublisher<Country.Details.Intermediate, Error> {
-        return detailsResponse.publisher
-            .buffer(size: 1, prefetch: .byRequest, whenFull: .dropOldest)
-            .eraseToAnyPublisher()
+        return detailsResponse.publish()
     }
 }

@@ -10,6 +10,8 @@ import XCTest
 import SwiftUI
 import Combine
 
+// MARK: - UI
+
 extension View {
     func asyncOnAppear(perform action: @escaping () -> Void) -> some View {
         onAppear {
@@ -18,9 +20,7 @@ extension View {
     }
 }
 
-enum MockError: Swift.Error {
-    case valueNotSet
-}
+// MARK: - Publisher
 
 extension Publisher {
     func sinkResult(_ result: @escaping (Result<Output, Failure>) -> Void) -> AnyCancellable {
@@ -35,6 +35,8 @@ extension Publisher {
         })
     }
 }
+
+// MARK: - Result
 
 extension Result where Success: Equatable {
     func assertSuccess(value: Success, file: StaticString = #file, line: UInt = #line) {
@@ -58,6 +60,16 @@ extension Result {
     }
 }
 
+extension Result {
+    func publish() -> AnyPublisher<Success, Failure> {
+        return publisher
+            .buffer(size: 1, prefetch: .byRequest, whenFull: .dropOldest)
+            .eraseToAnyPublisher()
+    }
+}
+
+// MARK: - BindingWithPublisher
+
 struct BindingWithPublisher<Value> {
     
     let binding: Binding<Value>
@@ -75,6 +87,12 @@ struct BindingWithPublisher<Value> {
             }
         }.eraseToAnyPublisher()
     }
+}
+
+// MARK: - Error
+
+enum MockError: Swift.Error {
+    case valueNotSet
 }
 
 extension NSError {
