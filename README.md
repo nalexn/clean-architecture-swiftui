@@ -6,6 +6,10 @@ The app uses the [restcountries.eu](restcountries.eu) REST API to show the list 
 
 ![platforms](https://img.shields.io/badge/platforms-iPhone%20%7C%20iPad%20%7C%20macOS-lightgrey) [![Build Status](https://travis-ci.com/nalexn/clean-architecture-swiftui.svg?branch=master)](https://travis-ci.com/nalexn/clean-architecture-swiftui) ![coverage](https://img.shields.io/badge/coverage-97%25-brightgreen) ![Dependency Status](https://img.shields.io/badge/dependencies-none-brightgreen)
 
+<p align="center">
+  <img src="https://github.com/nalexn/blob_files/blob/master/images/countries_preview.png?raw=true" alt="Diagram"/>
+</p>
+
 ## Key features
 * Designed for **scalability**. It can be used as a reference for building large production apps.
 * Vanilla **SwiftUI** + **Combine** implementation. No 3rd party dependencies
@@ -46,5 +50,12 @@ Interactors are injected into the view hierarchy within a container as an `@Envi
 Data Access layer is represented by `Repositories`.
 
 Repositories provide asynchronous API (`Publisher` from Combine) for making [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations on the backend or a local database. They don't contain business logic, neither do they mutate the `AppState`. Repositories are accessible and used only by the Interactors.
+
+### Articles related to this project
+
+* [Clean Architecture for SwiftUI](https://nalexn.github.io/clean-architecture-swiftui/)
+* [Programmatic navigation in SwiftUI project](https://nalexn.github.io/swiftui-deep-linking/)
+
+---
 
 ![license](https://img.shields.io/badge/license-mit-brightgreen) [![Twitter](https://img.shields.io/badge/twitter-nallexn-blue)](https://twitter.com/nallexn) [![blog](https://img.shields.io/badge/blog-medium-red)](https://medium.com/@nalexn)
