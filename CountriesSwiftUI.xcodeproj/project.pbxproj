@@ -43,6 +43,7 @@
 		F661F2C3237770010014E142 /* ImageCacheRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C2237770000014E142 /* ImageCacheRepositoryTests.swift */; };
 		F661F2C5237772CE0014E142 /* ImagesInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */; };
 		F661F2C7237773990014E142 /* MockedCacheRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C6237773990014E142 /* MockedCacheRepositories.swift */; };
+		F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C923777D440014E142 /* SVGImageViewTests.swift */; };
 		F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */; };
 		F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* DependencyInjector.swift */; };
 		F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD642368875A00C83258 /* CountriesWebRepository.swift */; };
@@ -110,6 +111,7 @@
 		F661F2C2237770000014E142 /* ImageCacheRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheRepositoryTests.swift; sourceTree = "<group>"; };
 		F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesInteractorTests.swift; sourceTree = "<group>"; };
 		F661F2C6237773990014E142 /* MockedCacheRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedCacheRepositories.swift; sourceTree = "<group>"; };
+		F661F2C923777D440014E142 /* SVGImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageViewTests.swift; sourceTree = "<group>"; };
 		F67833D22369CCBD0065272F /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67833D62369CCBD0065272F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */,
 				F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */,
 				F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */,
+				F661F2C923777D440014E142 /* SVGImageViewTests.swift */,
 				F60CC508236C6084007E84B2 /* ViewPreviewsTests.swift */,
 			);
 			path = UI;
@@ -521,6 +524,7 @@
 				F6F003AF236A290E00AAC7C6 /* WebRepositoryTests.swift in Sources */,
 				F60CC50B236C622C007E84B2 /* ModalDetailsViewTests.swift in Sources */,
 				F68B5308237441AD00D6337C /* Mock.swift in Sources */,
+				F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
