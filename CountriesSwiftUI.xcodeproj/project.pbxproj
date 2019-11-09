@@ -43,6 +43,7 @@
 		F68B530523743D8600D6337C /* MockedInteractors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530423743D8600D6337C /* MockedInteractors.swift */; };
 		F68B5308237441AD00D6337C /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B5307237441AD00D6337C /* Mock.swift */; };
 		F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B53092376EE8C00D6337C /* ImageWebRepository.swift */; };
+		F68B530C23771A9400D6337C /* ImagesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530B23771A9400D6337C /* ImagesInteractor.swift */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
 		F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB919236382E7003E69F2 /* SVGImageView.swift */; };
@@ -105,6 +106,7 @@
 		F68B530423743D8600D6337C /* MockedInteractors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedInteractors.swift; sourceTree = "<group>"; };
 		F68B5307237441AD00D6337C /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		F68B53092376EE8C00D6337C /* ImageWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWebRepository.swift; sourceTree = "<group>"; };
+		F68B530B23771A9400D6337C /* ImagesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesInteractor.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				F64495FF2360D8B000C9BB1F /* CountriesInteractor.swift */,
+				F68B530B23771A9400D6337C /* ImagesInteractor.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 				F64496122361BB4900C9BB1F /* InteractorsContainer.swift in Sources */,
 				F6218DB42363051D00917938 /* CountryDetails.swift in Sources */,
 				F62822B4236478DE00823BA1 /* ModalDetailsView.swift in Sources */,
+				F68B530C23771A9400D6337C /* ImagesInteractor.swift in Sources */,
 				F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */,
 				F67DBD542366E2E200C83258 /* RootViewModifier.swift in Sources */,
 				F64496082360DFB700C9BB1F /* Models.swift in Sources */,

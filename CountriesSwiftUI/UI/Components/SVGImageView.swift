@@ -10,85 +10,62 @@ import SwiftUI
 import WebKit
 
 struct SVGImageView: View {
+    
     let imageURL: URL
+    @Environment(\.interactors) var interactors: InteractorsContainer
+    @State private var image: Loadable<UIImage>
+    
+    init(imageURL: URL, image: Loadable<UIImage> = .notRequested) {
+        self.imageURL = imageURL
+        self._image = .init(initialValue: image)
+    }
     
     var body: some View {
-        Wrapper(imageURL: imageURL)
-            .shadow(radius: 3)
+        content
+    }
+    
+    private var content: AnyView {
+        switch image {
+        case .notRequested: return AnyView(notRequestedView)
+        case .isLoading: return AnyView(loadingView)
+        case let .loaded(image): return AnyView(loadedView(image))
+        case let .failed(error): return AnyView(failedView(error))
+        }
     }
 }
 
-extension SVGImageView {
-    struct Wrapper: UIViewRepresentable {
-        
-        let imageURL: URL
-        let webView = ImageWebView()
+// MARK: - Side Effects
 
-        func makeUIView(context: UIViewRepresentableContext<SVGImageView.Wrapper>) -> WKWebView {
-            webView.navigationDelegate = WebViewDelegate.shared
-            webView.isUserInteractionEnabled = false
-            return webView
-        }
+private extension SVGImageView {
+    func loadImage() {
+        interactors.imagesInteractor.load(image: $image, url: imageURL)
+    }
+}
 
-        func updateUIView(_ uiView: WKWebView, context: UIViewRepresentableContext<SVGImageView.Wrapper>) {
-            let urlRequest = URLRequest(url: imageURL)
-            uiView.load(urlRequest)
-        }
-        
-        static func dismantleUIView(_ uiView: WKWebView, coordinator: ()) {
-            uiView.navigationDelegate = nil
+// MARK: - Content
+
+private extension SVGImageView {
+    var notRequestedView: some View {
+        Text("").onAppear {
+            self.loadImage()
         }
     }
     
-    class ImageWebView: WKWebView {
-        var didScaleImage: (() -> Void)?
+    var loadingView: some View {
+        ActivityIndicatorView()
     }
     
-    private class WebViewDelegate: NSObject, WKNavigationDelegate {
-        
-        static let shared = WebViewDelegate()
-        
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            webView.evaluateJavaScript("document.documentElement.getAttribute(\"width\")") { (widthValue, error) in
-                guard let width = widthValue.floatValue else { return }
-                webView.evaluateJavaScript("document.documentElement.getAttribute(\"height\")") { (heightValue, error) in
-                    guard let height = heightValue.floatValue else { return }
-                    webView.scaleToFit(contentSize: CGSize(width: width, height: height))
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        (webView as? ImageWebView)?.didScaleImage?()
-                    }
-                }
-            }
-        }
+    func failedView(_ error: Error) -> some View {
+        Text("Unable to load image")
+            .font(.footnote)
+            .multilineTextAlignment(.center)
+            .padding()
     }
-}
-
-private extension WKWebView {
-    func scaleToFit(contentSize: CGSize) {
-        let webViewSize = frame.size
-        let hZoom = webViewSize.width / contentSize.width
-        let vZoom = webViewSize.height / contentSize.height
-        let zoom = min(hZoom, vZoom)
-        scrollView.zoomScale = 1
-        scrollView.transform = CGAffineTransform(scaleX: zoom, y: zoom)
-        let offset = CGPoint(x: 0.5 * (contentSize.width - webViewSize.width / zoom),
-                             y: 0.5 * (contentSize.height - webViewSize.height / zoom))
-        scrollView.contentInset = UIEdgeInsets(top: -offset.y, left: -offset.x,
-                                               bottom: -offset.y, right: -offset.x)
-        scrollView.contentOffset = offset
-    }
-}
-
-private extension Optional {
-    var floatValue: CGFloat? {
-        switch self {
-        case let .some(value):
-            if let intValue = Int(String(describing: value)) {
-                return CGFloat(intValue)
-            }
-        default: break
-        }
-        return nil
+    
+    func loadedView(_ image: UIImage) -> some View {
+        Image(uiImage: image)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
     }
 }
 

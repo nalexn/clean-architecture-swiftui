@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 class AppState: ObservableObject, Equatable {
     @Published var userData = UserData()
@@ -30,6 +31,7 @@ extension AppState {
 extension AppState {
     struct System: Equatable {
         var isActive: Bool = false
+        var runningRequests: [URL: AnyCancellable] = [:]
     }
 }
 

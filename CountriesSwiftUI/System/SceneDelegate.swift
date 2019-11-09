@@ -48,10 +48,16 @@ private extension SceneDelegate {
         let countriesWebRepository = RealCountriesWebRepository(
             session: session,
             baseURL: "https://restcountries.eu/rest/v2")
+        let imageWebRepository = RealImageWebRepository(
+            session: session,
+            baseURL: "https://ezgif.com")
         let countriesInteractor = RealCountriesInteractor(
             webRepository: countriesWebRepository,
             appState: appState)
-        let interactors = InteractorsContainer(countriesInteractor: countriesInteractor)
+        let imagesInteractor = RealImagesInteractor(
+            webRepository: imageWebRepository, appState: appState)
+        let interactors = InteractorsContainer(countriesInteractor: countriesInteractor,
+                                               imagesInteractor: imagesInteractor)
         let systemEventsHandler = RealSystemEventsHandler(appState: appState)
         return (appState, interactors, systemEventsHandler)
     }

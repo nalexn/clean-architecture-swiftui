@@ -11,13 +11,17 @@ import SwiftUI
 struct InteractorsContainer: EnvironmentKey {
     
     let countriesInteractor: CountriesInteractor
+    let imagesInteractor: ImagesInteractor
     
-    init(countriesInteractor: CountriesInteractor) {
+    init(countriesInteractor: CountriesInteractor,
+         imagesInteractor: ImagesInteractor) {
         self.countriesInteractor = countriesInteractor
+        self.imagesInteractor = imagesInteractor
     }
     
     static var defaultValue: InteractorsContainer {
-        return .init(countriesInteractor: StubCountriesInteractor())
+        return .init(countriesInteractor: StubCountriesInteractor(),
+                     imagesInteractor: StubImagesInteractor())
     }
 }
 

@@ -13,7 +13,7 @@ protocol ImageWebRepository: WebRepository {
     func load(imageURL: URL, width: Int) -> AnyPublisher<UIImage, Error>
 }
 
-struct RealImageWebRepository {
+struct RealImageWebRepository: ImageWebRepository {
     
     let session: URLSession
     let baseURL: String
@@ -29,9 +29,14 @@ struct RealImageWebRepository {
             return importImage(originalURL: imageURL)
                 .flatMap { self.exportImage(info: $0, width: width) }
                 .flatMap { self.download(rawImageURL: $0.imageURL) }
+                .subscribe(on: bgQueue)
+                .receive(on: DispatchQueue.main)
                 .eraseToAnyPublisher()
         } else {
             return download(rawImageURL: imageURL)
+                .subscribe(on: bgQueue)
+                .receive(on: DispatchQueue.main)
+                .eraseToAnyPublisher()
         }
     }
     
@@ -73,8 +78,6 @@ struct RealImageWebRepository {
                     else { throw APIError.unexpectedResponse }
                 return image
             }
-            .subscribe(on: bgQueue)
-            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 }
