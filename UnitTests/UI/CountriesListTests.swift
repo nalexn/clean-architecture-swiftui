@@ -22,7 +22,7 @@ class CountriesListTests: XCTestCase {
             RootViewInjection.unmount()
             exp.fulfill()
         }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState, interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: appState, interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
     
@@ -36,7 +36,7 @@ class CountriesListTests: XCTestCase {
             RootViewInjection.unmount()
             exp.fulfill()
         }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState, interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: appState, interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
     
@@ -50,7 +50,7 @@ class CountriesListTests: XCTestCase {
             RootViewInjection.unmount()
             exp.fulfill()
         }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState, interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: appState, interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
     
@@ -64,7 +64,7 @@ class CountriesListTests: XCTestCase {
             RootViewInjection.unmount()
             exp.fulfill()
         }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState, interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: appState, interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
     
@@ -78,7 +78,7 @@ class CountriesListTests: XCTestCase {
             RootViewInjection.unmount()
             exp.fulfill()
         }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState, interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: appState, interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
 }

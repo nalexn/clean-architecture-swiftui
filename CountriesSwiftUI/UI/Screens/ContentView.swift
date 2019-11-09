@@ -14,13 +14,15 @@ struct ContentView: View {
     @ObservedObject private var root: RootViewInjection = .shared
     #endif
     
-    private let environment: RootViewModifier
+    private let injector: DependencyInjector
+    private let appearance: RootViewAppearance
     
-    init(environment: RootViewModifier) {
-        self.environment = environment
+    init(injector: DependencyInjector) {
+        self.injector = injector
+        self.appearance = RootViewAppearance(appState: injector.appState)
         #if DEBUG
         if !isRunningTests {
-            RootViewInjection.mount(view: realContent, environment: environment)
+            RootViewInjection.mount(view: realContent, injector: injector)
         }
         #endif
     }
@@ -29,7 +31,9 @@ struct ContentView: View {
         #if DEBUG
         return root.view
         #else
-        return realContent.modifier(environment)
+        return realContent
+            .modifier(injector)
+            .modifier(appearance)
         #endif
     }
     
@@ -44,10 +48,12 @@ struct ContentView: View {
 
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
+    static var dependencyInjector: DependencyInjector {
+        DependencyInjector(appState: AppState.preview,
+                           interactors: InteractorsContainer.defaultValue)
+    }
     static var previews: some View {
-        ContentView(environment:
-            RootViewModifier(appState: AppState.preview,
-                             interactors: InteractorsContainer.defaultValue))
+        ContentView(injector: dependencyInjector)
     }
 }
 #endif

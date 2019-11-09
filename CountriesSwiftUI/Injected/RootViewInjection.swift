@@ -21,9 +21,11 @@ class RootViewInjection: ObservableObject {
         reloadView()
     }
     
-    static func mount<V>(view: V, environment: RootViewModifier, viewId: String = #function) where V: View {
+    static func mount<V>(view: V, injector: DependencyInjector, viewId: String = #function) where V: View {
         let root = shared
-        root.views.append(StackItem(id: viewId, view: AnyView(view.modifier(environment))))
+        let appearance = RootViewAppearance(appState: injector.appState)
+        let preparedView = view.modifier(injector).modifier(appearance)
+        root.views.append(StackItem(id: viewId, view: AnyView(preparedView)))
         root.reloadView()
     }
     

@@ -140,8 +140,8 @@ private extension CountryDetails {
     func modalDetailsView() -> some View {
         ModalDetailsView(country: country,
                          isDisplayed: $appState.routing.countryDetails.detailsSheet)
-            .modifier(RootViewModifier(appState: appState,
-                                       interactors: interactors))
+            .modifier(DependencyInjector(appState: appState, interactors: interactors))
+            .modifier(RootViewAppearance(appState: appState))
     }
 }
 

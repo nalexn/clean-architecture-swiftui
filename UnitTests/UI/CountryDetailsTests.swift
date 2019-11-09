@@ -23,7 +23,7 @@ class CountryDetailsTests: XCTestCase {
                 RootViewInjection.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState(), interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
     
@@ -36,7 +36,7 @@ class CountryDetailsTests: XCTestCase {
                 RootViewInjection.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState(), interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
     
@@ -49,7 +49,7 @@ class CountryDetailsTests: XCTestCase {
                 RootViewInjection.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState(), interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
     
@@ -62,7 +62,7 @@ class CountryDetailsTests: XCTestCase {
                 RootViewInjection.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState(), interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
         wait(for: [exp], timeout: 3)
     }
     
@@ -75,7 +75,7 @@ class CountryDetailsTests: XCTestCase {
                 RootViewInjection.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: AppState(), interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
     
@@ -90,7 +90,7 @@ class CountryDetailsTests: XCTestCase {
                 RootViewInjection.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, environment: RootViewModifier(appState: appState, interactors: interactors))
+        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: appState, interactors: interactors))
         wait(for: [exp], timeout: 2)
     }
 }

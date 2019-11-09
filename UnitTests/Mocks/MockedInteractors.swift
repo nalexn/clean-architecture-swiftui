@@ -12,10 +12,11 @@ import SwiftUI
 
 extension InteractorsContainer {
     static func mocked(
-        countriesInteractor: [MockedCountriesInteractor.Action] = []
+        countriesInteractor: [MockedCountriesInteractor.Action] = [],
+        imagesInteractor: [MockedImagesInteractor.Action] = []
     ) -> InteractorsContainer {
-        return .init(countriesInteractor:
-            MockedCountriesInteractor(expected: countriesInteractor))
+        .init(countriesInteractor: MockedCountriesInteractor(expected: countriesInteractor),
+              imagesInteractor: MockedImagesInteractor(expected: imagesInteractor))
     }
     
     func verify(file: StaticString = #file, line: UInt = #line) {
@@ -45,5 +46,24 @@ struct MockedCountriesInteractor: Mock, CountriesInteractor {
     
     func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
         register(.loadCountryDetails(country))
+    }
+}
+
+// MARK: - ImagesInteractor
+
+struct MockedImagesInteractor: Mock, ImagesInteractor {
+    
+    enum Action: Equatable {
+        case loadImage(URL?)
+    }
+    
+    let actions: MockActions<Action>
+    
+    init(expected: [Action]) {
+        self.actions = .init(expected: expected)
+    }
+    
+    func load(image: Binding<Loadable<UIImage>>, url: URL?) {
+        register(.loadImage(url))
     }
 }

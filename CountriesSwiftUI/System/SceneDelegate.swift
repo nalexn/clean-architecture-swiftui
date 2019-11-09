@@ -16,16 +16,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var systemEventsHandler: SystemEventsHandler?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        let (appState, interactors, systemEventsHandler) = createDependencies()
-        let environment = RootViewModifier(appState: appState, interactors: interactors)
-        let contentView = ContentView(environment: environment)
+        let environment = AppEnvironment.bootstrap()
+        let contentView = ContentView(injector: environment.dependencyInjector)
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
             window.makeKeyAndVisible()
         }
-        self.systemEventsHandler = systemEventsHandler
+        self.systemEventsHandler = environment.systemEventsHandler
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -38,32 +37,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func sceneWillResignActive(_ scene: UIScene) {
         systemEventsHandler?.sceneWillResignActive()
-    }
-}
-
-private extension SceneDelegate {
-    func createDependencies() -> (AppState, InteractorsContainer, SystemEventsHandler) {
-        let appState = AppState()
-        let session = configuredURLSession()
-        let countriesWebRepository = RealCountriesWebRepository(
-            session: session,
-            baseURL: "https://restcountries.eu/rest/v2")
-        let imageWebRepository = RealImageWebRepository(
-            session: session,
-            baseURL: "https://ezgif.com")
-        let countriesInteractor = RealCountriesInteractor(
-            webRepository: countriesWebRepository,
-            appState: appState)
-        let imagesInteractor = RealImagesInteractor(
-            webRepository: imageWebRepository, appState: appState)
-        let interactors = InteractorsContainer(countriesInteractor: countriesInteractor,
-                                               imagesInteractor: imagesInteractor)
-        let systemEventsHandler = RealSystemEventsHandler(appState: appState)
-        return (appState, interactors, systemEventsHandler)
-    }
-    
-    func configuredURLSession() -> URLSession {
-        let configuration = URLSessionConfiguration.default
-        return URLSession(configuration: configuration)
     }
 }

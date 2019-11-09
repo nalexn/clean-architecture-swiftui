@@ -16,7 +16,6 @@
 		F60CC507236C5CFA007E84B2 /* CountryDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */; };
 		F60CC509236C6084007E84B2 /* ViewPreviewsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC508236C6084007E84B2 /* ViewPreviewsTests.swift */; };
 		F60CC50B236C622C007E84B2 /* ModalDetailsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */; };
-		F60CC50D236C8629007E84B2 /* SVGImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CC50C236C8629007E84B2 /* SVGImageViewTests.swift */; };
 		F60CC512236C8EDD007E84B2 /* svg_document.svg in Resources */ = {isa = PBXBuildFile; fileRef = F60CC511236C8EDD007E84B2 /* svg_document.svg */; };
 		F6218DB22362FD3100917938 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB12362FD3100917938 /* CountryCell.swift */; };
 		F6218DB42363051D00917938 /* CountryDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6218DB32363051D00917938 /* CountryDetails.swift */; };
@@ -36,8 +35,10 @@
 		F644960E2360EF6C00C9BB1F /* WebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960D2360EF6C00C9BB1F /* WebRepository.swift */; };
 		F64496102361B64700C9BB1F /* CountriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960F2361B64700C9BB1F /* CountriesList.swift */; };
 		F64496122361BB4900C9BB1F /* InteractorsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496112361BB4900C9BB1F /* InteractorsContainer.swift */; };
+		F661F2B6237734FA0014E142 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B5237734FA0014E142 /* AppEnvironment.swift */; };
+		F661F2B8237738CE0014E142 /* RootViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B7237738CE0014E142 /* RootViewModifier.swift */; };
 		F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */; };
-		F67DBD542366E2E200C83258 /* RootViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* RootViewModifier.swift */; };
+		F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* DependencyInjector.swift */; };
 		F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD642368875A00C83258 /* CountriesWebRepository.swift */; };
 		F6863E462364FCC800E9B227 /* MockedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6863E452364FCC800E9B227 /* MockedData.swift */; };
 		F68B530523743D8600D6337C /* MockedInteractors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530423743D8600D6337C /* MockedInteractors.swift */; };
@@ -74,7 +75,6 @@
 		F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetailsTests.swift; sourceTree = "<group>"; };
 		F60CC508236C6084007E84B2 /* ViewPreviewsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPreviewsTests.swift; sourceTree = "<group>"; };
 		F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalDetailsViewTests.swift; sourceTree = "<group>"; };
-		F60CC50C236C8629007E84B2 /* SVGImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageViewTests.swift; sourceTree = "<group>"; };
 		F60CC511236C8EDD007E84B2 /* svg_document.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = svg_document.svg; sourceTree = "<group>"; };
 		F6218DB12362FD3100917938 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		F6218DB32363051D00917938 /* CountryDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetails.swift; sourceTree = "<group>"; };
@@ -96,10 +96,12 @@
 		F644960D2360EF6C00C9BB1F /* WebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRepository.swift; sourceTree = "<group>"; };
 		F644960F2361B64700C9BB1F /* CountriesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesList.swift; sourceTree = "<group>"; };
 		F64496112361BB4900C9BB1F /* InteractorsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractorsContainer.swift; sourceTree = "<group>"; };
+		F661F2B5237734FA0014E142 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		F661F2B7237738CE0014E142 /* RootViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModifier.swift; sourceTree = "<group>"; };
 		F67833D22369CCBD0065272F /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67833D62369CCBD0065272F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
-		F67DBD532366E2E200C83258 /* RootViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModifier.swift; sourceTree = "<group>"; };
+		F67DBD532366E2E200C83258 /* DependencyInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjector.swift; sourceTree = "<group>"; };
 		F67DBD642368875A00C83258 /* CountriesWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesWebRepository.swift; sourceTree = "<group>"; };
 		F6863E452364FCC800E9B227 /* MockedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedData.swift; sourceTree = "<group>"; };
 		F6863E4723650E7900E9B227 /* CountriesSwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountriesSwiftUI.entitlements; sourceTree = "<group>"; };
@@ -150,7 +152,6 @@
 				F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */,
 				F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */,
 				F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */,
-				F60CC50C236C8629007E84B2 /* SVGImageViewTests.swift */,
 				F60CC508236C6084007E84B2 /* ViewPreviewsTests.swift */,
 			);
 			path = UI;
@@ -225,6 +226,7 @@
 			children = (
 				F64495E42360D66400C9BB1F /* AppDelegate.swift */,
 				F64495E62360D66400C9BB1F /* SceneDelegate.swift */,
+				F661F2B5237734FA0014E142 /* AppEnvironment.swift */,
 				F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */,
 			);
 			path = System;
@@ -233,6 +235,7 @@
 		F64495F92360D68D00C9BB1F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				F661F2B7237738CE0014E142 /* RootViewModifier.swift */,
 				F62822B523647F8300823BA1 /* Screens */,
 				F62822B623647FA700823BA1 /* Components */,
 			);
@@ -256,7 +259,7 @@
 			children = (
 				F64495FC2360D81F00C9BB1F /* AppState.swift */,
 				F64496112361BB4900C9BB1F /* InteractorsContainer.swift */,
-				F67DBD532366E2E200C83258 /* RootViewModifier.swift */,
+				F67DBD532366E2E200C83258 /* DependencyInjector.swift */,
 				F60CC504236C5978007E84B2 /* RootViewInjection.swift */,
 			);
 			path = Injected;
@@ -462,10 +465,12 @@
 				F62822B4236478DE00823BA1 /* ModalDetailsView.swift in Sources */,
 				F68B530C23771A9400D6337C /* ImagesInteractor.swift in Sources */,
 				F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */,
-				F67DBD542366E2E200C83258 /* RootViewModifier.swift in Sources */,
+				F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */,
 				F64496082360DFB700C9BB1F /* Models.swift in Sources */,
 				F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */,
+				F661F2B8237738CE0014E142 /* RootViewModifier.swift in Sources */,
 				F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */,
+				F661F2B6237734FA0014E142 /* AppEnvironment.swift in Sources */,
 				F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */,
 				F644960E2360EF6C00C9BB1F /* WebRepository.swift in Sources */,
 				F64496002360D8B000C9BB1F /* CountriesInteractor.swift in Sources */,
@@ -485,7 +490,6 @@
 				F60CC509236C6084007E84B2 /* ViewPreviewsTests.swift in Sources */,
 				F68B530523743D8600D6337C /* MockedInteractors.swift in Sources */,
 				F6F003B1236AF31400AAC7C6 /* SystemEventsHandlerTests.swift in Sources */,
-				F60CC50D236C8629007E84B2 /* SVGImageViewTests.swift in Sources */,
 				F6F003B8236B04B400AAC7C6 /* MockedCountriesWebRepository.swift in Sources */,
 				F60829732369CE5300DB292E /* MockedResponse.swift in Sources */,
 				F60CC503236C3CA8007E84B2 /* CountriesListTests.swift in Sources */,
