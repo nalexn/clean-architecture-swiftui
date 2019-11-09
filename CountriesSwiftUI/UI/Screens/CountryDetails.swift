@@ -52,6 +52,10 @@ private extension CountryDetails {
     func loadCountryDetails() {
         interactors.countriesInteractor.load(countryDetails: $details, country: country)
     }
+    
+    func showCountryDetailsSheet() {
+        appState.routing.countryDetails.detailsSheet = true
+    }
 }
 
 // MARK: - Loading Content
@@ -101,7 +105,7 @@ private extension CountryDetails {
             SVGImageView(imageURL: url)
                 .frame(width: 120, height: 80)
                 .onTapGesture {
-                    self.appState.routing.countryDetails.detailsSheet = true
+                    self.showCountryDetailsSheet()
                 }
             Spacer()
         }
