@@ -55,7 +55,7 @@ struct RealImagesInteractor: ImagesInteractor {
     }
 }
 
-private extension URL {
+extension URL {
     var imageCacheKey: ImageCacheKey {
         return absoluteString
     }

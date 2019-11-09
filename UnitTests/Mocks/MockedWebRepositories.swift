@@ -1,5 +1,5 @@
 //
-//  MockedCountriesWebRepository.swift
+//  MockedWebRepositories.swift
 //  UnitTests
 //
 //  Created by Alexey Naumov on 31.10.2019.
@@ -29,5 +29,16 @@ class MockedCountriesWebRepository: TestWebRepository, CountriesWebRepository {
     
     func loadCountryDetails(country: Country) -> AnyPublisher<Country.Details.Intermediate, Error> {
         return detailsResponse.publish()
+    }
+}
+
+// MARK: - ImageWebRepository
+
+class MockedImageWebRepository: TestWebRepository, ImageWebRepository {
+    
+    var imageResponse: Result<UIImage, Error> = .failure(MockError.valueNotSet)
+    
+    func load(imageURL: URL, width: Int) -> AnyPublisher<UIImage, Error> {
+        return imageResponse.publish()
     }
 }

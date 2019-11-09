@@ -41,6 +41,8 @@
 		F661F2BF237761A80014E142 /* svg_convert_01.html in Resources */ = {isa = PBXBuildFile; fileRef = F661F2BD237761A80014E142 /* svg_convert_01.html */; };
 		F661F2C0237761A80014E142 /* svg_convert_02.html in Resources */ = {isa = PBXBuildFile; fileRef = F661F2BE237761A80014E142 /* svg_convert_02.html */; };
 		F661F2C3237770010014E142 /* ImageCacheRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C2237770000014E142 /* ImageCacheRepositoryTests.swift */; };
+		F661F2C5237772CE0014E142 /* ImagesInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */; };
+		F661F2C7237773990014E142 /* MockedCacheRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C6237773990014E142 /* MockedCacheRepositories.swift */; };
 		F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */; };
 		F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* DependencyInjector.swift */; };
 		F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD642368875A00C83258 /* CountriesWebRepository.swift */; };
@@ -56,7 +58,7 @@
 		F6F003B1236AF31400AAC7C6 /* SystemEventsHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F003B0236AF31400AAC7C6 /* SystemEventsHandlerTests.swift */; };
 		F6F003B3236AF9F100AAC7C6 /* LoadableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F003B2236AF9F100AAC7C6 /* LoadableTests.swift */; };
 		F6F003B6236B036800AAC7C6 /* CountriesInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F003B5236B036800AAC7C6 /* CountriesInteractorTests.swift */; };
-		F6F003B8236B04B400AAC7C6 /* MockedCountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F003B7236B04B400AAC7C6 /* MockedCountriesWebRepository.swift */; };
+		F6F003B8236B04B400AAC7C6 /* MockedWebRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F003B7236B04B400AAC7C6 /* MockedWebRepositories.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +108,8 @@
 		F661F2BD237761A80014E142 /* svg_convert_01.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = svg_convert_01.html; sourceTree = "<group>"; };
 		F661F2BE237761A80014E142 /* svg_convert_02.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = svg_convert_02.html; sourceTree = "<group>"; };
 		F661F2C2237770000014E142 /* ImageCacheRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheRepositoryTests.swift; sourceTree = "<group>"; };
+		F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesInteractorTests.swift; sourceTree = "<group>"; };
+		F661F2C6237773990014E142 /* MockedCacheRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedCacheRepositories.swift; sourceTree = "<group>"; };
 		F67833D22369CCBD0065272F /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67833D62369CCBD0065272F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
@@ -124,7 +128,7 @@
 		F6F003B0236AF31400AAC7C6 /* SystemEventsHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandlerTests.swift; sourceTree = "<group>"; };
 		F6F003B2236AF9F100AAC7C6 /* LoadableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableTests.swift; sourceTree = "<group>"; };
 		F6F003B5236B036800AAC7C6 /* CountriesInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesInteractorTests.swift; sourceTree = "<group>"; };
-		F6F003B7236B04B400AAC7C6 /* MockedCountriesWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedCountriesWebRepository.swift; sourceTree = "<group>"; };
+		F6F003B7236B04B400AAC7C6 /* MockedWebRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedWebRepositories.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -326,7 +330,8 @@
 			children = (
 				F68B5307237441AD00D6337C /* Mock.swift */,
 				F68B530423743D8600D6337C /* MockedInteractors.swift */,
-				F6F003B7236B04B400AAC7C6 /* MockedCountriesWebRepository.swift */,
+				F6F003B7236B04B400AAC7C6 /* MockedWebRepositories.swift */,
+				F661F2C6237773990014E142 /* MockedCacheRepositories.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -354,6 +359,7 @@
 			isa = PBXGroup;
 			children = (
 				F6F003B5236B036800AAC7C6 /* CountriesInteractorTests.swift */,
+				F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -498,14 +504,16 @@
 			files = (
 				F60CC507236C5CFA007E84B2 /* CountryDetailsTests.swift in Sources */,
 				F60829712369CE0100DB292E /* RequestMocking.swift in Sources */,
+				F661F2C5237772CE0014E142 /* ImagesInteractorTests.swift in Sources */,
 				F661F2C3237770010014E142 /* ImageCacheRepositoryTests.swift in Sources */,
 				F6F003B3236AF9F100AAC7C6 /* LoadableTests.swift in Sources */,
 				F60829762369D58A00DB292E /* CountriesWebRepositoryTests.swift in Sources */,
 				F6F003B6236B036800AAC7C6 /* CountriesInteractorTests.swift in Sources */,
 				F60CC509236C6084007E84B2 /* ViewPreviewsTests.swift in Sources */,
+				F661F2C7237773990014E142 /* MockedCacheRepositories.swift in Sources */,
 				F68B530523743D8600D6337C /* MockedInteractors.swift in Sources */,
 				F6F003B1236AF31400AAC7C6 /* SystemEventsHandlerTests.swift in Sources */,
-				F6F003B8236B04B400AAC7C6 /* MockedCountriesWebRepository.swift in Sources */,
+				F6F003B8236B04B400AAC7C6 /* MockedWebRepositories.swift in Sources */,
 				F60829732369CE5300DB292E /* MockedResponse.swift in Sources */,
 				F60CC503236C3CA8007E84B2 /* CountriesListTests.swift in Sources */,
 				F60829782369DCD200DB292E /* TestHelpers.swift in Sources */,
