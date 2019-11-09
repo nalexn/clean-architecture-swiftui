@@ -51,8 +51,10 @@ extension AppEnvironment {
         let countriesInteractor = RealCountriesInteractor(
             webRepository: webRepositories.countriesRepository,
             appState: appState)
+        let inMemoryCache = InMemoryImageCacheRepository()
         let imagesInteractor = RealImagesInteractor(
             webRepository: webRepositories.imageRepository,
+            inMemoryCacheRepository: inMemoryCache,
             appState: appState)
         return InteractorsContainer(countriesInteractor: countriesInteractor,
                                     imagesInteractor: imagesInteractor)

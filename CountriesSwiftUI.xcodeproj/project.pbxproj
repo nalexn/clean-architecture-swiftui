@@ -37,6 +37,7 @@
 		F64496122361BB4900C9BB1F /* InteractorsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496112361BB4900C9BB1F /* InteractorsContainer.swift */; };
 		F661F2B6237734FA0014E142 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B5237734FA0014E142 /* AppEnvironment.swift */; };
 		F661F2B8237738CE0014E142 /* RootViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B7237738CE0014E142 /* RootViewModifier.swift */; };
+		F661F2BA2377416E0014E142 /* ImageCacheRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B92377416E0014E142 /* ImageCacheRepository.swift */; };
 		F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */; };
 		F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* DependencyInjector.swift */; };
 		F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD642368875A00C83258 /* CountriesWebRepository.swift */; };
@@ -98,6 +99,7 @@
 		F64496112361BB4900C9BB1F /* InteractorsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractorsContainer.swift; sourceTree = "<group>"; };
 		F661F2B5237734FA0014E142 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		F661F2B7237738CE0014E142 /* RootViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModifier.swift; sourceTree = "<group>"; };
+		F661F2B92377416E0014E142 /* ImageCacheRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheRepository.swift; sourceTree = "<group>"; };
 		F67833D22369CCBD0065272F /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67833D62369CCBD0065272F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 			children = (
 				F67DBD642368875A00C83258 /* CountriesWebRepository.swift */,
 				F68B53092376EE8C00D6337C /* ImageWebRepository.swift */,
+				F661F2B92377416E0014E142 /* ImageCacheRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				F64495E92360D66400C9BB1F /* ContentView.swift in Sources */,
 				F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */,
 				F644960C2360EAD000C9BB1F /* APICall.swift in Sources */,
+				F661F2BA2377416E0014E142 /* ImageCacheRepository.swift in Sources */,
 				F64496122361BB4900C9BB1F /* InteractorsContainer.swift in Sources */,
 				F6218DB42363051D00917938 /* CountryDetails.swift in Sources */,
 				F62822B4236478DE00823BA1 /* ModalDetailsView.swift in Sources */,
