@@ -11,16 +11,17 @@ import Combine
 
 typealias ImageCacheKey = String
 
-protocol ImageCacheRepository {
+protocol ImageCacheRepository: class {
     func cache(image: UIImage, key: ImageCacheKey)
     func cachedImage(for key: ImageCacheKey) -> AnyPublisher<UIImage, ImageCacheError>
+    func purgeCache()
 }
 
 enum ImageCacheError: Error {
     case imageIsMissing
 }
 
-struct InMemoryImageCacheRepository: ImageCacheRepository {
+class InMemoryImageCacheRepository: ImageCacheRepository {
 
     private let cache = NSCache<NSString, UIImage>()
 
@@ -36,7 +37,7 @@ struct InMemoryImageCacheRepository: ImageCacheRepository {
         }
     }
 
-    private func removeAllImages() {
+    func purgeCache() {
         cache.removeAllObjects()
     }
 }

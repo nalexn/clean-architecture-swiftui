@@ -6,7 +6,7 @@
 //  Copyright © 2019 Alexey Naumov. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct AppEnvironment {
     let appState: AppState
@@ -52,9 +52,13 @@ extension AppEnvironment {
             webRepository: webRepositories.countriesRepository,
             appState: appState)
         let inMemoryCache = InMemoryImageCacheRepository()
+        let memoryWarning = NotificationCenter.default
+            .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
+            .map { _ in }.eraseToAnyPublisher()
         let imagesInteractor = RealImagesInteractor(
             webRepository: webRepositories.imageRepository,
             inMemoryCacheRepository: inMemoryCache,
+            memoryWarning: memoryWarning,
             appState: appState)
         return InteractorsContainer(countriesInteractor: countriesInteractor,
                                     imagesInteractor: imagesInteractor)
