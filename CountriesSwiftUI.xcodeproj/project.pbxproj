@@ -42,6 +42,7 @@
 		F6863E462364FCC800E9B227 /* MockedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6863E452364FCC800E9B227 /* MockedData.swift */; };
 		F68B530523743D8600D6337C /* MockedInteractors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530423743D8600D6337C /* MockedInteractors.swift */; };
 		F68B5308237441AD00D6337C /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B5307237441AD00D6337C /* Mock.swift */; };
+		F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B53092376EE8C00D6337C /* ImageWebRepository.swift */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
 		F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB919236382E7003E69F2 /* SVGImageView.swift */; };
@@ -103,6 +104,7 @@
 		F6863E4723650E7900E9B227 /* CountriesSwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountriesSwiftUI.entitlements; sourceTree = "<group>"; };
 		F68B530423743D8600D6337C /* MockedInteractors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedInteractors.swift; sourceTree = "<group>"; };
 		F68B5307237441AD00D6337C /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
+		F68B53092376EE8C00D6337C /* ImageWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWebRepository.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				F67DBD642368875A00C83258 /* CountriesWebRepository.swift */,
+				F68B53092376EE8C00D6337C /* ImageWebRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -459,6 +462,7 @@
 				F64496082360DFB700C9BB1F /* Models.swift in Sources */,
 				F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */,
 				F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */,
+				F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */,
 				F644960E2360EF6C00C9BB1F /* WebRepository.swift in Sources */,
 				F64496002360D8B000C9BB1F /* CountriesInteractor.swift in Sources */,
 				F64495FD2360D81F00C9BB1F /* AppState.swift in Sources */,
