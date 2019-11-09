@@ -84,7 +84,7 @@ class ImagesInteractorTests: XCTestCase {
     
     func test_loadImage_failed() {
         let image = BindingWithPublisher(value: Loadable<UIImage>.notRequested)
-        let error = APIError.httpCode(500)
+        let error = NSError.test
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .failure(error)
         sut.load(image: image.binding, url: testImageURL)
@@ -102,7 +102,7 @@ class ImagesInteractorTests: XCTestCase {
     
     func test_loadImage_hadLoadedImage() {
         let image = BindingWithPublisher(value: Loadable<UIImage>.loaded(testImage))
-        let error = APIError.httpCode(500)
+        let error = NSError.test
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .failure(error)
         sut.load(image: image.binding, url: testImageURL)

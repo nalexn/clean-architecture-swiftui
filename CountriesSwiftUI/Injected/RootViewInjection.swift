@@ -42,13 +42,12 @@ class RootViewInjection: ObservableObject {
     }
     
     private var viewStack: AnyView {
-        if views.count > 0 {
-            return AnyView(ZStack {
-                        ForEach(views) { $0.view }
-                   })
-        } else {
+        guard views.count > 0 else {
             return AnyView(EmptyView())
         }
+        return AnyView(ZStack {
+             ForEach(views) { $0.view }
+        })
     }
 }
 

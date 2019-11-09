@@ -53,6 +53,12 @@ extension Publisher {
             completion(.loaded(value))
         })
     }
+    
+    func extractUnderlyingError() -> Publishers.MapError<Self, Failure> {
+        mapError {
+            (($0 as NSError).userInfo[NSUnderlyingErrorKey] as? Failure) ?? $0
+        }
+    }
 }
 
 extension Subscribers.Completion {
@@ -76,9 +82,7 @@ private extension Publisher where Output == URLSession.DataTaskPublisher.Output 
                 }
                 return $0.0
             }
-            .mapError {
-                (($0 as NSError).userInfo[NSUnderlyingErrorKey] as? Error) ?? $0
-            }
+            .extractUnderlyingError()
             .decode(type: Value.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

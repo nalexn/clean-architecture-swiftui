@@ -25,19 +25,20 @@ struct RealImageWebRepository: ImageWebRepository {
     }
     
     func load(imageURL: URL, width: Int) -> AnyPublisher<UIImage, Error> {
-        if (imageURL.absoluteString as NSString).pathExtension.lowercased() == "svg" {
-            return importImage(originalURL: imageURL)
-                .flatMap { self.exportImage(info: $0, width: width) }
-                .flatMap { self.download(rawImageURL: $0.imageURL) }
-                .subscribe(on: bgQueue)
-                .receive(on: DispatchQueue.main)
-                .eraseToAnyPublisher()
-        } else {
+        guard (imageURL.absoluteString as NSString).pathExtension.lowercased() == "svg" else {
             return download(rawImageURL: imageURL)
-                .subscribe(on: bgQueue)
-                .receive(on: DispatchQueue.main)
-                .eraseToAnyPublisher()
+            .subscribe(on: bgQueue)
+            .receive(on: DispatchQueue.main)
+            .extractUnderlyingError()
+            .eraseToAnyPublisher()
         }
+        return importImage(originalURL: imageURL)
+            .flatMap { self.exportImage(info: $0, width: width) }
+            .flatMap { self.download(rawImageURL: $0.imageURL) }
+            .subscribe(on: bgQueue)
+            .receive(on: DispatchQueue.main)
+            .extractUnderlyingError()
+            .eraseToAnyPublisher()
     }
     
     private func importImage(originalURL: URL) -> AnyPublisher<ImageConversion.Import, Error> {
