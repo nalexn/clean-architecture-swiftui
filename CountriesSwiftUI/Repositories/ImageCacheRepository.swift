@@ -30,11 +30,10 @@ class InMemoryImageCacheRepository: ImageCacheRepository {
     }
 
     func cachedImage(for key: ImageCacheKey) -> AnyPublisher<UIImage, ImageCacheError> {
-        if let image = cache.object(forKey: key as NSString) {
-            return Just<UIImage>(image).setFailureType(to: ImageCacheError.self).eraseToAnyPublisher()
-        } else {
+        guard let image = cache.object(forKey: key as NSString) else {
             return Fail<UIImage, ImageCacheError>(error: .imageIsMissing).eraseToAnyPublisher()
         }
+        return Just<UIImage>(image).setFailureType(to: ImageCacheError.self).eraseToAnyPublisher()
     }
 
     func purgeCache() {
@@ -46,7 +45,7 @@ class InMemoryImageCacheRepository: ImageCacheRepository {
 
 private extension UIImage {
     var estimatedSizeInKB: Int {
-        let bytesPerRow = cgImage?.bytesPerRow ?? Int(size.width * scale) * 4
+        let bytesPerRow = Int(size.width * scale) * 4
         let numberOfRows = Int(size.height * scale)
         return bytesPerRow / 1024 * numberOfRows
     }
