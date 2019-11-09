@@ -56,4 +56,13 @@ extension RequestMocking.MockedResponse {
         loadingTime = 0
         self.customResponse = customResponse
     }
+    
+    init(url: URL, result: Result<Data, Swift.Error>) {
+        self.url = url
+        self.result = result
+        httpCode = 200
+        headers = [String: String]()
+        loadingTime = 0
+        customResponse = nil
+    }
 }

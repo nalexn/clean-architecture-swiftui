@@ -91,12 +91,10 @@ extension ImageConversion {
         let ajaxToken: String
         
         init(data: Data?) throws {
-            guard let data = data, let string = String(data: data, encoding: .utf8)
-                else { throw APIError.unexpectedResponse }
-            guard let elementWithURL = string.firstMatch(pattern: #"<form class="form ajax-form".*>"#),
-                let conversionURL = elementWithURL.firstMatch(pattern: #"https.*\.svg"#)
-                else { throw APIError.unexpectedResponse }
-            guard let ajaxTokenElement = string.firstMatch(pattern: #"<input .*name=\"token\".*>"#),
+            guard let data = data, let string = String(data: data, encoding: .utf8),
+                let elementWithURL = string.firstMatch(pattern: #"<form class="form ajax-form".*>"#),
+                let conversionURL = elementWithURL.firstMatch(pattern: #"https.*\.svg"#),
+                let ajaxTokenElement = string.firstMatch(pattern: #"<input .*name=\"token\".*>"#),
                 let dirtyToken = ajaxTokenElement.firstMatch(pattern: #"value="([a-z]|[0-9])*"#)
                 else { throw APIError.unexpectedResponse }
             self.urlString = conversionURL
@@ -111,12 +109,10 @@ extension ImageConversion {
         let imageURL: URL
 
         init(data: Data?) throws {
-            guard let data = data, let string = String(data: data, encoding: .utf8)
-                else { throw APIError.unexpectedResponse }
-            guard let element = string.firstMatch(pattern: #"src=.*style="width"#),
-                let imageURL = element.firstMatch(pattern: #"\/\/.*\.png"#)
-                else { throw APIError.unexpectedResponse }
-            guard let url = URL(string: "https:" + imageURL)
+            guard let data = data, let string = String(data: data, encoding: .utf8),
+                let element = string.firstMatch(pattern: #"src=.*style="width"#),
+                let imageURL = element.firstMatch(pattern: #"\/\/.*\.png"#),
+                let url = URL(string: "https:" + imageURL)
                 else { throw APIError.unexpectedResponse }
             self.imageURL = url
         }
@@ -126,30 +122,33 @@ extension ImageConversion {
 private extension String {
     func firstMatch(pattern: String) -> String? {
         guard let regex = try? NSRegularExpression(pattern: pattern, options: []),
-            let matchResult = regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: count))
+            let matchResult = regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: count)),
+            let range = matchResult.ranges.first(where: { $0.location != NSNotFound })
             else { return nil }
-        for index in 0 ..< matchResult.numberOfRanges {
-            if matchResult.range(at: index).location != NSNotFound {
-                return (self as NSString).substring(with: matchResult.range(at: index))
-            }
-        }
-        return nil
+        return (self as NSString).substring(with: range)
     }
 }
 
-// MARK: - Endpoints
-
-extension RealImageWebRepository {
-    enum API: APICall {
-        case prepareConversion(URL)
-        var path: String {
-            switch self {
-            case let .prepareConversion(url):
-                return "/svg-to-png?url=" + url.absoluteString
-            }
+extension NSTextCheckingResult {
+    struct Iterator: IteratorProtocol {
+        typealias Element = NSRange
+        
+        private var index: Int = 0
+        private let collection: NSTextCheckingResult
+        
+        init(collection: NSTextCheckingResult) {
+            self.collection = collection
         }
-        var method: String { "GET" }
-        var headers: [String: String]? { nil }
-        func body() throws -> Data? { nil }
+        
+        mutating func next() -> NSRange? {
+            defer { index += 1 }
+            return index < collection.numberOfRanges ? collection.range(at: index) : nil
+        }
+    }
+}
+
+extension NSTextCheckingResult {
+    var ranges: IteratorSequence<NSTextCheckingResult.Iterator> {
+        return .init(.init(collection: self))
     }
 }

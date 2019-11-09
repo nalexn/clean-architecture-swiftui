@@ -20,22 +20,6 @@ extension View {
     }
 }
 
-// MARK: - Publisher
-
-extension Publisher {
-    func sinkResult(_ result: @escaping (Result<Output, Failure>) -> Void) -> AnyCancellable {
-        return sink(receiveCompletion: { completion in
-            switch completion {
-            case let .failure(error):
-                result(.failure(error))
-            default: break
-            }
-        }, receiveValue: { value in
-            result(.success(value))
-        })
-    }
-}
-
 // MARK: - Result
 
 extension Result where Success: Equatable {
