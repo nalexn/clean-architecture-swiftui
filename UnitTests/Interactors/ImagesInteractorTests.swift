@@ -15,7 +15,7 @@ class ImagesInteractorTests: XCTestCase {
     var sut: RealImagesInteractor!
     var appState: AppState!
     var mockedWebRepository: MockedImageWebRepository!
-    var mockedInMemoryCache: MockedInMemoryImageCacheRepository!
+    var mockedInMemoryCache: MockedImageMemCacheRepository!
     let memoryWanring = PassthroughSubject<Void, Never>()
     var subscriptions = Set<AnyCancellable>()
     let testImageURL = URL(string: "https://test.com/test.png")!
@@ -24,7 +24,7 @@ class ImagesInteractorTests: XCTestCase {
     override func setUp() {
         appState = AppState()
         mockedWebRepository = MockedImageWebRepository()
-        mockedInMemoryCache = MockedInMemoryImageCacheRepository()
+        mockedInMemoryCache = MockedImageMemCacheRepository()
         sut = RealImagesInteractor(webRepository: mockedWebRepository,
                                    inMemoryCache: mockedInMemoryCache,
                                    memoryWarning: memoryWanring.eraseToAnyPublisher(),

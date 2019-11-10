@@ -51,7 +51,7 @@ extension AppEnvironment {
         let countriesInteractor = RealCountriesInteractor(
             webRepository: webRepositories.countriesRepository,
             appState: appState)
-        let inMemoryCache = InMemoryImageCacheRepository()
+        let inMemoryCache = ImageMemCacheRepository()
         let memoryWarning = NotificationCenter.default
             .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
             .map { _ in }.eraseToAnyPublisher()

@@ -10,10 +10,10 @@ import XCTest
 @testable import CountriesSwiftUI
 
 class ImageCacheRepositoryTests: XCTestCase {
-    var sut: InMemoryImageCacheRepository!
+    var sut: ImageMemCacheRepository!
     
     override func setUp() {
-        sut = InMemoryImageCacheRepository()
+        sut = ImageMemCacheRepository()
     }
     
     func test_cachedImage_imageIsMissing() {
