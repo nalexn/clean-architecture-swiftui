@@ -26,7 +26,7 @@ extension AnyCancellable {
 }
 
 extension Publisher {
-    func sinkResult(_ result: @escaping (Result<Output, Failure>) -> Void) -> AnyCancellable {
+    func sinkToResult(_ result: @escaping (Result<Output, Failure>) -> Void) -> AnyCancellable {
         return sink(receiveCompletion: { completion in
             switch completion {
             case let .failure(error):

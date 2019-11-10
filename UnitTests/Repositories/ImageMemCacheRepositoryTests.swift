@@ -18,7 +18,7 @@ class ImageMemCacheRepositoryTests: XCTestCase {
     
     func test_cachedImage_imageIsMissing() {
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.cachedImage(for: "missing_file").sinkResult { result in
+        _ = sut.cachedImage(for: "missing_file").sinkToResult { result in
             XCTAssertTrue(Thread.isMainThread)
             result.assertFailure(ImageCacheError.imageIsMissing.localizedDescription)
             exp.fulfill()
@@ -31,7 +31,7 @@ class ImageMemCacheRepositoryTests: XCTestCase {
         let key = "image_key"
         sut.cache(image: image, key: key)
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.cachedImage(for: key).sinkResult { result in
+        _ = sut.cachedImage(for: key).sinkToResult { result in
             XCTAssertTrue(Thread.isMainThread)
             result.assertSuccess(value: image)
             exp.fulfill()
@@ -45,7 +45,7 @@ class ImageMemCacheRepositoryTests: XCTestCase {
         sut.cache(image: image, key: key)
         sut.purgeCache()
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.cachedImage(for: key).sinkResult { result in
+        _ = sut.cachedImage(for: key).sinkToResult { result in
             result.assertFailure(ImageCacheError.imageIsMissing.localizedDescription)
             exp.fulfill()
         }

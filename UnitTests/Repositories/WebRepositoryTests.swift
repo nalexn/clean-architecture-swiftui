@@ -30,7 +30,7 @@ class WebRepositoryTests: XCTestCase {
             let data = TestWebRepository.TestData()
             try mock(.test, result: .success(data))
             let exp = XCTestExpectation(description: "Completion")
-            _ = sut.load(.test).sinkResult { result in
+            _ = sut.load(.test).sinkToResult { result in
                 XCTAssertTrue(Thread.isMainThread)
                 result.assertSuccess(value: data)
                 exp.fulfill()
@@ -44,7 +44,7 @@ class WebRepositoryTests: XCTestCase {
             let data = Country.mockedData
             try mock(.test, result: .success(data))
             let exp = XCTestExpectation(description: "Completion")
-            _ = sut.load(.test).sinkResult { result in
+            _ = sut.load(.test).sinkToResult { result in
                 XCTAssertTrue(Thread.isMainThread)
                 result.assertFailure("The data couldn’t be read because it isn’t in the correct format.")
                 exp.fulfill()
@@ -58,7 +58,7 @@ class WebRepositoryTests: XCTestCase {
             let data = TestWebRepository.TestData()
             try mock(.test, result: .success(data), httpCode: 500)
             let exp = XCTestExpectation(description: "Completion")
-            _ = sut.load(.test).sinkResult { result in
+            _ = sut.load(.test).sinkToResult { result in
                 XCTAssertTrue(Thread.isMainThread)
                 result.assertFailure("Unexpected HTTP code: 500")
                 exp.fulfill()
@@ -72,7 +72,7 @@ class WebRepositoryTests: XCTestCase {
             let error = NSError.test
             try mock(.test, result: Result<TestWebRepository.TestData, Error>.failure(error))
             let exp = XCTestExpectation(description: "Completion")
-            _ = sut.load(.test).sinkResult { result in
+            _ = sut.load(.test).sinkToResult { result in
                 XCTAssertTrue(Thread.isMainThread)
                 result.assertFailure(error.localizedDescription)
                 exp.fulfill()
@@ -83,7 +83,7 @@ class WebRepositoryTests: XCTestCase {
     
     func test_webRepository_requestURLError() {
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(.urlError).sinkResult { result in
+        _ = sut.load(.urlError).sinkToResult { result in
             XCTAssertTrue(Thread.isMainThread)
             result.assertFailure(APIError.invalidURL.localizedDescription)
             exp.fulfill()
@@ -93,7 +93,7 @@ class WebRepositoryTests: XCTestCase {
     
     func test_webRepository_requestBodyError() {
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(.bodyError).sinkResult { result in
+        _ = sut.load(.bodyError).sinkToResult { result in
             XCTAssertTrue(Thread.isMainThread)
             result.assertFailure(TestWebRepository.APIError.fail.localizedDescription)
             exp.fulfill()
@@ -120,7 +120,7 @@ class WebRepositoryTests: XCTestCase {
             let mock = try Mock(apiCall: API.test, baseURL: sut.baseURL, customResponse: response)
             RequestMocking.add(mock: mock)
             let exp = XCTestExpectation(description: "Completion")
-            _ = sut.load(.test).sinkResult { result in
+            _ = sut.load(.test).sinkToResult { result in
                 XCTAssertTrue(Thread.isMainThread)
                 result.assertFailure(APIError.unexpectedResponse.localizedDescription)
                 exp.fulfill()

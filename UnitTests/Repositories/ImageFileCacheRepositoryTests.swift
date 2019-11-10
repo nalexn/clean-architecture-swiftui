@@ -24,7 +24,7 @@ class ImageFileCacheRepositoryTests: XCTestCase {
     
     func test_cachedImage_imageIsMissing() {
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.cachedImage(for: "missing_file").sinkResult { result in
+        _ = sut.cachedImage(for: "missing_file").sinkToResult { result in
             XCTAssertTrue(Thread.isMainThread)
             result.assertFailure(ImageCacheError.imageIsMissing.localizedDescription)
             exp.fulfill()
@@ -37,7 +37,7 @@ class ImageFileCacheRepositoryTests: XCTestCase {
         let key = "image_key"
         sut.cache(image: image, key: key)
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.cachedImage(for: key).sinkResult { result in
+        _ = sut.cachedImage(for: key).sinkToResult { result in
             XCTAssertTrue(Thread.isMainThread)
             switch result {
             case let .success(returnedImage):
@@ -56,7 +56,7 @@ class ImageFileCacheRepositoryTests: XCTestCase {
         sut.cache(image: image, key: key)
         sut.purgeCache()
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.cachedImage(for: key).sinkResult { result in
+        _ = sut.cachedImage(for: key).sinkToResult { result in
             result.assertFailure(ImageCacheError.imageIsMissing.localizedDescription)
             exp.fulfill()
         }
@@ -70,7 +70,7 @@ class ImageFileCacheRepositoryTests: XCTestCase {
         sut.cache(image: image, key: key)
         let exp = XCTestExpectation(description: "Completion")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            _ = self.sut.cachedImage(for: key).sinkResult { result in
+            _ = self.sut.cachedImage(for: key).sinkToResult { result in
                 result.assertFailure(ImageCacheError.imageIsMissing.localizedDescription)
                 exp.fulfill()
             }

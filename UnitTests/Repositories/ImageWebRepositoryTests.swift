@@ -45,7 +45,7 @@ class ImageWebRepositoryTests: XCTestCase {
         mocks.forEach { RequestMocking.add(mock: $0) }
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkResult { result in
+        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             switch result {
             case let .success(resultValue):
                 XCTAssertEqual(resultValue.size, self.testImage.size)
@@ -66,7 +66,7 @@ class ImageWebRepositoryTests: XCTestCase {
         RequestMocking.add(mock: mock)
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkResult { result in
+        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             switch result {
             case let .success(resultValue):
                 XCTAssertEqual(resultValue.size, self.testImage.size)
@@ -87,7 +87,7 @@ class ImageWebRepositoryTests: XCTestCase {
         mocks.forEach { RequestMocking.add(mock: $0) }
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkResult { result in
+        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             result.assertFailure(APIError.unexpectedResponse.localizedDescription)
             exp.fulfill()
         }
@@ -108,7 +108,7 @@ class ImageWebRepositoryTests: XCTestCase {
         mocks.forEach { RequestMocking.add(mock: $0) }
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkResult { result in
+        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             result.assertFailure(APIError.unexpectedResponse.localizedDescription)
             exp.fulfill()
         }
@@ -134,7 +134,7 @@ class ImageWebRepositoryTests: XCTestCase {
         mocks.forEach { RequestMocking.add(mock: $0) }
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkResult { result in
+        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             result.assertFailure(APIError.unexpectedResponse.localizedDescription)
             exp.fulfill()
         }
@@ -154,7 +154,7 @@ class ImageWebRepositoryTests: XCTestCase {
         mocks.forEach { RequestMocking.add(mock: $0) }
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkResult { result in
+        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             result.assertFailure(APIError.unexpectedResponse.localizedDescription)
             exp.fulfill()
         }

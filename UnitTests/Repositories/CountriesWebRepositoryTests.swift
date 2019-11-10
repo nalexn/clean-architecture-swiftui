@@ -32,7 +32,7 @@ class CountriesWebRepositoryTests: XCTestCase {
             let data = Country.mockedData
             try mock(.allCountries, result: .success(data))
             let exp = XCTestExpectation(description: "Completion")
-            _ = sut.loadCountries().sinkResult { result in
+            _ = sut.loadCountries().sinkToResult { result in
                 result.assertSuccess(value: data)
                 exp.fulfill()
             }
@@ -49,7 +49,7 @@ class CountriesWebRepositoryTests: XCTestCase {
                 borders: countries.map({ $0.alpha3Code }))
             try mock(.countryDetails(countries[0]), result: .success([value]))
             let exp = XCTestExpectation(description: "Completion")
-            _ = sut.loadCountryDetails(country: countries[0]).sinkResult { result in
+            _ = sut.loadCountryDetails(country: countries[0]).sinkToResult { result in
                 result.assertSuccess(value: value)
                 exp.fulfill()
             }
@@ -62,7 +62,7 @@ class CountriesWebRepositoryTests: XCTestCase {
             let countries = Country.mockedData
             try mock(.countryDetails(countries[0]), result: .success([Country.Details.Intermediate]()))
             let exp = XCTestExpectation(description: "Completion")
-            _ = sut.loadCountryDetails(country: countries[0]).sinkResult { result in
+            _ = sut.loadCountryDetails(country: countries[0]).sinkToResult { result in
                 result.assertFailure(APIError.unexpectedResponse.localizedDescription)
                 exp.fulfill()
             }
