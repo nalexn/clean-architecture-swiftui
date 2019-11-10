@@ -11,7 +11,7 @@ import Combine
 
 typealias ImageCacheKey = String
 
-protocol ImageCacheRepository: class {
+protocol ImageCacheRepository {
     func cache(image: UIImage, key: ImageCacheKey)
     func cachedImage(for key: ImageCacheKey) -> AnyPublisher<UIImage, ImageCacheError>
     func purgeCache()
@@ -21,7 +21,7 @@ enum ImageCacheError: Error {
     case imageIsMissing
 }
 
-class ImageMemCacheRepository: ImageCacheRepository {
+struct ImageMemCacheRepository: ImageCacheRepository {
 
     private let cache = NSCache<NSString, UIImage>()
 

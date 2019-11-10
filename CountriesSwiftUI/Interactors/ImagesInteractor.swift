@@ -28,9 +28,8 @@ struct RealImagesInteractor: ImagesInteractor {
         self.webRepository = webRepository
         self.inMemoryCache = inMemoryCache
         self.appState = appState
-        weak var weakInMemoryCache = inMemoryCache
-        memoryWarningSubscription = memoryWarning.sink { _ in
-            weakInMemoryCache?.purgeCache()
+        memoryWarningSubscription = memoryWarning.sink { [inMemoryCache] _ in
+            inMemoryCache.purgeCache()
         }
     }
     
@@ -39,13 +38,14 @@ struct RealImagesInteractor: ImagesInteractor {
             image.wrappedValue = .notRequested; return .cancelled
         }
         image.wrappedValue = .isLoading(last: image.wrappedValue.value)
-        weak var weakInMemoryCache = inMemoryCache
         return inMemoryCache.cachedImage(for: url.imageCacheKey)
-            .catch { _ in self.webRepository.load(imageURL: url, width: 300) }
+            .catch { _ in
+                self.webRepository.load(imageURL: url, width: 300)
+            }
             .sinkToLoadable {
                 image.wrappedValue = $0
                 if let image = $0.value {
-                    weakInMemoryCache?.cache(image: image, key: url.imageCacheKey)
+                    self.inMemoryCache.cache(image: image, key: url.imageCacheKey)
                 }
             }
     }
