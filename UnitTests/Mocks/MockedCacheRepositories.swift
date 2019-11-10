@@ -10,9 +10,9 @@ import XCTest
 import Combine
 @testable import CountriesSwiftUI
 
-// MARK: - ImageMemCacheRepository
+// MARK: - ImageCacheRepository
 
-class MockedImageMemCacheRepository: ImageCacheRepository {
+class MockedImageCacheRepository: ImageCacheRepository {
     
     var imageResponse: Result<UIImage, ImageCacheError> = .failure(.imageIsMissing)
     var cached: [ImageCacheKey: UIImage] = [:]

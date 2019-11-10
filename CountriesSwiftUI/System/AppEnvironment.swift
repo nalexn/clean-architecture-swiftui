@@ -52,12 +52,14 @@ extension AppEnvironment {
             webRepository: webRepositories.countriesRepository,
             appState: appState)
         let inMemoryCache = ImageMemCacheRepository()
+        let fileCache = ImageFileCacheRepository()
         let memoryWarning = NotificationCenter.default
             .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
             .map { _ in }.eraseToAnyPublisher()
         let imagesInteractor = RealImagesInteractor(
             webRepository: webRepositories.imageRepository,
             inMemoryCache: inMemoryCache,
+            fileCache: fileCache,
             memoryWarning: memoryWarning,
             appState: appState)
         return InteractorsContainer(countriesInteractor: countriesInteractor,

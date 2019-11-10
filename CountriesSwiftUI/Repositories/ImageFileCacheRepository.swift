@@ -33,6 +33,7 @@ struct ImageFileCacheRepository: ImageCacheRepository {
 
     func cache(image: UIImage, key: ImageCacheKey) {
         guard let url = fileManager.fileURL(cachesURL: cachesURL, key: key),
+            !fileManager.fileExists(atPath: url.path),
             let data = image.pngData() else { return }
         bgQueue.async {
             self.fileManager.createDirectoryIfNeeded(url: self.cachesURL)

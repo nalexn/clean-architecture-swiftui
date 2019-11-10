@@ -15,7 +15,8 @@ class ImagesInteractorTests: XCTestCase {
     var sut: RealImagesInteractor!
     var appState: AppState!
     var mockedWebRepository: MockedImageWebRepository!
-    var mockedInMemoryCache: MockedImageMemCacheRepository!
+    var mockedInMemoryCache: MockedImageCacheRepository!
+    var mockedFileCache: MockedImageCacheRepository!
     let memoryWanring = PassthroughSubject<Void, Never>()
     var subscriptions = Set<AnyCancellable>()
     let testImageURL = URL(string: "https://test.com/test.png")!
@@ -24,9 +25,11 @@ class ImagesInteractorTests: XCTestCase {
     override func setUp() {
         appState = AppState()
         mockedWebRepository = MockedImageWebRepository()
-        mockedInMemoryCache = MockedImageMemCacheRepository()
+        mockedInMemoryCache = MockedImageCacheRepository()
+        mockedFileCache = MockedImageCacheRepository()
         sut = RealImagesInteractor(webRepository: mockedWebRepository,
                                    inMemoryCache: mockedInMemoryCache,
+                                   fileCache: mockedFileCache,
                                    memoryWarning: memoryWanring.eraseToAnyPublisher(),
                                    appState: appState)
         subscriptions = Set<AnyCancellable>()
@@ -50,6 +53,7 @@ class ImagesInteractorTests: XCTestCase {
     func test_loadImage_cachedInMemory() {
         let image = BindingWithPublisher(value: Loadable<UIImage>.notRequested)
         mockedInMemoryCache.imageResponse = .success(testImage)
+        mockedFileCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .failure(APIError.unexpectedResponse)
         sut.load(image: image.binding, url: testImageURL)
             .store(in: &subscriptions)
@@ -65,9 +69,31 @@ class ImagesInteractorTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
+    func test_loadImage_cachedOnDisk() {
+        let image = BindingWithPublisher(value: Loadable<UIImage>.notRequested)
+        mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
+        mockedFileCache.imageResponse = .success(testImage)
+        mockedWebRepository.imageResponse = .failure(APIError.unexpectedResponse)
+        sut.load(image: image.binding, url: testImageURL)
+            .store(in: &subscriptions)
+        let exp = XCTestExpectation(description: "Completion")
+        image.updatesRecorder.sink { updates in
+            XCTAssertEqual(updates, [
+                .notRequested,
+                .isLoading(last: nil),
+                .loaded(self.testImage)
+            ])
+            let cachedImage = self.mockedInMemoryCache.cached[self.testImageURL.imageCacheKey]
+            XCTAssertEqual(cachedImage, self.testImage)
+            exp.fulfill()
+        }.store(in: &subscriptions)
+        wait(for: [exp], timeout: 1)
+    }
+    
     func test_loadImage_loadedFromWeb() {
         let image = BindingWithPublisher(value: Loadable<UIImage>.notRequested)
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
+        mockedFileCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .success(testImage)
         sut.load(image: image.binding, url: testImageURL)
             .store(in: &subscriptions)
@@ -89,6 +115,7 @@ class ImagesInteractorTests: XCTestCase {
         let image = BindingWithPublisher(value: Loadable<UIImage>.notRequested)
         let error = NSError.test
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
+        mockedFileCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .failure(error)
         sut.load(image: image.binding, url: testImageURL)
             .store(in: &subscriptions)
@@ -108,6 +135,7 @@ class ImagesInteractorTests: XCTestCase {
         let image = BindingWithPublisher(value: Loadable<UIImage>.loaded(testImage))
         let error = NSError.test
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
+        mockedFileCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .failure(error)
         sut.load(image: image.binding, url: testImageURL)
             .store(in: &subscriptions)
