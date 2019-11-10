@@ -49,11 +49,11 @@ struct RealImagesInteractor: ImagesInteractor {
                 self.webRepository.load(imageURL: url, width: 300)
             }
             .sinkToLoadable {
-                image.wrappedValue = $0
                 if let image = $0.value {
                     self.inMemoryCache.cache(image: image, key: url.imageCacheKey)
                     self.fileCache.cache(image: image, key: url.imageCacheKey)
                 }
+                image.wrappedValue = $0
             }
     }
 }
