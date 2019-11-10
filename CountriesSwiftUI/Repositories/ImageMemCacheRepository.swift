@@ -21,6 +21,8 @@ enum ImageCacheError: Error {
     case imageIsMissing
 }
 
+// MARK: - ImageMemCacheRepository
+
 struct ImageMemCacheRepository: ImageCacheRepository {
 
     private let cache = NSCache<NSString, UIImage>()

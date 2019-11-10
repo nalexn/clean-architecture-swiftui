@@ -9,7 +9,7 @@
 import XCTest
 @testable import CountriesSwiftUI
 
-class ImageCacheRepositoryTests: XCTestCase {
+class ImageMemCacheRepositoryTests: XCTestCase {
     var sut: ImageMemCacheRepository!
     
     override func setUp() {
@@ -19,6 +19,7 @@ class ImageCacheRepositoryTests: XCTestCase {
     func test_cachedImage_imageIsMissing() {
         let exp = XCTestExpectation(description: "Completion")
         _ = sut.cachedImage(for: "missing_file").sinkResult { result in
+            XCTAssertTrue(Thread.isMainThread)
             result.assertFailure(ImageCacheError.imageIsMissing.localizedDescription)
             exp.fulfill()
         }
@@ -31,6 +32,7 @@ class ImageCacheRepositoryTests: XCTestCase {
         sut.cache(image: image, key: key)
         let exp = XCTestExpectation(description: "Completion")
         _ = sut.cachedImage(for: key).sinkResult { result in
+            XCTAssertTrue(Thread.isMainThread)
             result.assertSuccess(value: image)
             exp.fulfill()
         }
@@ -49,10 +51,4 @@ class ImageCacheRepositoryTests: XCTestCase {
         }
         wait(for: [exp], timeout: 1)
     }
-    
-    /*
-     func cache(image: UIImage, key: ImageCacheKey)
-     func cachedImage(for key: ImageCacheKey) -> AnyPublisher<UIImage, ImageCacheError>
-     func purgeCache()
-     */
 }
