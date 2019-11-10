@@ -11,7 +11,7 @@ import Foundation
 import SwiftUI
 
 protocol ImagesInteractor {
-    func load(image: Binding<Loadable<UIImage>>, url: URL?)
+    func load(image: Binding<Loadable<UIImage>>, url: URL?) -> AnyCancellable
 }
 
 struct RealImagesInteractor: ImagesInteractor {
@@ -34,22 +34,19 @@ struct RealImagesInteractor: ImagesInteractor {
         }
     }
     
-    func load(image: Binding<Loadable<UIImage>>, url: URL?) {
+    func load(image: Binding<Loadable<UIImage>>, url: URL?) -> AnyCancellable {
         guard let url = url else {
-            image.wrappedValue = .notRequested; return
+            image.wrappedValue = .notRequested; return .cancelled
         }
         image.wrappedValue = .isLoading(last: image.wrappedValue.value)
         weak var weakInMemoryCache = inMemoryCache
-        var keepAlive: AnyCancellable?
-        keepAlive =
-            inMemoryCache.cachedImage(for: url.imageCacheKey)
+        return inMemoryCache.cachedImage(for: url.imageCacheKey)
             .catch { _ in self.webRepository.load(imageURL: url, width: 300) }
             .sinkToLoadable {
                 image.wrappedValue = $0
                 if let image = $0.value {
                     weakInMemoryCache?.cache(image: image, key: url.imageCacheKey)
                 }
-                keepAlive = nil; _ = keepAlive
             }
     }
 }
@@ -61,6 +58,7 @@ extension URL {
 }
 
 struct StubImagesInteractor: ImagesInteractor {
-    func load(image: Binding<Loadable<UIImage>>, url: URL?) {
+    func load(image: Binding<Loadable<UIImage>>, url: URL?) -> AnyCancellable {
+        return .cancelled
     }
 }

@@ -32,6 +32,7 @@ class CountriesInteractorTests: XCTestCase {
         mockedRepository.countriesResponse = .success(countries)
         let updates = recordAppStateUserDataUpdates()
         sut.loadCountries()
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         updates.sink { updates in
             XCTAssertEqual(updates, [
@@ -51,6 +52,7 @@ class CountriesInteractorTests: XCTestCase {
         mockedRepository.countriesResponse = .success(finalCountries)
         let updates = recordAppStateUserDataUpdates()
         sut.loadCountries()
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         updates.sink { updates in
             XCTAssertEqual(updates, [
@@ -68,6 +70,7 @@ class CountriesInteractorTests: XCTestCase {
         mockedRepository.countriesResponse = .failure(error)
         let updates = recordAppStateUserDataUpdates()
         sut.loadCountries()
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         updates.sink { updates in
             XCTAssertEqual(updates, [
@@ -88,6 +91,7 @@ class CountriesInteractorTests: XCTestCase {
         mockedRepository.detailsResponse = .success(data.intermediate)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: Country.mockedData[0])
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -107,6 +111,7 @@ class CountriesInteractorTests: XCTestCase {
         mockedRepository.detailsResponse = .success(data.intermediate)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: countries[0])
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -127,6 +132,7 @@ class CountriesInteractorTests: XCTestCase {
         mockedRepository.detailsResponse = .success(data.intermediate)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: countries[0])
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -146,6 +152,7 @@ class CountriesInteractorTests: XCTestCase {
         mockedRepository.detailsResponse = .success(data.intermediate)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.loaded(data.details))
         sut.load(countryDetails: details.binding, country: countries[0])
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -165,6 +172,7 @@ class CountriesInteractorTests: XCTestCase {
         mockedRepository.detailsResponse = .failure(error)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: countries[0])
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -180,8 +188,10 @@ class CountriesInteractorTests: XCTestCase {
     func test_stubInteractor() {
         let sut = StubCountriesInteractor()
         sut.loadCountries()
+            .store(in: &subscriptions)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: Country.mockedData[0])
+            .store(in: &subscriptions)
     }
     
     // MARK: - Helper

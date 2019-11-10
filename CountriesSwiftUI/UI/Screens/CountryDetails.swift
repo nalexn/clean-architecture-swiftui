@@ -25,6 +25,7 @@ struct CountryDetails: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.interactors) var interactors: InteractorsContainer
     @State private var details: Loadable<Country.Details>
+    private let cancelBag = CancelBag()
     
     init(country: Country, details: Loadable<Country.Details> = .notRequested) {
         self.country = country
@@ -51,6 +52,7 @@ struct CountryDetails: View {
 private extension CountryDetails {
     func loadCountryDetails() {
         interactors.countriesInteractor.load(countryDetails: $details, country: country)
+            .store(in: cancelBag)
     }
     
     func showCountryDetailsSheet() {

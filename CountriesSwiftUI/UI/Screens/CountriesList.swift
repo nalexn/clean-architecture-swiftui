@@ -23,6 +23,7 @@ struct CountriesList: View {
     
     @EnvironmentObject var appState: AppState
     @Environment(\.interactors) var interactors: InteractorsContainer
+    private let cancelBag = CancelBag()
     
     var body: some View {
         GeometryReader { geometry in
@@ -56,6 +57,7 @@ struct CountriesList: View {
 private extension CountriesList {
     func loadCountries() {
         interactors.countriesInteractor.loadCountries()
+            .store(in: cancelBag)
     }
 }
 

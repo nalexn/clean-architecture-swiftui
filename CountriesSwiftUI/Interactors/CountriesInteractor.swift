@@ -11,8 +11,8 @@ import Foundation
 import SwiftUI
 
 protocol CountriesInteractor {
-    func loadCountries()
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country)
+    func loadCountries() -> AnyCancellable
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) -> AnyCancellable
 }
 
 struct RealCountriesInteractor: CountriesInteractor {
@@ -25,14 +25,14 @@ struct RealCountriesInteractor: CountriesInteractor {
         self.appState = appState
     }
 
-    func loadCountries() {
+    func loadCountries() -> AnyCancellable {
         appState.userData.countries = .isLoading(last: appState.userData.countries.value)
         weak var weakAppState = appState
-        _ = webRepository.loadCountries()
+        return webRepository.loadCountries()
             .sinkToLoadable { weakAppState?.userData.countries = $0 }
     }
 
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) -> AnyCancellable {
         countryDetails.wrappedValue = .isLoading(last: countryDetails.wrappedValue.value)
         let countriesArray = appState.$userData
             .tryMap { userData -> [Country] in
@@ -41,7 +41,7 @@ struct RealCountriesInteractor: CountriesInteractor {
                 }
                 return userData.countries.value ?? []
             }
-        _ = webRepository.loadCountryDetails(country: country)
+        return webRepository.loadCountryDetails(country: country)
             .combineLatest(countriesArray)
             .receive(on: webRepository.bgQueue)
             .map { (intermediate, countries) -> Country.Details in
@@ -54,9 +54,11 @@ struct RealCountriesInteractor: CountriesInteractor {
 
 struct StubCountriesInteractor: CountriesInteractor {
     
-    func loadCountries() {
+    func loadCountries() -> AnyCancellable {
+        return .cancelled
     }
     
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) -> AnyCancellable {
+        return .cancelled
     }
 }

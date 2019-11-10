@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 import WebKit
 
 struct SVGImageView: View {
@@ -14,6 +15,7 @@ struct SVGImageView: View {
     let imageURL: URL
     @Environment(\.interactors) var interactors: InteractorsContainer
     @State private var image: Loadable<UIImage>
+    private let cancelBag = CancelBag()
     
     init(imageURL: URL, image: Loadable<UIImage> = .notRequested) {
         self.imageURL = imageURL
@@ -39,6 +41,7 @@ struct SVGImageView: View {
 private extension SVGImageView {
     func loadImage() {
         interactors.imagesInteractor.load(image: $image, url: imageURL)
+            .store(in: cancelBag)
     }
 }
 

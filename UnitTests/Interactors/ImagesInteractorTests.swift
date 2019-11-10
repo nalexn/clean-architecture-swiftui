@@ -35,6 +35,7 @@ class ImagesInteractorTests: XCTestCase {
     func test_loadImage_nilURL() {
         let image = BindingWithPublisher(value: Loadable<UIImage>.notRequested)
         sut.load(image: image.binding, url: nil)
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -51,6 +52,7 @@ class ImagesInteractorTests: XCTestCase {
         mockedInMemoryCache.imageResponse = .success(testImage)
         mockedWebRepository.imageResponse = .failure(APIError.unexpectedResponse)
         sut.load(image: image.binding, url: testImageURL)
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -68,6 +70,7 @@ class ImagesInteractorTests: XCTestCase {
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .success(testImage)
         sut.load(image: image.binding, url: testImageURL)
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -88,6 +91,7 @@ class ImagesInteractorTests: XCTestCase {
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .failure(error)
         sut.load(image: image.binding, url: testImageURL)
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -106,6 +110,7 @@ class ImagesInteractorTests: XCTestCase {
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .failure(error)
         sut.load(image: image.binding, url: testImageURL)
+            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -128,5 +133,6 @@ class ImagesInteractorTests: XCTestCase {
         let sut = StubImagesInteractor()
         let image = BindingWithPublisher(value: Loadable<UIImage>.notRequested)
         sut.load(image: image.binding, url: testImageURL)
+            .store(in: &subscriptions)
     }
 }

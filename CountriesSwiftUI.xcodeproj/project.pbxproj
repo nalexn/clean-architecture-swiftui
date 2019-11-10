@@ -44,6 +44,7 @@
 		F661F2C5237772CE0014E142 /* ImagesInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */; };
 		F661F2C7237773990014E142 /* MockedCacheRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C6237773990014E142 /* MockedCacheRepositories.swift */; };
 		F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C923777D440014E142 /* SVGImageViewTests.swift */; };
+		F661F2CC23783E360014E142 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2CB23783E360014E142 /* Helpers.swift */; };
 		F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */; };
 		F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* DependencyInjector.swift */; };
 		F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD642368875A00C83258 /* CountriesWebRepository.swift */; };
@@ -112,6 +113,7 @@
 		F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesInteractorTests.swift; sourceTree = "<group>"; };
 		F661F2C6237773990014E142 /* MockedCacheRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedCacheRepositories.swift; sourceTree = "<group>"; };
 		F661F2C923777D440014E142 /* SVGImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageViewTests.swift; sourceTree = "<group>"; };
+		F661F2CB23783E360014E142 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		F67833D22369CCBD0065272F /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67833D62369CCBD0065272F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				F64496022360D8EB00C9BB1F /* Loadable.swift */,
 				F644960B2360EAD000C9BB1F /* APICall.swift */,
 				F644960D2360EF6C00C9BB1F /* WebRepository.swift */,
+				F661F2CB23783E360014E142 /* Helpers.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 				F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */,
 				F64496102361B64700C9BB1F /* CountriesList.swift in Sources */,
 				F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */,
+				F661F2CC23783E360014E142 /* Helpers.swift in Sources */,
 				F64495E72360D66400C9BB1F /* SceneDelegate.swift in Sources */,
 				F64495E92360D66400C9BB1F /* ContentView.swift in Sources */,
 				F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */,

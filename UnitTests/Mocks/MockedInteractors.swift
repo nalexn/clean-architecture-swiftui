@@ -8,6 +8,7 @@
 
 import XCTest
 import SwiftUI
+import Combine
 @testable import CountriesSwiftUI
 
 extension InteractorsContainer {
@@ -40,12 +41,14 @@ struct MockedCountriesInteractor: Mock, CountriesInteractor {
         self.actions = .init(expected: expected)
     }
     
-    func loadCountries() {
+    func loadCountries() -> AnyCancellable {
         register(.loadCountries)
+        return .cancelled
     }
     
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) -> AnyCancellable {
         register(.loadCountryDetails(country))
+        return .cancelled
     }
 }
 
@@ -63,7 +66,8 @@ struct MockedImagesInteractor: Mock, ImagesInteractor {
         self.actions = .init(expected: expected)
     }
     
-    func load(image: Binding<Loadable<UIImage>>, url: URL?) {
+    func load(image: Binding<Loadable<UIImage>>, url: URL?) -> AnyCancellable {
         register(.loadImage(url))
+        return .cancelled
     }
 }
