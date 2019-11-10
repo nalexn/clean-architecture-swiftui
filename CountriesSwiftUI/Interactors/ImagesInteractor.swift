@@ -17,18 +17,18 @@ protocol ImagesInteractor {
 struct RealImagesInteractor: ImagesInteractor {
     
     let webRepository: ImageWebRepository
-    let inMemoryCacheRepository: ImageCacheRepository
+    let inMemoryCache: ImageCacheRepository
     let appState: AppState
     private let memoryWarningSubscription: AnyCancellable
     
     init(webRepository: ImageWebRepository,
-         inMemoryCacheRepository: ImageCacheRepository,
+         inMemoryCache: ImageCacheRepository,
          memoryWarning: AnyPublisher<Void, Never>,
          appState: AppState) {
         self.webRepository = webRepository
-        self.inMemoryCacheRepository = inMemoryCacheRepository
+        self.inMemoryCache = inMemoryCache
         self.appState = appState
-        weak var weakInMemoryCache = inMemoryCacheRepository
+        weak var weakInMemoryCache = inMemoryCache
         memoryWarningSubscription = memoryWarning.sink { _ in
             weakInMemoryCache?.purgeCache()
         }
@@ -39,19 +39,18 @@ struct RealImagesInteractor: ImagesInteractor {
             image.wrappedValue = .notRequested; return
         }
         image.wrappedValue = .isLoading(last: image.wrappedValue.value)
-        weak var weakAppState = appState
-        weak var weakInMemoryCache = inMemoryCacheRepository
-        let token =
-            inMemoryCacheRepository.cachedImage(for: url.imageCacheKey)
+        weak var weakInMemoryCache = inMemoryCache
+        var keepAlive: AnyCancellable?
+        keepAlive =
+            inMemoryCache.cachedImage(for: url.imageCacheKey)
             .catch { _ in self.webRepository.load(imageURL: url, width: 300) }
             .sinkToLoadable {
                 image.wrappedValue = $0
                 if let image = $0.value {
                     weakInMemoryCache?.cache(image: image, key: url.imageCacheKey)
                 }
-                weakAppState?.system.runningRequests[url] = nil
+                keepAlive = nil; _ = keepAlive
             }
-        appState.system.runningRequests[url] = token
     }
 }
 

@@ -26,7 +26,7 @@ class ImagesInteractorTests: XCTestCase {
         mockedWebRepository = MockedImageWebRepository()
         mockedInMemoryCache = MockedInMemoryImageCacheRepository()
         sut = RealImagesInteractor(webRepository: mockedWebRepository,
-                                   inMemoryCacheRepository: mockedInMemoryCache,
+                                   inMemoryCache: mockedInMemoryCache,
                                    memoryWarning: memoryWanring.eraseToAnyPublisher(),
                                    appState: appState)
         subscriptions = Set<AnyCancellable>()

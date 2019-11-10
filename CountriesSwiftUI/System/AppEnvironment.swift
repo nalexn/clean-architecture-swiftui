@@ -57,7 +57,7 @@ extension AppEnvironment {
             .map { _ in }.eraseToAnyPublisher()
         let imagesInteractor = RealImagesInteractor(
             webRepository: webRepositories.imageRepository,
-            inMemoryCacheRepository: inMemoryCache,
+            inMemoryCache: inMemoryCache,
             memoryWarning: memoryWarning,
             appState: appState)
         return InteractorsContainer(countriesInteractor: countriesInteractor,
