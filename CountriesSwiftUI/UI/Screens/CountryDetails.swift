@@ -99,6 +99,11 @@ private extension CountryDetails {
         .listStyle(GroupedListStyle())
         .sheet(isPresented: self.$appState.routing.countryDetails.detailsSheet,
                content: { self.modalDetailsView() })
+        // A temporary fix for a bug in SwiftUI for iOS 13.2
+        .onAppear {
+            self.appState.objectWillChange.send()
+        }
+        // End of temporary fix
     }
     
     func flagView(url: URL) -> some View {
