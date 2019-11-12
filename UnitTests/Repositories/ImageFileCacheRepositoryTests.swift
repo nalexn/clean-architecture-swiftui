@@ -78,25 +78,21 @@ class ImageFileCacheRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
-    func test_cachesDefaultURL() {
+    func test_cachesDefaultURL() throws {
         guard let cachesURL = ImageFileCacheRepository.defaultCachesURL
             else { XCTFail(); return }
         let fileManager = FileManager()
         let doesDirectoryExist = fileManager.fileExists(atPath: cachesURL.path)
-        do {
-            if !doesDirectoryExist {
-                try fileManager.createDirectory(at: cachesURL, withIntermediateDirectories: true, attributes: nil)
-            }
-            let testFileURL = cachesURL.appendingPathComponent("test_image")
-            let image = UIColor.red.image(CGSize(width: 1, height: 1))
-            try image.pngData()?.write(to: testFileURL)
-            XCTAssertTrue(fileManager.fileExists(atPath: testFileURL.path))
-            try fileManager.removeItem(at: testFileURL)
-            if !doesDirectoryExist {
-                try fileManager.removeItem(at: cachesURL)
-            }
-        } catch let error {
-            XCTFail("\(error)")
+        if !doesDirectoryExist {
+            try fileManager.createDirectory(at: cachesURL, withIntermediateDirectories: true, attributes: nil)
+        }
+        let testFileURL = cachesURL.appendingPathComponent("test_image")
+        let image = UIColor.red.image(CGSize(width: 1, height: 1))
+        try image.pngData()?.write(to: testFileURL)
+        XCTAssertTrue(fileManager.fileExists(atPath: testFileURL.path))
+        try fileManager.removeItem(at: testFileURL)
+        if !doesDirectoryExist {
+            try fileManager.removeItem(at: cachesURL)
         }
     }
 }

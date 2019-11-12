@@ -25,60 +25,52 @@ class WebRepositoryTests: XCTestCase {
         RequestMocking.removeAllMocks()
     }
     
-    func test_webRepository_success() {
-        do {
-            let data = TestWebRepository.TestData()
-            try mock(.test, result: .success(data))
-            let exp = XCTestExpectation(description: "Completion")
-            _ = sut.load(.test).sinkToResult { result in
-                XCTAssertTrue(Thread.isMainThread)
-                result.assertSuccess(value: data)
-                exp.fulfill()
-            }
-            wait(for: [exp], timeout: 2)
-        } catch let error { XCTFail("\(error)") }
+    func test_webRepository_success() throws {
+        let data = TestWebRepository.TestData()
+        try mock(.test, result: .success(data))
+        let exp = XCTestExpectation(description: "Completion")
+        _ = sut.load(.test).sinkToResult { result in
+            XCTAssertTrue(Thread.isMainThread)
+            result.assertSuccess(value: data)
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 2)
     }
     
-    func test_webRepository_parseError() {
-        do {
-            let data = Country.mockedData
-            try mock(.test, result: .success(data))
-            let exp = XCTestExpectation(description: "Completion")
-            _ = sut.load(.test).sinkToResult { result in
-                XCTAssertTrue(Thread.isMainThread)
-                result.assertFailure("The data couldn’t be read because it isn’t in the correct format.")
-                exp.fulfill()
-            }
-            wait(for: [exp], timeout: 2)
-        } catch let error { XCTFail("\(error)") }
+    func test_webRepository_parseError() throws {
+        let data = Country.mockedData
+        try mock(.test, result: .success(data))
+        let exp = XCTestExpectation(description: "Completion")
+        _ = sut.load(.test).sinkToResult { result in
+            XCTAssertTrue(Thread.isMainThread)
+            result.assertFailure("The data couldn’t be read because it isn’t in the correct format.")
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 2)
     }
     
-    func test_webRepository_httpCodeFailure() {
-        do {
-            let data = TestWebRepository.TestData()
-            try mock(.test, result: .success(data), httpCode: 500)
-            let exp = XCTestExpectation(description: "Completion")
-            _ = sut.load(.test).sinkToResult { result in
-                XCTAssertTrue(Thread.isMainThread)
-                result.assertFailure("Unexpected HTTP code: 500")
-                exp.fulfill()
-            }
-            wait(for: [exp], timeout: 2)
-        } catch let error { XCTFail("\(error)") }
+    func test_webRepository_httpCodeFailure() throws {
+        let data = TestWebRepository.TestData()
+        try mock(.test, result: .success(data), httpCode: 500)
+        let exp = XCTestExpectation(description: "Completion")
+        _ = sut.load(.test).sinkToResult { result in
+            XCTAssertTrue(Thread.isMainThread)
+            result.assertFailure("Unexpected HTTP code: 500")
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 2)
     }
     
-    func test_webRepository_networkingError() {
-        do {
-            let error = NSError.test
-            try mock(.test, result: Result<TestWebRepository.TestData, Error>.failure(error))
-            let exp = XCTestExpectation(description: "Completion")
-            _ = sut.load(.test).sinkToResult { result in
-                XCTAssertTrue(Thread.isMainThread)
-                result.assertFailure(error.localizedDescription)
-                exp.fulfill()
-            }
-            wait(for: [exp], timeout: 2)
-        } catch let error { XCTFail("\(error)") }
+    func test_webRepository_networkingError() throws {
+        let error = NSError.test
+        try mock(.test, result: Result<TestWebRepository.TestData, Error>.failure(error))
+        let exp = XCTestExpectation(description: "Completion")
+        _ = sut.load(.test).sinkToResult { result in
+            XCTAssertTrue(Thread.isMainThread)
+            result.assertFailure(error.localizedDescription)
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 2)
     }
     
     func test_webRepository_requestURLError() {
@@ -113,20 +105,18 @@ class WebRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
-    func test_webRepository_noHttpCodeError() {
-        do {
-            let response = URLResponse(url: URL(fileURLWithPath: ""),
-                                       mimeType: "example", expectedContentLength: 0, textEncodingName: nil)
-            let mock = try Mock(apiCall: API.test, baseURL: sut.baseURL, customResponse: response)
-            RequestMocking.add(mock: mock)
-            let exp = XCTestExpectation(description: "Completion")
-            _ = sut.load(.test).sinkToResult { result in
-                XCTAssertTrue(Thread.isMainThread)
-                result.assertFailure(APIError.unexpectedResponse.localizedDescription)
-                exp.fulfill()
-            }
-            wait(for: [exp], timeout: 2)
-        } catch let error { XCTFail("\(error)") }
+    func test_webRepository_noHttpCodeError() throws {
+        let response = URLResponse(url: URL(fileURLWithPath: ""),
+                                   mimeType: "example", expectedContentLength: 0, textEncodingName: nil)
+        let mock = try Mock(apiCall: API.test, baseURL: sut.baseURL, customResponse: response)
+        RequestMocking.add(mock: mock)
+        let exp = XCTestExpectation(description: "Completion")
+        _ = sut.load(.test).sinkToResult { result in
+            XCTAssertTrue(Thread.isMainThread)
+            result.assertFailure(APIError.unexpectedResponse.localizedDescription)
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 2)
     }
     
     // MARK: - Helper

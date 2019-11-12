@@ -27,47 +27,41 @@ class CountriesWebRepositoryTests: XCTestCase {
     
     // MARK: - All Countries
 
-    func test_allCountries() {
-        do {
-            let data = Country.mockedData
-            try mock(.allCountries, result: .success(data))
-            let exp = XCTestExpectation(description: "Completion")
-            _ = sut.loadCountries().sinkToResult { result in
-                result.assertSuccess(value: data)
-                exp.fulfill()
-            }
-            wait(for: [exp], timeout: 2)
-        } catch let error { XCTFail("\(error)") }
+    func test_allCountries() throws {
+        let data = Country.mockedData
+        try mock(.allCountries, result: .success(data))
+        let exp = XCTestExpectation(description: "Completion")
+        _ = sut.loadCountries().sinkToResult { result in
+            result.assertSuccess(value: data)
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 2)
     }
     
-    func test_countryDetails() {
-        do {
-            let countries = Country.mockedData
-            let value = Country.Details.Intermediate(
-                capital: "London",
-                currencies: [Country.Currency(code: "12", symbol: "$", name: "US dollar")],
-                borders: countries.map({ $0.alpha3Code }))
-            try mock(.countryDetails(countries[0]), result: .success([value]))
-            let exp = XCTestExpectation(description: "Completion")
-            _ = sut.loadCountryDetails(country: countries[0]).sinkToResult { result in
-                result.assertSuccess(value: value)
-                exp.fulfill()
-            }
-            wait(for: [exp], timeout: 2)
-        } catch let error { XCTFail("\(error)") }
+    func test_countryDetails() throws {
+        let countries = Country.mockedData
+        let value = Country.Details.Intermediate(
+            capital: "London",
+            currencies: [Country.Currency(code: "12", symbol: "$", name: "US dollar")],
+            borders: countries.map({ $0.alpha3Code }))
+        try mock(.countryDetails(countries[0]), result: .success([value]))
+        let exp = XCTestExpectation(description: "Completion")
+        _ = sut.loadCountryDetails(country: countries[0]).sinkToResult { result in
+            result.assertSuccess(value: value)
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 2)
     }
     
-    func test_countryDetails_whenDetailsAreEmpty() {
-        do {
-            let countries = Country.mockedData
-            try mock(.countryDetails(countries[0]), result: .success([Country.Details.Intermediate]()))
-            let exp = XCTestExpectation(description: "Completion")
-            _ = sut.loadCountryDetails(country: countries[0]).sinkToResult { result in
-                result.assertFailure(APIError.unexpectedResponse.localizedDescription)
-                exp.fulfill()
-            }
-            wait(for: [exp], timeout: 2)
-        } catch let error { XCTFail("\(error)") }
+    func test_countryDetails_whenDetailsAreEmpty() throws {
+        let countries = Country.mockedData
+        try mock(.countryDetails(countries[0]), result: .success([Country.Details.Intermediate]()))
+        let exp = XCTestExpectation(description: "Completion")
+        _ = sut.loadCountryDetails(country: countries[0]).sinkToResult { result in
+            result.assertFailure(APIError.unexpectedResponse.localizedDescription)
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 2)
     }
     
     func test_countryDetails_countryNameEncoding() {
