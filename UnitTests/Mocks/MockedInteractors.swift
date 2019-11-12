@@ -23,6 +23,8 @@ extension InteractorsContainer {
     func verify(file: StaticString = #file, line: UInt = #line) {
         (countriesInteractor as? MockedCountriesInteractor)?
             .verify(file: file, line: line)
+        (imagesInteractor as? MockedImagesInteractor)?
+            .verify(file: file, line: line)
     }
 }
 

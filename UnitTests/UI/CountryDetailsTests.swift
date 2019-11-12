@@ -54,7 +54,8 @@ class CountryDetailsTests: XCTestCase {
     }
     
     func test_details_loaded() {
-        let interactors = InteractorsContainer.mocked()
+        let interactors = InteractorsContainer.mocked(
+            imagesInteractor: [.loadImage(country.flag)])
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountryDetails(country: country, details: .loaded(Country.Details.mockedData[0]))
             .asyncOnAppear {
@@ -82,7 +83,10 @@ class CountryDetailsTests: XCTestCase {
     func test_sheetPresentation() {
         let appState = AppState()
         appState.routing.countryDetails.detailsSheet = true
-        let interactors = InteractorsContainer.mocked()
+        let interactors = InteractorsContainer.mocked(
+            // Image is requested by CountryDetails and Details sheet:
+            imagesInteractor: [.loadImage(country.flag),
+                               .loadImage(country.flag)])
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountryDetails(country: country, details: .loaded(Country.Details.mockedData[0]))
             .asyncOnAppear {
