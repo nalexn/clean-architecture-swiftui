@@ -4,7 +4,7 @@ A demo project showcasing the setup of the SwiftUI app with Clean Architecture.
 
 The app uses the [restcountries.eu](restcountries.eu) REST API to show the list of countries and details about them.
 
-![platforms](https://img.shields.io/badge/platforms-iPhone%20%7C%20iPad%20%7C%20macOS-lightgrey) [![Build Status](https://travis-ci.com/nalexn/clean-architecture-swiftui.svg?branch=master)](https://travis-ci.com/nalexn/clean-architecture-swiftui) ![coverage](https://img.shields.io/badge/coverage-97%25-brightgreen) ![Dependency Status](https://img.shields.io/badge/dependencies-none-brightgreen)
+[![Build Status](https://travis-ci.com/nalexn/clean-architecture-swiftui.svg?branch=master)](https://travis-ci.com/nalexn/clean-architecture-swiftui) [![codecov](https://codecov.io/gh/nalexn/clean-architecture-swiftui/branch/master/graph/badge.svg)](https://codecov.io/gh/nalexn/clean-architecture-swiftui) [![codebeat badge](https://codebeat.co/badges/db33561b-0b2b-4ee1-a941-a08efbd0ebd7)](https://codebeat.co/projects/github-com-nalexn-clean-architecture-swiftui-master) ![Dependency Status](https://img.shields.io/badge/dependencies-none-brightgreen) ![platforms](https://img.shields.io/badge/platforms-iPhone%20%7C%20iPad%20%7C%20macOS-lightgrey)
 
 <p align="center">
   <img src="https://github.com/nalexn/blob_files/blob/master/images/countries_preview.png?raw=true" alt="Diagram"/>
