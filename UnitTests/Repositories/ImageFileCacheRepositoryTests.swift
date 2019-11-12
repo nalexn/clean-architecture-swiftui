@@ -22,6 +22,10 @@ class ImageFileCacheRepositoryTests: XCTestCase {
         sut = ImageFileCacheRepository(fileExpiration: 5, cachesURL: testCachesURL)
     }
     
+    override func tearDown() {
+        try? FileManager().removeItem(at: testCachesURL)
+    }
+    
     func test_cachedImage_imageIsMissing() {
         let exp = XCTestExpectation(description: "Completion")
         _ = sut.cachedImage(for: "missing_file").sinkToResult { result in
