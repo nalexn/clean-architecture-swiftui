@@ -383,7 +383,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F64495F52360D66700C9BB1F /* Build configuration list for PBXNativeTarget "CountriesSwiftUI" */;
 			buildPhases = (
-				F62DF39A237AFE9400CE1234 /* ShellScript */,
+				F62DF39A237AFE9400CE1234 /* Run swiftlint */,
 				F64495DD2360D66400C9BB1F /* Sources */,
 				F64495DE2360D66400C9BB1F /* Frameworks */,
 				F64495DF2360D66400C9BB1F /* Resources */,
@@ -476,7 +476,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		F62DF39A237AFE9400CE1234 /* ShellScript */ = {
+		F62DF39A237AFE9400CE1234 /* Run swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -485,6 +485,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Run swiftlint";
 			outputFileListPaths = (
 			);
 			outputPaths = (
