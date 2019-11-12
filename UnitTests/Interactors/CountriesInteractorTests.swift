@@ -196,7 +196,8 @@ class CountriesInteractorTests: XCTestCase {
     
     // MARK: - Helper
     
-    private func recordAppStateUserDataUpdates(for timeInterval: TimeInterval = 0.5) -> AnyPublisher<[AppState.UserData], Never> {
+    private func recordAppStateUserDataUpdates(for timeInterval: TimeInterval = 0.5)
+        -> AnyPublisher<[AppState.UserData], Never> {
         return Future<[AppState.UserData], Never> { (completion) in
             var updates = [AppState.UserData]()
             self.appState.$userData
@@ -208,7 +209,8 @@ class CountriesInteractorTests: XCTestCase {
         }.eraseToAnyPublisher()
     }
     
-    private func countryDetails(neighbors: [Country]) -> (intermediate: Country.Details.Intermediate, details: Country.Details) {
+    private func countryDetails(neighbors: [Country])
+        -> (intermediate: Country.Details.Intermediate, details: Country.Details) {
         let intermediate = Country.Details.Intermediate(
             capital: "London",
             currencies: [Country.Currency(code: "12", symbol: "$", name: "US dollar")],

@@ -16,7 +16,8 @@ protocol WebRepository {
 }
 
 extension WebRepository {
-    func call<Value>(endpoint: APICall, httpCodes: HTTPCodes = .success) -> AnyPublisher<Value, Error> where Value: Decodable {
+    func call<Value>(endpoint: APICall, httpCodes: HTTPCodes = .success) -> AnyPublisher<Value, Error>
+        where Value: Decodable {
         do {
             let request = try endpoint.urlRequest(baseURL: baseURL)
             return session
@@ -62,7 +63,7 @@ private extension Publisher {
     func ensureTimeSpan(_ interval: TimeInterval) -> AnyPublisher<Output, Failure> {
         let timer = Just<Void>(())
             .delay(for: .seconds(interval), scheduler: RunLoop.main)
-            .mapError { $0 as! Failure }
+            .setFailureType(to: Failure.self)
         return zip(timer)
             .map { $0.0 }
             .eraseToAnyPublisher()

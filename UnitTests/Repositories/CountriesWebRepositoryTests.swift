@@ -73,7 +73,8 @@ class CountriesWebRepositoryTests: XCTestCase {
     
     // MARK: - Helper
     
-    private func mock<T>(_ apiCall: API, result: Result<T, Swift.Error>, httpCode: HTTPCode = 200) throws where T: Encodable {
+    private func mock<T>(_ apiCall: API, result: Result<T, Swift.Error>,
+                         httpCode: HTTPCode = 200) throws where T: Encodable {
         let mock = try Mock(apiCall: apiCall, baseURL: sut.baseURL, result: result, httpCode: httpCode)
         RequestMocking.add(mock: mock)
     }

@@ -15,7 +15,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     private var systemEventsHandler: SystemEventsHandler?
 
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
         let environment = AppEnvironment.bootstrap()
         let contentView = ContentView(injector: environment.dependencyInjector)
         if let windowScene = scene as? UIWindowScene {

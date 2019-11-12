@@ -121,7 +121,8 @@ class WebRepositoryTests: XCTestCase {
     
     // MARK: - Helper
     
-    private func mock<T>(_ apiCall: API, result: Result<T, Swift.Error>, httpCode: HTTPCode = 200) throws where T: Encodable {
+    private func mock<T>(_ apiCall: API, result: Result<T, Swift.Error>,
+                         httpCode: HTTPCode = 200) throws where T: Encodable {
         let mock = try Mock(apiCall: apiCall, baseURL: sut.baseURL, result: result, httpCode: httpCode)
         RequestMocking.add(mock: mock)
     }
@@ -148,7 +149,7 @@ extension TestWebRepository {
             return "/test/path"
         }
         var method: String { "POST" }
-        var headers: [String : String]? { nil }
+        var headers: [String: String]? { nil }
         func body() throws -> Data? {
             if self == .bodyError { throw APIError.fail }
             return nil

@@ -45,8 +45,10 @@ class RequestMocking: URLProtocol {
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {
         return request
     }
-
+    
+    // swiftlint:disable identifier_name
     override class func requestIsCacheEquivalent(_ a: URLRequest, to b: URLRequest) -> Bool {
+    // swiftlint:enable identifier_name
         return false
     }
 
@@ -60,7 +62,7 @@ class RequestMocking: URLProtocol {
                 headerFields: mock.headers) {
             DispatchQueue.main.asyncAfter(deadline: .now() + mock.loadingTime) { [weak self] in
                 guard let self = self else { return }
-                self.client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: URLCache.StoragePolicy.notAllowed)
+                self.client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
                 switch mock.result {
                 case let .success(data):
                     self.client?.urlProtocol(self, didLoad: data)
