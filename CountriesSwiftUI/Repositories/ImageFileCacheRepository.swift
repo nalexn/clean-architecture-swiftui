@@ -50,14 +50,17 @@ struct ImageFileCacheRepository: ImageCacheRepository {
                     fileDate.timestamp + self.fileExpiration > Date().timestamp,
                     let data = try? Data(contentsOf: url),
                     let image = UIImage(data: data) {
-                    promise(.success(image))
+                    DispatchQueue.main.async {
+                        promise(.success(image))
+                    }
                 } else {
                     self.removeItem(url: url)
-                    promise(.failure(.imageIsMissing))
+                    DispatchQueue.main.async {
+                        promise(.failure(.imageIsMissing))
+                    }
                 }
             }
         })
-        .receive(on: DispatchQueue.main)
         .eraseToAnyPublisher()
     }
     
