@@ -7,18 +7,21 @@
 //
 
 import XCTest
+import Combine
 @testable import CountriesSwiftUI
 
 class ImageFileCacheRepositoryTests: XCTestCase {
 
-    var sut: ImageFileCacheRepository!
-    let testCachesURL: URL = {
+    private var sut: ImageFileCacheRepository!
+    private var subscriptions = Set<AnyCancellable>()
+    private let testCachesURL: URL = {
         FileManager().urls(for: .cachesDirectory, in: .userDomainMask).first!
             .appendingPathComponent("tests", isDirectory: true)
     }()
     
     override func setUp() {
         try? FileManager().removeItem(at: testCachesURL)
+        subscriptions = Set<AnyCancellable>()
         sut = ImageFileCacheRepository(fileExpiration: 5, cachesURL: testCachesURL)
     }
     
@@ -28,11 +31,11 @@ class ImageFileCacheRepositoryTests: XCTestCase {
     
     func test_cachedImage_imageIsMissing() {
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.cachedImage(for: "missing_file").sinkToResult { result in
+        sut.cachedImage(for: "missing_file").sinkToResult { result in
             XCTAssertTrue(Thread.isMainThread)
             result.assertFailure(ImageCacheError.imageIsMissing.localizedDescription)
             exp.fulfill()
-        }
+        }.store(in: &subscriptions)
         wait(for: [exp], timeout: 1)
     }
     
@@ -41,7 +44,7 @@ class ImageFileCacheRepositoryTests: XCTestCase {
         let key = "image_key"
         sut.cache(image: image, key: key)
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.cachedImage(for: key).sinkToResult { result in
+        sut.cachedImage(for: key).sinkToResult { result in
             XCTAssertTrue(Thread.isMainThread)
             switch result {
             case let .success(returnedImage):
@@ -50,7 +53,7 @@ class ImageFileCacheRepositoryTests: XCTestCase {
                 XCTFail("Unexpected error: \(error.localizedDescription)")
             }
             exp.fulfill()
-        }
+        }.store(in: &subscriptions)
         wait(for: [exp], timeout: 1)
     }
     
@@ -60,10 +63,10 @@ class ImageFileCacheRepositoryTests: XCTestCase {
         sut.cache(image: image, key: key)
         sut.purgeCache()
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.cachedImage(for: key).sinkToResult { result in
+        sut.cachedImage(for: key).sinkToResult { result in
             result.assertFailure(ImageCacheError.imageIsMissing.localizedDescription)
             exp.fulfill()
-        }
+        }.store(in: &subscriptions)
         wait(for: [exp], timeout: 1)
     }
     
@@ -74,10 +77,10 @@ class ImageFileCacheRepositoryTests: XCTestCase {
         sut.cache(image: image, key: key)
         let exp = XCTestExpectation(description: "Completion")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            _ = self.sut.cachedImage(for: key).sinkToResult { result in
+            self.sut.cachedImage(for: key).sinkToResult { result in
                 result.assertFailure(ImageCacheError.imageIsMissing.localizedDescription)
                 exp.fulfill()
-            }
+            }.store(in: &self.subscriptions)
         }
         wait(for: [exp], timeout: 1)
     }

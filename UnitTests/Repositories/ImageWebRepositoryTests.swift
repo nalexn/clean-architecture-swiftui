@@ -7,17 +7,19 @@
 //
 
 import XCTest
-import Foundation
+import Combine
 @testable import CountriesSwiftUI
 
 class ImageWebRepositoryTests: XCTestCase {
 
-    var sut: RealImageWebRepository!
+    private var sut: RealImageWebRepository!
+    private var subscriptions = Set<AnyCancellable>()
     private lazy var testImage = UIColor.red.image(CGSize(width: 40, height: 40))
     
     typealias Mock = RequestMocking.MockedResponse
 
     override func setUp() {
+        subscriptions = Set<AnyCancellable>()
         sut = RealImageWebRepository(session: .mockedResponsesOnly,
                                      baseURL: "https://test.com")
     }
@@ -45,7 +47,7 @@ class ImageWebRepositoryTests: XCTestCase {
         mocks.forEach { RequestMocking.add(mock: $0) }
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
+        sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             switch result {
             case let .success(resultValue):
                 XCTAssertEqual(resultValue.size, self.testImage.size)
@@ -53,7 +55,7 @@ class ImageWebRepositoryTests: XCTestCase {
                 XCTFail("Unexpected error: \(error)")
             }
             exp.fulfill()
-        }
+        }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
     }
     
@@ -66,7 +68,7 @@ class ImageWebRepositoryTests: XCTestCase {
         RequestMocking.add(mock: mock)
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
+        sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             switch result {
             case let .success(resultValue):
                 XCTAssertEqual(resultValue.size, self.testImage.size)
@@ -74,7 +76,7 @@ class ImageWebRepositoryTests: XCTestCase {
                 XCTFail("Unexpected error: \(error)")
             }
             exp.fulfill()
-        }
+        }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
     }
     
@@ -87,10 +89,10 @@ class ImageWebRepositoryTests: XCTestCase {
         mocks.forEach { RequestMocking.add(mock: $0) }
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
+        sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             result.assertFailure(APIError.unexpectedResponse.localizedDescription)
             exp.fulfill()
-        }
+        }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
     }
     
@@ -108,10 +110,10 @@ class ImageWebRepositoryTests: XCTestCase {
         mocks.forEach { RequestMocking.add(mock: $0) }
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
+        sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             result.assertFailure(APIError.unexpectedResponse.localizedDescription)
             exp.fulfill()
-        }
+        }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
     }
     
@@ -134,10 +136,10 @@ class ImageWebRepositoryTests: XCTestCase {
         mocks.forEach { RequestMocking.add(mock: $0) }
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
+        sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             result.assertFailure(APIError.unexpectedResponse.localizedDescription)
             exp.fulfill()
-        }
+        }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
     }
     
@@ -154,10 +156,10 @@ class ImageWebRepositoryTests: XCTestCase {
         mocks.forEach { RequestMocking.add(mock: $0) }
         
         let exp = XCTestExpectation(description: "Completion")
-        _ = sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
+        sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
             result.assertFailure(APIError.unexpectedResponse.localizedDescription)
             exp.fulfill()
-        }
+        }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
     }
 }
