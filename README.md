@@ -1,3 +1,10 @@
+### Articles related to this project
+
+* [Clean Architecture for SwiftUI](https://nalexn.github.io/clean-architecture-swiftui/?utm_source=nalexn_github)
+* [Programmatic navigation in SwiftUI project](https://nalexn.github.io/swiftui-deep-linking/?utm_source=nalexn_github)
+
+---
+
 # Clean Architecture for SwiftUI + Combine
 
 A demo project showcasing the setup of the SwiftUI app with Clean Architecture.
@@ -50,11 +57,6 @@ Interactors are injected into the view hierarchy within a container as an `@Envi
 Data Access layer is represented by `Repositories`.
 
 Repositories provide asynchronous API (`Publisher` from Combine) for making [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations on the backend or a local database. They don't contain business logic, neither do they mutate the `AppState`. Repositories are accessible and used only by the Interactors.
-
-### Articles related to this project
-
-* [Clean Architecture for SwiftUI](https://nalexn.github.io/clean-architecture-swiftui/)
-* [Programmatic navigation in SwiftUI project](https://nalexn.github.io/swiftui-deep-linking/)
 
 ---
 
