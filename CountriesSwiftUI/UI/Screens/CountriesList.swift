@@ -17,11 +17,26 @@ extension CountriesList {
     }
 }
 
+// MARK: - State Updates Filtering
+
+extension CountriesList {
+    struct StateSnapshot: Equatable {
+        let countries: Loadable<[Country]>
+        let routing: Routing
+    }
+}
+
+extension AppState {
+    var countriesListStateSnapshot: CountriesList.StateSnapshot {
+        .init(countries: userData.countries, routing: routing.countriesList)
+    }
+}
+
 // MARK: - CountriesList
 
 struct CountriesList: View {
     
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var appState: Deduplicated<AppState, StateSnapshot>
     @Environment(\.interactors) var interactors: InteractorsContainer
     private let cancelBag = CancelBag()
     
