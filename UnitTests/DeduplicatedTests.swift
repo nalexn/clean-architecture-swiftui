@@ -18,7 +18,7 @@ class DeduplicatedTests: XCTestCase {
         subscriptions.removeAll()
     }
     
-    func testDoesNotTriggerWillChangeWhenCreated() {
+    func test_deduplicated_noUpdateWhenCreated() {
         let exp = XCTestExpectation(description: "deduplicated")
         exp.isInverted = true
         let sut = TestObject()
@@ -29,7 +29,7 @@ class DeduplicatedTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
-    func testDoesNotTriggerWillChangeForDuplicate() {
+    func test_deduplicated_filterDuplicate() {
         let exp1 = XCTestExpectation(description: "deduplicated")
         exp1.isInverted = true
         let exp2 = XCTestExpectation(description: "original")
@@ -45,7 +45,7 @@ class DeduplicatedTests: XCTestCase {
         wait(for: [exp1, exp2], timeout: 0.1)
     }
     
-    func testDoesTriggerWillChangeForDifferentValueUpdates() {
+    func test_deduplicated_multipleUpdates() {
         let exp = XCTestExpectation(description: "deduplicated")
         exp.expectedFulfillmentCount = 2
         exp.assertForOverFulfill = true
@@ -60,7 +60,7 @@ class DeduplicatedTests: XCTestCase {
         DispatchQueue.main.async {
             sut.value2 = 7
         }
-        wait(for: [exp], timeout: 0.5)
+        wait(for: [exp], timeout: 1)
     }
 }
 
