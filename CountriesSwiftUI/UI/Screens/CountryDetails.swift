@@ -47,8 +47,18 @@ struct CountryDetails: View {
     }
     
     var body: some View {
-        content
+        #if targetEnvironment(simulator)
+        let isiPhoneSimulator = UIDevice.current.userInterfaceIdiom == .phone
+        return content
             .navigationBarTitle(country.name)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading: Button(action: {
+                self.appState.routing.countriesList.countryDetails = nil
+            }, label: { Text(isiPhoneSimulator ? "Back" : "") }))
+        #else
+        return content
+            .navigationBarTitle(country.name)
+        #endif
     }
     
     private var content: AnyView {
