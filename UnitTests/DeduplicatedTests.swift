@@ -26,7 +26,6 @@ class DeduplicatedTests: XCTestCase {
         sut.objectWillChange.sink { _ in
             exp.fulfill()
         }.store(in: &subscriptions)
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
         wait(for: [exp], timeout: 0.1)
     }
     
@@ -43,24 +42,7 @@ class DeduplicatedTests: XCTestCase {
             exp2.fulfill()
         }.store(in: &subscriptions)
         sut.value2 = 9
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
         wait(for: [exp1, exp2], timeout: 0.1)
-    }
-    
-    func test_deduplicated_multipleUpdates() {
-        let exp = XCTestExpectation(description: "deduplicated")
-        exp.expectedFulfillmentCount = 1
-        exp.assertForOverFulfill = true
-        let sut = TestObject()
-            .deduplicated { TestObject.TwoValuesSnapshot(
-                value1: $0.value1, value2: $0.value2) }
-        sut.objectWillChange.sink { _ in
-            exp.fulfill()
-        }.store(in: &subscriptions)
-        sut.value1 = 5
-        sut.value2 = 6
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
-        wait(for: [exp], timeout: 0.1)
     }
 }
 
