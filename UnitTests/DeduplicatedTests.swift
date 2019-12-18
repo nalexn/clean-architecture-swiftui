@@ -26,6 +26,7 @@ class DeduplicatedTests: XCTestCase {
         sut.objectWillChange.sink { _ in
             exp.fulfill()
         }.store(in: &subscriptions)
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
         wait(for: [exp], timeout: 0.1)
     }
     
@@ -42,6 +43,7 @@ class DeduplicatedTests: XCTestCase {
             exp2.fulfill()
         }.store(in: &subscriptions)
         sut.value2 = 9
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
         wait(for: [exp1, exp2], timeout: 0.1)
     }
     
@@ -57,6 +59,7 @@ class DeduplicatedTests: XCTestCase {
         }.store(in: &subscriptions)
         sut.value1 = 5
         sut.value2 = 6
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
         wait(for: [exp], timeout: 0.1)
     }
 }
