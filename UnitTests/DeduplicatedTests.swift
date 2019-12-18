@@ -60,7 +60,7 @@ class DeduplicatedTests: XCTestCase {
         DispatchQueue.main.async {
             sut.value2 = 7
         }
-        wait(for: [exp], timeout: 0.1)
+        wait(for: [exp], timeout: 0.5)
     }
 }
 
