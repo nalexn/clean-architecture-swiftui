@@ -21,6 +21,7 @@ struct DependencyInjector: ViewModifier {
     func body(content: Content) -> some View {
         content
             .environment(\.interactors, interactors)
-            .environmentObject(appState)
+            .environmentObject(appState.deduplicated { $0.countriesListStateSnapshot })
+            .environmentObject(appState.deduplicated { $0.countryDetailsStateSnapshot })
     }
 }

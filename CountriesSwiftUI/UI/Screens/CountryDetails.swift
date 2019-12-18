@@ -17,12 +17,26 @@ extension CountryDetails {
     }
 }
 
+// MARK: - State Updates Filtering
+
+extension CountryDetails {
+    struct StateSnapshot: Equatable {
+        let routing: Routing
+    }
+}
+
+extension AppState {
+    var countryDetailsStateSnapshot: CountryDetails.StateSnapshot {
+        .init(routing: routing.countryDetails)
+    }
+}
+
 // MARK: - CountryDetails
 
 struct CountryDetails: View {
     
     let country: Country
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var appState: Deduplicated<AppState, StateSnapshot>
     @Environment(\.interactors) var interactors: InteractorsContainer
     @State private var details: Loadable<Country.Details>
     private let cancelBag = CancelBag()
@@ -33,8 +47,18 @@ struct CountryDetails: View {
     }
     
     var body: some View {
-        content
+        #if targetEnvironment(simulator)
+        let isiPhoneSimulator = UIDevice.current.userInterfaceIdiom == .phone
+        return content
             .navigationBarTitle(country.name)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading: Button(action: {
+                self.appState.routing.countriesList.countryDetails = nil
+            }, label: { Text(isiPhoneSimulator ? "Back" : "") }))
+        #else
+        return content
+            .navigationBarTitle(country.name)
+        #endif
     }
     
     private var content: AnyView {
@@ -99,11 +123,6 @@ private extension CountryDetails {
         .listStyle(GroupedListStyle())
         .sheet(isPresented: self.$appState.routing.countryDetails.detailsSheet,
                content: { self.modalDetailsView() })
-        // A temporary fix for a bug in SwiftUI for iOS 13.2
-        .onAppear {
-            self.appState.objectWillChange.send()
-        }
-        // End of temporary fix
     }
     
     func flagView(url: URL) -> some View {
@@ -151,8 +170,8 @@ private extension CountryDetails {
     func modalDetailsView() -> some View {
         ModalDetailsView(country: country,
                          isDisplayed: $appState.routing.countryDetails.detailsSheet)
-            .modifier(DependencyInjector(appState: appState, interactors: interactors))
-            .modifier(RootViewAppearance(appState: appState))
+            .modifier(DependencyInjector(appState: appState.original, interactors: interactors))
+            .modifier(RootViewAppearance(appState: appState.original))
     }
 }
 

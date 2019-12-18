@@ -8,9 +8,29 @@
 
 import SwiftUI
 
+// MARK: - State Updates Filtering
+
+private extension RootViewAppearance {
+    struct StateSnapshot: Equatable {
+        let isAppActive: Bool
+    }
+}
+
+private extension AppState {
+    var rootViewStateSnapshot: RootViewAppearance.StateSnapshot {
+        .init(isAppActive: system.isActive)
+    }
+}
+
+// MARK: - RootViewAppearance
+
 struct RootViewAppearance: ViewModifier {
     
-    @ObservedObject var appState: AppState
+    @ObservedObject private var appState: Deduplicated<AppState, StateSnapshot>
+    
+    init(appState: AppState) {
+        self.appState = appState.deduplicated { $0.rootViewStateSnapshot }
+    }
     
     func body(content: Content) -> some View {
         content
