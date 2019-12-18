@@ -13,7 +13,7 @@ extension ObservableObject {
     
     func deduplicated<Snapshot>(_ snapshot: @escaping (Self) -> Snapshot)
         -> Deduplicated<Self, Snapshot> where Snapshot: Equatable {
-        return .init(object: self, snapshot: snapshot, isEqual: { $0 == $1 })
+        return .init(object: self, snapshot: snapshot)
     }
 }
 
@@ -23,26 +23,21 @@ class Deduplicated<Object, Snapshot>: ObservableObject
     
     private(set) var original: Object
     private var subscription: AnyCancellable?
-    private var lastSnapshot: Snapshot
-    @Published private var objectWillChangeGenerator: Bool = false
+    @Published private var bootstrap: Bool = false
     
     fileprivate init(object: Object,
-                     snapshot: @escaping (Object) -> Snapshot,
-                     isEqual: @escaping (Snapshot, Snapshot) -> Bool) {
+                     snapshot: @escaping (Object) -> Snapshot) {
         self.original = object
-        self.lastSnapshot = snapshot(object)
         let makeSnapshot: () -> Snapshot? = { [weak self] in
             guard let self = self else { return nil }
             return snapshot(self.original)
         }
         subscription = object.objectWillChange
             .delay(for: .nanoseconds(1), scheduler: RunLoop.main)
-            .filter { [weak self] _ in
-                guard let self = self, let newSnapshot = makeSnapshot()
-                    else { return false }
-                defer { self.lastSnapshot = newSnapshot }
-                return !isEqual(newSnapshot, self.lastSnapshot)
-            }
+            .compactMap { _ in makeSnapshot() }
+            .prepend(makeSnapshot())
+            .removeDuplicates()
+            .dropFirst()
             .sink { [weak self] _ in
                 self?.objectWillChange.send()
             }
