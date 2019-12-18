@@ -47,7 +47,7 @@ class DeduplicatedTests: XCTestCase {
     
     func test_deduplicated_multipleUpdates() {
         let exp = XCTestExpectation(description: "deduplicated")
-        exp.expectedFulfillmentCount = 2
+        exp.expectedFulfillmentCount = 1
         exp.assertForOverFulfill = true
         let sut = TestObject()
             .deduplicated { TestObject.TwoValuesSnapshot(
@@ -57,10 +57,7 @@ class DeduplicatedTests: XCTestCase {
         }.store(in: &subscriptions)
         sut.value1 = 5
         sut.value2 = 6
-        DispatchQueue.main.async {
-            sut.value2 = 7
-        }
-        wait(for: [exp], timeout: 1)
+        wait(for: [exp], timeout: 0.1)
     }
 }
 
