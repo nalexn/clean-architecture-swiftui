@@ -6,8 +6,11 @@
 //  Copyright © 2019 Alexey Naumov. All rights reserved.
 //
 
+import SwiftUI
 import Combine
 import Foundation
+
+// MARK: - Combine Helpers
 
 class CancelBag {
     var subscriptions = Set<AnyCancellable>()
@@ -55,11 +58,47 @@ extension Publisher {
     }
 }
 
+extension CurrentValueSubject {
+    
+    subscript<T>(keyPath: WritableKeyPath<Output, T>) -> T where T: Equatable {
+        get {
+            value[keyPath: keyPath]
+        }
+        set {
+            var value = self.value
+            if value[keyPath: keyPath] != newValue {
+                value[keyPath: keyPath] = newValue
+                self.value = value
+            }
+        }
+    }
+    
+    func bulkUpdate(_ update: (inout Output) -> Void) {
+        var value = self.value
+        update(&value)
+        self.value = value
+    }
+}
+
 extension Subscribers.Completion {
     var error: Failure? {
         switch self {
         case let .failure(error): return error
         default: return nil
         }
+    }
+}
+
+// MARK: - SwiftUI Helpers
+
+extension Binding where Value: Equatable {
+    func dispatching<State>(to state: CurrentValueSubject<State, Never>,
+                            _ keyPath: WritableKeyPath<State, Value>) -> Self {
+        return .init(get: { () -> Value in
+            self.wrappedValue
+        }, set: { value in
+            self.wrappedValue = value
+            state[keyPath] = value
+        })
     }
 }

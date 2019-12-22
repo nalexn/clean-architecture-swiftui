@@ -38,9 +38,12 @@ struct ModalDetailsView: View {
 
 #if DEBUG
 struct ModalDetailsView_Previews: PreviewProvider {
+    
     @State static var isDisplayed: Bool = true
+    
     static var previews: some View {
         ModalDetailsView(country: Country.mockedData[0], isDisplayed: $isDisplayed)
+            .modifier(DIContainer.Injector.preview)
     }
 }
 #endif

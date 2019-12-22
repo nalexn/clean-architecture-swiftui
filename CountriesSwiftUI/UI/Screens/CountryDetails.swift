@@ -9,37 +9,17 @@
 import SwiftUI
 import Combine
 
-// MARK: - Routing
-
-extension CountryDetails {
-    struct Routing: Equatable {
-        var detailsSheet: Bool = false
-    }
-}
-
-// MARK: - State Updates Filtering
-
-extension CountryDetails {
-    struct StateSnapshot: Equatable {
-        let routing: Routing
-    }
-}
-
-extension AppState {
-    var countryDetailsStateSnapshot: CountryDetails.StateSnapshot {
-        .init(routing: routing.countryDetails)
-    }
-}
-
-// MARK: - CountryDetails
-
 struct CountryDetails: View {
     
     let country: Country
-    @EnvironmentObject var appState: Deduplicated<AppState, StateSnapshot>
-    @Environment(\.interactors) var interactors: InteractorsContainer
-    @State private var details: Loadable<Country.Details>
     private let cancelBag = CancelBag()
+    
+    @Environment(\.injected) private var injected: DIContainer
+    @State private var details: Loadable<Country.Details>
+    @State private var routingState: Routing = .init()
+    private var routingBinding: Binding<Routing> {
+        $routingState.dispatching(to: injected.appState, \.routing.countryDetails)
+    }
     
     init(country: Country, details: Loadable<Country.Details> = .notRequested) {
         self.country = country
@@ -53,11 +33,13 @@ struct CountryDetails: View {
             .navigationBarTitle(country.name)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button(action: {
-                self.appState.routing.countriesList.countryDetails = nil
+                self.goBack()
             }, label: { Text(isiPhoneSimulator ? "Back" : "") }))
+            .onReceive(routingUpdate) { self.routingState = $0 }
         #else
         return content
             .navigationBarTitle(country.name)
+            .onReceive(routingUpdate) { self.routingState = $0 }
         #endif
     }
     
@@ -75,13 +57,20 @@ struct CountryDetails: View {
 
 private extension CountryDetails {
     func loadCountryDetails() {
-        interactors.countriesInteractor.load(countryDetails: $details, country: country)
+        injected.interactors.countriesInteractor
+            .load(countryDetails: $details, country: country)
             .store(in: cancelBag)
     }
     
     func showCountryDetailsSheet() {
-        appState.routing.countryDetails.detailsSheet = true
+        injected.appState[\.routing.countryDetails.detailsSheet] = true
     }
+    
+    #if targetEnvironment(simulator)
+    func goBack() {
+        injected.appState[\.routing.countriesList.countryDetails] = nil
+    }
+    #endif
 }
 
 // MARK: - Loading Content
@@ -121,7 +110,7 @@ private extension CountryDetails {
             }
         }
         .listStyle(GroupedListStyle())
-        .sheet(isPresented: self.$appState.routing.countryDetails.detailsSheet,
+        .sheet(isPresented: routingBinding.detailsSheet,
                content: { self.modalDetailsView() })
     }
     
@@ -169,9 +158,10 @@ private extension CountryDetails {
     
     func modalDetailsView() -> some View {
         ModalDetailsView(country: country,
-                         isDisplayed: $appState.routing.countryDetails.detailsSheet)
-            .modifier(DependencyInjector(appState: appState.original, interactors: interactors))
-            .modifier(RootViewAppearance(appState: appState.original))
+                         isDisplayed: routingBinding.detailsSheet)
+            .modifier(RootViewAppearance())
+            .modifier(DIContainer.Injector(container: injected))
+            
     }
 }
 
@@ -185,13 +175,33 @@ private extension Country.Currency {
     }
 }
 
+// MARK: - Routing
+
+extension CountryDetails {
+    struct Routing: Equatable {
+        var detailsSheet: Bool = false
+    }
+}
+
+// MARK: - State Updates
+
+private extension CountryDetails {
+    
+    var routingUpdate: AnyPublisher<Routing, Never> {
+        injected.appState
+            .map { $0.routing.countryDetails }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
+}
+
 // MARK: - Preview
 
 #if DEBUG
 struct CountryDetails_Previews: PreviewProvider {
     static var previews: some View {
         CountryDetails(country: Country.mockedData[0])
-            .environmentObject(AppState.preview)
+            .modifier(DIContainer.Injector.preview)
     }
 }
 #endif

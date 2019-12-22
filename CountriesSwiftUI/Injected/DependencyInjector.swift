@@ -7,21 +7,45 @@
 //
 
 import SwiftUI
+import Combine
 
-struct DependencyInjector: ViewModifier {
+struct DIContainer: EnvironmentKey {
     
-    let appState: AppState
-    let interactors: InteractorsContainer
+    let appState: CurrentValueSubject<AppState, Never>
+    let interactors: Interactors
     
-    init(appState: AppState, interactors: InteractorsContainer) {
-        self.appState = appState
-        self.interactors = interactors
+    static var defaultValue: Self { Self.default }
+    
+    private static let `default` = Self(appState: .init(AppState()),
+                                        interactors: .stub)
+}
+
+extension EnvironmentValues {
+    var injected: DIContainer {
+        get { self[DIContainer.self] }
+        set { self[DIContainer.self] = newValue }
     }
-    
-    func body(content: Content) -> some View {
-        content
-            .environment(\.interactors, interactors)
-            .environmentObject(appState.deduplicated { $0.countriesListStateSnapshot })
-            .environmentObject(appState.deduplicated { $0.countryDetailsStateSnapshot })
+}
+
+extension DIContainer {
+    struct Injector: ViewModifier {
+        
+        let container: DIContainer
+        
+        init(container: DIContainer) {
+            self.container = container
+        }
+        
+        func body(content: Content) -> some View {
+            content
+                .environment(\.injected, container)
+        }
+    }
+}
+
+extension DIContainer.Injector {
+    static var preview: Self {
+        .init(container: .init(appState: .init(AppState.preview),
+                               interactors: .stub))
     }
 }

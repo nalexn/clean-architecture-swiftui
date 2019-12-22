@@ -18,28 +18,30 @@ protocol CountriesInteractor {
 struct RealCountriesInteractor: CountriesInteractor {
     
     let webRepository: CountriesWebRepository
-    let appState: AppState
+    let appState: CurrentValueSubject<AppState, Never>
     
-    init(webRepository: CountriesWebRepository, appState: AppState) {
+    init(webRepository: CountriesWebRepository, appState: CurrentValueSubject<AppState, Never>) {
         self.webRepository = webRepository
         self.appState = appState
     }
 
     func loadCountries() -> AnyCancellable {
-        appState.userData.countries = .isLoading(last: appState.userData.countries.value)
+        let countries = appState.value.userData.countries.value
+        appState[\.userData.countries] = .isLoading(last: countries)
         weak var weakAppState = appState
         return webRepository.loadCountries()
-            .sinkToLoadable { weakAppState?.userData.countries = $0 }
+            .sinkToLoadable { weakAppState?[\.userData.countries] = $0 }
     }
 
     func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) -> AnyCancellable {
         countryDetails.wrappedValue = .isLoading(last: countryDetails.wrappedValue.value)
-        let countriesArray = appState.$userData
-            .tryMap { userData -> [Country] in
-                if let error = userData.countries.error {
+        let countriesArray = appState
+            .map { $0.userData.countries }
+            .tryMap { countries -> [Country] in
+                if let error = countries.error {
                     throw error
                 }
-                return userData.countries.value ?? []
+                return countries.value ?? []
             }
         return webRepository.loadCountryDetails(country: country)
             .combineLatest(countriesArray)

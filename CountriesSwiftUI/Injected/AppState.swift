@@ -9,10 +9,10 @@
 import SwiftUI
 import Combine
 
-class AppState: ObservableObject, Equatable {
-    @Published var userData = UserData()
-    @Published var routing = ViewRouting()
-    @Published var system = System()
+struct AppState: Equatable {
+    var userData = UserData()
+    var routing = ViewRouting()
+    var system = System()
 }
 
 extension AppState {
@@ -43,7 +43,7 @@ func == (lhs: AppState, rhs: AppState) -> Bool {
 #if DEBUG
 extension AppState {
     static var preview: AppState {
-        let state = AppState()
+        var state = AppState()
         state.userData.countries = .loaded(Country.mockedData)
         return state
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 protocol SystemEventsHandler {
     func sceneOpenURLContexts(_ urlContexts: Set<UIOpenURLContext>)
@@ -16,7 +17,7 @@ protocol SystemEventsHandler {
 
 struct RealSystemEventsHandler: SystemEventsHandler {
     
-    let appState: AppState
+    let appState: CurrentValueSubject<AppState, Never>
     
     func sceneOpenURLContexts(_ urlContexts: Set<UIOpenURLContext>) {
         guard let url = urlContexts.first?.url else { return }
@@ -27,17 +28,19 @@ struct RealSystemEventsHandler: SystemEventsHandler {
         guard let deelLink = parseDeepLink(url: url) else { return }
         switch deelLink {
         case let .showCountryFlag(alpha3Code):
-            appState.routing.countriesList.countryDetails = alpha3Code
-            appState.routing.countryDetails.detailsSheet = true
+            appState.bulkUpdate {
+                $0.routing.countriesList.countryDetails = alpha3Code
+                $0.routing.countryDetails.detailsSheet = true
+            }
         }
     }
     
     func sceneDidBecomeActive() {
-        appState.system.isActive = true
+        appState[\.system.isActive] = true
     }
     
     func sceneWillResignActive() {
-        appState.system.isActive = false
+        appState[\.system.isActive] = false
     }
 }
 

@@ -9,36 +9,16 @@
 import SwiftUI
 import Combine
 
-// MARK: - Routing
-
-extension CountriesList {
-    struct Routing: Equatable {
-        var countryDetails: Country.Code?
-    }
-}
-
-// MARK: - State Updates Filtering
-
-extension CountriesList {
-    struct StateSnapshot: Equatable {
-        let countries: Loadable<[Country]>
-        let routing: Routing
-    }
-}
-
-extension AppState {
-    var countriesListStateSnapshot: CountriesList.StateSnapshot {
-        .init(countries: userData.countries, routing: routing.countriesList)
-    }
-}
-
-// MARK: - CountriesList
-
 struct CountriesList: View {
     
-    @EnvironmentObject var appState: Deduplicated<AppState, StateSnapshot>
-    @Environment(\.interactors) var interactors: InteractorsContainer
     private let cancelBag = CancelBag()
+    
+    @Environment(\.injected) private var injected: DIContainer
+    @State private var countries: Loadable<[Country]> = .notRequested
+    @State private var routingState: Routing = .init()
+    private var routingBinding: Binding<Routing> {
+        $routingState.dispatching(to: injected.appState, \.routing.countriesList)
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -47,10 +27,12 @@ struct CountriesList: View {
                     .navigationBarTitle("Countries")
             }.padding(.leading, self.leadingPadding(geometry))
         }
+        .onReceive(countriesUpdate) { self.countries = $0 }
+        .onReceive(routingUpdate) { self.routingState = $0 }
     }
     
     private var content: AnyView {
-        switch appState.userData.countries {
+        switch countries {
         case .notRequested: return AnyView(notRequestedView)
         case let .isLoading(last): return AnyView(loadingView(last))
         case let .loaded(countries): return AnyView(loadedView(countries))
@@ -71,7 +53,8 @@ struct CountriesList: View {
 
 private extension CountriesList {
     func loadCountries() {
-        interactors.countriesInteractor.loadCountries()
+        injected.interactors.countriesInteractor
+            .loadCountries()
             .store(in: cancelBag)
     }
 }
@@ -109,7 +92,7 @@ private extension CountriesList {
             NavigationLink(
                 destination: self.detailsView(country: country),
                 tag: country.alpha3Code,
-                selection: self.$appState.routing.countriesList.countryDetails) {
+                selection: self.routingBinding.countryDetails) {
                     CountryCell(country: country)
                 }
         }
@@ -120,12 +103,38 @@ private extension CountriesList {
     }
 }
 
+// MARK: - Routing
+
+extension CountriesList {
+    struct Routing: Equatable {
+        var countryDetails: Country.Code?
+    }
+}
+
+// MARK: - State Updates
+
+private extension CountriesList {
+    
+    var routingUpdate: AnyPublisher<Routing, Never> {
+        injected.appState
+            .map { $0.routing.countriesList }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
+    
+    var countriesUpdate: AnyPublisher<Loadable<[Country]>, Never> {
+        injected.appState
+            .map { $0.userData.countries }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
+}
+
 #if DEBUG
 struct CountriesList_Previews: PreviewProvider {
-    static var appState = AppState.preview
     static var previews: some View {
         CountriesList()
-            .environmentObject(appState)
+            .modifier(DIContainer.Injector.preview)
     }
 }
 #endif

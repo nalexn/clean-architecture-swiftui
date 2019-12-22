@@ -7,33 +7,25 @@
 //
 
 import SwiftUI
-
-// MARK: - State Updates Filtering
-
-private extension RootViewAppearance {
-    struct StateSnapshot: Equatable {
-        let isAppActive: Bool
-    }
-}
-
-private extension AppState {
-    var rootViewStateSnapshot: RootViewAppearance.StateSnapshot {
-        .init(isAppActive: system.isActive)
-    }
-}
+import Combine
 
 // MARK: - RootViewAppearance
 
 struct RootViewAppearance: ViewModifier {
     
-    @ObservedObject private var appState: Deduplicated<AppState, StateSnapshot>
-    
-    init(appState: AppState) {
-        self.appState = appState.deduplicated { $0.rootViewStateSnapshot }
-    }
+    @Environment(\.injected) private var injected: DIContainer
+    @State private var isActive: Bool = false
     
     func body(content: Content) -> some View {
         content
-            .blur(radius: appState.system.isActive ? 0 : 10)
+            .blur(radius: isActive ? 0 : 10)
+            .onReceive(stateUpdate) { self.isActive = $0 }
+    }
+    
+    private var stateUpdate: AnyPublisher<Bool, Never> {
+        injected.appState
+            .map { $0.system.isActive }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
     }
 }

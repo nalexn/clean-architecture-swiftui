@@ -19,18 +19,15 @@ struct RealImagesInteractor: ImagesInteractor {
     let webRepository: ImageWebRepository
     let inMemoryCache: ImageCacheRepository
     let fileCache: ImageCacheRepository
-    let appState: AppState
     private let memoryWarningSubscription: AnyCancellable
     
     init(webRepository: ImageWebRepository,
          inMemoryCache: ImageCacheRepository,
          fileCache: ImageCacheRepository,
-         memoryWarning: AnyPublisher<Void, Never>,
-         appState: AppState) {
+         memoryWarning: AnyPublisher<Void, Never>) {
         self.webRepository = webRepository
         self.inMemoryCache = inMemoryCache
         self.fileCache = fileCache
-        self.appState = appState
         memoryWarningSubscription = memoryWarning.sink { [inMemoryCache] _ in
             inMemoryCache.purgeCache()
         }

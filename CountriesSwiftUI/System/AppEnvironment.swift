@@ -7,23 +7,25 @@
 //
 
 import UIKit
+import Combine
 
 struct AppEnvironment {
-    let appState: AppState
-    let interactors: InteractorsContainer
+    let appState: CurrentValueSubject<AppState, Never>
+    let interactors: DIContainer.Interactors
     let systemEventsHandler: SystemEventsHandler
-    let dependencyInjector: DependencyInjector
+    let dependencyInjector: DIContainer.Injector
 }
 
 extension AppEnvironment {
     
     static func bootstrap() -> AppEnvironment {
-        let appState = AppState()
+        let appState = CurrentValueSubject<AppState, Never>(AppState())
         let session = configuredURLSession()
         let webRepositories = configuredWebRepositories(session: session)
         let interactors = configuredInteractors(appState: appState, webRepositories: webRepositories)
         let systemEventsHandler = RealSystemEventsHandler(appState: appState)
-        let dependencyInjector = DependencyInjector(appState: appState, interactors: interactors)
+        let diContainer = DIContainer(appState: appState, interactors: interactors)
+        let dependencyInjector = DIContainer.Injector(container: diContainer)
         return AppEnvironment(appState: appState, interactors: interactors,
                               systemEventsHandler: systemEventsHandler,
                               dependencyInjector: dependencyInjector)
@@ -45,9 +47,9 @@ extension AppEnvironment {
                                         countriesRepository: countriesWebRepository)
     }
     
-    private static func configuredInteractors(appState: AppState,
+    private static func configuredInteractors(appState: CurrentValueSubject<AppState, Never>,
                                               webRepositories: WebRepositoriesContainer
-    ) -> InteractorsContainer {
+    ) -> DIContainer.Interactors {
         let countriesInteractor = RealCountriesInteractor(
             webRepository: webRepositories.countriesRepository,
             appState: appState)
@@ -60,10 +62,9 @@ extension AppEnvironment {
             webRepository: webRepositories.imageRepository,
             inMemoryCache: inMemoryCache,
             fileCache: fileCache,
-            memoryWarning: memoryWarning,
-            appState: appState)
-        return InteractorsContainer(countriesInteractor: countriesInteractor,
-                                    imagesInteractor: imagesInteractor)
+            memoryWarning: memoryWarning)
+        return .init(countriesInteractor: countriesInteractor,
+                     imagesInteractor: imagesInteractor)
     }
 }
 

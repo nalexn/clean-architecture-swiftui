@@ -7,38 +7,32 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ContentView: View {
     
-    #if DEBUG
-    @ObservedObject private var root: RootViewInjection = .shared
-    #endif
+    @State private var otherViews: [StackItem] = ContentView.otherViews.value
+    private let injector: DIContainer.Injector
     
-    private let injector: DependencyInjector
-    private let appearance: RootViewAppearance
-    
-    init(injector: DependencyInjector) {
+    init(injector: DIContainer.Injector) {
         self.injector = injector
-        self.appearance = RootViewAppearance(appState: injector.appState)
-        #if DEBUG
-        if !isRunningTests {
-            RootViewInjection.mount(view: realContent, injector: injector)
-        }
-        #endif
     }
     
     var body: some View {
-        #if DEBUG
-        return root.view
-        #else
-        return realContent
-            .modifier(injector)
-            .modifier(appearance)
-        #endif
+        ZStack {
+            if isRunningTests {
+                EmptyView()
+                ForEach(otherViews) { $0.view }
+            } else {
+                realContent
+                    .modifier(injector)
+            }
+        }
     }
     
     private var realContent: some View {
         CountriesList()
+            .modifier(RootViewAppearance())
     }
     
     private var isRunningTests: Bool {
@@ -46,14 +40,18 @@ struct ContentView: View {
     }
 }
 
+extension ContentView {
+    struct StackItem: Identifiable {
+        let id: String
+        let view: AnyView
+    }
+    static let otherViews: CurrentValueSubject<[StackItem], Never> = .init([])
+}
+
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
-    static var dependencyInjector: DependencyInjector {
-        DependencyInjector(appState: AppState.preview,
-                           interactors: InteractorsContainer.defaultValue)
-    }
     static var previews: some View {
-        ContentView(injector: dependencyInjector)
+        ContentView(injector: .preview)
     }
 }
 #endif
