@@ -18,7 +18,7 @@ struct CountryDetails: View {
     @State private var details: Loadable<Country.Details>
     @State private var routingState: Routing = .init()
     private var routingBinding: Binding<Routing> {
-        $routingState.dispatching(to: injected.appState, \.routing.countryDetails)
+        $routingState.dispatched(to: injected.appState, \.routing.countryDetails)
     }
     
     init(country: Country, details: Loadable<Country.Details> = .notRequested) {
@@ -188,10 +188,7 @@ extension CountryDetails {
 private extension CountryDetails {
     
     var routingUpdate: AnyPublisher<Routing, Never> {
-        injected.appState
-            .map { $0.routing.countryDetails }
-            .removeDuplicates()
-            .eraseToAnyPublisher()
+        injected.appState.updates(for: \.routing.countryDetails)
     }
 }
 

@@ -63,9 +63,7 @@ extension Publisher {
 extension CurrentValueSubject {
     
     subscript<T>(keyPath: WritableKeyPath<Output, T>) -> T where T: Equatable {
-        get {
-            value[keyPath: keyPath]
-        }
+        get { value[keyPath: keyPath] }
         set {
             var value = self.value
             if value[keyPath: keyPath] != newValue {
@@ -79,6 +77,11 @@ extension CurrentValueSubject {
         var value = self.value
         update(&value)
         self.value = value
+    }
+    
+    func updates<Value>(for keyPath: KeyPath<Output, Value>) ->
+        AnyPublisher<Value, Failure> where Value: Equatable {
+        return map(keyPath).removeDuplicates().eraseToAnyPublisher()
     }
 }
 
@@ -94,8 +97,8 @@ extension Subscribers.Completion {
 // MARK: - SwiftUI Helpers
 
 extension Binding where Value: Equatable {
-    func dispatching<State>(to state: CurrentValueSubject<State, Never>,
-                            _ keyPath: WritableKeyPath<State, Value>) -> Self {
+    func dispatched<State>(to state: CurrentValueSubject<State, Never>,
+                           _ keyPath: WritableKeyPath<State, Value>) -> Self {
         return .init(get: { () -> Value in
             self.wrappedValue
         }, set: { value in

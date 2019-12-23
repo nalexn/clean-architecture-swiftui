@@ -23,9 +23,6 @@ struct RootViewAppearance: ViewModifier {
     }
     
     private var stateUpdate: AnyPublisher<Bool, Never> {
-        injected.appState
-            .map { $0.system.isActive }
-            .removeDuplicates()
-            .eraseToAnyPublisher()
+        injected.appState.updates(for: \.system.isActive)
     }
 }
