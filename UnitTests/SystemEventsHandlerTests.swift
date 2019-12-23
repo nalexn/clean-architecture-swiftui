@@ -15,33 +15,33 @@ class SystemEventsHandlerTests: XCTestCase {
     var sut: RealSystemEventsHandler!
 
     override func setUp() {
-        sut = RealSystemEventsHandler(appState: AppState())
+        sut = RealSystemEventsHandler(appState: .init(AppState()))
     }
 
     func test_didBecomeActive() {
         sut.sceneDidBecomeActive()
-        let reference = AppState()
+        var reference = AppState()
         XCTAssertFalse(reference.system.isActive)
         reference.system.isActive = true
-        XCTAssertEqual(sut.appState, reference)
+        XCTAssertEqual(sut.appState.value, reference)
     }
     
     func test_willResignActive() {
         sut.sceneDidBecomeActive()
         sut.sceneWillResignActive()
         let reference = AppState()
-        XCTAssertEqual(sut.appState, reference)
+        XCTAssertEqual(sut.appState.value, reference)
     }
 
     func test_openURLContexts_countryDeepLink() {
         let countries = Country.mockedData
         let deepLinkURL = "https://www.example.com/?alpha3code=\(countries[0].alpha3Code)"
         let contexts = UIOpenURLContext.contexts(deepLinkURL)
-        XCTAssertNil(sut.appState.routing.countriesList.countryDetails)
-        XCTAssertFalse(sut.appState.routing.countryDetails.detailsSheet)
+        XCTAssertNil(sut.appState.value.routing.countriesList.countryDetails)
+        XCTAssertFalse(sut.appState.value.routing.countryDetails.detailsSheet)
         sut.sceneOpenURLContexts(contexts)
-        XCTAssertEqual(sut.appState.routing.countriesList.countryDetails, countries[0].alpha3Code)
-        XCTAssertTrue(sut.appState.routing.countryDetails.detailsSheet)
+        XCTAssertEqual(sut.appState.value.routing.countriesList.countryDetails, countries[0].alpha3Code)
+        XCTAssertTrue(sut.appState.value.routing.countryDetails.detailsSheet)
     }
     
     func test_openURLContexts_randomURL() {
@@ -51,15 +51,15 @@ class SystemEventsHandlerTests: XCTestCase {
         let contexts2 = UIOpenURLContext.contexts(url2)
         let reference = AppState()
         sut.sceneOpenURLContexts(contexts1)
-        XCTAssertEqual(sut.appState, reference)
+        XCTAssertEqual(sut.appState.value, reference)
         sut.sceneOpenURLContexts(contexts2)
-        XCTAssertEqual(sut.appState, reference)
+        XCTAssertEqual(sut.appState.value, reference)
     }
     
     func test_openURLContexts_emptyContexts() {
         let reference = AppState()
         sut.sceneOpenURLContexts(Set<UIOpenURLContext>())
-        XCTAssertEqual(sut.appState, reference)
+        XCTAssertEqual(sut.appState.value, reference)
     }
 }
 

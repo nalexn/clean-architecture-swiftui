@@ -10,7 +10,7 @@ import UIKit
 import Combine
 
 struct AppEnvironment {
-    let appState: CurrentValueSubject<AppState, Never>
+    let appState: Subject<AppState>
     let interactors: DIContainer.Interactors
     let systemEventsHandler: SystemEventsHandler
     let dependencyInjector: DIContainer.Injector
@@ -19,7 +19,7 @@ struct AppEnvironment {
 extension AppEnvironment {
     
     static func bootstrap() -> AppEnvironment {
-        let appState = CurrentValueSubject<AppState, Never>(AppState())
+        let appState = Subject<AppState>(AppState())
         let session = configuredURLSession()
         let webRepositories = configuredWebRepositories(session: session)
         let interactors = configuredInteractors(appState: appState, webRepositories: webRepositories)
@@ -47,7 +47,7 @@ extension AppEnvironment {
                                         countriesRepository: countriesWebRepository)
     }
     
-    private static func configuredInteractors(appState: CurrentValueSubject<AppState, Never>,
+    private static func configuredInteractors(appState: Subject<AppState>,
                                               webRepositories: WebRepositoriesContainer
     ) -> DIContainer.Interactors {
         let countriesInteractor = RealCountriesInteractor(

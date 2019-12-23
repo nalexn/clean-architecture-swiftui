@@ -1,5 +1,5 @@
 //
-//  InteractorsContainer.swift
+//  DIContainer.Interactors.swift
 //  CountriesSwiftUI
 //
 //  Created by Alexey Naumov on 24.10.2019.

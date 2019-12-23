@@ -18,9 +18,9 @@ protocol CountriesInteractor {
 struct RealCountriesInteractor: CountriesInteractor {
     
     let webRepository: CountriesWebRepository
-    let appState: CurrentValueSubject<AppState, Never>
+    let appState: Subject<AppState>
     
-    init(webRepository: CountriesWebRepository, appState: CurrentValueSubject<AppState, Never>) {
+    init(webRepository: CountriesWebRepository, appState: Subject<AppState>) {
         self.webRepository = webRepository
         self.appState = appState
     }

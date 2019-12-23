@@ -14,76 +14,76 @@ class CountryDetailsTests: XCTestCase {
     let country = Country.mockedData[0]
 
     func test_details_notRequested() {
-        let interactors = InteractorsContainer.mocked(
+        let interactors = DIContainer.Interactors.mocked(
             countriesInteractor: [.loadCountryDetails(country)])
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountryDetails(country: country, details: .notRequested)
             .asyncOnAppear {
                 interactors.verify()
-                RootViewInjection.unmount()
+                ContentView.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
+        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
         wait(for: [exp], timeout: 2)
     }
     
     func test_details_isLoading_initial() {
-        let interactors = InteractorsContainer.mocked()
+        let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountryDetails(country: country, details: .isLoading(last: nil))
             .asyncOnAppear {
                 interactors.verify()
-                RootViewInjection.unmount()
+                ContentView.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
+        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
         wait(for: [exp], timeout: 2)
     }
     
     func test_details_isLoading_refresh() {
-        let interactors = InteractorsContainer.mocked()
+        let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountryDetails(country: country, details: .isLoading(last: Country.Details.mockedData[0]))
             .asyncOnAppear {
                 interactors.verify()
-                RootViewInjection.unmount()
+                ContentView.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
+        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
         wait(for: [exp], timeout: 2)
     }
     
     func test_details_loaded() {
-        let interactors = InteractorsContainer.mocked(
+        let interactors = DIContainer.Interactors.mocked(
             imagesInteractor: [.loadImage(country.flag)])
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountryDetails(country: country, details: .loaded(Country.Details.mockedData[0]))
             .asyncOnAppear {
                 interactors.verify()
-                RootViewInjection.unmount()
+                ContentView.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
+        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
         wait(for: [exp], timeout: 3)
     }
     
     func test_details_failed() {
-        let interactors = InteractorsContainer.mocked()
+        let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountryDetails(country: country, details: .failed(NSError.test))
             .asyncOnAppear {
                 interactors.verify()
-                RootViewInjection.unmount()
+                ContentView.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
+        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
         wait(for: [exp], timeout: 2)
     }
     
     func test_sheetPresentation() {
-        let appState = AppState()
+        var appState = AppState()
         appState.routing.countryDetails.detailsSheet = true
-        let interactors = InteractorsContainer.mocked(
+        let interactors = DIContainer.Interactors.mocked(
             // Image is requested by CountryDetails and Details sheet:
             imagesInteractor: [.loadImage(country.flag),
                                .loadImage(country.flag)])
@@ -91,10 +91,10 @@ class CountryDetailsTests: XCTestCase {
         let sut = CountryDetails(country: country, details: .loaded(Country.Details.mockedData[0]))
             .asyncOnAppear {
                 interactors.verify()
-                RootViewInjection.unmount()
+                ContentView.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: appState, interactors: interactors))
+        ContentView.mount(view: sut, appState: appState, interactors: interactors)
         wait(for: [exp], timeout: 2)
     }
 }

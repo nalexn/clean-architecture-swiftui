@@ -13,7 +13,6 @@ import Combine
 class ImagesInteractorTests: XCTestCase {
     
     var sut: RealImagesInteractor!
-    var appState: AppState!
     var mockedWebRepository: MockedImageWebRepository!
     var mockedInMemoryCache: MockedImageCacheRepository!
     var mockedFileCache: MockedImageCacheRepository!
@@ -23,15 +22,13 @@ class ImagesInteractorTests: XCTestCase {
     let testImage = UIColor.red.image(CGSize(width: 40, height: 40))
     
     override func setUp() {
-        appState = AppState()
         mockedWebRepository = MockedImageWebRepository()
         mockedInMemoryCache = MockedImageCacheRepository()
         mockedFileCache = MockedImageCacheRepository()
         sut = RealImagesInteractor(webRepository: mockedWebRepository,
                                    inMemoryCache: mockedInMemoryCache,
                                    fileCache: mockedFileCache,
-                                   memoryWarning: memoryWanring.eraseToAnyPublisher(),
-                                   appState: appState)
+                                   memoryWarning: memoryWanring.eraseToAnyPublisher())
         subscriptions = Set<AnyCancellable>()
     }
     

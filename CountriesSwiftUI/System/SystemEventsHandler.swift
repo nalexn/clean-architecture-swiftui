@@ -17,7 +17,7 @@ protocol SystemEventsHandler {
 
 struct RealSystemEventsHandler: SystemEventsHandler {
     
-    let appState: CurrentValueSubject<AppState, Never>
+    let appState: Subject<AppState>
     
     func sceneOpenURLContexts(_ urlContexts: Set<UIOpenURLContext>) {
         guard let url = urlContexts.first?.url else { return }

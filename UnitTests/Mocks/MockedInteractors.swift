@@ -11,11 +11,11 @@ import SwiftUI
 import Combine
 @testable import CountriesSwiftUI
 
-extension InteractorsContainer {
+extension DIContainer.Interactors {
     static func mocked(
         countriesInteractor: [MockedCountriesInteractor.Action] = [],
         imagesInteractor: [MockedImagesInteractor.Action] = []
-    ) -> InteractorsContainer {
+    ) -> DIContainer.Interactors {
         .init(countriesInteractor: MockedCountriesInteractor(expected: countriesInteractor),
               imagesInteractor: MockedImagesInteractor(expected: imagesInteractor))
     }

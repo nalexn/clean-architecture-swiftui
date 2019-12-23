@@ -13,13 +13,13 @@ import Combine
 
 class CountriesInteractorTests: XCTestCase {
 
-    var appState: AppState!
+    let appState = CurrentValueSubject<AppState, Never>(AppState())
     var mockedRepository: MockedCountriesWebRepository!
     var sut: RealCountriesInteractor!
     var subscriptions = Set<AnyCancellable>()
     
     override func setUp() {
-        appState = AppState()
+        appState.value = AppState()
         mockedRepository = MockedCountriesWebRepository()
         sut = RealCountriesInteractor(webRepository: mockedRepository, appState: appState)
         subscriptions = Set<AnyCancellable>()
@@ -48,7 +48,7 @@ class CountriesInteractorTests: XCTestCase {
     func test_loadCountries_loaded_to_loaded() {
         let initialCountries = Country.mockedData
         let finalCountries = [initialCountries[0], initialCountries[1]]
-        appState.userData.countries = .loaded(initialCountries)
+        appState[\.userData.countries] = .loaded(initialCountries)
         mockedRepository.countriesResponse = .success(finalCountries)
         let updates = recordAppStateUserDataUpdates()
         sut.loadCountries()
@@ -87,7 +87,7 @@ class CountriesInteractorTests: XCTestCase {
     
     func test_loadCountryDetails_countries_notRequested() {
         let data = countryDetails(neighbors: [])
-        appState.userData.countries = .notRequested
+        appState[\.userData.countries] = .notRequested
         mockedRepository.detailsResponse = .success(data.intermediate)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: Country.mockedData[0])
@@ -107,7 +107,7 @@ class CountriesInteractorTests: XCTestCase {
     func test_loadCountryDetails_countries_loaded() {
         let countries = Country.mockedData
         let data = countryDetails(neighbors: countries)
-        appState.userData.countries = .loaded(countries)
+        appState[\.userData.countries] = .loaded(countries)
         mockedRepository.detailsResponse = .success(data.intermediate)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: countries[0])
@@ -128,7 +128,7 @@ class CountriesInteractorTests: XCTestCase {
         let countries = Country.mockedData
         let error = NSError.test
         let data = countryDetails(neighbors: countries)
-        appState.userData.countries = .failed(error)
+        appState[\.userData.countries] = .failed(error)
         mockedRepository.detailsResponse = .success(data.intermediate)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: countries[0])
@@ -148,7 +148,7 @@ class CountriesInteractorTests: XCTestCase {
     func test_loadCountryDetails_refresh() {
         let countries = Country.mockedData
         let data = countryDetails(neighbors: countries)
-        appState.userData.countries = .loaded(countries)
+        appState[\.userData.countries] = .loaded(countries)
         mockedRepository.detailsResponse = .success(data.intermediate)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.loaded(data.details))
         sut.load(countryDetails: details.binding, country: countries[0])
@@ -168,7 +168,7 @@ class CountriesInteractorTests: XCTestCase {
     func test_loadCountryDetails_failure() {
         let error = NSError.test
         let countries = Country.mockedData
-        appState.userData.countries = .loaded(countries)
+        appState[\.userData.countries] = .loaded(countries)
         mockedRepository.detailsResponse = .failure(error)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: countries[0])
@@ -200,7 +200,7 @@ class CountriesInteractorTests: XCTestCase {
         -> AnyPublisher<[AppState.UserData], Never> {
         return Future<[AppState.UserData], Never> { (completion) in
             var updates = [AppState.UserData]()
-            self.appState.$userData
+            self.appState.map(\.userData)
                 .sink { updates.append($0 )}
                 .store(in: &self.subscriptions)
             DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {

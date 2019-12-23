@@ -14,7 +14,7 @@ class ModalDetailsViewTests: XCTestCase {
 
     func test_modalDetails() {
         let country = Country.mockedData[0]
-        let interactors = InteractorsContainer.mocked(
+        let interactors = DIContainer.Interactors.mocked(
             imagesInteractor: [.loadImage(country.flag)]
         )
         let exp = XCTestExpectation(description: "onAppear")
@@ -22,10 +22,10 @@ class ModalDetailsViewTests: XCTestCase {
         let sut = ModalDetailsView(country: country, isDisplayed: isDisplayed.projectedValue)
             .asyncOnAppear {
                 interactors.verify()
-                RootViewInjection.unmount()
+                ContentView.unmount()
                 exp.fulfill()
             }
-        RootViewInjection.mount(view: sut, injector: DependencyInjector(appState: AppState(), interactors: interactors))
+        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
         wait(for: [exp], timeout: 2)
     }
 }

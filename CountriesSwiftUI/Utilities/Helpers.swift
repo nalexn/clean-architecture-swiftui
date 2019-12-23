@@ -12,6 +12,8 @@ import Foundation
 
 // MARK: - Combine Helpers
 
+typealias Subject<State> = CurrentValueSubject<State, Never>
+
 class CancelBag {
     var subscriptions = Set<AnyCancellable>()
 }
