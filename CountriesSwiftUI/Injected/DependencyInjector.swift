@@ -11,7 +11,7 @@ import Combine
 
 struct DIContainer: EnvironmentKey {
     
-    let appState: Subject<AppState>
+    let appState: Store<AppState>
     let interactors: Interactors
     
     static var defaultValue: Self { Self.default }

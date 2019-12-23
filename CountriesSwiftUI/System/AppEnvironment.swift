@@ -10,7 +10,7 @@ import UIKit
 import Combine
 
 struct AppEnvironment {
-    let appState: Subject<AppState>
+    let appState: Store<AppState>
     let interactors: DIContainer.Interactors
     let systemEventsHandler: SystemEventsHandler
     let dependencyInjector: DIContainer.Injector
@@ -19,7 +19,7 @@ struct AppEnvironment {
 extension AppEnvironment {
     
     static func bootstrap() -> AppEnvironment {
-        let appState = Subject<AppState>(AppState())
+        let appState = Store<AppState>(AppState())
         /*       Uncomment to see deep linking in action
          
         appState.bulkUpdate { appState in
@@ -54,7 +54,7 @@ extension AppEnvironment {
                                         countriesRepository: countriesWebRepository)
     }
     
-    private static func configuredInteractors(appState: Subject<AppState>,
+    private static func configuredInteractors(appState: Store<AppState>,
                                               webRepositories: WebRepositoriesContainer
     ) -> DIContainer.Interactors {
         let countriesInteractor = RealCountriesInteractor(

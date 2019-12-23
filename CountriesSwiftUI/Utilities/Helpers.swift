@@ -12,7 +12,8 @@ import Foundation
 
 // MARK: - Combine Helpers
 
-typealias Subject<State> = CurrentValueSubject<State, Never>
+// Should have called it "CVS Store"
+typealias Store<State> = CurrentValueSubject<State, Never>
 
 class CancelBag {
     var subscriptions = Set<AnyCancellable>()
@@ -97,7 +98,7 @@ extension Subscribers.Completion {
 // MARK: - SwiftUI Helpers
 
 extension Binding where Value: Equatable {
-    func dispatched<State>(to state: CurrentValueSubject<State, Never>,
+    func dispatched<State>(to state: Store<State>,
                            _ keyPath: WritableKeyPath<State, Value>) -> Self {
         return .init(get: { () -> Value in
             self.wrappedValue
