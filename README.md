@@ -2,6 +2,7 @@
 
 * [Clean Architecture for SwiftUI](https://nalexn.github.io/clean-architecture-swiftui/?utm_source=nalexn_github)
 * [Programmatic navigation in SwiftUI project](https://nalexn.github.io/swiftui-deep-linking/?utm_source=nalexn_github)
+* [Why I quit using the ObservableObject in SwiftUI](https://nalexn.github.io/swiftui-observableobject/?utm_source=nalexn_github)
 
 ---
 
