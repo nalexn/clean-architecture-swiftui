@@ -20,6 +20,13 @@ extension AppEnvironment {
     
     static func bootstrap() -> AppEnvironment {
         let appState = Subject<AppState>(AppState())
+        /*       Uncomment to see deep linking in action
+         
+        appState.bulkUpdate { appState in
+            appState.routing.countriesList.countryDetails = "AFG"
+            appState.routing.countryDetails.detailsSheet = true
+        }
+        */
         let session = configuredURLSession()
         let webRepositories = configuredWebRepositories(session: session)
         let interactors = configuredInteractors(appState: appState, webRepositories: webRepositories)
