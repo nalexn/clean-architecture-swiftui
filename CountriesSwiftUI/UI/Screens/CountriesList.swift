@@ -128,8 +128,7 @@ private extension CountriesList {
 #if DEBUG
 struct CountriesList_Previews: PreviewProvider {
     static var previews: some View {
-        CountriesList()
-            .modifier(DIContainer.Injector.preview)
+        CountriesList().inject(.preview)
     }
 }
 #endif

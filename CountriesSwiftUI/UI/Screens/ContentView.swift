@@ -12,11 +12,11 @@ import Combine
 struct ContentView: View {
     
     @State private var otherViews: [StackItem] = ContentView.otherViews.value
-    private let injector: DIContainer.Injector
+    private let container: DIContainer
     internal var isRunningTests: Bool = ProcessInfo.processInfo.isRunningTests
     
-    init(injector: DIContainer.Injector) {
-        self.injector = injector
+    init(container: DIContainer) {
+        self.container = container
     }
     
     var body: some View {
@@ -26,15 +26,13 @@ struct ContentView: View {
                 ForEach(otherViews) { $0.view }
                     .onReceive(ContentView.otherViews) { self.otherViews = $0 }
             } else {
-                realContent
-                    .modifier(injector)
+                realContent.inject(container)
             }
         }
     }
     
     private var realContent: some View {
         CountriesList()
-            .modifier(RootViewAppearance())
     }
 }
 
@@ -59,10 +57,7 @@ extension ContentView {
     static func mount<V>(view: V, appState: AppState,
                          interactors: DIContainer.Interactors,
                          viewId: String = #function) where V: View {
-        let appearance = RootViewAppearance()
-        let injector = DIContainer.Injector(container: DIContainer(
-            appState: .init(appState), interactors: interactors))
-        let preparedView = view.modifier(appearance).modifier(injector)
+        let preparedView = view.inject(appState, interactors)
         let item = StackItem(id: viewId, view: AnyView(preparedView))
         otherViews.value += [item]
     }
@@ -82,7 +77,7 @@ extension ContentView {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(injector: .preview)
+        ContentView(container: .preview)
     }
 }
 #endif

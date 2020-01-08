@@ -159,9 +159,7 @@ private extension CountryDetails {
     func modalDetailsView() -> some View {
         ModalDetailsView(country: country,
                          isDisplayed: routingBinding.detailsSheet)
-            .modifier(RootViewAppearance())
-            .modifier(DIContainer.Injector(container: injected))
-            
+            .inject(injected)
     }
 }
 
@@ -198,7 +196,7 @@ private extension CountryDetails {
 struct CountryDetails_Previews: PreviewProvider {
     static var previews: some View {
         CountryDetails(country: Country.mockedData[0])
-            .modifier(DIContainer.Injector.preview)
+            .inject(.preview)
     }
 }
 #endif

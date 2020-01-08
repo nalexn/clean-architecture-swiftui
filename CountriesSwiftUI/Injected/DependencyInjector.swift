@@ -9,6 +9,8 @@
 import SwiftUI
 import Combine
 
+// MARK: - DIContainer
+
 struct DIContainer: EnvironmentKey {
     
     let appState: Store<AppState>
@@ -27,25 +29,28 @@ extension EnvironmentValues {
     }
 }
 
+#if DEBUG
 extension DIContainer {
-    struct Injector: ViewModifier {
-        
-        let container: DIContainer
-        
-        init(container: DIContainer) {
-            self.container = container
-        }
-        
-        func body(content: Content) -> some View {
-            content
-                .environment(\.injected, container)
-        }
+    static var preview: Self {
+        .init(appState: .init(AppState.preview), interactors: .stub)
     }
 }
+#endif
 
-extension DIContainer.Injector {
-    static var preview: Self {
-        .init(container: .init(appState: .init(AppState.preview),
-                               interactors: .stub))
+// MARK: - Injection in the view hierarchy
+
+extension View {
+    
+    func inject(_ appState: AppState,
+                _ interactors: DIContainer.Interactors) -> some View {
+        let container = DIContainer(appState: .init(appState),
+                                    interactors: interactors)
+        return inject(container)
+    }
+    
+    func inject(_ container: DIContainer) -> some View {
+        return self
+            .modifier(RootViewAppearance())
+            .environment(\.injected, container)
     }
 }

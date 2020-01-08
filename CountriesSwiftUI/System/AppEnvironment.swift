@@ -10,10 +10,8 @@ import UIKit
 import Combine
 
 struct AppEnvironment {
-    let appState: Store<AppState>
-    let interactors: DIContainer.Interactors
+    let container: DIContainer
     let systemEventsHandler: SystemEventsHandler
-    let dependencyInjector: DIContainer.Injector
 }
 
 extension AppEnvironment {
@@ -32,10 +30,8 @@ extension AppEnvironment {
         let interactors = configuredInteractors(appState: appState, webRepositories: webRepositories)
         let systemEventsHandler = RealSystemEventsHandler(appState: appState)
         let diContainer = DIContainer(appState: appState, interactors: interactors)
-        let dependencyInjector = DIContainer.Injector(container: diContainer)
-        return AppEnvironment(appState: appState, interactors: interactors,
-                              systemEventsHandler: systemEventsHandler,
-                              dependencyInjector: dependencyInjector)
+        return AppEnvironment(container: diContainer,
+                              systemEventsHandler: systemEventsHandler)
     }
     
     private static func configuredURLSession() -> URLSession {

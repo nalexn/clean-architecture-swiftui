@@ -43,7 +43,7 @@ struct ModalDetailsView_Previews: PreviewProvider {
     
     static var previews: some View {
         ModalDetailsView(country: Country.mockedData[0], isDisplayed: $isDisplayed)
-            .modifier(DIContainer.Injector.preview)
+            .inject(.preview)
     }
 }
 #endif
