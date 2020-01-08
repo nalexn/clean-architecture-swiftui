@@ -9,6 +9,25 @@
 import XCTest
 import SwiftUI
 import Combine
+@testable import CountriesSwiftUI
+
+// MARK: - DI Injection
+
+extension View {
+    
+    func inject(_ appState: AppState,
+                _ interactors: DIContainer.Interactors) -> some View {
+        let container = DIContainer(appState: .init(appState),
+                                    interactors: interactors)
+        return inject(container)
+    }
+    
+    func inject(_ container: DIContainer) -> some View {
+        let appearance = RootViewAppearance()
+        let injector = DIContainer.Injector(container: container)
+        return self.modifier(appearance).modifier(injector)
+    }
+}
 
 // MARK: - UI
 

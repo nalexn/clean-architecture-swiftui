@@ -9,6 +9,7 @@
 import XCTest
 import SwiftUI
 import Combine
+import ViewInspector
 @testable import CountriesSwiftUI
 
 extension DIContainer.Interactors {
@@ -25,6 +26,15 @@ extension DIContainer.Interactors {
             .verify(file: file, line: line)
         (imagesInteractor as? MockedImagesInteractor)?
             .verify(file: file, line: line)
+    }
+    
+    func asyncVerify(_ exp: XCTestExpectation, file: StaticString = #file,
+                     line: UInt = #line, function: String = #function) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.verify(file: file, line: line)
+            ViewHosting.expel(viewId: function)
+            exp.fulfill()
+        }
     }
 }
 
