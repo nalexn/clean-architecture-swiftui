@@ -53,7 +53,6 @@
 		F68B5308237441AD00D6337C /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B5307237441AD00D6337C /* Mock.swift */; };
 		F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B53092376EE8C00D6337C /* ImageWebRepository.swift */; };
 		F68B530C23771A9400D6337C /* ImagesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530B23771A9400D6337C /* ImagesInteractor.swift */; };
-		F6B620F023B10FF700CD00C7 /* ContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B620EF23B10FF700CD00C7 /* ContentViewTests.swift */; };
 		F6B6212423B52AE600CD00C7 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = F6B6212323B52AE600CD00C7 /* ViewInspector */; };
 		F6BB99612378955800236EDC /* ImageFileCacheRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BB99602378955800236EDC /* ImageFileCacheRepositoryTests.swift */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
@@ -128,7 +127,6 @@
 		F68B5307237441AD00D6337C /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		F68B53092376EE8C00D6337C /* ImageWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWebRepository.swift; sourceTree = "<group>"; };
 		F68B530B23771A9400D6337C /* ImagesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesInteractor.swift; sourceTree = "<group>"; };
-		F6B620EF23B10FF700CD00C7 /* ContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewTests.swift; sourceTree = "<group>"; };
 		F6BB99602378955800236EDC /* ImageFileCacheRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFileCacheRepositoryTests.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
@@ -179,7 +177,6 @@
 				F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */,
 				F661F2C923777D440014E142 /* SVGImageViewTests.swift */,
 				F60CC508236C6084007E84B2 /* ViewPreviewsTests.swift */,
-				F6B620EF23B10FF700CD00C7 /* ContentViewTests.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -557,7 +554,6 @@
 				F661F2C7237773990014E142 /* MockedCacheRepositories.swift in Sources */,
 				F68B530523743D8600D6337C /* MockedInteractors.swift in Sources */,
 				F6F003B1236AF31400AAC7C6 /* SystemEventsHandlerTests.swift in Sources */,
-				F6B620F023B10FF700CD00C7 /* ContentViewTests.swift in Sources */,
 				F6F003B8236B04B400AAC7C6 /* MockedWebRepositories.swift in Sources */,
 				F60829732369CE5300DB292E /* MockedResponse.swift in Sources */,
 				F60CC503236C3CA8007E84B2 /* CountriesListTests.swift in Sources */,
