@@ -36,12 +36,6 @@ struct ContentView: View {
     }
 }
 
-private extension ProcessInfo {
-    var isRunningTests: Bool {
-        environment["XCTestConfigurationFilePath"] != nil
-    }
-}
-
 // MARK: - Adding Views to the hierarchy in tests
 
 private extension ContentView {

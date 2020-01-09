@@ -12,7 +12,7 @@ import XCTest
 class ContentViewTests: XCTestCase {
 
     func test_prodBody() {
-        var sut = ContentView(injector: .preview)
+        var sut = ContentView(container: .preview)
         sut.isRunningTests = false
         XCTAssertNoThrow(sut.body)
     }

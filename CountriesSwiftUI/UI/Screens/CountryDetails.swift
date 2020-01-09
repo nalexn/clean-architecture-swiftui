@@ -27,20 +27,10 @@ struct CountryDetails: View {
     }
     
     var body: some View {
-        #if targetEnvironment(simulator)
-        let isiPhoneSimulator = UIDevice.current.userInterfaceIdiom == .phone
-        return content
+        content
             .navigationBarTitle(country.name)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: Button(action: {
-                self.goBack()
-            }, label: { Text(isiPhoneSimulator ? "Back" : "") }))
+            .modifier(NavigationBarBugFixer(goBack: self.goBack))
             .onReceive(routingUpdate) { self.routingState = $0 }
-        #else
-        return content
-            .navigationBarTitle(country.name)
-            .onReceive(routingUpdate) { self.routingState = $0 }
-        #endif
     }
     
     private var content: AnyView {
@@ -66,11 +56,9 @@ private extension CountryDetails {
         injected.appState[\.routing.countryDetails.detailsSheet] = true
     }
     
-    #if targetEnvironment(simulator)
     func goBack() {
         injected.appState[\.routing.countriesList.countryDetails] = nil
     }
-    #endif
 }
 
 // MARK: - Loading Content
@@ -90,6 +78,34 @@ private extension CountryDetails {
         ErrorView(error: error, retryAction: {
             self.loadCountryDetails()
         })
+    }
+}
+
+// MARK: - A workaround for a bug in NavigationBar
+// https://stackoverflow.com/q/58404725/2923345
+
+private struct NavigationBarBugFixer: ViewModifier {
+        
+    let goBack: () -> Void
+    
+    func body(content: Content) -> some View {
+        #if targetEnvironment(simulator)
+        let isiPhoneSimulator = UIDevice.current.userInterfaceIdiom == .phone
+        return Group {
+            if ProcessInfo.processInfo.isRunningTests {
+                content
+            } else {
+                content
+                    .navigationBarBackButtonHidden(true)
+                    .navigationBarItems(leading: Button(action: {
+                        print("Please note that NavigationView currently does not work correctly on the iOS Simulator.")
+                        self.goBack()
+                    }, label: { Text(isiPhoneSimulator ? "Back" : "") }))
+            }
+        }
+        #else
+        return content
+        #endif
     }
 }
 
