@@ -11,7 +11,6 @@ import ViewInspector
 @testable import CountriesSwiftUI
 
 extension CountryDetails: Inspectable { }
-extension SVGImageView: Inspectable { }
 extension DetailRow: Inspectable { }
 
 class CountryDetailsTests: XCTestCase {

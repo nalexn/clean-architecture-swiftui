@@ -7,7 +7,11 @@
 //
 
 import XCTest
+import SwiftUI
+import ViewInspector
 @testable import CountriesSwiftUI
+
+extension SVGImageView: Inspectable { }
 
 class SVGImageViewTests: XCTestCase {
 
@@ -17,26 +21,28 @@ class SVGImageViewTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked(
             imagesInteractor: [.loadImage(url)])
         let exp = XCTestExpectation(description: "onAppear")
-        let sut = SVGImageView(imageURL: url, image: .notRequested)
-            .asyncOnAppear {
-                interactors.verify()
-                ContentView.unmount()
-                exp.fulfill()
+        var sut = WrapperView(imageURL: url, image: .notRequested)
+        sut.didAppear = { view in
+            view.inspectContent { content in
+                XCTAssertNoThrow(try content.anyView().text())
             }
-        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
+            interactors.asyncVerify(exp)
+        }
+        ViewHosting.host(view: sut.inject(AppState(), interactors))
         wait(for: [exp], timeout: 2)
     }
     
     func test_imageView_isLoading_initial() {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
-        let sut = SVGImageView(imageURL: url, image: .isLoading(last: nil))
-            .asyncOnAppear {
-                interactors.verify()
-                ContentView.unmount()
-                exp.fulfill()
+        var sut = WrapperView(imageURL: url, image: .isLoading(last: nil))
+        sut.didAppear = { view in
+            view.inspectContent { content in
+                XCTAssertNoThrow(try content.anyView().view(ActivityIndicatorView.self))
             }
-        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
+            interactors.asyncVerify(exp)
+        }
+        ViewHosting.host(view: sut.inject(AppState(), interactors))
         wait(for: [exp], timeout: 2)
     }
     
@@ -44,13 +50,14 @@ class SVGImageViewTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
-        let sut = SVGImageView(imageURL: url, image: .isLoading(last: image))
-            .asyncOnAppear {
-                interactors.verify()
-                ContentView.unmount()
-                exp.fulfill()
+        var sut = WrapperView(imageURL: url, image: .isLoading(last: image))
+        sut.didAppear = { view in
+            view.inspectContent { content in
+                XCTAssertNoThrow(try content.anyView().view(ActivityIndicatorView.self))
             }
-        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
+            interactors.asyncVerify(exp)
+        }
+        ViewHosting.host(view: sut.inject(AppState(), interactors))
         wait(for: [exp], timeout: 2)
     }
     
@@ -58,26 +65,53 @@ class SVGImageViewTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
-        let sut = SVGImageView(imageURL: url, image: .loaded(image))
-            .asyncOnAppear {
-                interactors.verify()
-                ContentView.unmount()
-                exp.fulfill()
+        var sut = WrapperView(imageURL: url, image: .loaded(image))
+        sut.didAppear = { view in
+            view.inspectContent { content in
+                let loadedImage = try content.anyView().image().uiImage()
+                XCTAssertEqual(loadedImage, image)
             }
-        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
+            interactors.asyncVerify(exp)
+        }
+        ViewHosting.host(view: sut.inject(AppState(), interactors))
         wait(for: [exp], timeout: 3)
     }
     
     func test_imageView_failed() {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
-        let sut = SVGImageView(imageURL: url, image: .failed(NSError.test))
-            .asyncOnAppear {
-                interactors.verify()
-                ContentView.unmount()
-                exp.fulfill()
+        var sut = WrapperView(imageURL: url, image: .failed(NSError.test))
+        sut.didAppear = { view in
+            view.inspectContent { content in
+                let message = try content.anyView().text().string()
+                XCTAssertEqual(message, "Unable to load image")
             }
-        ContentView.mount(view: sut, appState: AppState(), interactors: interactors)
+            interactors.asyncVerify(exp)
+        }
+        ViewHosting.host(view: sut.inject(AppState(), interactors))
         wait(for: [exp], timeout: 2)
+    }
+}
+
+// MARK: - WrapperView
+
+private struct WrapperView: View, Inspectable {
+    
+    let imageURL: URL
+    let image: Loadable<UIImage>
+    var didAppear: ((Self) -> Void)?
+    
+    var body: some View {
+        SVGImageView(imageURL: imageURL, image: image)
+            .onAppear { self.didAppear?(self) }
+    }
+    
+    func inspectContent(file: StaticString = #file, line: UInt = #line,
+                        traverse: (InspectableView<ViewType.View<SVGImageView>>) throws -> Void) {
+        do {
+            try traverse(try inspect().view(SVGImageView.self))
+        } catch let error {
+            XCTFail("\(error.localizedDescription)", file: file, line: line)
+        }
     }
 }
