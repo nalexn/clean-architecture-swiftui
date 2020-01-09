@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import ViewInspector
 @testable import CountriesSwiftUI
 
 class ViewPreviewsTests: XCTestCase {
@@ -35,8 +36,9 @@ class ViewPreviewsTests: XCTestCase {
         _ = DetailRow_Previews.previews
     }
     
-    func test_errorView_previews() {
-        _ = ErrorView_Previews.previews
+    func test_errorView_previews() throws {
+        let view = ErrorView_Previews.previews
+        try view.inspect().view(ErrorView.self).actualView().retryAction()
     }
     
     func test_svgImageView_previews() {
