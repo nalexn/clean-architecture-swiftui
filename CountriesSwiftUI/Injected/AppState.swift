@@ -45,6 +45,7 @@ extension AppState {
     static var preview: AppState {
         var state = AppState()
         state.userData.countries = .loaded(Country.mockedData)
+        state.system.isActive = true
         return state
     }
 }

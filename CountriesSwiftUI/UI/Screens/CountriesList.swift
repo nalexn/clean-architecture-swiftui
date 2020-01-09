@@ -19,6 +19,7 @@ struct CountriesList: View {
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countriesList)
     }
+    var didSetCountries: ((Self) -> Void)?
     
     var body: some View {
         GeometryReader { geometry in
@@ -27,7 +28,7 @@ struct CountriesList: View {
                     .navigationBarTitle("Countries")
             }.padding(.leading, self.leadingPadding(geometry))
         }
-        .onReceive(countriesUpdate) { self.countries = $0 }
+        .onReceive(countriesUpdate) { self.countries = $0; self.didSetCountries?(self) }
         .onReceive(routingUpdate) { self.routingState = $0 }
     }
     
@@ -127,8 +128,7 @@ private extension CountriesList {
 #if DEBUG
 struct CountriesList_Previews: PreviewProvider {
     static var previews: some View {
-        CountriesList()
-            .modifier(DIContainer.Injector.preview)
+        CountriesList().inject(.preview)
     }
 }
 #endif

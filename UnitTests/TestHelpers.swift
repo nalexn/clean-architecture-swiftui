@@ -12,14 +12,6 @@ import Combine
 
 // MARK: - UI
 
-extension View {
-    func asyncOnAppear(perform action: @escaping () -> Void) -> some View {
-        onAppear {
-            DispatchQueue.main.async(execute: action)
-        }
-    }
-}
-
 extension UIColor {
     func image(_ size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
         let format = UIGraphicsImageRendererFormat()

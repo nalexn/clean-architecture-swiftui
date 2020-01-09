@@ -20,6 +20,7 @@ struct CountryDetails: View {
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countryDetails)
     }
+    var didAppear: ((Self) -> Void)?
     
     init(country: Country, details: Loadable<Country.Details> = .notRequested) {
         self.country = country
@@ -27,20 +28,11 @@ struct CountryDetails: View {
     }
     
     var body: some View {
-        #if targetEnvironment(simulator)
-        let isiPhoneSimulator = UIDevice.current.userInterfaceIdiom == .phone
-        return content
+        content
             .navigationBarTitle(country.name)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: Button(action: {
-                self.goBack()
-            }, label: { Text(isiPhoneSimulator ? "Back" : "") }))
+            .modifier(NavigationBarBugFixer(goBack: self.goBack))
             .onReceive(routingUpdate) { self.routingState = $0 }
-        #else
-        return content
-            .navigationBarTitle(country.name)
-            .onReceive(routingUpdate) { self.routingState = $0 }
-        #endif
+            .onAppear { self.didAppear?(self) }
     }
     
     private var content: AnyView {
@@ -66,11 +58,9 @@ private extension CountryDetails {
         injected.appState[\.routing.countryDetails.detailsSheet] = true
     }
     
-    #if targetEnvironment(simulator)
     func goBack() {
         injected.appState[\.routing.countriesList.countryDetails] = nil
     }
-    #endif
 }
 
 // MARK: - Loading Content
@@ -90,6 +80,34 @@ private extension CountryDetails {
         ErrorView(error: error, retryAction: {
             self.loadCountryDetails()
         })
+    }
+}
+
+// MARK: - A workaround for a bug in NavigationBar
+// https://stackoverflow.com/q/58404725/2923345
+
+private struct NavigationBarBugFixer: ViewModifier {
+        
+    let goBack: () -> Void
+    
+    func body(content: Content) -> some View {
+        #if targetEnvironment(simulator)
+        let isiPhoneSimulator = UIDevice.current.userInterfaceIdiom == .phone
+        return Group {
+            if ProcessInfo.processInfo.isRunningTests {
+                content
+            } else {
+                content
+                    .navigationBarBackButtonHidden(true)
+                    .navigationBarItems(leading: Button(action: {
+                        print("Please note that NavigationView currently does not work correctly on the iOS Simulator.")
+                        self.goBack()
+                    }, label: { Text(isiPhoneSimulator ? "Back" : "") }))
+            }
+        }
+        #else
+        return content
+        #endif
     }
 }
 
@@ -159,9 +177,7 @@ private extension CountryDetails {
     func modalDetailsView() -> some View {
         ModalDetailsView(country: country,
                          isDisplayed: routingBinding.detailsSheet)
-            .modifier(RootViewAppearance())
-            .modifier(DIContainer.Injector(container: injected))
-            
+            .inject(injected)
     }
 }
 
@@ -169,9 +185,7 @@ private extension CountryDetails {
 
 private extension Country.Currency {
     var title: String {
-        if let symbol = symbol {
-            return name + " \(symbol)"
-        } else { return name }
+        return name + (symbol.map {" " + $0} ?? "")
     }
 }
 
@@ -198,7 +212,7 @@ private extension CountryDetails {
 struct CountryDetails_Previews: PreviewProvider {
     static var previews: some View {
         CountryDetails(country: Country.mockedData[0])
-            .modifier(DIContainer.Injector.preview)
+            .inject(.preview)
     }
 }
 #endif

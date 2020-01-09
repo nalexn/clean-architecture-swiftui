@@ -108,3 +108,11 @@ extension Binding where Value: Equatable {
         })
     }
 }
+
+// MARK: - General
+
+extension ProcessInfo {
+    var isRunningTests: Bool {
+        environment["XCTestConfigurationFilePath"] != nil
+    }
+}
