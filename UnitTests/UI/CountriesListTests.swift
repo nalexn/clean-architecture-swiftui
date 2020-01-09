@@ -123,6 +123,29 @@ class CountriesListTests: XCTestCase {
         ViewHosting.host(view: sut.inject(container))
         wait(for: [exp], timeout: 2)
     }
+    
+    func test_countries_navigation_to_details() {
+        let countries = Country.mockedData
+        var appState = AppState()
+        appState.userData.countries = .loaded(countries)
+        let interactors = DIContainer.Interactors.mocked(
+            countriesInteractor: [.loadCountryDetails(countries[0])]
+        )
+        let container = DIContainer(appState: .init(appState), interactors: interactors)
+        XCTAssertNil(container.appState.value.routing.countriesList.countryDetails)
+        let exp = XCTestExpectation(description: "onAppear")
+        let sut = CountriesList(didSetCountries: { view in
+            view.inspectContent { content in
+                let firstCountryRow = try content.list().forEach(0).hStack(0).navigationLink(0)
+                try firstCountryRow.activate()
+                let selected = container.appState.value.routing.countriesList.countryDetails
+                XCTAssertEqual(selected, countries[0].alpha3Code)
+            }
+            interactors.asyncVerify(exp)
+        })
+        ViewHosting.host(view: sut.inject(container))
+        wait(for: [exp], timeout: 2)
+    }
 }
 
 // MARK: - CountriesList inspection helpers
