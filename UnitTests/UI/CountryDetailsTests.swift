@@ -105,11 +105,7 @@ class CountryDetailsTests: XCTestCase {
         )
         let exp = XCTestExpectation(description: "onAppear")
         var sut = CountryDetails(country: country, details: .failed(NSError.test))
-        var isFirstUpdate = true
         sut.didAppear = { view in
-            guard isFirstUpdate
-                else { return } // Skip the update after triggering the refresh
-            isFirstUpdate = false
             view.inspectContent { content in
                 let errorView = try content.view(ErrorView.self)
                 try errorView.vStack().button(2).tap()
