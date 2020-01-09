@@ -21,7 +21,8 @@ class CountriesListTests: XCTestCase {
         let appState = AppState()
         XCTAssertEqual(appState.userData.countries, .notRequested)
         let interactors = DIContainer.Interactors.mocked(
-            countriesInteractor: [.loadCountries])
+            countriesInteractor: [.loadCountries]
+        )
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
             view.inspectContent { content in
@@ -103,7 +104,8 @@ class CountriesListTests: XCTestCase {
         var appState = AppState()
         appState.userData.countries = .failed(NSError.test)
         let interactors = DIContainer.Interactors.mocked(
-            countriesInteractor: [.loadCountries])
+            countriesInteractor: [.loadCountries]
+        )
         let container = DIContainer(appState: .init(appState),
                                     interactors: interactors)
         let exp = XCTestExpectation(description: "onAppear")

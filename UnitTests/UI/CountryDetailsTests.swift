@@ -20,7 +20,8 @@ class CountryDetailsTests: XCTestCase {
 
     func test_details_notRequested() {
         let interactors = DIContainer.Interactors.mocked(
-            countriesInteractor: [.loadCountryDetails(country)])
+            countriesInteractor: [.loadCountryDetails(country)]
+        )
         let exp = XCTestExpectation(description: "onAppear")
         var sut = CountryDetails(country: country, details: .notRequested)
         sut.didAppear = { view in
@@ -51,7 +52,8 @@ class CountryDetailsTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         var sut = CountryDetails(country: country, details:
-            .isLoading(last: Country.Details.mockedData[0]))
+            .isLoading(last: Country.Details.mockedData[0])
+        )
         sut.didAppear = { view in
             view.inspectContent { content in
                 XCTAssertNoThrow(try content.view(ActivityIndicatorView.self))
@@ -64,10 +66,12 @@ class CountryDetailsTests: XCTestCase {
     
     func test_details_loaded() {
         let interactors = DIContainer.Interactors.mocked(
-            imagesInteractor: [.loadImage(country.flag)])
+            imagesInteractor: [.loadImage(country.flag)]
+        )
         let exp = XCTestExpectation(description: "onAppear")
         var sut = CountryDetails(country: country, details:
-            .loaded(Country.Details.mockedData[0]))
+            .loaded(Country.Details.mockedData[0])
+        )
         sut.didAppear = { view in
             view.inspectContent { content in
                 let list = try content.list()
@@ -98,7 +102,8 @@ class CountryDetailsTests: XCTestCase {
     
     func test_details_failed_retry() {
         let interactors = DIContainer.Interactors.mocked(
-            countriesInteractor: [.loadCountryDetails(country)])
+            countriesInteractor: [.loadCountryDetails(country)]
+        )
         let exp = XCTestExpectation(description: "onAppear")
         var sut = CountryDetails(country: country, details: .failed(NSError.test))
         var isFirstUpdate = true
@@ -120,7 +125,8 @@ class CountryDetailsTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked(
             // Image is requested by CountryDetails and Details sheet:
             imagesInteractor: [.loadImage(country.flag),
-                               .loadImage(country.flag)])
+                               .loadImage(country.flag)]
+        )
         let container = DIContainer(appState: .init(AppState()), interactors: interactors)
         XCTAssertFalse(container.appState.value.routing.countryDetails.detailsSheet)
         let exp = XCTestExpectation(description: "onAppear")

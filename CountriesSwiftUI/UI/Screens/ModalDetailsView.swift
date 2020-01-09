@@ -9,8 +9,10 @@
 import SwiftUI
 
 struct ModalDetailsView: View {
+    
     let country: Country
     @Binding var isDisplayed: Bool
+    var didAppear: ((Self) -> Void)?
     
     var body: some View {
         NavigationView {
@@ -23,10 +25,12 @@ struct ModalDetailsView: View {
                         Spacer()
                     }
                 }
+                closeButton.padding(.top, 40)
             }
             .navigationBarTitle(Text(country.name), displayMode: .inline)
-            .navigationBarItems(trailing: closeButton)
-        }.navigationViewStyle(StackNavigationViewStyle())
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .onAppear { self.didAppear?(self) }
     }
     
     private var closeButton: some View {
