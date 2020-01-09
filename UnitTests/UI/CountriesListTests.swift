@@ -24,8 +24,8 @@ class CountriesListTests: XCTestCase {
             countriesInteractor: [.loadCountries])
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.verifyContent { content in
-                _ = try content.text()
+            view.inspectContent { content in
+                XCTAssertNoThrow(try content.text())
             }
             interactors.asyncVerify(exp)
         })
@@ -39,7 +39,7 @@ class CountriesListTests: XCTestCase {
         appState.userData.countries = .isLoading(last: nil)
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.verifyContent { content in
+            view.inspectContent { content in
                 let vStack = try content.vStack()
                 XCTAssertNoThrow(try vStack.view(ActivityIndicatorView.self, 0))
                 XCTAssertThrowsError(try vStack.list(1))
@@ -56,7 +56,7 @@ class CountriesListTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.verifyContent { content in
+            view.inspectContent { content in
                 let vStack = try content.vStack()
                 XCTAssertNoThrow(try vStack.view(ActivityIndicatorView.self, 0))
                 XCTAssertNoThrow(try vStack.list(1))
@@ -73,7 +73,7 @@ class CountriesListTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.verifyContent { content in
+            view.inspectContent { content in
                 let cell = try content.list().forEach(0).hStack(0)
                     .navigationLink(0).label().view(CountryCell.self).actualView()
                 XCTAssertEqual(cell.country, Country.mockedData[0])
@@ -90,7 +90,7 @@ class CountriesListTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.verifyContent { content in
+            view.inspectContent { content in
                 XCTAssertNoThrow(try content.view(ErrorView.self))
             }
             interactors.asyncVerify(exp)
@@ -112,7 +112,7 @@ class CountriesListTests: XCTestCase {
             guard isFirstUpdate
                 else { return } // Skip the update after triggering the refresh
             isFirstUpdate = false
-            view.verifyContent { content in
+            view.inspectContent { content in
                 let errorView = try content.view(ErrorView.self)
                 try errorView.vStack().button(2).tap()
             }
@@ -127,8 +127,8 @@ class CountriesListTests: XCTestCase {
 
 private extension CountriesList {
     
-    func verifyContent(file: StaticString = #file, line: UInt = #line,
-                       traverse: (InspectableView<ViewType.AnyView>) throws -> Void) {
+    func inspectContent(file: StaticString = #file, line: UInt = #line,
+                        traverse: (InspectableView<ViewType.AnyView>) throws -> Void) {
         do {
             let content = try inspectContent()
             try traverse(content)
