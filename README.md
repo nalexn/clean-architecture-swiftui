@@ -2,7 +2,8 @@
 
 * [Clean Architecture for SwiftUI](https://nalexn.github.io/clean-architecture-swiftui/?utm_source=nalexn_github)
 * [Programmatic navigation in SwiftUI project](https://nalexn.github.io/swiftui-deep-linking/?utm_source=nalexn_github)
-* [Why I quit using the ObservableObject in SwiftUI](https://nalexn.github.io/swiftui-observableobject/?utm_source=nalexn_github)
+* [Why I quit using the ObservableObject](https://nalexn.github.io/swiftui-observableobject/?utm_source=nalexn_github)
+* [Who said we cannot unit test SwiftUI views?](https://nalexn.github.io/swiftui-unit-testing/?utm_source=nalexn_github)
 
 ---
 
@@ -19,16 +20,16 @@ The app uses the [restcountries.eu](https://restcountries.eu/) REST API to show 
 </p>
 
 ## Key features
-* Designed for **scalability**. It can be used as a reference for building large production apps.
-* Vanilla **SwiftUI** + **Combine** implementation. No 3rd party dependencies
-* **Programmatic navigation** (deep links support)
+* Vanilla **SwiftUI** + **Combine** implementation
 * Decoupled **Presentation**, **Business Logic**, and **Data Access** layers
-* Everything is a `Struct` (except for a couple of modules)
-* Centralized `AppState` as a **single source of truth**
-* Dependency injection of `Interactors` and `AppState`
-* Simple yet flexible **networking layer** built on Generics
-* Handling of system events (such as `didBecomeActive`, `willResignActive`)
-* Built with SOLID, DRY, KISS, YAGNI in mind.
+* Full test coverage, including the UI (thanks to the [ViewInspector](https://github.com/nalexn/ViewInspector))
+* **Redux**-like centralized `AppState` as the single source of truth
+* Native SwiftUI dependency injection
+* **Programmatic navigation** (deep links support)
+* Simple yet flexible networking layer built on Generics
+* Handling of the system events (such as `didBecomeActive`, `willResignActive`)
+* Built with SOLID, DRY, KISS, YAGNI in mind
+* Designed for scalability. It can be used as a reference for building large production apps
 
 ## Architecture overview
 
@@ -60,4 +61,4 @@ Repositories provide asynchronous API (`Publisher` from Combine) for making [CRU
 
 ---
 
-![license](https://img.shields.io/badge/license-mit-brightgreen) [![Twitter](https://img.shields.io/badge/twitter-nallexn-blue)](https://twitter.com/nallexn) [![blog](https://img.shields.io/badge/blog-medium-red)](https://medium.com/@nalexn)
+[![Twitter](https://img.shields.io/badge/twitter-nallexn-blue)](https://twitter.com/nallexn) [![blog](https://img.shields.io/badge/blog-github-blue)](https://nalexn.github.io/?utm_source=nalexn_github) [![venmo](https://img.shields.io/badge/%F0%9F%8D%BA-Venmo-brightgreen)](https://venmo.com/nallexn)
