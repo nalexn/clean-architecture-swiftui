@@ -26,19 +26,12 @@ class CountriesListTests: XCTestCase {
         let exp = XCTestExpectation(description: #function)
         exp.expectedFulfillmentCount = 1
         exp.assertForOverFulfill = true
-        var updateNumber = 0
         var sut = CountriesList()
         sut.didUpdate = { view in
-            updateNumber += 1
-            if updateNumber == 1 {
-                // last update
-                view.inspect { view in
-                    XCTAssertNoThrow(try view.content().text())
-                }
-                interactors.asyncVerify(exp)
-            } else {
-                exp.fulfill()
+            view.inspect { view in
+                XCTAssertNoThrow(try view.content().text())
             }
+            interactors.asyncVerify(exp)
         }
         ViewHosting.host(view: sut.inject(appState, interactors))
         wait(for: [exp], timeout: 2)

@@ -21,9 +21,11 @@ class CountryDetailsTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked(
             countriesInteractor: [.loadCountryDetails(country)]
         )
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
+        exp.expectedFulfillmentCount = 1
+        exp.assertForOverFulfill = true
         var sut = CountryDetails(country: country, details: .notRequested)
-        sut.didAppear = { view in
+        sut.didUpdate = { view in
             view.inspect { view in
                 XCTAssertNoThrow(try view.content().text())
             }
@@ -35,9 +37,11 @@ class CountryDetailsTests: XCTestCase {
     
     func test_details_isLoading_initial() {
         let interactors = DIContainer.Interactors.mocked()
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
         var sut = CountryDetails(country: country, details: .isLoading(last: nil))
-        sut.didAppear = { view in
+        exp.expectedFulfillmentCount = 1
+        exp.assertForOverFulfill = true
+        sut.didUpdate = { view in
             view.inspect { view in
                 XCTAssertNoThrow(try view.content().view(ActivityIndicatorView.self))
             }
@@ -49,11 +53,13 @@ class CountryDetailsTests: XCTestCase {
     
     func test_details_isLoading_refresh() {
         let interactors = DIContainer.Interactors.mocked()
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
+        exp.expectedFulfillmentCount = 1
+        exp.assertForOverFulfill = true
         var sut = CountryDetails(country: country, details:
             .isLoading(last: Country.Details.mockedData[0])
         )
-        sut.didAppear = { view in
+        sut.didUpdate = { view in
             view.inspect { view in
                 XCTAssertNoThrow(try view.content().view(ActivityIndicatorView.self))
             }
@@ -67,11 +73,13 @@ class CountryDetailsTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked(
             imagesInteractor: [.loadImage(country.flag)]
         )
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
+        exp.expectedFulfillmentCount = 1
+        exp.assertForOverFulfill = true
         var sut = CountryDetails(country: country, details:
             .loaded(Country.Details.mockedData[0])
         )
-        sut.didAppear = { view in
+        sut.didUpdate = { view in
             view.inspect { view in
                 let list = try view.content().list()
                 XCTAssertNoThrow(try list.hStack(0).view(SVGImageView.self, 1))
@@ -87,9 +95,11 @@ class CountryDetailsTests: XCTestCase {
     
     func test_details_failed() {
         let interactors = DIContainer.Interactors.mocked()
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
+        exp.expectedFulfillmentCount = 1
+        exp.assertForOverFulfill = true
         var sut = CountryDetails(country: country, details: .failed(NSError.test))
-        sut.didAppear = { view in
+        sut.didUpdate = { view in
             view.inspect { view in
                 XCTAssertNoThrow(try view.content().view(ErrorView.self))
             }
@@ -103,9 +113,11 @@ class CountryDetailsTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked(
             countriesInteractor: [.loadCountryDetails(country)]
         )
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
+        exp.expectedFulfillmentCount = 1
+        exp.assertForOverFulfill = true
         var sut = CountryDetails(country: country, details: .failed(NSError.test))
-        sut.didAppear = { view in
+        sut.didUpdate = { view in
             view.inspect { view in
                 let errorView = try view.content().view(ErrorView.self)
                 try errorView.vStack().button(2).tap()
@@ -124,14 +136,24 @@ class CountryDetailsTests: XCTestCase {
         )
         let container = DIContainer(appState: .init(AppState()), interactors: interactors)
         XCTAssertFalse(container.appState.value.routing.countryDetails.detailsSheet)
-        let exp = XCTestExpectation(description: "onAppear")
+        let exp = XCTestExpectation(description: #function)
+        exp.expectedFulfillmentCount = 2
+        exp.assertForOverFulfill = true
         var sut = CountryDetails(country: country, details: .loaded(Country.Details.mockedData[0]))
-        sut.didAppear = { view in
-            view.inspect { view in
-                try view.content().list().hStack(0).view(SVGImageView.self, 1).callOnTapGesture()
+        var updateNumber = 0
+        sut.didUpdate = { view in
+            updateNumber += 1
+            if updateNumber == 1 {
+                view.inspect { view in
+                    try view.content().list().hStack(0).view(SVGImageView.self, 1).callOnTapGesture()
+                }
             }
-            XCTAssertTrue(container.appState.value.routing.countryDetails.detailsSheet)
-            interactors.asyncVerify(exp)
+            if updateNumber == 2 {
+                XCTAssertTrue(container.appState.value.routing.countryDetails.detailsSheet)
+                interactors.asyncVerify(exp)
+            } else {
+                exp.fulfill()
+            }
         }
         ViewHosting.host(view: sut.inject(container))
         wait(for: [exp], timeout: 2)

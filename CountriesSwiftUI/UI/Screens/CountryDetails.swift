@@ -20,7 +20,7 @@ struct CountryDetails: View {
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countryDetails)
     }
-    var didAppear: ((Self) -> Void)?
+    var didUpdate: ((Self) -> Void)?
     
     init(country: Country, details: Loadable<Country.Details> = .notRequested) {
         self.country = country
@@ -32,7 +32,7 @@ struct CountryDetails: View {
             .navigationBarTitle(country.name)
             .modifier(NavigationBarBugFixer(goBack: self.goBack))
             .onReceive(routingUpdate) { self.routingState = $0 }
-            .onAppear { self.didAppear?(self) }
+            .onUpdate(self, \.didUpdate)
     }
     
     private var content: AnyView {
