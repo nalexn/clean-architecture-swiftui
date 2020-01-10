@@ -116,3 +116,24 @@ extension ProcessInfo {
         environment["XCTestConfigurationFilePath"] != nil
     }
 }
+
+// MARK: - View Inspection helper
+
+extension View {
+    func onUpdate<V>(_ viewCapture: @autoclosure @escaping () -> V,
+                     _ callbackKeyPath: KeyPath<V, ((V) -> Void)?>) -> some View where V: View {
+        modifier(ContextCatcher(viewCapture: viewCapture, callbackKeyPath: callbackKeyPath))
+    }
+}
+
+private struct ContextCatcher<V>: ViewModifier where V: View {
+    
+    let viewCapture: () -> V
+    let callbackKeyPath: KeyPath<V, ((V) -> Void)?>
+    
+    func body(content: Self.Content) -> some View {
+        let view = viewCapture()
+        view[keyPath: callbackKeyPath]?(view)
+        return content.onAppear()
+    }
+}
