@@ -18,8 +18,13 @@ struct ContentView: View {
     }
     
     var body: some View {
-        CountriesList()
-            .inject(container)
+        Group {
+            if ProcessInfo.processInfo.isRunningTests {
+                Text("Running unit tests")
+            } else {
+                CountriesList().inject(container)
+            }
+        }
     }
 }
 

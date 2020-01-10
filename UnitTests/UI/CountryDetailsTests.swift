@@ -24,8 +24,8 @@ class CountryDetailsTests: XCTestCase {
         let exp = XCTestExpectation(description: "onAppear")
         var sut = CountryDetails(country: country, details: .notRequested)
         sut.didAppear = { view in
-            view.inspectContent { content in
-                XCTAssertNoThrow(try content.text())
+            view.inspect { view in
+                XCTAssertNoThrow(try view.content().text())
             }
             interactors.asyncVerify(exp)
         }
@@ -38,8 +38,8 @@ class CountryDetailsTests: XCTestCase {
         let exp = XCTestExpectation(description: "onAppear")
         var sut = CountryDetails(country: country, details: .isLoading(last: nil))
         sut.didAppear = { view in
-            view.inspectContent { content in
-                XCTAssertNoThrow(try content.view(ActivityIndicatorView.self))
+            view.inspect { view in
+                XCTAssertNoThrow(try view.content().view(ActivityIndicatorView.self))
             }
             interactors.asyncVerify(exp)
         }
@@ -54,8 +54,8 @@ class CountryDetailsTests: XCTestCase {
             .isLoading(last: Country.Details.mockedData[0])
         )
         sut.didAppear = { view in
-            view.inspectContent { content in
-                XCTAssertNoThrow(try content.view(ActivityIndicatorView.self))
+            view.inspect { view in
+                XCTAssertNoThrow(try view.content().view(ActivityIndicatorView.self))
             }
             interactors.asyncVerify(exp)
         }
@@ -72,8 +72,8 @@ class CountryDetailsTests: XCTestCase {
             .loaded(Country.Details.mockedData[0])
         )
         sut.didAppear = { view in
-            view.inspectContent { content in
-                let list = try content.list()
+            view.inspect { view in
+                let list = try view.content().list()
                 XCTAssertNoThrow(try list.hStack(0).view(SVGImageView.self, 1))
                 let countryCode = try list.section(1).view(DetailRow.self, 0)
                     .hStack().text(0).string()
@@ -90,8 +90,8 @@ class CountryDetailsTests: XCTestCase {
         let exp = XCTestExpectation(description: "onAppear")
         var sut = CountryDetails(country: country, details: .failed(NSError.test))
         sut.didAppear = { view in
-            view.inspectContent { content in
-                XCTAssertNoThrow(try content.view(ErrorView.self))
+            view.inspect { view in
+                XCTAssertNoThrow(try view.content().view(ErrorView.self))
             }
             interactors.asyncVerify(exp)
         }
@@ -106,8 +106,8 @@ class CountryDetailsTests: XCTestCase {
         let exp = XCTestExpectation(description: "onAppear")
         var sut = CountryDetails(country: country, details: .failed(NSError.test))
         sut.didAppear = { view in
-            view.inspectContent { content in
-                let errorView = try content.view(ErrorView.self)
+            view.inspect { view in
+                let errorView = try view.content().view(ErrorView.self)
                 try errorView.vStack().button(2).tap()
             }
             interactors.asyncVerify(exp)
@@ -127,8 +127,8 @@ class CountryDetailsTests: XCTestCase {
         let exp = XCTestExpectation(description: "onAppear")
         var sut = CountryDetails(country: country, details: .loaded(Country.Details.mockedData[0]))
         sut.didAppear = { view in
-            view.inspectContent { content in
-                try content.list().hStack(0).view(SVGImageView.self, 1).callOnTapGesture()
+            view.inspect { view in
+                try view.content().list().hStack(0).view(SVGImageView.self, 1).callOnTapGesture()
             }
             XCTAssertTrue(container.appState.value.routing.countryDetails.detailsSheet)
             interactors.asyncVerify(exp)
@@ -138,17 +138,10 @@ class CountryDetailsTests: XCTestCase {
     }
 }
 
-// MARK: - CountryDetails inspection helpers
+// MARK: - CountryDetails inspection helper
 
-private extension CountryDetails {
-    
-    func inspectContent(file: StaticString = #file, line: UInt = #line,
-                        traverse: (InspectableView<ViewType.AnyView>) throws -> Void) {
-        do {
-            let content = try inspect().anyView()
-            try traverse(content)
-        } catch let error {
-            XCTFail("\(error.localizedDescription)", file: file, line: line)
-        }
+extension InspectableView where View == ViewType.View<CountryDetails> {
+    func content() throws -> InspectableView<ViewType.AnyView> {
+        return try anyView()
     }
 }

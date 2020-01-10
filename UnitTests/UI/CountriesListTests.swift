@@ -25,8 +25,8 @@ class CountriesListTests: XCTestCase {
         )
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.inspectContent { content in
-                XCTAssertNoThrow(try content.text())
+            view.inspect { view in
+                XCTAssertNoThrow(try view.content().text())
             }
             interactors.asyncVerify(exp)
         })
@@ -40,8 +40,8 @@ class CountriesListTests: XCTestCase {
         appState.userData.countries = .isLoading(last: nil)
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.inspectContent { content in
-                let vStack = try content.vStack()
+            view.inspect { view in
+                let vStack = try view.content().vStack()
                 XCTAssertNoThrow(try vStack.view(ActivityIndicatorView.self, 0))
                 XCTAssertThrowsError(try vStack.list(1))
             }
@@ -57,8 +57,8 @@ class CountriesListTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.inspectContent { content in
-                let vStack = try content.vStack()
+            view.inspect { view in
+                let vStack = try view.content().vStack()
                 XCTAssertNoThrow(try vStack.view(ActivityIndicatorView.self, 0))
                 XCTAssertNoThrow(try vStack.list(1))
             }
@@ -74,8 +74,8 @@ class CountriesListTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.inspectContent { content in
-                let cell = try content.list().forEach(0).hStack(0)
+            view.inspect { view in
+                let cell = try view.content().list().forEach(0).hStack(0)
                     .navigationLink(0).label().view(CountryCell.self).actualView()
                 XCTAssertEqual(cell.country, Country.mockedData[0])
             }
@@ -91,8 +91,8 @@ class CountriesListTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.inspectContent { content in
-                XCTAssertNoThrow(try content.view(ErrorView.self))
+            view.inspect { view in
+                XCTAssertNoThrow(try view.content().view(ErrorView.self))
             }
             interactors.asyncVerify(exp)
         })
@@ -114,8 +114,8 @@ class CountriesListTests: XCTestCase {
             guard isFirstUpdate
                 else { return } // Skip the update after triggering the refresh
             isFirstUpdate = false
-            view.inspectContent { content in
-                let errorView = try content.view(ErrorView.self)
+            view.inspect { view in
+                let errorView = try view.content().view(ErrorView.self)
                 try errorView.vStack().button(2).tap()
             }
             interactors.asyncVerify(exp)
@@ -135,8 +135,8 @@ class CountriesListTests: XCTestCase {
         XCTAssertNil(container.appState.value.routing.countriesList.countryDetails)
         let exp = XCTestExpectation(description: "onAppear")
         let sut = CountriesList(didSetCountries: { view in
-            view.inspectContent { content in
-                let firstCountryRow = try content.list().forEach(0).hStack(0).navigationLink(0)
+            view.inspect { view in
+                let firstCountryRow = try view.content().list().forEach(0).hStack(0).navigationLink(0)
                 try firstCountryRow.activate()
                 let selected = container.appState.value.routing.countriesList.countryDetails
                 XCTAssertEqual(selected, countries[0].alpha3Code)
@@ -148,21 +148,10 @@ class CountriesListTests: XCTestCase {
     }
 }
 
-// MARK: - CountriesList inspection helpers
+// MARK: - CountriesList inspection helper
 
-private extension CountriesList {
-    
-    func inspectContent(file: StaticString = #file, line: UInt = #line,
-                        traverse: (InspectableView<ViewType.AnyView>) throws -> Void) {
-        do {
-            let content = try inspectContent()
-            try traverse(content)
-        } catch let error {
-            XCTFail("\(error.localizedDescription)", file: file, line: line)
-        }
-    }
-    
-    private func inspectContent() throws -> InspectableView<ViewType.AnyView> {
-        return try inspect().geometryReader().navigationView().anyView(0)
+extension InspectableView where View == ViewType.View<CountriesList> {
+    func content() throws -> InspectableView<ViewType.AnyView> {
+        return try geometryReader().navigationView().anyView(0)
     }
 }
