@@ -33,6 +33,7 @@
 		F644960E2360EF6C00C9BB1F /* WebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960D2360EF6C00C9BB1F /* WebRepository.swift */; };
 		F64496102361B64700C9BB1F /* CountriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960F2361B64700C9BB1F /* CountriesList.swift */; };
 		F64496122361BB4900C9BB1F /* InteractorsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496112361BB4900C9BB1F /* InteractorsContainer.swift */; };
+		F6500B4A23C8F2AC0086FD70 /* DeepLinkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6500B4923C8F2AC0086FD70 /* DeepLinkUITests.swift */; };
 		F661F2B6237734FA0014E142 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B5237734FA0014E142 /* AppEnvironment.swift */; };
 		F661F2B8237738CE0014E142 /* RootViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B7237738CE0014E142 /* RootViewModifier.swift */; };
 		F661F2BA2377416E0014E142 /* ImageMemCacheRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B92377416E0014E142 /* ImageMemCacheRepository.swift */; };
@@ -104,6 +105,7 @@
 		F644960D2360EF6C00C9BB1F /* WebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRepository.swift; sourceTree = "<group>"; };
 		F644960F2361B64700C9BB1F /* CountriesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesList.swift; sourceTree = "<group>"; };
 		F64496112361BB4900C9BB1F /* InteractorsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractorsContainer.swift; sourceTree = "<group>"; };
+		F6500B4923C8F2AC0086FD70 /* DeepLinkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkUITests.swift; sourceTree = "<group>"; };
 		F661F2B5237734FA0014E142 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		F661F2B7237738CE0014E142 /* RootViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModifier.swift; sourceTree = "<group>"; };
 		F661F2B92377416E0014E142 /* ImageMemCacheRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMemCacheRepository.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 		F60CC501236C3C80007E84B2 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				F6500B4923C8F2AC0086FD70 /* DeepLinkUITests.swift */,
 				F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */,
 				F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */,
 				F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */,
@@ -561,6 +564,7 @@
 				F661F2BC237757040014E142 /* ImageWebRepositoryTests.swift in Sources */,
 				F6F003AF236A290E00AAC7C6 /* WebRepositoryTests.swift in Sources */,
 				F60CC50B236C622C007E84B2 /* ModalDetailsViewTests.swift in Sources */,
+				F6500B4A23C8F2AC0086FD70 /* DeepLinkUITests.swift in Sources */,
 				F68B5308237441AD00D6337C /* Mock.swift in Sources */,
 				F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */,
 			);
