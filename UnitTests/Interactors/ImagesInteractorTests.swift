@@ -32,8 +32,25 @@ class ImagesInteractorTests: XCTestCase {
         subscriptions = Set<AnyCancellable>()
     }
     
+    func expect(inMemory: [MockedImageWebRepository.Action],
+                file: [MockedImageWebRepository.Action],
+                web: [MockedImageWebRepository.Action]) {
+        mockedInMemoryCache.actions = .init(expected: inMemory)
+        mockedFileCache.actions = .init(expected: file)
+        mockedWebRepository.actions = .init(expected: web)
+    }
+    
+    func verifyRepos(file: StaticString = #file, line: UInt = #line) {
+        mockedInMemoryCache.verify(file: file, line: line)
+        mockedFileCache.verify(file: file, line: line)
+        mockedWebRepository.verify(file: file, line: line)
+    }
+    
     func test_loadImage_nilURL() {
         let image = BindingWithPublisher(value: Loadable<UIImage>.notRequested)
+        expect(inMemory: [],
+               file: [],
+               web: [])
         sut.load(image: image.binding, url: nil)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
@@ -42,6 +59,7 @@ class ImagesInteractorTests: XCTestCase {
                 .notRequested,
                 .notRequested
             ])
+            self.verifyRepos()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 1)
@@ -52,6 +70,9 @@ class ImagesInteractorTests: XCTestCase {
         mockedInMemoryCache.imageResponse = .success(testImage)
         mockedFileCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .failure(APIError.unexpectedResponse)
+        expect(inMemory: [.loadImage(testImageURL)],
+               file: [],
+               web: [])
         sut.load(image: image.binding, url: testImageURL)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
@@ -61,6 +82,7 @@ class ImagesInteractorTests: XCTestCase {
                 .isLoading(last: nil),
                 .loaded(self.testImage)
             ])
+            self.verifyRepos()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 1)
@@ -71,6 +93,9 @@ class ImagesInteractorTests: XCTestCase {
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
         mockedFileCache.imageResponse = .success(testImage)
         mockedWebRepository.imageResponse = .failure(APIError.unexpectedResponse)
+        expect(inMemory: [.loadImage(testImageURL)],
+               file: [.loadImage(testImageURL)],
+               web: [])
         sut.load(image: image.binding, url: testImageURL)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
@@ -82,6 +107,7 @@ class ImagesInteractorTests: XCTestCase {
             ])
             let cachedImage = self.mockedInMemoryCache.cached[self.testImageURL.imageCacheKey]
             XCTAssertEqual(cachedImage, self.testImage)
+            self.verifyRepos()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 1)
@@ -92,6 +118,9 @@ class ImagesInteractorTests: XCTestCase {
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
         mockedFileCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .success(testImage)
+        expect(inMemory: [.loadImage(testImageURL)],
+               file: [.loadImage(testImageURL)],
+               web: [.loadImage(testImageURL)])
         sut.load(image: image.binding, url: testImageURL)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
@@ -103,6 +132,7 @@ class ImagesInteractorTests: XCTestCase {
             ])
             let cachedImage = self.mockedInMemoryCache.cached[self.testImageURL.imageCacheKey]
             XCTAssertEqual(cachedImage, self.testImage)
+            self.verifyRepos()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 1)
@@ -114,6 +144,9 @@ class ImagesInteractorTests: XCTestCase {
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
         mockedFileCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .failure(error)
+        expect(inMemory: [.loadImage(testImageURL)],
+               file: [.loadImage(testImageURL)],
+               web: [.loadImage(testImageURL)])
         sut.load(image: image.binding, url: testImageURL)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
@@ -123,6 +156,7 @@ class ImagesInteractorTests: XCTestCase {
                 .isLoading(last: nil),
                 .failed(error)
             ])
+            self.verifyRepos()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 1)
@@ -134,6 +168,9 @@ class ImagesInteractorTests: XCTestCase {
         mockedInMemoryCache.imageResponse = .failure(.imageIsMissing)
         mockedFileCache.imageResponse = .failure(.imageIsMissing)
         mockedWebRepository.imageResponse = .failure(error)
+        expect(inMemory: [.loadImage(testImageURL)],
+               file: [.loadImage(testImageURL)],
+               web: [.loadImage(testImageURL)])
         sut.load(image: image.binding, url: testImageURL)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
@@ -143,15 +180,18 @@ class ImagesInteractorTests: XCTestCase {
                 .isLoading(last: self.testImage),
                 .failed(error)
             ])
+            self.verifyRepos()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 1)
     }
     
     func test_imageCachePurge() {
+        expect(inMemory: [], file: [], web: [])
         XCTAssertFalse(mockedInMemoryCache.didCallPurgeCache)
         memoryWanring.send(())
         XCTAssertTrue(mockedInMemoryCache.didCallPurgeCache)
+        verifyRepos()
     }
     
     func test_stubInteractor() {

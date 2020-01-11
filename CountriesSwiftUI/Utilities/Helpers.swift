@@ -103,6 +103,7 @@ extension Binding where Value: Equatable {
         return .init(get: { () -> Value in
             self.wrappedValue
         }, set: { value in
+            // Warning during the tests is caused by ViewInspector's activity
             self.wrappedValue = value
             state[keyPath] = value
         })

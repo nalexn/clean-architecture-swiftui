@@ -12,7 +12,9 @@ import Combine
 
 // MARK: - ImageCacheRepository
 
-class MockedImageCacheRepository: ImageCacheRepository {
+class MockedImageCacheRepository: ImageCacheRepository, Mock {
+    
+    var actions = MockActions<MockedImageWebRepository.Action>(expected: [])
     
     var imageResponse: Result<UIImage, ImageCacheError> = .failure(.imageIsMissing)
     var cached: [ImageCacheKey: UIImage] = [:]
@@ -23,6 +25,7 @@ class MockedImageCacheRepository: ImageCacheRepository {
     }
     
     func cachedImage(for key: ImageCacheKey) -> AnyPublisher<UIImage, ImageCacheError> {
+        register(.loadImage(URL(string: key)))
         return imageResponse.publish()
     }
     

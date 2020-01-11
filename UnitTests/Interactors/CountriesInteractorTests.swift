@@ -30,6 +30,9 @@ class CountriesInteractorTests: XCTestCase {
     func test_loadCountries_notRequested_to_loaded() {
         let countries = Country.mockedData
         mockedRepository.countriesResponse = .success(countries)
+        mockedRepository.actions = .init(expected: [
+            .loadCountries
+        ])
         let updates = recordAppStateUserDataUpdates()
         sut.loadCountries()
             .store(in: &subscriptions)
@@ -40,6 +43,7 @@ class CountriesInteractorTests: XCTestCase {
                 AppState.UserData(countries: .isLoading(last: nil)),
                 AppState.UserData(countries: .loaded(countries))
             ])
+            self.mockedRepository.verify()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
@@ -50,6 +54,9 @@ class CountriesInteractorTests: XCTestCase {
         let finalCountries = [initialCountries[0], initialCountries[1]]
         appState[\.userData.countries] = .loaded(initialCountries)
         mockedRepository.countriesResponse = .success(finalCountries)
+        mockedRepository.actions = .init(expected: [
+            .loadCountries
+        ])
         let updates = recordAppStateUserDataUpdates()
         sut.loadCountries()
             .store(in: &subscriptions)
@@ -60,6 +67,7 @@ class CountriesInteractorTests: XCTestCase {
                 AppState.UserData(countries: .isLoading(last: initialCountries)),
                 AppState.UserData(countries: .loaded(finalCountries))
             ])
+            self.mockedRepository.verify()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
@@ -68,6 +76,9 @@ class CountriesInteractorTests: XCTestCase {
     func test_loadCountries_notRequested_to_failed() {
         let error = NSError.test
         mockedRepository.countriesResponse = .failure(error)
+        mockedRepository.actions = .init(expected: [
+            .loadCountries
+        ])
         let updates = recordAppStateUserDataUpdates()
         sut.loadCountries()
             .store(in: &subscriptions)
@@ -78,6 +89,7 @@ class CountriesInteractorTests: XCTestCase {
                 AppState.UserData(countries: .isLoading(last: nil)),
                 AppState.UserData(countries: .failed(error))
             ])
+            self.mockedRepository.verify()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
@@ -86,11 +98,15 @@ class CountriesInteractorTests: XCTestCase {
     // MARK: - loadCountryDetails
     
     func test_loadCountryDetails_countries_notRequested() {
+        let country = Country.mockedData[0]
         let data = countryDetails(neighbors: [])
         appState[\.userData.countries] = .notRequested
         mockedRepository.detailsResponse = .success(data.intermediate)
+        mockedRepository.actions = .init(expected: [
+            .loadCountryDetails(country)
+        ])
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
-        sut.load(countryDetails: details.binding, country: Country.mockedData[0])
+        sut.load(countryDetails: details.binding, country: country)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
@@ -99,6 +115,7 @@ class CountriesInteractorTests: XCTestCase {
                 .isLoading(last: nil),
                 .loaded(data.details)
             ])
+            self.mockedRepository.verify()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
@@ -106,11 +123,15 @@ class CountriesInteractorTests: XCTestCase {
     
     func test_loadCountryDetails_countries_loaded() {
         let countries = Country.mockedData
+        let country = countries[0]
         let data = countryDetails(neighbors: countries)
         appState[\.userData.countries] = .loaded(countries)
         mockedRepository.detailsResponse = .success(data.intermediate)
+        mockedRepository.actions = .init(expected: [
+            .loadCountryDetails(country)
+        ])
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
-        sut.load(countryDetails: details.binding, country: countries[0])
+        sut.load(countryDetails: details.binding, country: country)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
@@ -119,6 +140,7 @@ class CountriesInteractorTests: XCTestCase {
                 .isLoading(last: nil),
                 .loaded(data.details)
             ])
+            self.mockedRepository.verify()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
@@ -126,12 +148,16 @@ class CountriesInteractorTests: XCTestCase {
     
     func test_loadCountryDetails_countries_failed() {
         let countries = Country.mockedData
+        let country = countries[0]
         let error = NSError.test
         let data = countryDetails(neighbors: countries)
         appState[\.userData.countries] = .failed(error)
         mockedRepository.detailsResponse = .success(data.intermediate)
+        mockedRepository.actions = .init(expected: [
+            .loadCountryDetails(country)
+        ])
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
-        sut.load(countryDetails: details.binding, country: countries[0])
+        sut.load(countryDetails: details.binding, country: country)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
@@ -140,6 +166,7 @@ class CountriesInteractorTests: XCTestCase {
                 .isLoading(last: nil),
                 .failed(error)
             ])
+            self.mockedRepository.verify()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
@@ -147,11 +174,15 @@ class CountriesInteractorTests: XCTestCase {
     
     func test_loadCountryDetails_refresh() {
         let countries = Country.mockedData
+        let country = countries[0]
         let data = countryDetails(neighbors: countries)
         appState[\.userData.countries] = .loaded(countries)
         mockedRepository.detailsResponse = .success(data.intermediate)
+        mockedRepository.actions = .init(expected: [
+            .loadCountryDetails(country)
+        ])
         let details = BindingWithPublisher(value: Loadable<Country.Details>.loaded(data.details))
-        sut.load(countryDetails: details.binding, country: countries[0])
+        sut.load(countryDetails: details.binding, country: country)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
@@ -160,6 +191,7 @@ class CountriesInteractorTests: XCTestCase {
                 .isLoading(last: data.details),
                 .loaded(data.details)
             ])
+            self.mockedRepository.verify()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
@@ -168,10 +200,14 @@ class CountriesInteractorTests: XCTestCase {
     func test_loadCountryDetails_failure() {
         let error = NSError.test
         let countries = Country.mockedData
+        let country = countries[0]
         appState[\.userData.countries] = .loaded(countries)
         mockedRepository.detailsResponse = .failure(error)
+        mockedRepository.actions = .init(expected: [
+            .loadCountryDetails(country)
+        ])
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
-        sut.load(countryDetails: details.binding, country: countries[0])
+        sut.load(countryDetails: details.binding, country: country)
             .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
@@ -180,6 +216,7 @@ class CountriesInteractorTests: XCTestCase {
                 .isLoading(last: nil),
                 .failed(error)
             ])
+            self.mockedRepository.verify()
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
