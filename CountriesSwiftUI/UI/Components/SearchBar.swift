@@ -12,7 +12,6 @@ import SwiftUI
 struct SearchBar: UIViewRepresentable {
 
     @Binding var text: String
-    @Binding var isEditingText: Bool
 
     func makeUIView(context: UIViewRepresentableContext<SearchBar>) -> UISearchBar {
         let searchBar = UISearchBar(frame: .zero)
@@ -25,7 +24,7 @@ struct SearchBar: UIViewRepresentable {
     }
     
     func makeCoordinator() -> SearchBar.Coordinator {
-        return Coordinator(text: $text, isEditingText: $isEditingText)
+        return Coordinator(text: $text)
     }
 }
 
@@ -33,11 +32,9 @@ extension SearchBar {
     class Coordinator: NSObject, UISearchBarDelegate {
         
         let text: Binding<String>
-        let isEditingText: Binding<Bool>
         
-        init(text: Binding<String>, isEditingText: Binding<Bool>) {
+        init(text: Binding<String>) {
             self.text = text
-            self.isEditingText = isEditingText
         }
         
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -45,13 +42,11 @@ extension SearchBar {
         }
         
         func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-            isEditingText.wrappedValue = true
             searchBar.setShowsCancelButton(true, animated: true)
             return true
         }
         
         func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-            isEditingText.wrappedValue = false
             searchBar.setShowsCancelButton(false, animated: true)
             return true
         }

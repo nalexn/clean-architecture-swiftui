@@ -31,6 +31,7 @@ extension AppState {
 extension AppState {
     struct System: Equatable {
         var isActive: Bool = false
+        var keyboardHeight: CGFloat = 0
     }
 }
 

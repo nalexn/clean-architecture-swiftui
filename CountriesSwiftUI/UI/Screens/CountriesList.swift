@@ -14,7 +14,7 @@ struct CountriesList: View {
     private let cancelBag = CancelBag()
     
     @Environment(\.injected) private var injected: DIContainer
-    @State private var countries = Countries()
+    @State private var countriesSearch = CountriesSearch()
     @State private var routingState: Routing = .init()
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countriesList)
@@ -26,17 +26,18 @@ struct CountriesList: View {
             NavigationView {
                 self.content
                     .navigationBarTitle("Countries")
-                    .navigationBarHidden(self.countries.isEditingSearchText)
+                    .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }.padding(.leading, self.leadingPadding(geometry))
         }
-        .onReceive(countriesUpdate) { self.countries.update($0) }
+        .onReceive(keyboardHeightUpdate) { self.countriesSearch.keyboardHeight = $0 }
+        .onReceive(countriesUpdate) { self.countriesSearch.all = $0 }
         .onReceive(routingUpdate) { self.routingState = $0 }
         .onUpdate(self, \.didUpdate)
     }
     
     private var content: AnyView {
-        switch countries.filtered {
+        switch countriesSearch.filtered {
         case .notRequested: return AnyView(notRequestedView)
         case let .isLoading(last): return AnyView(loadingView(last))
         case let .loaded(countries): return AnyView(loadedView(countries, showSearch: true))
@@ -94,7 +95,7 @@ private extension CountriesList {
     func loadedView(_ countries: [Country], showSearch: Bool) -> some View {
         VStack {
             if showSearch {
-                SearchBar(text: $countries.searchText, isEditingText: $countries.isEditingSearchText)
+                SearchBar(text: $countriesSearch.searchText)
             }
             List(countries) { country in
                 NavigationLink(
@@ -104,7 +105,7 @@ private extension CountriesList {
                         CountryCell(country: country)
                     }
             }
-        }
+        }.padding(.bottom, self.countriesSearch.keyboardHeight)
     }
     
     func detailsView(country: Country) -> some View {
@@ -115,19 +116,16 @@ private extension CountriesList {
 // MARK: - Filtering Countries
 
 extension CountriesList {
-    struct Countries {
+    struct CountriesSearch {
         
         private(set) var filtered: Loadable<[Country]> = .notRequested
-        private var all: Loadable<[Country]> = .notRequested
+        var all: Loadable<[Country]> = .notRequested {
+            didSet { filterCountries() }
+        }
         var searchText: String = "" {
             didSet { filterCountries() }
         }
-        var isEditingSearchText: Bool = false
-        
-        mutating func update(_ countries: Loadable<[Country]>) {
-            all = countries
-            filterCountries()
-        }
+        var keyboardHeight: CGFloat = 0
         
         private mutating func filterCountries() {
             if searchText.count == 0 {
@@ -162,6 +160,10 @@ private extension CountriesList {
     
     var countriesUpdate: AnyPublisher<Loadable<[Country]>, Never> {
         injected.appState.updates(for: \.userData.countries)
+    }
+    
+    var keyboardHeightUpdate: AnyPublisher<CGFloat, Never> {
+        injected.appState.updates(for: \.system.keyboardHeight)
     }
 }
 

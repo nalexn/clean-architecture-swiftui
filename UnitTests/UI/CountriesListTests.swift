@@ -213,9 +213,9 @@ class CountriesListTests: XCTestCase {
 class CountriesListFilterTests: XCTestCase {
     
     func test_countries_filtering() {
-        var sut = CountriesList.Countries()
+        var sut = CountriesList.CountriesSearch()
         let countries = Country.mockedData
-        sut.update(.loaded(countries))
+        sut.all = .loaded(countries)
         XCTAssertEqual(sut.filtered.value, countries)
         sut.searchText = countries[0].name
         XCTAssertEqual(sut.filtered.value, [countries[0]])

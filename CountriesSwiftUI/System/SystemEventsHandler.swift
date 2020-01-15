@@ -18,6 +18,15 @@ protocol SystemEventsHandler {
 struct RealSystemEventsHandler: SystemEventsHandler {
     
     let appState: Store<AppState>
+    private var subscriptions = Set<AnyCancellable>()
+    
+    init(appState: Store<AppState>) {
+        self.appState = appState
+        RealSystemEventsHandler.keyboardHeightPublisher
+            .sink { [appState] height in
+                appState[\.system.keyboardHeight] = height
+            }.store(in: &subscriptions)
+    }
     
     func sceneOpenURLContexts(_ urlContexts: Set<UIOpenURLContext>) {
         guard let url = urlContexts.first?.url else { return }
@@ -41,6 +50,28 @@ struct RealSystemEventsHandler: SystemEventsHandler {
     
     func sceneWillResignActive() {
         appState[\.system.isActive] = false
+    }
+}
+
+// MARK: - Notifications
+
+private extension RealSystemEventsHandler {
+    static var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> {
+        let willShow = NotificationCenter.default
+            .publisher(for: UIApplication.keyboardWillShowNotification)
+            .map { $0.keyboardHeight }
+        let willHide = NotificationCenter.default
+            .publisher(for: UIApplication.keyboardWillHideNotification)
+            .map { _ in CGFloat(0) }
+        return Publishers.Merge(willShow, willHide)
+            .eraseToAnyPublisher()
+    }
+}
+
+private extension Notification {
+    var keyboardHeight: CGFloat {
+        return (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?
+            .cgRectValue.height ?? 0
     }
 }
 
