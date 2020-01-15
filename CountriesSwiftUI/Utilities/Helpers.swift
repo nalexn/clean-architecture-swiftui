@@ -15,7 +15,7 @@ import Foundation
 // Should have called it "CVS Store"
 typealias Store<State> = CurrentValueSubject<State, Never>
 
-class CancelBag {
+final class CancelBag {
     var subscriptions = Set<AnyCancellable>()
 }
 

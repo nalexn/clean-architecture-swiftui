@@ -10,7 +10,7 @@ import XCTest
 import UIKit
 @testable import CountriesSwiftUI
 
-class SystemEventsHandlerTests: XCTestCase {
+final class SystemEventsHandlerTests: XCTestCase {
     
     var sut: RealSystemEventsHandler!
 
@@ -82,7 +82,7 @@ private extension UIOpenURLContext {
 }
 
 private extension UIOpenURLContext {
-    class Test: UIOpenURLContext {
+    final class Test: UIOpenURLContext {
         
         let urlString: String
         override var url: URL { URL(string: urlString)! }

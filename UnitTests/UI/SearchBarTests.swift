@@ -13,7 +13,7 @@ import ViewInspector
 
 extension SearchBar: Inspectable { }
 
-class SearchBarTests: XCTestCase {
+final class SearchBarTests: XCTestCase {
 
     func test_searchBarCoordinator_beginEditing() {
         let text = Binding(wrappedValue: "abc")

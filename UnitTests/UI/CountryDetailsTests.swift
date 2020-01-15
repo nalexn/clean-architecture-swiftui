@@ -13,7 +13,7 @@ import ViewInspector
 extension CountryDetails: Inspectable { }
 extension DetailRow: Inspectable { }
 
-class CountryDetailsTests: XCTestCase {
+final class CountryDetailsTests: XCTestCase {
     
     let country = Country.mockedData[0]
 

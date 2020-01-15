@@ -13,7 +13,7 @@ import ViewInspector
 
 extension ModalDetailsView: Inspectable { }
 
-class ModalDetailsViewTests: XCTestCase {
+final class ModalDetailsViewTests: XCTestCase {
 
     func test_modalDetails() {
         let country = Country.mockedData[0]

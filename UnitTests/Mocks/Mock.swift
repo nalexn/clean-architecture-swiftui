@@ -27,7 +27,7 @@ extension Mock {
     }
 }
 
-class MockActions<Action> where Action: Equatable {
+final class MockActions<Action> where Action: Equatable {
     let expected: [Action]
     var factual: [Action] = []
     

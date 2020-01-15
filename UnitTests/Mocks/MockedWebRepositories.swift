@@ -18,7 +18,7 @@ class TestWebRepository: WebRepository {
 
 // MARK: - CountriesWebRepository
 
-class MockedCountriesWebRepository: TestWebRepository, Mock, CountriesWebRepository {
+final class MockedCountriesWebRepository: TestWebRepository, Mock, CountriesWebRepository {
     
     enum Action: Equatable {
         case loadCountries
@@ -42,7 +42,7 @@ class MockedCountriesWebRepository: TestWebRepository, Mock, CountriesWebReposit
 
 // MARK: - ImageWebRepository
 
-class MockedImageWebRepository: TestWebRepository, Mock, ImageWebRepository {
+final class MockedImageWebRepository: TestWebRepository, Mock, ImageWebRepository {
     
     enum Action: Equatable {
         case loadImage(URL?)

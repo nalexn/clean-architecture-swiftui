@@ -36,7 +36,7 @@ extension RequestMocking {
 
 // MARK: - RequestMocking
 
-class RequestMocking: URLProtocol {
+final class RequestMocking: URLProtocol {
 
     override class func canInit(with request: URLRequest) -> Bool {
         return mock(for: request) != nil

@@ -11,7 +11,7 @@ import ViewInspector
 import Combine
 @testable import CountriesSwiftUI
 
-class DeepLinkUITests: XCTestCase {
+final class DeepLinkUITests: XCTestCase {
     
     func test_countriesList_selectsCountry() {
         

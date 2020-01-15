@@ -15,7 +15,7 @@ extension ActivityIndicatorView: Inspectable { }
 extension CountryCell: Inspectable { }
 extension ErrorView: Inspectable { }
 
-class CountriesListTests: XCTestCase {
+final class CountriesListTests: XCTestCase {
 
     func test_countries_notRequested() {
         let appState = AppState()
@@ -210,7 +210,7 @@ class CountriesListTests: XCTestCase {
     }
 }
 
-class CountriesListFilterTests: XCTestCase {
+final class CountriesListFilterTests: XCTestCase {
     
     func test_countries_filtering() {
         var sut = CountriesList.CountriesSearch()

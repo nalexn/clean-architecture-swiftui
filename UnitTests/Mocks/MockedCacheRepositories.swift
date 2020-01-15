@@ -12,7 +12,7 @@ import Combine
 
 // MARK: - ImageCacheRepository
 
-class MockedImageCacheRepository: ImageCacheRepository, Mock {
+final class MockedImageCacheRepository: ImageCacheRepository, Mock {
     
     var actions = MockActions<MockedImageWebRepository.Action>(expected: [])
     

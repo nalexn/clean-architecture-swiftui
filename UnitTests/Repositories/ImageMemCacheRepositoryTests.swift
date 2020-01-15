@@ -10,7 +10,7 @@ import XCTest
 import Combine
 @testable import CountriesSwiftUI
 
-class ImageMemCacheRepositoryTests: XCTestCase {
+final class ImageMemCacheRepositoryTests: XCTestCase {
     
     private var sut: ImageMemCacheRepository!
     private var subscriptions = Set<AnyCancellable>()

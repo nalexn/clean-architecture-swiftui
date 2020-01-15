@@ -13,7 +13,7 @@ import ViewInspector
 
 extension SVGImageView: Inspectable { }
 
-class SVGImageViewTests: XCTestCase {
+final class SVGImageViewTests: XCTestCase {
 
     let url = URL(string: "https://test.com/test.png")!
 

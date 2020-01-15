@@ -9,7 +9,7 @@
 import XCTest
 @testable import CountriesSwiftUI
 
-class LoadableTests: XCTestCase {
+final class LoadableTests: XCTestCase {
 
     func test_equality() {
         let possibleValues: [Loadable<Int>] = [

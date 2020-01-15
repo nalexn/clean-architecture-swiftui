@@ -29,7 +29,7 @@ struct SearchBar: UIViewRepresentable {
 }
 
 extension SearchBar {
-    class Coordinator: NSObject, UISearchBarDelegate {
+    final class Coordinator: NSObject, UISearchBarDelegate {
         
         let text: Binding<String>
         

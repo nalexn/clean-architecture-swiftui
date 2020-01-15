@@ -10,7 +10,7 @@ import XCTest
 import Combine
 @testable import CountriesSwiftUI
 
-class ImagesInteractorTests: XCTestCase {
+final class ImagesInteractorTests: XCTestCase {
     
     var sut: RealImagesInteractor!
     var mockedWebRepository: MockedImageWebRepository!

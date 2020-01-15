@@ -11,7 +11,7 @@ import SwiftUI
 import Combine
 import Foundation
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     private var systemEventsHandler: SystemEventsHandler?

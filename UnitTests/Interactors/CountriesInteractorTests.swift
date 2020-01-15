@@ -11,7 +11,7 @@ import SwiftUI
 import Combine
 @testable import CountriesSwiftUI
 
-class CountriesInteractorTests: XCTestCase {
+final class CountriesInteractorTests: XCTestCase {
 
     let appState = CurrentValueSubject<AppState, Never>(AppState())
     var mockedRepository: MockedCountriesWebRepository!

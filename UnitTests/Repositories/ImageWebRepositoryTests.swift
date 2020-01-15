@@ -10,7 +10,7 @@ import XCTest
 import Combine
 @testable import CountriesSwiftUI
 
-class ImageWebRepositoryTests: XCTestCase {
+final class ImageWebRepositoryTests: XCTestCase {
 
     private var sut: RealImageWebRepository!
     private var subscriptions = Set<AnyCancellable>()

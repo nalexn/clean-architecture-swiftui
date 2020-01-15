@@ -10,7 +10,7 @@ import XCTest
 import ViewInspector
 @testable import CountriesSwiftUI
 
-class ViewPreviewsTests: XCTestCase {
+final class ViewPreviewsTests: XCTestCase {
 
     func test_contentView_previews() {
         _ = ContentView_Previews.previews
