@@ -30,6 +30,17 @@ enum Loadable<T> {
     }
 }
 
+extension Loadable {
+    func map<V>(_ transform: (T) -> V) -> Loadable<V> {
+        switch self {
+        case .notRequested: return .notRequested
+        case let .failed(error): return .failed(error)
+        case let .isLoading(value): return .isLoading(last: value.map { transform($0) })
+        case let .loaded(value): return .loaded(transform(value))
+        }
+    }
+}
+
 extension Loadable: Equatable where T: Equatable {
     static func == (lhs: Loadable<T>, rhs: Loadable<T>) -> Bool {
         switch (lhs, rhs) {

@@ -30,6 +30,27 @@ class LoadableTests: XCTestCase {
             }
         }
     }
+    
+    func test_map() {
+        let values: [Loadable<Int>] = [
+            .notRequested,
+            .isLoading(last: nil),
+            .isLoading(last: 5),
+            .loaded(7),
+            .failed(NSError.test)
+        ]
+        let expect: [Loadable<String>] = [
+            .notRequested,
+            .isLoading(last: nil),
+            .isLoading(last: "5"),
+            .loaded("7"),
+            .failed(NSError.test)
+        ]
+        let sut = values.map { value in
+            value.map { "\($0)" }
+        }
+        XCTAssertEqual(sut, expect)
+    }
 
     func test_helperFunctions() {
         let notRequested = Loadable<Int>.notRequested

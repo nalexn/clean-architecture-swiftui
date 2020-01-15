@@ -14,7 +14,7 @@ struct CountriesList: View {
     private let cancelBag = CancelBag()
     
     @Environment(\.injected) private var injected: DIContainer
-    @State private var countries: Loadable<[Country]> = .notRequested
+    @State private var countries = Countries()
     @State private var routingState: Routing = .init()
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countriesList)
@@ -26,18 +26,20 @@ struct CountriesList: View {
             NavigationView {
                 self.content
                     .navigationBarTitle("Countries")
+                    .navigationBarHidden(self.countries.isEditingSearchText)
+                    .animation(.easeOut(duration: 0.3))
             }.padding(.leading, self.leadingPadding(geometry))
         }
-        .onReceive(countriesUpdate) { self.countries = $0 }
+        .onReceive(countriesUpdate) { self.countries.update($0) }
         .onReceive(routingUpdate) { self.routingState = $0 }
         .onUpdate(self, \.didUpdate)
     }
     
     private var content: AnyView {
-        switch countries {
+        switch countries.filtered {
         case .notRequested: return AnyView(notRequestedView)
         case let .isLoading(last): return AnyView(loadingView(last))
-        case let .loaded(countries): return AnyView(loadedView(countries))
+        case let .loaded(countries): return AnyView(loadedView(countries, showSearch: true))
         case let .failed(error): return AnyView(failedView(error))
         }
     }
@@ -74,7 +76,7 @@ private extension CountriesList {
         VStack {
             ActivityIndicatorView().padding()
             previouslyLoaded.map {
-                loadedView($0)
+                loadedView($0, showSearch: false)
             }
         }
     }
@@ -89,19 +91,56 @@ private extension CountriesList {
 // MARK: - Displaying Content
 
 private extension CountriesList {
-    func loadedView(_ countries: [Country]) -> some View {
-        return List(countries) { country in
-            NavigationLink(
-                destination: self.detailsView(country: country),
-                tag: country.alpha3Code,
-                selection: self.routingBinding.countryDetails) {
-                    CountryCell(country: country)
-                }
+    func loadedView(_ countries: [Country], showSearch: Bool) -> some View {
+        VStack {
+            if showSearch {
+                SearchBar(text: $countries.searchText, isEditingText: $countries.isEditingSearchText)
+            }
+            List(countries) { country in
+                NavigationLink(
+                    destination: self.detailsView(country: country),
+                    tag: country.alpha3Code,
+                    selection: self.routingBinding.countryDetails) {
+                        CountryCell(country: country)
+                    }
+            }
         }
     }
     
     func detailsView(country: Country) -> some View {
         CountryDetails(country: country)
+    }
+}
+
+// MARK: - Filtering Countries
+
+extension CountriesList {
+    struct Countries {
+        
+        private(set) var filtered: Loadable<[Country]> = .notRequested
+        private var all: Loadable<[Country]> = .notRequested
+        var searchText: String = "" {
+            didSet { filterCountries() }
+        }
+        var isEditingSearchText: Bool = false
+        
+        mutating func update(_ countries: Loadable<[Country]>) {
+            all = countries
+            filterCountries()
+        }
+        
+        private mutating func filterCountries() {
+            if searchText.count == 0 {
+                filtered = all
+            } else {
+                filtered = all.map { countries in
+                    countries.filter {
+                        $0.name.range(of: searchText, options: .caseInsensitive,
+                                      range: nil, locale: nil) != nil
+                    }
+                }
+            }
+        }
     }
 }
 

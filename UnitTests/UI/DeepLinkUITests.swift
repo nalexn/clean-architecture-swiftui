@@ -21,7 +21,6 @@ class DeepLinkUITests: XCTestCase {
         
         let exp = XCTestExpectation(description: #function)
         exp.expectedFulfillmentCount = 2
-        exp.assertForOverFulfill = true
         var sut = CountriesList()
         sut.didUpdate = { view in
             if store.value.userData.countries.value != nil {

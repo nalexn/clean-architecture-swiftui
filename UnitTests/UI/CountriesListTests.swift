@@ -80,7 +80,9 @@ class CountriesListTests: XCTestCase {
                 view.inspect { view in
                     let vStack = try view.content().vStack()
                     XCTAssertNoThrow(try vStack.view(ActivityIndicatorView.self, 0))
-                    XCTAssertNoThrow(try vStack.list(1))
+                    let countries = try vStack.vStack(1)
+                    XCTAssertThrowsError(try countries.view(SearchBar.self, 0))
+                    XCTAssertNoThrow(try countries.list(1))
                 }
                 interactors.asyncVerify(exp)
             } else {
@@ -105,8 +107,9 @@ class CountriesListTests: XCTestCase {
             if updateNumber == 2 {
                 // last update
                 view.inspect { view in
-                    let cell = try view.content().list().forEach(0).hStack(0)
-                        .navigationLink(0).label().view(CountryCell.self).actualView()
+                    XCTAssertNoThrow(try view.content().vStack().view(SearchBar.self, 0))
+                    let cell = try view.firstRowLink()
+                        .label().view(CountryCell.self).actualView()
                     XCTAssertEqual(cell.country, Country.mockedData[0])
                 }
                 interactors.asyncVerify(exp)
@@ -207,6 +210,18 @@ class CountriesListTests: XCTestCase {
     }
 }
 
+class CountriesListFilterTests: XCTestCase {
+    
+    func test_countries_filtering() {
+        var sut = CountriesList.Countries()
+        let countries = Country.mockedData
+        sut.update(.loaded(countries))
+        XCTAssertEqual(sut.filtered.value, countries)
+        sut.searchText = countries[0].name
+        XCTAssertEqual(sut.filtered.value, [countries[0]])
+    }
+}
+
 // MARK: - CountriesList inspection helper
 
 extension InspectableView where View == ViewType.View<CountriesList> {
@@ -214,6 +229,6 @@ extension InspectableView where View == ViewType.View<CountriesList> {
         return try geometryReader().navigationView().anyView(0)
     }
     func firstRowLink() throws -> InspectableView<ViewType.NavigationLink> {
-        return try content().list().forEach(0).hStack(0).navigationLink(0)
+        return try content().vStack().list(1).forEach(0).hStack(0).navigationLink(0)
     }
 }
