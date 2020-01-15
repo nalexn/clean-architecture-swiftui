@@ -22,7 +22,7 @@ struct RealSystemEventsHandler: SystemEventsHandler {
     
     init(appState: Store<AppState>) {
         self.appState = appState
-        RealSystemEventsHandler.keyboardHeightPublisher
+        NotificationCenter.default.keyboardHeightPublisher
             .sink { [appState] height in
                 appState[\.system.keyboardHeight] = height
             }.store(in: &subscriptions)
@@ -55,13 +55,11 @@ struct RealSystemEventsHandler: SystemEventsHandler {
 
 // MARK: - Notifications
 
-private extension RealSystemEventsHandler {
-    static var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> {
-        let willShow = NotificationCenter.default
-            .publisher(for: UIApplication.keyboardWillShowNotification)
+private extension NotificationCenter {
+    var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> {
+        let willShow = publisher(for: UIApplication.keyboardWillShowNotification)
             .map { $0.keyboardHeight }
-        let willHide = NotificationCenter.default
-            .publisher(for: UIApplication.keyboardWillHideNotification)
+        let willHide = publisher(for: UIApplication.keyboardWillHideNotification)
             .map { _ in CGFloat(0) }
         return Publishers.Merge(willShow, willHide)
             .eraseToAnyPublisher()
