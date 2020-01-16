@@ -2,8 +2,7 @@
 
 * [Clean Architecture for SwiftUI](https://nalexn.github.io/clean-architecture-swiftui/?utm_source=nalexn_github)
 * [Programmatic navigation in SwiftUI project](https://nalexn.github.io/swiftui-deep-linking/?utm_source=nalexn_github)
-* [Why I quit using the ObservableObject](https://nalexn.github.io/swiftui-observableobject/?utm_source=nalexn_github)
-* [Who said we cannot unit test SwiftUI views?](https://nalexn.github.io/swiftui-unit-testing/?utm_source=nalexn_github)
+* [Separation of Concerns in Software Design](https://nalexn.github.io/separation-of-concerns/?utm_source=nalexn_github)
 
 ---
 
