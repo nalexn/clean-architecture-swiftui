@@ -9,6 +9,8 @@
 import XCTest
 import SwiftUI
 import Combine
+import ViewInspector
+@testable import CountriesSwiftUI
 
 // MARK: - UI
 
@@ -87,3 +89,5 @@ extension NSError {
         return NSError(domain: "test", code: 0, userInfo: [NSLocalizedDescriptionKey: "Test error"])
     }
 }
+
+extension Inspection: InspectionEmissary where V: Inspectable { }

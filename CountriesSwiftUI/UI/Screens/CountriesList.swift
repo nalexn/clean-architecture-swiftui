@@ -19,7 +19,7 @@ struct CountriesList: View {
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countriesList)
     }
-    var didUpdate: ((Self) -> Void)?
+    let inspection = Inspection<Self>()
     
     var body: some View {
         GeometryReader { geometry in
@@ -33,7 +33,7 @@ struct CountriesList: View {
         .onReceive(keyboardHeightUpdate) { self.countriesSearch.keyboardHeight = $0 }
         .onReceive(countriesUpdate) { self.countriesSearch.all = $0 }
         .onReceive(routingUpdate) { self.routingState = $0 }
-        .onUpdate(self, \.didUpdate)
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
     private var content: AnyView {

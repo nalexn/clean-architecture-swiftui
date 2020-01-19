@@ -27,15 +27,6 @@ extension DIContainer.Interactors {
         (imagesInteractor as? MockedImagesInteractor)?
             .verify(file: file, line: line)
     }
-    
-    func asyncVerify(_ exp: XCTestExpectation, file: StaticString = #file,
-                     line: UInt = #line, function: String = #function) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.verify(file: file, line: line)
-            ViewHosting.expel(viewId: function)
-            exp.fulfill()
-        }
-    }
 }
 
 // MARK: - CountriesInteractor

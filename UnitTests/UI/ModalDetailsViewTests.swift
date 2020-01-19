@@ -20,16 +20,13 @@ final class ModalDetailsViewTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked(
             imagesInteractor: [.loadImage(country.flag)]
         )
-        let exp = XCTestExpectation(description: "onAppear")
         let isDisplayed = Binding(wrappedValue: true)
-        var sut = ModalDetailsView(country: country, isDisplayed: isDisplayed)
-        sut.didAppear = { view in
-            view.inspect { content in
-                let vStack = try content.navigationView().vStack(0)
-                XCTAssertNoThrow(try vStack.hStack(0).view(SVGImageView.self, 1))
-                XCTAssertNoThrow(try vStack.button(1))
-            }
-            interactors.asyncVerify(exp)
+        let sut = ModalDetailsView(country: country, isDisplayed: isDisplayed)
+        let exp = sut.inspection.inspect { view in
+            let vStack = try view.navigationView().vStack(0)
+            XCTAssertNoThrow(try vStack.hStack(0).view(SVGImageView.self, 1))
+            XCTAssertNoThrow(try vStack.button(1))
+            interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
         wait(for: [exp], timeout: 2)
@@ -40,16 +37,13 @@ final class ModalDetailsViewTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked(
             imagesInteractor: [.loadImage(country.flag)]
         )
-        let exp = XCTestExpectation(description: "onAppear")
         let isDisplayed = Binding(wrappedValue: true)
-        var sut = ModalDetailsView(country: country, isDisplayed: isDisplayed)
-        sut.didAppear = { view in
-            view.inspect { content in
-                XCTAssertTrue(isDisplayed.wrappedValue)
-                try content.navigationView().vStack(0).button(1).tap()
-                XCTAssertFalse(isDisplayed.wrappedValue)
-            }
-            interactors.asyncVerify(exp)
+        let sut = ModalDetailsView(country: country, isDisplayed: isDisplayed)
+        let exp = sut.inspection.inspect { view in
+            XCTAssertTrue(isDisplayed.wrappedValue)
+            try view.navigationView().vStack(0).button(1).tap()
+            XCTAssertFalse(isDisplayed.wrappedValue)
+            interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
         wait(for: [exp], timeout: 2)

@@ -18,18 +18,10 @@ final class DeepLinkUITests: XCTestCase {
         let store = appStateWithDeepLink()
         let interactors = mockedInteractors(store: store)
         let container = DIContainer(appState: store, interactors: interactors)
-        
-        let exp = XCTestExpectation(description: #function)
-        exp.expectedFulfillmentCount = 2
-        var sut = CountriesList()
-        sut.didUpdate = { view in
-            if store.value.userData.countries.value != nil {
-                view.inspect { view in
-                    let firstRowLink = try view.firstRowLink()
-                    XCTAssertTrue(try firstRowLink.isActive())
-                }
-            }
-            exp.fulfill()
+        let sut = CountriesList()
+        let exp = sut.inspection.inspect { view in
+            let firstRowLink = try view.firstRowLink()
+            XCTAssertTrue(try firstRowLink.isActive())
         }
         ViewHosting.host(view: sut.inject(container))
         wait(for: [exp], timeout: 2)
@@ -40,20 +32,13 @@ final class DeepLinkUITests: XCTestCase {
         let store = appStateWithDeepLink()
         let interactors = mockedInteractors(store: store)
         let container = DIContainer(appState: store, interactors: interactors)
-        
-        let exp = XCTestExpectation(description: #function)
-        var sut = CountryDetails(country: Country.mockedData[0])
-        sut.didUpdate = { view in
-            let loadedView = try? view.inspect().content().list()
-            guard loadedView != nil else { return }
+        let sut = CountryDetails(country: Country.mockedData[0])
+        let exp = sut.inspection.inspect(after: 0.1) { view in
+            XCTAssertNoThrow(try view.content().list())
             XCTAssertTrue(store.value.routing.countryDetails.detailsSheet)
-            // ViewInspector currently cannot extract .sheet
-            // Since the `List` is present and `detailsSheet` is true
-            // Assuming that the sheet is presented
-            exp.fulfill()
         }
         ViewHosting.host(view: sut.inject(container))
-        wait(for: [exp], timeout: 0.1)
+        wait(for: [exp], timeout: 2)
     }
 }
 

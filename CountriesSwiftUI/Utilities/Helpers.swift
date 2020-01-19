@@ -103,7 +103,6 @@ extension Binding where Value: Equatable {
         return .init(get: { () -> Value in
             self.wrappedValue
         }, set: { value in
-            // Warning during the tests is caused by ViewInspector's activity
             self.wrappedValue = value
             state[keyPath] = value
         })
@@ -120,21 +119,13 @@ extension ProcessInfo {
 
 // MARK: - View Inspection helper
 
-extension View {
-    func onUpdate<V>(_ viewCapture: @autoclosure @escaping () -> V,
-                     _ callbackKeyPath: KeyPath<V, ((V) -> Void)?>) -> some View where V: View {
-        modifier(ContextCatcher(viewCapture: viewCapture, callbackKeyPath: callbackKeyPath))
-    }
-}
-
-private struct ContextCatcher<V>: ViewModifier where V: View {
+class Inspection<V> where V: View {
+    let notice = PassthroughSubject<UInt, Never>()
+    var callbacks = [UInt: (V) -> Void]()
     
-    let viewCapture: () -> V
-    let callbackKeyPath: KeyPath<V, ((V) -> Void)?>
-    
-    func body(content: Self.Content) -> some View {
-        let view = viewCapture()
-        view[keyPath: callbackKeyPath]?(view)
-        return content.onAppear()
+    func visit(_ view: V, _ line: UInt) {
+        if let callback = callbacks.removeValue(forKey: line) {
+            callback(view)
+        }
     }
 }

@@ -16,7 +16,7 @@ struct SVGImageView: View {
     @Environment(\.injected) var injected: DIContainer
     @State private var image: Loadable<UIImage>
     private let cancelBag = CancelBag()
-    var didAppear: ((Self) -> Void)?
+    let inspection = Inspection<Self>()
     
     init(imageURL: URL, image: Loadable<UIImage> = .notRequested) {
         self.imageURL = imageURL
@@ -24,7 +24,8 @@ struct SVGImageView: View {
     }
     
     var body: some View {
-        content.onAppear { self.didAppear?(self) }
+        content
+            .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
     private var content: AnyView {

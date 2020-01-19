@@ -12,7 +12,7 @@ struct ModalDetailsView: View {
     
     let country: Country
     @Binding var isDisplayed: Bool
-    var didAppear: ((Self) -> Void)?
+    let inspection = Inspection<Self>()
     
     var body: some View {
         NavigationView {
@@ -30,7 +30,7 @@ struct ModalDetailsView: View {
             .navigationBarTitle(Text(country.name), displayMode: .inline)
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .onAppear { self.didAppear?(self) }
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
     private var closeButton: some View {
