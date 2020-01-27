@@ -110,7 +110,7 @@ final class CountryDetailsTests: XCTestCase {
         let exp1 = sut.inspection.inspect { view in
             try view.content().list().hStack(0).view(SVGImageView.self, 1).callOnTapGesture()
         }
-        let exp2 = sut.inspection.inspect(after: 0.1) { view in
+        let exp2 = sut.inspection.inspect(after: 0.5) { view in
             XCTAssertTrue(container.appState.value.routing.countryDetails.detailsSheet)
             interactors.verify()
         }

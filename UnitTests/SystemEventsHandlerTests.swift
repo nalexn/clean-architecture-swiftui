@@ -62,17 +62,19 @@ final class SystemEventsHandlerTests: XCTestCase {
         XCTAssertEqual(sut.appState.value, reference)
     }
     
-     func test_keyboardHeight() {
-         let textFiled = UITextField(frame: .zero)
-         guard let window = UIApplication.shared.windows.first
-             else { XCTFail("Cannot extract the host view"); return }
-         window.makeKeyAndVisible()
-         window.addSubview(textFiled)
-         XCTAssertEqual(sut.appState.value.system.keyboardHeight, 0)
-         textFiled.becomeFirstResponder()
-         XCTAssertGreaterThan(sut.appState.value.system.keyboardHeight, 0)
-         textFiled.removeFromSuperview()
-     }
+    #if os(iOS) && !targetEnvironment(macCatalyst)
+    func test_keyboardHeight() {
+        let textFiled = UITextField(frame: .zero)
+        guard let window = UIApplication.shared.windows.first
+            else { XCTFail("Cannot extract the host view"); return }
+        window.makeKeyAndVisible()
+        window.addSubview(textFiled)
+        XCTAssertEqual(sut.appState.value.system.keyboardHeight, 0)
+        textFiled.becomeFirstResponder()
+        XCTAssertGreaterThan(sut.appState.value.system.keyboardHeight, 0)
+        textFiled.removeFromSuperview()
+    }
+    #endif
 }
 
 private extension UIOpenURLContext {
