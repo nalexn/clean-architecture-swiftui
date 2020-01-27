@@ -93,9 +93,9 @@ extension ImageConversion {
         
         init(data: Data?) throws {
             guard let data = data, let string = String(data: data, encoding: .utf8),
-                let elementWithURL = string.firstMatch(pattern: #"<form class="form ajax-form".*>"#),
+                let elementWithURL = string.firstMatch(pattern: #"<form class="form ajax-form".*\.svg">"#),
                 let conversionURL = elementWithURL.firstMatch(pattern: #"https.*\.svg"#),
-                let ajaxTokenElement = string.firstMatch(pattern: #"<input .*name=\"token\".*>"#),
+                let ajaxTokenElement = string.firstMatch(pattern: #"name=\"file\"><input .*name=\"token\".*>"#),
                 let dirtyToken = ajaxTokenElement.firstMatch(pattern: #"value="([a-z]|[0-9])*"#)
                 else { throw APIError.unexpectedResponse }
             self.urlString = conversionURL

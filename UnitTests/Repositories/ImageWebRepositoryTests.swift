@@ -15,6 +15,8 @@ final class ImageWebRepositoryTests: XCTestCase {
     private var sut: RealImageWebRepository!
     private var subscriptions = Set<AnyCancellable>()
     private lazy var testImage = UIColor.red.image(CGSize(width: 40, height: 40))
+    private let svgToPngURL = "https://s1.ezgif.com/svg-to-png/ezgif-1-1d73ae275f02.svg?ajax=true"
+    private let pngURL = "https://im2.ezgif.com/tmp/ezgif-2-91963ddbaa7a.png"
     
     typealias Mock = RequestMocking.MockedResponse
 
@@ -32,8 +34,8 @@ final class ImageWebRepositoryTests: XCTestCase {
         let bundle = Bundle(for: Self.self)
         guard let imageURL = URL(string: "https://image.service.com/myimage.svg"),
             let requestURL1 = URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString),
-            let requestURL2 = URL(string: "https://s2.ezgif.com/svg-to-png/ezgif-2-046afd16dc45.svg?ajax=true"),
-            let requestURL3 = URL(string: "https://im2.ezgif.com/tmp/ezgif-2-91963ddbaa7a.png"),
+            let requestURL2 = URL(string: svgToPngURL),
+            let requestURL3 = URL(string: pngURL),
             let responseFile1 = bundle.url(forResource: "svg_convert_01", withExtension: "html"),
             let responseFile2 = bundle.url(forResource: "svg_convert_02", withExtension: "html"),
             let responseData1 = try? Data(contentsOf: responseFile1),
@@ -100,7 +102,7 @@ final class ImageWebRepositoryTests: XCTestCase {
         let bundle = Bundle(for: Self.self)
         guard let imageURL = URL(string: "https://image.service.com/myimage.svg"),
             let requestURL1 = URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString),
-            let requestURL2 = URL(string: "https://s2.ezgif.com/svg-to-png/ezgif-2-046afd16dc45.svg?ajax=true"),
+            let requestURL2 = URL(string: svgToPngURL),
             let responseFile1 = bundle.url(forResource: "svg_convert_01", withExtension: "html"),
             let responseData1 = try? Data(contentsOf: responseFile1)
             else { XCTFail(); return }
@@ -121,8 +123,8 @@ final class ImageWebRepositoryTests: XCTestCase {
         let bundle = Bundle(for: Self.self)
         guard let imageURL = URL(string: "https://image.service.com/myimage.svg"),
             let requestURL1 = URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString),
-            let requestURL2 = URL(string: "https://s2.ezgif.com/svg-to-png/ezgif-2-046afd16dc45.svg?ajax=true"),
-            let requestURL3 = URL(string: "https://im2.ezgif.com/tmp/ezgif-2-91963ddbaa7a.png"),
+            let requestURL2 = URL(string: svgToPngURL),
+            let requestURL3 = URL(string: pngURL),
             let responseFile1 = bundle.url(forResource: "svg_convert_01", withExtension: "html"),
             let responseFile2 = bundle.url(forResource: "svg_convert_02", withExtension: "html"),
             let responseData1 = try? Data(contentsOf: responseFile1),
