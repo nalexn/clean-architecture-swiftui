@@ -130,7 +130,7 @@ extension ProcessInfo {
 
 // MARK: - View Inspection helper
 
-class Inspection<V> where V: View {
+internal final class Inspection<V> where V: View {
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
     
