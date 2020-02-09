@@ -30,18 +30,17 @@ final class ImageWebRepositoryTests: XCTestCase {
         RequestMocking.removeAllMocks()
     }
     
-    func test_loadImage_withConversion() {
+    func test_loadImage_withConversion() throws {
         let bundle = Bundle(for: Self.self)
-        guard let imageURL = URL(string: "https://image.service.com/myimage.svg"),
-            let requestURL1 = URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString),
-            let requestURL2 = URL(string: svgToPngURL),
-            let requestURL3 = URL(string: pngURL),
-            let responseFile1 = bundle.url(forResource: "svg_convert_01", withExtension: "html"),
-            let responseFile2 = bundle.url(forResource: "svg_convert_02", withExtension: "html"),
-            let responseData1 = try? Data(contentsOf: responseFile1),
-            let responseData2 = try? Data(contentsOf: responseFile2),
-            let responseData3 = testImage.pngData()
-            else { XCTFail(); return }
+        let imageURL = try XCTUnwrap(URL(string: "https://image.service.com/myimage.svg"))
+        let requestURL1 = try XCTUnwrap(URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString))
+        let requestURL2 = try XCTUnwrap(URL(string: svgToPngURL))
+        let requestURL3 = try XCTUnwrap(URL(string: pngURL))
+        let responseFile1 = try XCTUnwrap(bundle.url(forResource: "svg_convert_01", withExtension: "html"))
+        let responseFile2 = try XCTUnwrap(bundle.url(forResource: "svg_convert_02", withExtension: "html"))
+        let responseData1 = try XCTUnwrap(try? Data(contentsOf: responseFile1))
+        let responseData2 = try XCTUnwrap(try? Data(contentsOf: responseFile2))
+        let responseData3 = try XCTUnwrap(testImage.pngData())
         
         let mocks = [Mock(url: requestURL1, result: .success(responseData1)),
                      Mock(url: requestURL2, result: .success(responseData2)),
@@ -61,11 +60,10 @@ final class ImageWebRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
-    func test_loadImage_withoutConversion() {
-        guard let imageURL = URL(string: "https://image.service.com/myimage.png"),
-            let responseData = testImage.pngData()
-            else { XCTFail(); return }
+    func test_loadImage_withoutConversion() throws {
         
+        let imageURL = try XCTUnwrap(URL(string: "https://image.service.com/myimage.png"))
+        let responseData = try XCTUnwrap(testImage.pngData())
         let mock = Mock(url: imageURL, result: .success(responseData))
         RequestMocking.add(mock: mock)
         
@@ -82,10 +80,9 @@ final class ImageWebRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
-    func test_loadImage_firstRequestFailure() {
-        guard let imageURL = URL(string: "https://image.service.com/myimage.svg"),
-            let requestURL1 = URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString)
-            else { XCTFail(); return }
+    func test_loadImage_firstRequestFailure() throws {
+        let imageURL = try XCTUnwrap(URL(string: "https://image.service.com/myimage.svg"))
+        let requestURL1 = try XCTUnwrap(URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString))
         let fakeData = "fakeData".data(using: .utf8)!
         let mocks = [Mock(url: requestURL1, result: .success(fakeData))]
         mocks.forEach { RequestMocking.add(mock: $0) }
@@ -98,14 +95,13 @@ final class ImageWebRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
-    func test_loadImage_secondRequestFailure() {
+    func test_loadImage_secondRequestFailure() throws {
         let bundle = Bundle(for: Self.self)
-        guard let imageURL = URL(string: "https://image.service.com/myimage.svg"),
-            let requestURL1 = URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString),
-            let requestURL2 = URL(string: svgToPngURL),
-            let responseFile1 = bundle.url(forResource: "svg_convert_01", withExtension: "html"),
-            let responseData1 = try? Data(contentsOf: responseFile1)
-            else { XCTFail(); return }
+        let imageURL = try XCTUnwrap(URL(string: "https://image.service.com/myimage.svg"))
+        let requestURL1 = try XCTUnwrap(URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString))
+        let requestURL2 = try XCTUnwrap(URL(string: svgToPngURL))
+        let responseFile1 = try XCTUnwrap(bundle.url(forResource: "svg_convert_01", withExtension: "html"))
+        let responseData1 = try XCTUnwrap(try? Data(contentsOf: responseFile1))
         let fakeData = "fakeData".data(using: .utf8)!
         let mocks = [Mock(url: requestURL1, result: .success(responseData1)),
                      Mock(url: requestURL2, result: .success(fakeData))]
@@ -119,18 +115,17 @@ final class ImageWebRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
-    func test_loadImage_thirdRequestFailure() {
+    func test_loadImage_thirdRequestFailure() throws {
         let bundle = Bundle(for: Self.self)
-        guard let imageURL = URL(string: "https://image.service.com/myimage.svg"),
-            let requestURL1 = URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString),
-            let requestURL2 = URL(string: svgToPngURL),
-            let requestURL3 = URL(string: pngURL),
-            let responseFile1 = bundle.url(forResource: "svg_convert_01", withExtension: "html"),
-            let responseFile2 = bundle.url(forResource: "svg_convert_02", withExtension: "html"),
-            let responseData1 = try? Data(contentsOf: responseFile1),
-            let responseData2 = try? Data(contentsOf: responseFile2),
-            let responseData3 = "fakeData".data(using: .utf8)
-            else { XCTFail(); return }
+        let imageURL = try XCTUnwrap(URL(string: "https://image.service.com/myimage.svg"))
+        let requestURL1 = try XCTUnwrap(URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString))
+        let requestURL2 = try XCTUnwrap(URL(string: svgToPngURL))
+        let requestURL3 = try XCTUnwrap(URL(string: pngURL))
+        let responseFile1 = try XCTUnwrap(bundle.url(forResource: "svg_convert_01", withExtension: "html"))
+        let responseFile2 = try XCTUnwrap(bundle.url(forResource: "svg_convert_02", withExtension: "html"))
+        let responseData1 = try XCTUnwrap(try? Data(contentsOf: responseFile1))
+        let responseData2 = try XCTUnwrap(try? Data(contentsOf: responseFile2))
+        let responseData3 = try XCTUnwrap("fakeData".data(using: .utf8))
         
         let mocks = [Mock(url: requestURL1, result: .success(responseData1)),
                      Mock(url: requestURL2, result: .success(responseData2)),
@@ -145,15 +140,14 @@ final class ImageWebRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
-    func test_loadImage_malformedURL() {
+    func test_loadImage_malformedURL() throws {
         let malformedResponse = """
         <form class="form ajax-form" action="https<>.svg">
         <input type="hidden" value="db82d45c4085be" name="token">
         """
-        guard let imageURL = URL(string: "https://image.service.com/myimage.svg"),
-            let requestURL1 = URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString),
-            let responseData1 = malformedResponse.data(using: .utf8)
-            else { XCTFail(); return }
+        let imageURL = try XCTUnwrap(URL(string: "https://image.service.com/myimage.svg"))
+        let requestURL1 = try XCTUnwrap(URL(string: sut.baseURL + "/svg-to-png?url=" + imageURL.absoluteString))
+        let responseData1 = try XCTUnwrap(malformedResponse.data(using: .utf8))
         let mocks = [Mock(url: requestURL1, result: .success(responseData1))]
         mocks.forEach { RequestMocking.add(mock: $0) }
         

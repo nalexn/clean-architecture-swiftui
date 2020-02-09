@@ -86,8 +86,7 @@ final class ImageFileCacheRepositoryTests: XCTestCase {
     }
     
     func test_cachesDefaultURL() throws {
-        guard let cachesURL = ImageFileCacheRepository.defaultCachesURL
-            else { XCTFail(); return }
+        let cachesURL = try XCTUnwrap(ImageFileCacheRepository.defaultCachesURL)
         let fileManager = FileManager()
         let doesDirectoryExist = fileManager.fileExists(atPath: cachesURL.path)
         if !doesDirectoryExist {

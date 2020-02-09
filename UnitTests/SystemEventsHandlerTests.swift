@@ -63,10 +63,9 @@ final class SystemEventsHandlerTests: XCTestCase {
     }
     
     #if os(iOS) && !targetEnvironment(macCatalyst)
-    func test_keyboardHeight() {
+    func test_keyboardHeight() throws {
         let textFiled = UITextField(frame: .zero)
-        guard let window = UIApplication.shared.windows.first
-            else { XCTFail("Cannot extract the host view"); return }
+        let window = try XCTUnwrap(UIApplication.shared.windows.first, "Cannot extract the host view")
         window.makeKeyAndVisible()
         window.addSubview(textFiled)
         XCTAssertEqual(sut.appState.value.system.keyboardHeight, 0)
