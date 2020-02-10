@@ -1,0 +1,15 @@
+
+"Running unit tests" = "単体テストの実行";
+"Countries" = "国";
+"Basic Info" = "基本情報";
+"Code" = "コード";
+"Population" = "人口";
+"Capital" = "資本";
+"Currencies" = "通貨";
+"Neighboring countries" = "近隣諸国";
+"Close" = "閉じる";
+"Population %lld" = "人口 %lld";
+"An Error Occured" = "エラーが発生しました";
+"Retry" = "リトライ";
+"Unable to load image" = "画像を読み込めません";
+"Back" = "バック";

@@ -146,16 +146,16 @@ private extension CountryDetails {
     
     func basicInfoSectionView(countryDetails: Country.Details) -> some View {
         Section(header: Text("Basic Info")) {
-            DetailRow(leftLabel: country.alpha3Code, rightLabel: "Code")
-            DetailRow(leftLabel: "\(country.population)", rightLabel: "Population")
-            DetailRow(leftLabel: "\(countryDetails.capital)", rightLabel: "Capital")
+            DetailRow(leftLabel: Text(country.alpha3Code), rightLabel: "Code")
+            DetailRow(leftLabel: Text("\(country.population)"), rightLabel: "Population")
+            DetailRow(leftLabel: Text("\(countryDetails.capital)"), rightLabel: "Capital")
         }
     }
     
     func currenciesSectionView(currencies: [Country.Currency]) -> some View {
         Section(header: Text("Currencies")) {
             ForEach(currencies) { currency in
-                DetailRow(leftLabel: currency.title, rightLabel: currency.code)
+                DetailRow(leftLabel: Text(currency.title), rightLabel: Text(currency.code))
             }
         }
     }
@@ -164,7 +164,7 @@ private extension CountryDetails {
         Section(header: Text("Neighboring countries")) {
             ForEach(neighbors) { country in
                 NavigationLink(destination: self.neighbourDetailsView(country: country)) {
-                    DetailRow(leftLabel: country.name, rightLabel: "")
+                    DetailRow(leftLabel: Text(country.name), rightLabel: "")
                 }
             }
         }

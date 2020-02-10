@@ -9,15 +9,25 @@
 import SwiftUI
 
 struct DetailRow: View {
-    let leftLabel: String
-    let rightLabel: String
+    let leftLabel: Text
+    let rightLabel: Text
+    
+    init(leftLabel: Text, rightLabel: Text) {
+        self.leftLabel = leftLabel
+        self.rightLabel = rightLabel
+    }
+    
+    init(leftLabel: Text, rightLabel: LocalizedStringKey) {
+        self.leftLabel = leftLabel
+        self.rightLabel = Text(rightLabel)
+    }
     
     var body: some View {
         HStack {
-            Text(leftLabel)
+            leftLabel
                 .font(.headline)
             Spacer()
-            Text(rightLabel)
+            rightLabel
                 .font(.callout)
         }
         .padding()
@@ -28,7 +38,7 @@ struct DetailRow: View {
 #if DEBUG
 struct DetailRow_Previews: PreviewProvider {
     static var previews: some View {
-        DetailRow(leftLabel: "Rate", rightLabel: "$123.99")
+        DetailRow(leftLabel: Text("Rate"), rightLabel: Text("$123.99"))
             .previewLayout(.fixed(width: 375, height: 40))
     }
 }
