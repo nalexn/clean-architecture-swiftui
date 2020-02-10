@@ -132,11 +132,16 @@ final class CountriesListTests: XCTestCase {
     }
 }
 
-final class CountryLocalizationTests: XCTestCase {
+final class LocalizationTests: XCTestCase {
     func test_country_localized_name() {
         let sut = Country(name: "Abc", translations: ["fr": "Xyz"], population: 0, flag: nil, alpha3Code: "")
         let locale = Locale(identifier: "fr")
         XCTAssertEqual(sut.name(locale: locale), "Xyz")
+    }
+    
+    func test_string_for_locale() {
+        let sut = "Countries".localized(Locale(identifier: "fr"))
+        XCTAssertEqual(sut, "Des pays")
     }
 }
 

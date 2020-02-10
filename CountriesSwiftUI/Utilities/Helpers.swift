@@ -128,6 +128,17 @@ extension ProcessInfo {
     }
 }
 
+extension String {
+    func localized(_ locale: Locale) -> String {
+        let localeId = String(locale.identifier.prefix(2))
+        guard let path = Bundle.main.path(forResource: localeId, ofType: "lproj"),
+            let bundle = Bundle(path: path) else {
+            return NSLocalizedString(self, comment: "")
+        }
+        return bundle.localizedString(forKey: self, value: nil, table: nil)
+    }
+}
+
 // MARK: - View Inspection helper
 
 internal final class Inspection<V> where V: View {

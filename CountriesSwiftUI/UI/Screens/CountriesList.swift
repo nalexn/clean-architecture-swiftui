@@ -26,7 +26,7 @@ struct CountriesList: View {
         GeometryReader { geometry in
             NavigationView {
                 self.content
-                    .navigationBarTitle("Countries")
+                    .navigationBarTitle("Countries".localized(self.locale))
                     .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }.padding(.leading, self.leadingPadding(geometry))
