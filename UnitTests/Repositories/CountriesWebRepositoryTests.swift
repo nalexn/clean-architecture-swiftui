@@ -69,7 +69,7 @@ final class CountriesWebRepositoryTests: XCTestCase {
     
     func test_countryDetails_countryNameEncoding() {
         let name = String(bytes: [0xD8, 0x00] as [UInt8], encoding: .utf16BigEndian)!
-        let country = Country(name: name, population: 1, flag: nil, alpha3Code: "ABC")
+        let country = Country(name: name, translations: [:], population: 1, flag: nil, alpha3Code: "ABC")
         let apiCall = RealCountriesWebRepository.API.countryDetails(country)
         XCTAssertTrue(apiCall.path.hasSuffix(name))
     }

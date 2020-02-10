@@ -14,6 +14,7 @@ struct CountryDetails: View {
     let country: Country
     private let cancelBag = CancelBag()
     
+    @Environment(\.locale) var locale: Locale
     @Environment(\.injected) private var injected: DIContainer
     @State private var details: Loadable<Country.Details>
     @State private var routingState: Routing = .init()
@@ -29,7 +30,7 @@ struct CountryDetails: View {
     
     var body: some View {
         content
-            .navigationBarTitle(country.name)
+            .navigationBarTitle(country.name(locale: locale))
             .modifier(NavigationBarBugFixer(goBack: self.goBack))
             .onReceive(routingUpdate) { self.routingState = $0 }
             .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
@@ -164,7 +165,7 @@ private extension CountryDetails {
         Section(header: Text("Neighboring countries")) {
             ForEach(neighbors) { country in
                 NavigationLink(destination: self.neighbourDetailsView(country: country)) {
-                    DetailRow(leftLabel: Text(country.name), rightLabel: "")
+                    DetailRow(leftLabel: Text(country.name(locale: self.locale)), rightLabel: "")
                 }
             }
         }

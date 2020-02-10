@@ -10,6 +10,7 @@ import Foundation
 
 struct Country: Codable, Equatable {
     let name: String
+    let translations: [String: String?]
     let population: Int
     let flag: URL?
     let alpha3Code: Code
@@ -57,5 +58,15 @@ extension Country.Details.Intermediate {
             return countries.first(where: { $0.alpha3Code == code })
         }
         return Country.Details(capital: capital, currencies: currencies, neighbors: countries)
+    }
+}
+
+extension Country {
+    func name(locale: Locale) -> String {
+        let localeId = String(locale.identifier.prefix(2))
+        if let value = translations[localeId], let localizedName = value {
+            return localizedName
+        }
+        return name
     }
 }

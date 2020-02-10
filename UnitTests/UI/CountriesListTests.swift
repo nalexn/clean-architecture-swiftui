@@ -132,6 +132,14 @@ final class CountriesListTests: XCTestCase {
     }
 }
 
+final class CountryLocalizationTests: XCTestCase {
+    func test_country_localized_name() {
+        let sut = Country(name: "Abc", translations: ["fr": "Xyz"], population: 0, flag: nil, alpha3Code: "")
+        let locale = Locale(identifier: "fr")
+        XCTAssertEqual(sut.name(locale: locale), "Xyz")
+    }
+}
+
 final class CountriesListFilterTests: XCTestCase {
     
     func test_countries_filtering() {

@@ -9,11 +9,13 @@
 import SwiftUI
 
 struct CountryCell: View {
+    
     let country: Country
+    @Environment(\.locale) var locale: Locale
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(country.name)
+            Text(country.name(locale: locale))
                 .font(.title)
             Text("Population \(country.population)")
                 .font(.caption)
