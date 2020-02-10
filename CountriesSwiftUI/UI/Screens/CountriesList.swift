@@ -13,6 +13,7 @@ struct CountriesList: View {
     
     private let cancelBag = CancelBag()
     
+    @Environment(\.locale) private var locale: Locale
     @Environment(\.injected) private var injected: DIContainer
     @State private var countriesSearch = CountriesSearch()
     @State private var routingState: Routing = .init()
@@ -30,6 +31,7 @@ struct CountriesList: View {
                     .animation(.easeOut(duration: 0.3))
             }.padding(.leading, self.leadingPadding(geometry))
         }
+        .onAppear { self.countriesSearch.locale = self.locale }
         .onReceive(keyboardHeightUpdate) { self.countriesSearch.keyboardHeight = $0 }
         .onReceive(countriesUpdate) { self.countriesSearch.all = $0 }
         .onReceive(routingUpdate) { self.routingState = $0 }
@@ -126,6 +128,7 @@ extension CountriesList {
             didSet { filterCountries() }
         }
         var keyboardHeight: CGFloat = 0
+        var locale = Locale.current
         
         private mutating func filterCountries() {
             if searchText.count == 0 {
@@ -133,8 +136,9 @@ extension CountriesList {
             } else {
                 filtered = all.map { countries in
                     countries.filter {
-                        $0.name.range(of: searchText, options: .caseInsensitive,
-                                      range: nil, locale: nil) != nil
+                        $0.name(locale: locale)
+                            .range(of: searchText, options: .caseInsensitive,
+                                   range: nil, locale: nil) != nil
                     }
                 }
             }
