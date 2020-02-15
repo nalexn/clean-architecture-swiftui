@@ -31,6 +31,7 @@ struct ModalDetailsView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+        .attachEnvironmentOverrides()
     }
     
     private var closeButton: some View {
