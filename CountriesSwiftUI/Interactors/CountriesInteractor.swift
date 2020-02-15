@@ -11,8 +11,8 @@ import Foundation
 import SwiftUI
 
 protocol CountriesInteractor {
-    func loadCountries() -> AnyCancellable
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) -> AnyCancellable
+    func loadCountries()
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country)
 }
 
 struct RealCountriesInteractor: CountriesInteractor {
@@ -25,16 +25,20 @@ struct RealCountriesInteractor: CountriesInteractor {
         self.appState = appState
     }
 
-    func loadCountries() -> AnyCancellable {
+    func loadCountries() {
         let countries = appState.value.userData.countries.value
-        appState[\.userData.countries] = .isLoading(last: countries)
+        let cancelBag = CancelBag()
+        appState[\.userData.countries] = .isLoading(last: countries, cancelBag: cancelBag)
         weak var weakAppState = appState
-        return webRepository.loadCountries()
+        webRepository.loadCountries()
             .sinkToLoadable { weakAppState?[\.userData.countries] = $0 }
+            .store(in: cancelBag)
     }
 
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) -> AnyCancellable {
-        countryDetails.wrappedValue = .isLoading(last: countryDetails.wrappedValue.value)
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
+        let cancelBag = CancelBag()
+        countryDetails.wrappedValue = .isLoading(last: countryDetails.wrappedValue.value,
+                                                 cancelBag: cancelBag)
         let countriesArray = appState
             .map { $0.userData.countries }
             .tryMap { countries -> [Country] in
@@ -43,7 +47,7 @@ struct RealCountriesInteractor: CountriesInteractor {
                 }
                 return countries.value ?? []
             }
-        return webRepository.loadCountryDetails(country: country)
+        webRepository.loadCountryDetails(country: country)
             .combineLatest(countriesArray)
             .receive(on: webRepository.bgQueue)
             .map { (intermediate, countries) -> Country.Details in
@@ -51,16 +55,15 @@ struct RealCountriesInteractor: CountriesInteractor {
             }
             .receive(on: DispatchQueue.main)
             .sinkToLoadable { countryDetails.wrappedValue = $0 }
+            .store(in: cancelBag)
     }
 }
 
 struct StubCountriesInteractor: CountriesInteractor {
     
-    func loadCountries() -> AnyCancellable {
-        return .cancelled
+    func loadCountries() {
     }
     
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) -> AnyCancellable {
-        return .cancelled
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
     }
 }

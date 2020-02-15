@@ -15,7 +15,6 @@ struct SVGImageView: View {
     let imageURL: URL
     @Environment(\.injected) var injected: DIContainer
     @State private var image: Loadable<UIImage>
-    private let cancelBag = CancelBag()
     let inspection = Inspection<Self>()
     
     init(imageURL: URL, image: Loadable<UIImage> = .notRequested) {
@@ -44,7 +43,6 @@ private extension SVGImageView {
     func loadImage() {
         injected.interactors.imagesInteractor
             .load(image: $image, url: imageURL)
-            .store(in: cancelBag)
     }
 }
 

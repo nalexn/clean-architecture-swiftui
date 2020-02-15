@@ -20,11 +20,6 @@ final class CancelBag {
 }
 
 extension AnyCancellable {
-    static var cancelled: AnyCancellable {
-        let cancellable = AnyCancellable({ })
-        cancellable.cancel()
-        return cancellable
-    }
     
     func store(in cancelBag: CancelBag) {
         cancelBag.subscriptions.insert(self)

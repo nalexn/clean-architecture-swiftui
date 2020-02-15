@@ -35,12 +35,11 @@ final class CountriesInteractorTests: XCTestCase {
         ])
         let updates = recordAppStateUserDataUpdates()
         sut.loadCountries()
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         updates.sink { updates in
             XCTAssertEqual(updates, [
                 AppState.UserData(countries: .notRequested),
-                AppState.UserData(countries: .isLoading(last: nil)),
+                AppState.UserData(countries: .isLoading(last: nil, cancelBag: CancelBag())),
                 AppState.UserData(countries: .loaded(countries))
             ])
             self.mockedRepository.verify()
@@ -59,12 +58,12 @@ final class CountriesInteractorTests: XCTestCase {
         ])
         let updates = recordAppStateUserDataUpdates()
         sut.loadCountries()
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         updates.sink { updates in
             XCTAssertEqual(updates, [
                 AppState.UserData(countries: .loaded(initialCountries)),
-                AppState.UserData(countries: .isLoading(last: initialCountries)),
+                AppState.UserData(countries: .isLoading(last: initialCountries,
+                                                        cancelBag: CancelBag())),
                 AppState.UserData(countries: .loaded(finalCountries))
             ])
             self.mockedRepository.verify()
@@ -81,12 +80,11 @@ final class CountriesInteractorTests: XCTestCase {
         ])
         let updates = recordAppStateUserDataUpdates()
         sut.loadCountries()
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         updates.sink { updates in
             XCTAssertEqual(updates, [
                 AppState.UserData(countries: .notRequested),
-                AppState.UserData(countries: .isLoading(last: nil)),
+                AppState.UserData(countries: .isLoading(last: nil, cancelBag: CancelBag())),
                 AppState.UserData(countries: .failed(error))
             ])
             self.mockedRepository.verify()
@@ -107,12 +105,11 @@ final class CountriesInteractorTests: XCTestCase {
         ])
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: country)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil),
+                .isLoading(last: nil, cancelBag: CancelBag()),
                 .loaded(data.details)
             ])
             self.mockedRepository.verify()
@@ -132,12 +129,11 @@ final class CountriesInteractorTests: XCTestCase {
         ])
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: country)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil),
+                .isLoading(last: nil, cancelBag: CancelBag()),
                 .loaded(data.details)
             ])
             self.mockedRepository.verify()
@@ -158,12 +154,11 @@ final class CountriesInteractorTests: XCTestCase {
         ])
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: country)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil),
+                .isLoading(last: nil, cancelBag: CancelBag()),
                 .failed(error)
             ])
             self.mockedRepository.verify()
@@ -183,12 +178,11 @@ final class CountriesInteractorTests: XCTestCase {
         ])
         let details = BindingWithPublisher(value: Loadable<Country.Details>.loaded(data.details))
         sut.load(countryDetails: details.binding, country: country)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .loaded(data.details),
-                .isLoading(last: data.details),
+                .isLoading(last: data.details, cancelBag: CancelBag()),
                 .loaded(data.details)
             ])
             self.mockedRepository.verify()
@@ -208,12 +202,11 @@ final class CountriesInteractorTests: XCTestCase {
         ])
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: country)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil),
+                .isLoading(last: nil, cancelBag: CancelBag()),
                 .failed(error)
             ])
             self.mockedRepository.verify()
@@ -225,10 +218,8 @@ final class CountriesInteractorTests: XCTestCase {
     func test_stubInteractor() {
         let sut = StubCountriesInteractor()
         sut.loadCountries()
-            .store(in: &subscriptions)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: Country.mockedData[0])
-            .store(in: &subscriptions)
     }
     
     // MARK: - Helper

@@ -12,7 +12,6 @@ import Combine
 struct CountryDetails: View {
     
     let country: Country
-    private let cancelBag = CancelBag()
     
     @Environment(\.locale) var locale: Locale
     @Environment(\.injected) private var injected: DIContainer
@@ -52,7 +51,6 @@ private extension CountryDetails {
     func loadCountryDetails() {
         injected.interactors.countriesInteractor
             .load(countryDetails: $details, country: country)
-            .store(in: cancelBag)
     }
     
     func showCountryDetailsSheet() {

@@ -31,7 +31,8 @@ final class SVGImageViewTests: XCTestCase {
     
     func test_imageView_isLoading_initial() {
         let interactors = DIContainer.Interactors.mocked()
-        let sut = SVGImageView(imageURL: url, image: .isLoading(last: nil))
+        let sut = SVGImageView(imageURL: url, image:
+            .isLoading(last: nil, cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
             interactors.verify()
@@ -43,7 +44,8 @@ final class SVGImageViewTests: XCTestCase {
     func test_imageView_isLoading_refresh() {
         let interactors = DIContainer.Interactors.mocked()
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
-        let sut = SVGImageView(imageURL: url, image: .isLoading(last: image))
+        let sut = SVGImageView(imageURL: url, image:
+            .isLoading(last: image, cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
             interactors.verify()

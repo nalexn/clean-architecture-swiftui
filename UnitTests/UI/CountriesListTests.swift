@@ -35,7 +35,7 @@ final class CountriesListTests: XCTestCase {
     func test_countries_isLoading_initial() {
         var appState = AppState()
         let interactors = DIContainer.Interactors.mocked()
-        appState.userData.countries = .isLoading(last: nil)
+        appState.userData.countries = .isLoading(last: nil, cancelBag: CancelBag())
         let sut = CountriesList()
         let exp = sut.inspection.inspect { view in
             let vStack = try view.content().vStack()
@@ -49,7 +49,8 @@ final class CountriesListTests: XCTestCase {
     
     func test_countries_isLoading_refresh() {
         var appState = AppState()
-        appState.userData.countries = .isLoading(last: Country.mockedData)
+        appState.userData.countries = .isLoading(last: Country.mockedData,
+                                                 cancelBag: CancelBag())
         let interactors = DIContainer.Interactors.mocked()
         let sut = CountriesList()
         let exp = sut.inspection.inspect { view in

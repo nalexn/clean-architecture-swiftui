@@ -44,14 +44,12 @@ struct MockedCountriesInteractor: Mock, CountriesInteractor {
         self.actions = .init(expected: expected)
     }
     
-    func loadCountries() -> AnyCancellable {
+    func loadCountries() {
         register(.loadCountries)
-        return .cancelled
     }
     
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) -> AnyCancellable {
+    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
         register(.loadCountryDetails(country))
-        return .cancelled
     }
 }
 
@@ -69,8 +67,7 @@ struct MockedImagesInteractor: Mock, ImagesInteractor {
         self.actions = .init(expected: expected)
     }
     
-    func load(image: Binding<Loadable<UIImage>>, url: URL?) -> AnyCancellable {
+    func load(image: Binding<Loadable<UIImage>>, url: URL?) {
         register(.loadImage(url))
-        return .cancelled
     }
 }

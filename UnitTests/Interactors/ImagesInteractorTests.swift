@@ -52,7 +52,6 @@ final class ImagesInteractorTests: XCTestCase {
                file: [],
                web: [])
         sut.load(image: image.binding, url: nil)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
@@ -74,12 +73,11 @@ final class ImagesInteractorTests: XCTestCase {
                file: [],
                web: [])
         sut.load(image: image.binding, url: testImageURL)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil),
+                .isLoading(last: nil, cancelBag: CancelBag()),
                 .loaded(self.testImage)
             ])
             self.verifyRepos()
@@ -97,12 +95,11 @@ final class ImagesInteractorTests: XCTestCase {
                file: [.loadImage(testImageURL)],
                web: [])
         sut.load(image: image.binding, url: testImageURL)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil),
+                .isLoading(last: nil, cancelBag: CancelBag()),
                 .loaded(self.testImage)
             ])
             let cachedImage = self.mockedInMemoryCache.cached[self.testImageURL.imageCacheKey]
@@ -122,12 +119,11 @@ final class ImagesInteractorTests: XCTestCase {
                file: [.loadImage(testImageURL)],
                web: [.loadImage(testImageURL)])
         sut.load(image: image.binding, url: testImageURL)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil),
+                .isLoading(last: nil, cancelBag: CancelBag()),
                 .loaded(self.testImage)
             ])
             let cachedImage = self.mockedInMemoryCache.cached[self.testImageURL.imageCacheKey]
@@ -148,12 +144,11 @@ final class ImagesInteractorTests: XCTestCase {
                file: [.loadImage(testImageURL)],
                web: [.loadImage(testImageURL)])
         sut.load(image: image.binding, url: testImageURL)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil),
+                .isLoading(last: nil, cancelBag: CancelBag()),
                 .failed(error)
             ])
             self.verifyRepos()
@@ -172,12 +167,11 @@ final class ImagesInteractorTests: XCTestCase {
                file: [.loadImage(testImageURL)],
                web: [.loadImage(testImageURL)])
         sut.load(image: image.binding, url: testImageURL)
-            .store(in: &subscriptions)
         let exp = XCTestExpectation(description: "Completion")
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .loaded(self.testImage),
-                .isLoading(last: self.testImage),
+                .isLoading(last: self.testImage, cancelBag: CancelBag()),
                 .failed(error)
             ])
             self.verifyRepos()
@@ -198,6 +192,5 @@ final class ImagesInteractorTests: XCTestCase {
         let sut = StubImagesInteractor()
         let image = BindingWithPublisher(value: Loadable<UIImage>.notRequested)
         sut.load(image: image.binding, url: testImageURL)
-            .store(in: &subscriptions)
     }
 }

@@ -32,7 +32,8 @@ final class CountryDetailsTests: XCTestCase {
     
     func test_details_isLoading_initial() {
         let interactors = DIContainer.Interactors.mocked()
-        let sut = CountryDetails(country: country, details: .isLoading(last: nil))
+        let sut = CountryDetails(country: country, details:
+            .isLoading(last: nil, cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.content().view(ActivityIndicatorView.self))
             interactors.verify()
@@ -44,7 +45,7 @@ final class CountryDetailsTests: XCTestCase {
     func test_details_isLoading_refresh() {
         let interactors = DIContainer.Interactors.mocked()
         let sut = CountryDetails(country: country, details:
-            .isLoading(last: Country.Details.mockedData[0])
+            .isLoading(last: Country.Details.mockedData[0], cancelBag: CancelBag())
         )
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.content().view(ActivityIndicatorView.self))

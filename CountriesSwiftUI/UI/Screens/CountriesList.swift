@@ -11,8 +11,6 @@ import Combine
 
 struct CountriesList: View {
     
-    private let cancelBag = CancelBag()
-    
     @Environment(\.locale) private var locale: Locale
     @Environment(\.injected) private var injected: DIContainer
     @State private var countriesSearch = CountriesSearch()
@@ -41,7 +39,7 @@ struct CountriesList: View {
     private var content: AnyView {
         switch countriesSearch.filtered {
         case .notRequested: return AnyView(notRequestedView)
-        case let .isLoading(last): return AnyView(loadingView(last))
+        case let .isLoading(last, _): return AnyView(loadingView(last))
         case let .loaded(countries): return AnyView(loadedView(countries, showSearch: true))
         case let .failed(error): return AnyView(failedView(error))
         }
@@ -62,7 +60,6 @@ private extension CountriesList {
     func loadCountries() {
         injected.interactors.countriesInteractor
             .loadCountries()
-            .store(in: cancelBag)
     }
 }
 

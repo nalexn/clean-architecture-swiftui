@@ -11,7 +11,7 @@ import Foundation
 import SwiftUI
 
 protocol ImagesInteractor {
-    func load(image: Binding<Loadable<UIImage>>, url: URL?) -> AnyCancellable
+    func load(image: Binding<Loadable<UIImage>>, url: URL?)
 }
 
 struct RealImagesInteractor: ImagesInteractor {
@@ -33,12 +33,13 @@ struct RealImagesInteractor: ImagesInteractor {
         }
     }
     
-    func load(image: Binding<Loadable<UIImage>>, url: URL?) -> AnyCancellable {
+    func load(image: Binding<Loadable<UIImage>>, url: URL?) {
         guard let url = url else {
-            image.wrappedValue = .notRequested; return .cancelled
+            image.wrappedValue = .notRequested; return
         }
-        image.wrappedValue = .isLoading(last: image.wrappedValue.value)
-        return inMemoryCache.cachedImage(for: url.imageCacheKey)
+        let cancelBag = CancelBag()
+        image.wrappedValue = .isLoading(last: image.wrappedValue.value, cancelBag: cancelBag)
+        inMemoryCache.cachedImage(for: url.imageCacheKey)
             .catch { _ in
                 self.fileCache.cachedImage(for: url.imageCacheKey)
             }
@@ -52,6 +53,7 @@ struct RealImagesInteractor: ImagesInteractor {
                 }
                 image.wrappedValue = $0
             }
+            .store(in: cancelBag)
     }
 }
 
@@ -62,7 +64,6 @@ extension URL {
 }
 
 struct StubImagesInteractor: ImagesInteractor {
-    func load(image: Binding<Loadable<UIImage>>, url: URL?) -> AnyCancellable {
-        return .cancelled
+    func load(image: Binding<Loadable<UIImage>>, url: URL?) {
     }
 }
