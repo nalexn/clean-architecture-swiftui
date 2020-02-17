@@ -27,7 +27,9 @@ struct CountriesList: View {
                     .navigationBarTitle("Countries".localized(self.locale))
                     .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
-            }.padding(.leading, self.leadingPadding(geometry))
+            }
+            .navigationViewStyle(StackNavigationViewStyle())
+            .padding(.leading, self.leadingPadding(geometry))
         }
         .onAppear { self.countriesSearch.locale = self.locale }
         .onReceive(keyboardHeightUpdate) { self.countriesSearch.keyboardHeight = $0 }
