@@ -72,7 +72,12 @@ private extension CountryDetails {
     }
     
     var loadingView: some View {
-        ActivityIndicatorView()
+        VStack {
+            ActivityIndicatorView()
+            Button(action: {
+                self.details.cancelLoading()
+            }, label: { Text("Cancel loading") })
+        }
     }
     
     func failedView(_ error: Error) -> some View {

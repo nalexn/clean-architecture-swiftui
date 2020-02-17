@@ -31,6 +31,24 @@ enum Loadable<T> {
 }
 
 extension Loadable {
+    
+    mutating func cancelLoading() {
+        switch self {
+        case let .isLoading(last, cancelBag):
+            cancelBag.cancel()
+            if let last = last {
+                self = .loaded(last)
+            } else {
+                let error = NSError(
+                    domain: NSCocoaErrorDomain, code: NSUserCancelledError,
+                    userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Canceled by user",
+                                                                            comment: "")])
+                self = .failed(error)
+            }
+        default: break
+        }
+    }
+    
     func map<V>(_ transform: (T) -> V) -> Loadable<V> {
         switch self {
         case .notRequested: return .notRequested

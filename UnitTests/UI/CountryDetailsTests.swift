@@ -35,7 +35,7 @@ final class CountryDetailsTests: XCTestCase {
         let sut = CountryDetails(country: country, details:
             .isLoading(last: nil, cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().view(ActivityIndicatorView.self))
+            XCTAssertNoThrow(try view.content().vStack().view(ActivityIndicatorView.self, 0))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
@@ -48,7 +48,7 @@ final class CountryDetailsTests: XCTestCase {
             .isLoading(last: Country.Details.mockedData[0], cancelBag: CancelBag())
         )
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().view(ActivityIndicatorView.self))
+            XCTAssertNoThrow(try view.content().vStack().view(ActivityIndicatorView.self, 0))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))

@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Combine
 @testable import CountriesSwiftUI
 
 final class LoadableTests: XCTestCase {
@@ -29,6 +30,25 @@ final class LoadableTests: XCTestCase {
                 }
             }
         }
+    }
+    
+    func test_cancelLoading() {
+        let cancenBag1 = CancelBag(), cancenBag2 = CancelBag()
+        let subject = PassthroughSubject<Int, Never>()
+        subject.sink { _ in }
+            .store(in: cancenBag1)
+        subject.sink { _ in }
+            .store(in: cancenBag2)
+        var sut1 = Loadable<Int>.isLoading(last: nil, cancelBag: cancenBag1)
+        XCTAssertEqual(cancenBag1.subscriptions.count, 1)
+        sut1.cancelLoading()
+        XCTAssertEqual(cancenBag1.subscriptions.count, 0)
+        XCTAssertNotNil(sut1.error)
+        var sut2 = Loadable<Int>.isLoading(last: 7, cancelBag: cancenBag2)
+        XCTAssertEqual(cancenBag2.subscriptions.count, 1)
+        sut2.cancelLoading()
+        XCTAssertEqual(cancenBag2.subscriptions.count, 0)
+        XCTAssertEqual(sut2.value, 7)
     }
     
     func test_map() {
