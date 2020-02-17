@@ -13,3 +13,5 @@
 "Retry" = "Retry";
 "Unable to load image" = "Unable to load image";
 "Back" = "Back";
+"Cancel loading" = "Cancel loading";
+"Canceled by user" = "Canceled by user";

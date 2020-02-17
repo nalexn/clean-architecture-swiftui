@@ -13,3 +13,5 @@
 "Retry" = "Retenter";
 "Unable to load image" = "Impossible de charger l'image";
 "Back" = "Retour";
+"Cancel loading" = "Annuler le chargement";
+"Canceled by user" = "Annulé par l'utilisateur";

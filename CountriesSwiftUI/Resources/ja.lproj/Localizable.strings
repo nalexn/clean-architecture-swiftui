@@ -13,3 +13,5 @@
 "Retry" = "リトライ";
 "Unable to load image" = "画像を読み込めません";
 "Back" = "バック";
+"Cancel loading" = "読み込みをキャンセル";
+"Canceled by user" = "ユーザーによりキャンセルされました";
