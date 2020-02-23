@@ -28,7 +28,7 @@ struct CountriesList: View {
                     .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }
-            .navigationViewStyle(StackNavigationViewStyle())
+            .modifier(NavigationViewStyle())
             .padding(.leading, self.leadingPadding(geometry))
         }
         .onAppear { self.countriesSearch.locale = self.locale }
@@ -53,6 +53,19 @@ struct CountriesList: View {
             return geometry.size.width < geometry.size.height ? 0.5 : -0.5
         }
         return 0
+    }
+}
+
+private extension CountriesList {
+    struct NavigationViewStyle: ViewModifier {
+        func body(content: Content) -> some View {
+            #if targetEnvironment(macCatalyst)
+            return content
+            #else
+            return content
+                .navigationViewStyle(StackNavigationViewStyle())
+            #endif
+        }
     }
 }
 
