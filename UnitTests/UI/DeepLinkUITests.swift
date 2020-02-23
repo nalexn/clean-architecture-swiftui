@@ -64,10 +64,7 @@ private extension DeepLinkUITests {
         imagesRepo.imageResponse = .success(testImage)
         
         let countriesInteractor = RealCountriesInteractor(webRepository: countriesRepo, appState: store)
-        let memoryWarning = PassthroughSubject<Void, Never>().eraseToAnyPublisher()
-        let imagesInteractor = RealImagesInteractor(
-            webRepository: imagesRepo, inMemoryCache: MockedImageCacheRepository(),
-            fileCache: MockedImageCacheRepository(), memoryWarning: memoryWarning)
+        let imagesInteractor = RealImagesInteractor(webRepository: imagesRepo)
         return DIContainer.Interactors(countriesInteractor: countriesInteractor,
                                        imagesInteractor: imagesInteractor)
     }

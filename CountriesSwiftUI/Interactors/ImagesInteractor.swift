@@ -17,20 +17,9 @@ protocol ImagesInteractor {
 struct RealImagesInteractor: ImagesInteractor {
     
     let webRepository: ImageWebRepository
-    let inMemoryCache: ImageCacheRepository
-    let fileCache: ImageCacheRepository
-    private let memoryWarningSubscription: AnyCancellable
     
-    init(webRepository: ImageWebRepository,
-         inMemoryCache: ImageCacheRepository,
-         fileCache: ImageCacheRepository,
-         memoryWarning: AnyPublisher<Void, Never>) {
+    init(webRepository: ImageWebRepository) {
         self.webRepository = webRepository
-        self.inMemoryCache = inMemoryCache
-        self.fileCache = fileCache
-        memoryWarningSubscription = memoryWarning.sink { [inMemoryCache] _ in
-            inMemoryCache.purgeCache()
-        }
     }
     
     func load(image: Binding<Loadable<UIImage>>, url: URL?) {
@@ -39,27 +28,11 @@ struct RealImagesInteractor: ImagesInteractor {
         }
         let cancelBag = CancelBag()
         image.wrappedValue = .isLoading(last: image.wrappedValue.value, cancelBag: cancelBag)
-        inMemoryCache.cachedImage(for: url.imageCacheKey)
-            .catch { _ in
-                self.fileCache.cachedImage(for: url.imageCacheKey)
-            }
-            .catch { _ in
-                self.webRepository.load(imageURL: url, width: 300)
-            }
+        webRepository.load(imageURL: url, width: 300)
             .sinkToLoadable {
-                if let image = $0.value {
-                    self.inMemoryCache.cache(image: image, key: url.imageCacheKey)
-                    self.fileCache.cache(image: image, key: url.imageCacheKey)
-                }
                 image.wrappedValue = $0
             }
             .store(in: cancelBag)
-    }
-}
-
-extension URL {
-    var imageCacheKey: ImageCacheKey {
-        return absoluteString
     }
 }
 

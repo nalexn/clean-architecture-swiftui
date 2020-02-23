@@ -36,6 +36,11 @@ extension AppEnvironment {
     
     private static func configuredURLSession() -> URLSession {
         let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 60
+        configuration.timeoutIntervalForResource = 120
+        configuration.waitsForConnectivity = true
+        configuration.httpMaximumConnectionsPerHost = 5
+        configuration.requestCachePolicy = .returnCacheDataElseLoad
         return URLSession(configuration: configuration)
     }
     
@@ -56,16 +61,8 @@ extension AppEnvironment {
         let countriesInteractor = RealCountriesInteractor(
             webRepository: webRepositories.countriesRepository,
             appState: appState)
-        let inMemoryCache = ImageMemCacheRepository()
-        let fileCache = ImageFileCacheRepository()
-        let memoryWarning = NotificationCenter.default
-            .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
-            .map { _ in }.eraseToAnyPublisher()
         let imagesInteractor = RealImagesInteractor(
-            webRepository: webRepositories.imageRepository,
-            inMemoryCache: inMemoryCache,
-            fileCache: fileCache,
-            memoryWarning: memoryWarning)
+            webRepository: webRepositories.imageRepository)
         return .init(countriesInteractor: countriesInteractor,
                      imagesInteractor: imagesInteractor)
     }
