@@ -19,7 +19,7 @@ final class DeepLinkUITests: XCTestCase {
         let interactors = mockedInteractors(store: store)
         let container = DIContainer(appState: store, interactors: interactors)
         let sut = CountriesList()
-        let exp = sut.inspection.inspect { view in
+        let exp = sut.inspection.inspect(after: 0.1) { view in
             let firstRowLink = try view.firstRowLink()
             XCTAssertTrue(try firstRowLink.isActive())
         }

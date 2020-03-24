@@ -52,7 +52,7 @@ extension Result {
 extension Result {
     func publish() -> AnyPublisher<Success, Failure> {
         return publisher
-            .buffer(size: 1, prefetch: .byRequest, whenFull: .dropOldest)
+            .delay(for: .milliseconds(10), scheduler: RunLoop.main)
             .eraseToAnyPublisher()
     }
 }
