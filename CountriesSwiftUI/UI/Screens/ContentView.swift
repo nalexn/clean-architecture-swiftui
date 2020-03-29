@@ -10,32 +10,43 @@ import SwiftUI
 import Combine
 import EnvironmentOverrides
 
+// MARK: - View
+
 struct ContentView: View {
     
-    private let container: DIContainer
-    private let isRunningTests: Bool
-    
-    init(container: DIContainer, isRunningTests: Bool = ProcessInfo.processInfo.isRunningTests) {
-        self.container = container
-        self.isRunningTests = isRunningTests
-    }
+    @ObservedObject private(set) var viewModel: ViewModel
     
     var body: some View {
         Group {
-            if isRunningTests {
+            if viewModel.isRunningTests {
                 Text("Running unit tests")
             } else {
                 CountriesList()
-                    .attachEnvironmentOverrides(onChange: onChangeHandler)
-                    .inject(container)
+                    .attachEnvironmentOverrides(onChange: viewModel.onChangeHandler)
+                    .inject(viewModel.container)
             }
         }
     }
-    
-    var onChangeHandler: (EnvironmentValues.Diff) -> Void {
-        return { diff in
-            if !diff.isDisjoint(with: [.locale, .sizeCategory]) {
-                self.container.appState[\.routing] = AppState.ViewRouting()
+}
+
+// MARK: - ViewModel
+
+extension ContentView {
+    class ViewModel: ObservableObject {
+        
+        let container: DIContainer
+        let isRunningTests: Bool
+        
+        init(container: DIContainer, isRunningTests: Bool = ProcessInfo.processInfo.isRunningTests) {
+            self.container = container
+            self.isRunningTests = isRunningTests
+        }
+        
+        var onChangeHandler: (EnvironmentValues.Diff) -> Void {
+            return { diff in
+                if !diff.isDisjoint(with: [.locale, .sizeCategory]) {
+                    self.container.appState[\.routing] = AppState.ViewRouting()
+                }
             }
         }
     }
@@ -46,7 +57,7 @@ struct ContentView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(container: .preview)
+        ContentView(viewModel: ContentView.ViewModel(container: .preview))
     }
 }
 #endif

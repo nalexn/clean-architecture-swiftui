@@ -7,12 +7,14 @@ extension ContentView: Inspectable { }
 final class ContentViewTests: XCTestCase {
 
     func test_content_for_tests() throws {
-        let sut = ContentView(container: .defaultValue, isRunningTests: true)
+        let viewModel = ContentView.ViewModel(container: .defaultValue, isRunningTests: true)
+        let sut = ContentView(viewModel: viewModel)
         XCTAssertNoThrow(try sut.inspect().group().text(0))
     }
     
     func test_content_for_build() throws {
-        let sut = ContentView(container: .defaultValue, isRunningTests: false)
+        let viewModel = ContentView.ViewModel(container: .defaultValue, isRunningTests: false)
+        let sut = ContentView(viewModel: viewModel)
         XCTAssertNoThrow(try sut.inspect().group().view(CountriesList.self, 0))
     }
     
@@ -20,8 +22,9 @@ final class ContentViewTests: XCTestCase {
         var appState = AppState()
         appState.routing.countriesList = .init(countryDetails: "USA")
         let container = DIContainer(appState: .init(appState), services: .mocked())
-        let sut = ContentView(container: container)
-        sut.onChangeHandler(.colorScheme)
+        let viewModel = ContentView.ViewModel(container: container)
+        let sut = ContentView(viewModel: viewModel)
+        sut.viewModel.onChangeHandler(.colorScheme)
         XCTAssertEqual(container.appState.value, appState)
         container.services.verify()
     }
@@ -30,9 +33,10 @@ final class ContentViewTests: XCTestCase {
         var appState = AppState()
         appState.routing.countriesList = .init(countryDetails: "USA")
         let container = DIContainer(appState: .init(appState), services: .mocked())
-        let sut = ContentView(container: container)
+        let viewModel = ContentView.ViewModel(container: container)
+        let sut = ContentView(viewModel: viewModel)
         XCTAssertEqual(container.appState.value, appState)
-        sut.onChangeHandler(.sizeCategory)
+        sut.viewModel.onChangeHandler(.sizeCategory)
         XCTAssertEqual(container.appState.value, AppState())
         container.services.verify()
     }
