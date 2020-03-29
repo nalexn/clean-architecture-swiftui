@@ -18,64 +18,64 @@ final class SVGImageViewTests: XCTestCase {
     let url = URL(string: "https://test.com/test.png")!
 
     func test_imageView_notRequested() {
-        let interactors = DIContainer.Interactors.mocked(
-            imagesInteractor: [.loadImage(url)])
+        let services = DIContainer.Services.mocked(
+            imagesService: [.loadImage(url)])
         let sut = SVGImageView(imageURL: url, image: .notRequested)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.anyView().text())
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
+        ViewHosting.host(view: sut.inject(AppState(), services))
         wait(for: [exp], timeout: 2)
     }
     
     func test_imageView_isLoading_initial() {
-        let interactors = DIContainer.Interactors.mocked()
+        let services = DIContainer.Services.mocked()
         let sut = SVGImageView(imageURL: url, image:
             .isLoading(last: nil, cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
+        ViewHosting.host(view: sut.inject(AppState(), services))
         wait(for: [exp], timeout: 2)
     }
     
     func test_imageView_isLoading_refresh() {
-        let interactors = DIContainer.Interactors.mocked()
+        let services = DIContainer.Services.mocked()
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
         let sut = SVGImageView(imageURL: url, image:
             .isLoading(last: image, cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
+        ViewHosting.host(view: sut.inject(AppState(), services))
         wait(for: [exp], timeout: 2)
     }
     
     func test_imageView_loaded() {
-        let interactors = DIContainer.Interactors.mocked()
+        let services = DIContainer.Services.mocked()
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
         let sut = SVGImageView(imageURL: url, image: .loaded(image))
         let exp = sut.inspection.inspect { view in
             let loadedImage = try view.anyView().image().uiImage()
             XCTAssertEqual(loadedImage, image)
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
+        ViewHosting.host(view: sut.inject(AppState(), services))
         wait(for: [exp], timeout: 3)
     }
     
     func test_imageView_failed() {
-        let interactors = DIContainer.Interactors.mocked()
+        let services = DIContainer.Services.mocked()
         let sut = SVGImageView(imageURL: url, image: .failed(NSError.test))
         let exp = sut.inspection.inspect { view in
             let message = try view.anyView().text().string()
             XCTAssertEqual(message, "Unable to load image")
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
+        ViewHosting.host(view: sut.inject(AppState(), services))
         wait(for: [exp], timeout: 2)
     }
 }

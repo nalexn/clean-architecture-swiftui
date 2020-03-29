@@ -73,7 +73,7 @@ private extension CountriesList {
 
 private extension CountriesList {
     func loadCountries() {
-        injected.interactors.countriesInteractor
+        injected.services.countriesService
             .loadCountries()
     }
 }

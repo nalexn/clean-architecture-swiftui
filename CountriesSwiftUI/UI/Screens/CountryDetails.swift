@@ -49,7 +49,7 @@ struct CountryDetails: View {
 
 private extension CountryDetails {
     func loadCountryDetails() {
-        injected.interactors.countriesInteractor
+        injected.services.countriesService
             .load(countryDetails: $details, country: country)
     }
     

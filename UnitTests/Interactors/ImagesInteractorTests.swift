@@ -1,5 +1,5 @@
 //
-//  ImagesInteractorTests.swift
+//  ImagesServiceTests.swift
 //  UnitTests
 //
 //  Created by Alexey Naumov on 10.11.2019.
@@ -10,9 +10,9 @@ import XCTest
 import Combine
 @testable import CountriesSwiftUI
 
-final class ImagesInteractorTests: XCTestCase {
+final class ImagesServiceTests: XCTestCase {
     
-    var sut: RealImagesInteractor!
+    var sut: RealImagesService!
     var mockedWebRepository: MockedImageWebRepository!
     var subscriptions = Set<AnyCancellable>()
     let testImageURL = URL(string: "https://test.com/test.png")!
@@ -20,7 +20,7 @@ final class ImagesInteractorTests: XCTestCase {
     
     override func setUp() {
         mockedWebRepository = MockedImageWebRepository()
-        sut = RealImagesInteractor(webRepository: mockedWebRepository)
+        sut = RealImagesService(webRepository: mockedWebRepository)
         subscriptions = Set<AnyCancellable>()
     }
     
@@ -104,8 +104,8 @@ final class ImagesInteractorTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
-    func test_stubInteractor() {
-        let sut = StubImagesInteractor()
+    func test_stubService() {
+        let sut = StubImagesService()
         let image = BindingWithPublisher(value: Loadable<UIImage>.notRequested)
         sut.load(image: image.binding, url: testImageURL)
     }

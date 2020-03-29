@@ -27,9 +27,9 @@ extension AppEnvironment {
         */
         let session = configuredURLSession()
         let webRepositories = configuredWebRepositories(session: session)
-        let interactors = configuredInteractors(appState: appState, webRepositories: webRepositories)
+        let services = configuredServices(appState: appState, webRepositories: webRepositories)
         let systemEventsHandler = RealSystemEventsHandler(appState: appState)
-        let diContainer = DIContainer(appState: appState, interactors: interactors)
+        let diContainer = DIContainer(appState: appState, services: services)
         return AppEnvironment(container: diContainer,
                               systemEventsHandler: systemEventsHandler)
     }
@@ -55,16 +55,16 @@ extension AppEnvironment {
                                         countriesRepository: countriesWebRepository)
     }
     
-    private static func configuredInteractors(appState: Store<AppState>,
-                                              webRepositories: WebRepositoriesContainer
-    ) -> DIContainer.Interactors {
-        let countriesInteractor = RealCountriesInteractor(
+    private static func configuredServices(appState: Store<AppState>,
+                                           webRepositories: WebRepositoriesContainer
+    ) -> DIContainer.Services {
+        let countriesService = RealCountriesService(
             webRepository: webRepositories.countriesRepository,
             appState: appState)
-        let imagesInteractor = RealImagesInteractor(
+        let imagesService = RealImagesService(
             webRepository: webRepositories.imageRepository)
-        return .init(countriesInteractor: countriesInteractor,
-                     imagesInteractor: imagesInteractor)
+        return .init(countriesService: countriesService,
+                     imagesService: imagesService)
     }
 }
 

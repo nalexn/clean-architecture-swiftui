@@ -19,21 +19,21 @@ final class ContentViewTests: XCTestCase {
     func test_change_handler_for_colorScheme() throws {
         var appState = AppState()
         appState.routing.countriesList = .init(countryDetails: "USA")
-        let container = DIContainer(appState: .init(appState), interactors: .mocked())
+        let container = DIContainer(appState: .init(appState), services: .mocked())
         let sut = ContentView(container: container)
         sut.onChangeHandler(.colorScheme)
         XCTAssertEqual(container.appState.value, appState)
-        container.interactors.verify()
+        container.services.verify()
     }
     
     func test_change_handler_for_sizeCategory() throws {
         var appState = AppState()
         appState.routing.countriesList = .init(countryDetails: "USA")
-        let container = DIContainer(appState: .init(appState), interactors: .mocked())
+        let container = DIContainer(appState: .init(appState), services: .mocked())
         let sut = ContentView(container: container)
         XCTAssertEqual(container.appState.value, appState)
         sut.onChangeHandler(.sizeCategory)
         XCTAssertEqual(container.appState.value, AppState())
-        container.interactors.verify()
+        container.services.verify()
     }
 }

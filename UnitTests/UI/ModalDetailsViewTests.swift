@@ -17,8 +17,8 @@ final class ModalDetailsViewTests: XCTestCase {
 
     func test_modalDetails() {
         let country = Country.mockedData[0]
-        let interactors = DIContainer.Interactors.mocked(
-            imagesInteractor: [.loadImage(country.flag)]
+        let services = DIContainer.Services.mocked(
+            imagesService: [.loadImage(country.flag)]
         )
         let isDisplayed = Binding(wrappedValue: true)
         let sut = ModalDetailsView(country: country, isDisplayed: isDisplayed)
@@ -26,16 +26,16 @@ final class ModalDetailsViewTests: XCTestCase {
             let vStack = try view.navigationView().vStack(0)
             XCTAssertNoThrow(try vStack.hStack(0).view(SVGImageView.self, 1))
             XCTAssertNoThrow(try vStack.button(1))
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
+        ViewHosting.host(view: sut.inject(AppState(), services))
         wait(for: [exp], timeout: 2)
     }
     
     func test_modalDetails_close() {
         let country = Country.mockedData[0]
-        let interactors = DIContainer.Interactors.mocked(
-            imagesInteractor: [.loadImage(country.flag)]
+        let services = DIContainer.Services.mocked(
+            imagesService: [.loadImage(country.flag)]
         )
         let isDisplayed = Binding(wrappedValue: true)
         let sut = ModalDetailsView(country: country, isDisplayed: isDisplayed)
@@ -43,9 +43,9 @@ final class ModalDetailsViewTests: XCTestCase {
             XCTAssertTrue(isDisplayed.wrappedValue)
             try view.navigationView().vStack(0).button(1).tap()
             XCTAssertFalse(isDisplayed.wrappedValue)
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
+        ViewHosting.host(view: sut.inject(AppState(), services))
         wait(for: [exp], timeout: 2)
     }
 }

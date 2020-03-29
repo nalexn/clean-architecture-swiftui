@@ -16,8 +16,8 @@ final class DeepLinkUITests: XCTestCase {
     func test_countriesList_selectsCountry() {
         
         let store = appStateWithDeepLink()
-        let interactors = mockedInteractors(store: store)
-        let container = DIContainer(appState: store, interactors: interactors)
+        let services = mockedServices(store: store)
+        let container = DIContainer(appState: store, services: services)
         let sut = CountriesList()
         let exp = sut.inspection.inspect(after: 0.1) { view in
             let firstRowLink = try view.firstRowLink()
@@ -30,8 +30,8 @@ final class DeepLinkUITests: XCTestCase {
     func test_countryDetails_presentsSheet() {
         
         let store = appStateWithDeepLink()
-        let interactors = mockedInteractors(store: store)
-        let container = DIContainer(appState: store, interactors: interactors)
+        let services = mockedServices(store: store)
+        let container = DIContainer(appState: store, services: services)
         let sut = CountryDetails(country: Country.mockedData[0])
         let exp = sut.inspection.inspect(after: 0.1) { view in
             XCTAssertNoThrow(try view.content().list())
@@ -54,7 +54,7 @@ private extension DeepLinkUITests {
         return Store(appState)
     }
     
-    func mockedInteractors(store: Store<AppState>) -> DIContainer.Interactors {
+    func mockedServices(store: Store<AppState>) -> DIContainer.Services {
         let countriesRepo = MockedCountriesWebRepository()
         countriesRepo.countriesResponse = .success(Country.mockedData)
         let details = Country.Details.Intermediate(capital: "", currencies: [], borders: [])
@@ -63,9 +63,9 @@ private extension DeepLinkUITests {
         let testImage = UIColor.red.image(CGSize(width: 40, height: 40))
         imagesRepo.imageResponse = .success(testImage)
         
-        let countriesInteractor = RealCountriesInteractor(webRepository: countriesRepo, appState: store)
-        let imagesInteractor = RealImagesInteractor(webRepository: imagesRepo)
-        return DIContainer.Interactors(countriesInteractor: countriesInteractor,
-                                       imagesInteractor: imagesInteractor)
+        let countriesService = RealCountriesService(webRepository: countriesRepo, appState: store)
+        let imagesService = RealImagesService(webRepository: imagesRepo)
+        return DIContainer.Services(countriesService: countriesService,
+                                       imagesService: imagesService)
     }
 }

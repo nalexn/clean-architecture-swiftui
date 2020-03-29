@@ -20,30 +20,30 @@ final class CountriesListTests: XCTestCase {
     func test_countries_notRequested() {
         let appState = AppState()
         XCTAssertEqual(appState.userData.countries, .notRequested)
-        let interactors = DIContainer.Interactors.mocked(
-            countriesInteractor: [.loadCountries]
+        let services = DIContainer.Services.mocked(
+            countriesService: [.loadCountries]
         )
         let sut = CountriesList()
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.content().text())
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(appState, interactors))
+        ViewHosting.host(view: sut.inject(appState, services))
         wait(for: [exp], timeout: 2)
     }
     
     func test_countries_isLoading_initial() {
         var appState = AppState()
-        let interactors = DIContainer.Interactors.mocked()
+        let services = DIContainer.Services.mocked()
         appState.userData.countries = .isLoading(last: nil, cancelBag: CancelBag())
         let sut = CountriesList()
         let exp = sut.inspection.inspect { view in
             let vStack = try view.content().vStack()
             XCTAssertNoThrow(try vStack.view(ActivityIndicatorView.self, 0))
             XCTAssertThrowsError(try vStack.list(1))
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(appState, interactors))
+        ViewHosting.host(view: sut.inject(appState, services))
         wait(for: [exp], timeout: 2)
     }
     
@@ -51,7 +51,7 @@ final class CountriesListTests: XCTestCase {
         var appState = AppState()
         appState.userData.countries = .isLoading(last: Country.mockedData,
                                                  cancelBag: CancelBag())
-        let interactors = DIContainer.Interactors.mocked()
+        let services = DIContainer.Services.mocked()
         let sut = CountriesList()
         let exp = sut.inspection.inspect { view in
             let vStack = try view.content().vStack()
@@ -59,54 +59,54 @@ final class CountriesListTests: XCTestCase {
             let countries = try vStack.vStack(1)
             XCTAssertThrowsError(try countries.view(SearchBar.self, 0))
             XCTAssertNoThrow(try countries.list(1))
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(appState, interactors))
+        ViewHosting.host(view: sut.inject(appState, services))
         wait(for: [exp], timeout: 2)
     }
     
     func test_countries_loaded() {
         var appState = AppState()
         appState.userData.countries = .loaded(Country.mockedData)
-        let interactors = DIContainer.Interactors.mocked()
+        let services = DIContainer.Services.mocked()
         let sut = CountriesList()
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.content().vStack().view(SearchBar.self, 0))
             let cell = try view.firstRowLink()
                 .label().view(CountryCell.self).actualView()
             XCTAssertEqual(cell.country, Country.mockedData[0])
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(appState, interactors))
+        ViewHosting.host(view: sut.inject(appState, services))
         wait(for: [exp], timeout: 2)
     }
     
     func test_countries_failed() {
         var appState = AppState()
         appState.userData.countries = .failed(NSError.test)
-        let interactors = DIContainer.Interactors.mocked()
+        let services = DIContainer.Services.mocked()
         let sut = CountriesList()
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.content().view(ErrorView.self))
-            interactors.verify()
+            services.verify()
         }
-        ViewHosting.host(view: sut.inject(appState, interactors))
+        ViewHosting.host(view: sut.inject(appState, services))
         wait(for: [exp], timeout: 2)
     }
     
     func test_countries_failed_retry() {
         var appState = AppState()
         appState.userData.countries = .failed(NSError.test)
-        let interactors = DIContainer.Interactors.mocked(
-            countriesInteractor: [.loadCountries]
+        let services = DIContainer.Services.mocked(
+            countriesService: [.loadCountries]
         )
         let container = DIContainer(appState: .init(appState),
-                                    interactors: interactors)
+                                    services: services)
         let sut = CountriesList()
         let exp = sut.inspection.inspect { view in
             let errorView = try view.content().view(ErrorView.self)
             try errorView.vStack().button(2).tap()
-            interactors.verify()
+            services.verify()
         }
         ViewHosting.host(view: sut.inject(container))
         wait(for: [exp], timeout: 2)
@@ -116,8 +116,8 @@ final class CountriesListTests: XCTestCase {
         let countries = Country.mockedData
         var appState = AppState()
         appState.userData.countries = .loaded(countries)
-        let interactors = DIContainer.Interactors.mocked()
-        let container = DIContainer(appState: .init(appState), interactors: interactors)
+        let services = DIContainer.Services.mocked()
+        let container = DIContainer(appState: .init(appState), services: services)
         XCTAssertNil(container.appState.value.routing.countriesList.countryDetails)
         let sut = CountriesList()
         let exp = sut.inspection.inspect { view in
@@ -126,7 +126,7 @@ final class CountriesListTests: XCTestCase {
             let selected = container.appState.value.routing.countriesList.countryDetails
             XCTAssertEqual(selected, countries[0].alpha3Code)
             try firstCountryRow.view(CountryDetails.self).content().text().callOnAppear()
-            interactors.verify()
+            services.verify()
         }
         ViewHosting.host(view: sut.inject(container))
         wait(for: [exp], timeout: 2)

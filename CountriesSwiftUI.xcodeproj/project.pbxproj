@@ -26,7 +26,7 @@
 		F64495EE2360D66700C9BB1F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F64495ED2360D66700C9BB1F /* Preview Assets.xcassets */; };
 		F64495F12360D66700C9BB1F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F64495EF2360D66700C9BB1F /* LaunchScreen.storyboard */; };
 		F64495FD2360D81F00C9BB1F /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495FC2360D81F00C9BB1F /* AppState.swift */; };
-		F64496002360D8B000C9BB1F /* CountriesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495FF2360D8B000C9BB1F /* CountriesInteractor.swift */; };
+		F64496002360D8B000C9BB1F /* CountriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495FF2360D8B000C9BB1F /* CountriesService.swift */; };
 		F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496022360D8EB00C9BB1F /* Loadable.swift */; };
 		F64496082360DFB700C9BB1F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64496072360DFB700C9BB1F /* Models.swift */; };
 		F644960C2360EAD000C9BB1F /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644960B2360EAD000C9BB1F /* APICall.swift */; };
@@ -47,10 +47,10 @@
 		F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* DependencyInjector.swift */; };
 		F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD642368875A00C83258 /* CountriesWebRepository.swift */; };
 		F6863E462364FCC800E9B227 /* MockedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6863E452364FCC800E9B227 /* MockedData.swift */; };
-		F68B530523743D8600D6337C /* MockedInteractors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530423743D8600D6337C /* MockedInteractors.swift */; };
+		F68B530523743D8600D6337C /* MockedServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530423743D8600D6337C /* MockedServices.swift */; };
 		F68B5308237441AD00D6337C /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B5307237441AD00D6337C /* Mock.swift */; };
 		F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B53092376EE8C00D6337C /* ImageWebRepository.swift */; };
-		F68B530C23771A9400D6337C /* ImagesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530B23771A9400D6337C /* ImagesInteractor.swift */; };
+		F68B530C23771A9400D6337C /* ImagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530B23771A9400D6337C /* ImagesService.swift */; };
 		F6B6212423B52AE600CD00C7 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = F6B6212323B52AE600CD00C7 /* ViewInspector */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
@@ -97,7 +97,7 @@
 		F64495ED2360D66700C9BB1F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F64495F22360D66700C9BB1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F64495FC2360D81F00C9BB1F /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		F64495FF2360D8B000C9BB1F /* CountriesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesInteractor.swift; sourceTree = "<group>"; };
+		F64495FF2360D8B000C9BB1F /* CountriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesService.swift; sourceTree = "<group>"; };
 		F64496022360D8EB00C9BB1F /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
 		F64496072360DFB700C9BB1F /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		F644960B2360EAD000C9BB1F /* APICall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICall.swift; sourceTree = "<group>"; };
@@ -125,10 +125,10 @@
 		F67DBD642368875A00C83258 /* CountriesWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesWebRepository.swift; sourceTree = "<group>"; };
 		F6863E452364FCC800E9B227 /* MockedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedData.swift; sourceTree = "<group>"; };
 		F6863E4723650E7900E9B227 /* CountriesSwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountriesSwiftUI.entitlements; sourceTree = "<group>"; };
-		F68B530423743D8600D6337C /* MockedInteractors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedInteractors.swift; sourceTree = "<group>"; };
+		F68B530423743D8600D6337C /* MockedServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedServices.swift; sourceTree = "<group>"; };
 		F68B5307237441AD00D6337C /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		F68B53092376EE8C00D6337C /* ImageWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWebRepository.swift; sourceTree = "<group>"; };
-		F68B530B23771A9400D6337C /* ImagesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesInteractor.swift; sourceTree = "<group>"; };
+		F68B530B23771A9400D6337C /* ImagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesService.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
@@ -245,7 +245,7 @@
 				F64496012360D8D800C9BB1F /* Utilities */,
 				F64495FB2360D80B00C9BB1F /* Injected */,
 				F67DBD632368873500C83258 /* Repositories */,
-				F64495FE2360D88D00C9BB1F /* Interactors */,
+				F64495FE2360D88D00C9BB1F /* Services */,
 				F64496062360DFAD00C9BB1F /* Models */,
 				F64495F92360D68D00C9BB1F /* UI */,
 				F64495FA2360D69600C9BB1F /* Resources */,
@@ -297,13 +297,13 @@
 			path = Injected;
 			sourceTree = "<group>";
 		};
-		F64495FE2360D88D00C9BB1F /* Interactors */ = {
+		F64495FE2360D88D00C9BB1F /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				F64495FF2360D8B000C9BB1F /* CountriesInteractor.swift */,
-				F68B530B23771A9400D6337C /* ImagesInteractor.swift */,
+				F64495FF2360D8B000C9BB1F /* CountriesService.swift */,
+				F68B530B23771A9400D6337C /* ImagesService.swift */,
 			);
-			path = Interactors;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		F64496012360D8D800C9BB1F /* Utilities */ = {
@@ -347,7 +347,7 @@
 			isa = PBXGroup;
 			children = (
 				F68B5307237441AD00D6337C /* Mock.swift */,
-				F68B530423743D8600D6337C /* MockedInteractors.swift */,
+				F68B530423743D8600D6337C /* MockedServices.swift */,
 				F6F003B7236B04B400AAC7C6 /* MockedWebRepositories.swift */,
 			);
 			path = Mocks;
@@ -534,7 +534,7 @@
 				F64496122361BB4900C9BB1F /* InteractorsContainer.swift in Sources */,
 				F6218DB42363051D00917938 /* CountryDetails.swift in Sources */,
 				F62822B4236478DE00823BA1 /* ModalDetailsView.swift in Sources */,
-				F68B530C23771A9400D6337C /* ImagesInteractor.swift in Sources */,
+				F68B530C23771A9400D6337C /* ImagesService.swift in Sources */,
 				F6C1F9D723CE3034005A98C8 /* SearchBar.swift in Sources */,
 				F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */,
 				F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */,
@@ -545,7 +545,7 @@
 				F661F2B6237734FA0014E142 /* AppEnvironment.swift in Sources */,
 				F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */,
 				F644960E2360EF6C00C9BB1F /* WebRepository.swift in Sources */,
-				F64496002360D8B000C9BB1F /* CountriesInteractor.swift in Sources */,
+				F64496002360D8B000C9BB1F /* CountriesService.swift in Sources */,
 				F64495FD2360D81F00C9BB1F /* AppState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -561,7 +561,7 @@
 				F60829762369D58A00DB292E /* CountriesWebRepositoryTests.swift in Sources */,
 				F6F003B6236B036800AAC7C6 /* CountriesInteractorTests.swift in Sources */,
 				F60CC509236C6084007E84B2 /* ViewPreviewsTests.swift in Sources */,
-				F68B530523743D8600D6337C /* MockedInteractors.swift in Sources */,
+				F68B530523743D8600D6337C /* MockedServices.swift in Sources */,
 				F6F003B1236AF31400AAC7C6 /* SystemEventsHandlerTests.swift in Sources */,
 				F6F003B8236B04B400AAC7C6 /* MockedWebRepositories.swift in Sources */,
 				F60829732369CE5300DB292E /* MockedResponse.swift in Sources */,

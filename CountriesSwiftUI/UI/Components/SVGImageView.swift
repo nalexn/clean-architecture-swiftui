@@ -41,7 +41,7 @@ struct SVGImageView: View {
 
 private extension SVGImageView {
     func loadImage() {
-        injected.interactors.imagesInteractor
+        injected.services.imagesService
             .load(image: $image, url: imageURL)
     }
 }

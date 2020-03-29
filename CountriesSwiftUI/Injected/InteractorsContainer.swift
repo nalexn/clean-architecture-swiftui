@@ -1,5 +1,5 @@
 //
-//  DIContainer.Interactors.swift
+//  DIContainer.Services.swift
 //  CountriesSwiftUI
 //
 //  Created by Alexey Naumov on 24.10.2019.
@@ -7,19 +7,19 @@
 //
 
 extension DIContainer {
-    struct Interactors {
-        let countriesInteractor: CountriesInteractor
-        let imagesInteractor: ImagesInteractor
+    struct Services {
+        let countriesService: CountriesService
+        let imagesService: ImagesService
         
-        init(countriesInteractor: CountriesInteractor,
-             imagesInteractor: ImagesInteractor) {
-            self.countriesInteractor = countriesInteractor
-            self.imagesInteractor = imagesInteractor
+        init(countriesService: CountriesService,
+             imagesService: ImagesService) {
+            self.countriesService = countriesService
+            self.imagesService = imagesService
         }
         
         static var stub: Self {
-            .init(countriesInteractor: StubCountriesInteractor(),
-                  imagesInteractor: StubImagesInteractor())
+            .init(countriesService: StubCountriesService(),
+                  imagesService: StubImagesService())
         }
     }
 }

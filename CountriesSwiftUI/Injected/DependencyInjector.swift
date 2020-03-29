@@ -14,12 +14,12 @@ import Combine
 struct DIContainer: EnvironmentKey {
     
     let appState: Store<AppState>
-    let interactors: Interactors
+    let services: Services
     
     static var defaultValue: Self { Self.default }
     
     private static let `default` = Self(appState: .init(AppState()),
-                                        interactors: .stub)
+                                        services: .stub)
 }
 
 extension EnvironmentValues {
@@ -32,7 +32,7 @@ extension EnvironmentValues {
 #if DEBUG
 extension DIContainer {
     static var preview: Self {
-        .init(appState: .init(AppState.preview), interactors: .stub)
+        .init(appState: .init(AppState.preview), services: .stub)
     }
 }
 #endif
@@ -42,9 +42,9 @@ extension DIContainer {
 extension View {
     
     func inject(_ appState: AppState,
-                _ interactors: DIContainer.Interactors) -> some View {
+                _ services: DIContainer.Services) -> some View {
         let container = DIContainer(appState: .init(appState),
-                                    interactors: interactors)
+                                    services: services)
         return inject(container)
     }
     

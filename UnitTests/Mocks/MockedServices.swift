@@ -1,5 +1,5 @@
 //
-//  MockedInteractors.swift
+//  MockedServices.swift
 //  UnitTests
 //
 //  Created by Alexey Naumov on 07.11.2019.
@@ -12,26 +12,26 @@ import Combine
 import ViewInspector
 @testable import CountriesSwiftUI
 
-extension DIContainer.Interactors {
+extension DIContainer.Services {
     static func mocked(
-        countriesInteractor: [MockedCountriesInteractor.Action] = [],
-        imagesInteractor: [MockedImagesInteractor.Action] = []
-    ) -> DIContainer.Interactors {
-        .init(countriesInteractor: MockedCountriesInteractor(expected: countriesInteractor),
-              imagesInteractor: MockedImagesInteractor(expected: imagesInteractor))
+        countriesService: [MockedCountriesService.Action] = [],
+        imagesService: [MockedImagesService.Action] = []
+    ) -> DIContainer.Services {
+        .init(countriesService: MockedCountriesService(expected: countriesService),
+              imagesService: MockedImagesService(expected: imagesService))
     }
     
     func verify(file: StaticString = #file, line: UInt = #line) {
-        (countriesInteractor as? MockedCountriesInteractor)?
+        (countriesService as? MockedCountriesService)?
             .verify(file: file, line: line)
-        (imagesInteractor as? MockedImagesInteractor)?
+        (imagesService as? MockedImagesService)?
             .verify(file: file, line: line)
     }
 }
 
-// MARK: - CountriesInteractor
+// MARK: - CountriesService
 
-struct MockedCountriesInteractor: Mock, CountriesInteractor {
+struct MockedCountriesService: Mock, CountriesService {
     
     enum Action: Equatable {
         case loadCountries
@@ -53,9 +53,9 @@ struct MockedCountriesInteractor: Mock, CountriesInteractor {
     }
 }
 
-// MARK: - ImagesInteractor
+// MARK: - ImagesService
 
-struct MockedImagesInteractor: Mock, ImagesInteractor {
+struct MockedImagesService: Mock, ImagesService {
     
     enum Action: Equatable {
         case loadImage(URL?)

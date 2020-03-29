@@ -1,5 +1,5 @@
 //
-//  CountriesInteractorTests.swift
+//  CountriesServiceTests.swift
 //  UnitTests
 //
 //  Created by Alexey Naumov on 31.10.2019.
@@ -11,17 +11,17 @@ import SwiftUI
 import Combine
 @testable import CountriesSwiftUI
 
-final class CountriesInteractorTests: XCTestCase {
+final class CountriesServiceTests: XCTestCase {
 
     let appState = CurrentValueSubject<AppState, Never>(AppState())
     var mockedRepository: MockedCountriesWebRepository!
-    var sut: RealCountriesInteractor!
+    var sut: RealCountriesService!
     var subscriptions = Set<AnyCancellable>()
     
     override func setUp() {
         appState.value = AppState()
         mockedRepository = MockedCountriesWebRepository()
-        sut = RealCountriesInteractor(webRepository: mockedRepository, appState: appState)
+        sut = RealCountriesService(webRepository: mockedRepository, appState: appState)
         subscriptions = Set<AnyCancellable>()
     }
     
@@ -215,8 +215,8 @@ final class CountriesInteractorTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
-    func test_stubInteractor() {
-        let sut = StubCountriesInteractor()
+    func test_stubService() {
+        let sut = StubCountriesService()
         sut.loadCountries()
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)
         sut.load(countryDetails: details.binding, country: Country.mockedData[0])
