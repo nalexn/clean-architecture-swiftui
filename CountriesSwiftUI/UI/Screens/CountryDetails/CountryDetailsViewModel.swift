@@ -36,8 +36,8 @@ extension CountryDetails {
             self.container = container
             self.country = country
             let appState = container.appState
-            _details = .init(wrappedValue: details)
-            _routingState = .init(wrappedValue: appState.value.routing.countryDetails)
+            _details = .init(initialValue: details)
+            _routingState = .init(initialValue: appState.value.routing.countryDetails)
             cancelBag.collect {
                 $routingState
                     .sink { appState[\.routing.countryDetails] = $0 }

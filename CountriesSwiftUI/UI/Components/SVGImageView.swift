@@ -72,7 +72,7 @@ extension SVGImageView {
         
         init(container: DIContainer, imageURL: URL, image: Loadable<UIImage> = .notRequested) {
             self.imageURL = imageURL
-            self._image = .init(wrappedValue: image)
+            self._image = .init(initialValue: image)
             self.container = container
         }
         
