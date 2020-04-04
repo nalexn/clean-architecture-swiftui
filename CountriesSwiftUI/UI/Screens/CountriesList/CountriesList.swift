@@ -22,7 +22,7 @@ struct CountriesList: View {
             NavigationView {
                 self.content
                     .navigationBarTitle("Countries".localized(self.locale))
-                    .navigationBarHidden(self.viewModel.countriesSearch.keyboardHeight > 0)
+                    .navigationBarHidden(self.viewModel.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }
             .modifier(NavigationViewStyle())
@@ -33,7 +33,7 @@ struct CountriesList: View {
     }
     
     private var content: AnyView {
-        switch viewModel.countriesSearch.filtered {
+        switch viewModel.countries.filtered {
         case .notRequested: return AnyView(notRequestedView)
         case let .isLoading(last, _): return AnyView(loadingView(last))
         case let .loaded(countries): return AnyView(loadedView(countries, showSearch: true))
@@ -94,7 +94,7 @@ private extension CountriesList {
     func loadedView(_ countries: [Country], showSearch: Bool) -> some View {
         VStack {
             if showSearch {
-                SearchBar(text: $viewModel.countriesSearch.searchText)
+                SearchBar(text: $viewModel.countries.searchText)
             }
             List(countries) { country in
                 NavigationLink(
@@ -104,7 +104,7 @@ private extension CountriesList {
                         CountryCell(country: country)
                     }
             }
-        }.padding(.bottom, self.viewModel.countriesSearch.keyboardHeight)
+        }.padding(.bottom, self.viewModel.keyboardHeight)
     }
     
     func detailsView(country: Country) -> some View {

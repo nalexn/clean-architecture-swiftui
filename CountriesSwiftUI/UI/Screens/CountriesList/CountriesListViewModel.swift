@@ -22,9 +22,13 @@ extension CountriesList {
 extension CountriesList {
     class ViewModel: ObservableObject {
         
-        let container: DIContainer
+        // State
         @Published var routingState: Routing
-        lazy var countriesSearch = CountriesSearch(searchResultsWillChange: objectWillChange)
+        @Published var keyboardHeight: CGFloat = 0
+        lazy var countries = CountriesSearch(searchResultsWillChange: objectWillChange)
+        
+        // Misc
+        let container: DIContainer
         private var cancelBag = CancelBag()
         
         init(container: DIContainer) {
@@ -37,9 +41,9 @@ extension CountriesList {
                 appState.map(\.routing.countriesList)
                     .assign(to: \.routingState, on: self)
                 appState.map(\.userData.countries)
-                    .assign(to: \.countriesSearch.all, on: self)
+                    .assign(to: \.countries.all, on: self)
                 appState.map(\.system.keyboardHeight)
-                    .assign(to: \.countriesSearch.keyboardHeight, on: self)
+                    .assign(to: \.keyboardHeight, on: self)
             }
         }
         
@@ -64,7 +68,7 @@ extension CountriesList {
         let viewModel: ViewModel
         
         func resolve(in environment: EnvironmentValues) -> some ViewModifier {
-            viewModel.countriesSearch.locale = environment.locale
+            viewModel.countries.locale = environment.locale
             return DummyViewModifier()
         }
         
@@ -92,7 +96,6 @@ extension CountriesList.ViewModel {
         var searchText: String = "" {
             didSet { filterCountries() }
         }
-        var keyboardHeight: CGFloat = 0
         var locale = Locale.current
         
         private let searchResultsWillChange: ObservableObjectPublisher
