@@ -23,26 +23,24 @@ extension CountriesList {
     class ViewModel: ObservableObject {
         
         let container: DIContainer
-        lazy var countriesSearch = CountriesSearch(searchResultsWillChange: objectWillChange)
         @Published var routingState: Routing
+        lazy var countriesSearch = CountriesSearch(searchResultsWillChange: objectWillChange)
         private var cancelBag = CancelBag()
         
         init(container: DIContainer) {
             self.container = container
             let appState = container.appState
             _routingState = .init(initialValue: appState.value.routing.countriesList)
-            $routingState
-                .sink { appState[\.routing.countriesList] = $0 }
-                .store(in: cancelBag)
-            appState.map(\.routing.countriesList)
-                .assign(to: \.routingState, on: self)
-                .store(in: cancelBag)
-            appState.map(\.userData.countries)
-                .assign(to: \.countriesSearch.all, on: self)
-                .store(in: cancelBag)
-            appState.map(\.system.keyboardHeight)
-                .assign(to: \.countriesSearch.keyboardHeight, on: self)
-                .store(in: cancelBag)
+            cancelBag.collect {
+                $routingState
+                    .sink { appState[\.routing.countriesList] = $0 }
+                appState.map(\.routing.countriesList)
+                    .assign(to: \.routingState, on: self)
+                appState.map(\.userData.countries)
+                    .assign(to: \.countriesSearch.all, on: self)
+                appState.map(\.system.keyboardHeight)
+                    .assign(to: \.countriesSearch.keyboardHeight, on: self)
+            }
         }
         
         var localeReader: LocaleReader {
