@@ -88,11 +88,8 @@ extension SVGImageView {
 #if DEBUG
 struct SVGImageView_Previews: PreviewProvider {
     static var previews: some View {
-        ForEach(["usa", "alb", "rus"], id: \.self) { country in
-            SVGImageView(viewModel: SVGImageView.ViewModel(
-                container: .preview,
-                imageURL: URL(string: "https://restcountries.eu/data/\(country).svg")!))
-        }
+        SVGImageView(viewModel: SVGImageView.ViewModel(
+            container: .preview, imageURL: URL(string: "https://restcountries.eu/data/usa.svg")!))
     }
 }
 #endif

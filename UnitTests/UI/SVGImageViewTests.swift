@@ -19,9 +19,10 @@ final class SVGImageViewTests: XCTestCase {
     
     func svgImageView(_ image: Loadable<UIImage>,
                       _ services: DIContainer.Services) -> SVGImageView {
-        SVGImageView(viewModel: .init(
-            container: DIContainer(appState: AppState(), services: services),
-            imageURL: url, image: image))
+        let container = DIContainer(appState: AppState(), services: services)
+        let viewModel = SVGImageView.ViewModel(
+            container: container, imageURL: url, image: image)
+        return SVGImageView(viewModel: viewModel)
     }
 
     func test_imageView_notRequested() {

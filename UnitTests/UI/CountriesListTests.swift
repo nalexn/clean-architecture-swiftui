@@ -21,8 +21,9 @@ final class CountriesListTests: XCTestCase {
     func countriesListView(_ appState: AppState,
                            _ services: DIContainer.Services
     ) -> CountriesList {
-        CountriesList(viewModel: CountriesList.ViewModel(
-            container: DIContainer(appState: appState, services: services)))
+        let container = DIContainer(appState: appState, services: services)
+        let viewModel = CountriesList.ViewModel(container: container)
+        return CountriesList(viewModel: viewModel)
     }
 
     func test_countries_notRequested() {

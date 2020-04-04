@@ -20,9 +20,10 @@ final class CountryDetailsTests: XCTestCase {
     func countryDetailsView(_ details: Loadable<Country.Details>,
                             _ services: DIContainer.Services
     ) -> CountryDetails {
-        CountryDetails(viewModel: CountryDetails.ViewModel(
-            container: DIContainer(appState: AppState(), services: services),
-            country: country, details: details))
+        let container = DIContainer(appState: AppState(), services: services)
+        let viewModel = CountryDetails.ViewModel(
+            container: container, country: country, details: details)
+        return CountryDetails(viewModel: viewModel)
     }
 
     func test_details_notRequested() {

@@ -131,18 +131,6 @@ extension ObservableObject {
     }
 }
 
-extension Binding where Value: Equatable {
-    func dispatched<State>(to state: Store<State>,
-                           _ keyPath: WritableKeyPath<State, Value>) -> Self {
-        return .init(get: { () -> Value in
-            self.wrappedValue
-        }, set: { value in
-            self.wrappedValue = value
-            state[keyPath] = value
-        })
-    }
-}
-
 // MARK: - General
 
 extension ProcessInfo {

@@ -18,9 +18,10 @@ final class ModalDetailsViewTests: XCTestCase {
     let country = Country.mockedData[0]
     
     func modalDetailsView(_ isDisplayed: Binding<Bool>, _ services: DIContainer.Services) -> ModalDetailsView {
-        ModalDetailsView(viewModel: ModalDetailsView.ViewModel(
-            container: DIContainer(appState: AppState(), services: services),
-            country: country, isDisplayed: isDisplayed))
+        let container = DIContainer(appState: AppState(), services: services)
+        let viewModel = ModalDetailsView.ViewModel(
+            container: container, country: country, isDisplayed: isDisplayed)
+        return ModalDetailsView(viewModel: viewModel)
     }
 
     func test_modalDetails() {
