@@ -34,7 +34,7 @@ extension CountriesList {
         init(container: DIContainer) {
             self.container = container
             let appState = container.appState
-            _routingState = .init(initialValue: appState.value.routing.countriesList)
+            _routingState = .init(wrappedValue: appState.value.routing.countriesList)
             cancelBag.collect {
                 $routingState
                     .sink { appState[\.routing.countriesList] = $0 }
@@ -51,7 +51,7 @@ extension CountriesList {
             LocaleReader(viewModel: self)
         }
         
-        // MARK: - Side effects
+        // MARK: - Side Effects
         
         func loadCountries() {
             container.services.countriesService

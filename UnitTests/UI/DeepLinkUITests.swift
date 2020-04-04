@@ -32,12 +32,12 @@ final class DeepLinkUITests: XCTestCase {
         let store = appStateWithDeepLink()
         let services = mockedServices(store: store)
         let container = DIContainer(appState: store, services: services)
-        let sut = CountryDetails(country: Country.mockedData[0])
+        let sut = CountryDetails(viewModel: .init(container: container, country: Country.mockedData[0]))
         let exp = sut.inspection.inspect(after: 0.1) { view in
             XCTAssertNoThrow(try view.content().list())
             XCTAssertTrue(store.value.routing.countryDetails.detailsSheet)
         }
-        ViewHosting.host(view: sut.inject(container))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
 }

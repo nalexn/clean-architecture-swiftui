@@ -122,7 +122,9 @@ final class CountriesListTests: XCTestCase {
         let countries = Country.mockedData
         var appState = AppState()
         appState.userData.countries = .loaded(countries)
-        let services = DIContainer.Services.mocked()
+        let services = DIContainer.Services.mocked(
+            countriesService: [.loadCountryDetails(countries[0])]
+        )
         let sut = countriesListView(appState, services)
         let container = sut.viewModel.container
         XCTAssertNil(container.appState.value.routing.countriesList.countryDetails)

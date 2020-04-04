@@ -118,7 +118,18 @@ extension Subscribers.Completion {
     }
 }
 
-// MARK: - SwiftUI Helpers
+// MARK: - Binding Helpers
+
+extension ObservableObject {
+    func binding<Value>(to keyPath: WritableKeyPath<Self, Value>) -> Binding<Value> {
+        let defaultValue = self[keyPath: keyPath]
+        return .init(get: { [weak self] in
+            self?[keyPath: keyPath] ?? defaultValue
+        }, set: { [weak self] in
+            self?[keyPath: keyPath] = $0
+        })
+    }
+}
 
 extension Binding where Value: Equatable {
     func dispatched<State>(to state: Store<State>,

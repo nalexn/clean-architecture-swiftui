@@ -9,8 +9,6 @@
 import SwiftUI
 import Combine
 
-// MARK: - View
-
 struct CountriesList: View {
     
     @ObservedObject private(set) var viewModel: ViewModel
@@ -34,10 +32,14 @@ struct CountriesList: View {
     
     private var content: AnyView {
         switch viewModel.countries.filtered {
-        case .notRequested: return AnyView(notRequestedView)
-        case let .isLoading(last, _): return AnyView(loadingView(last))
-        case let .loaded(countries): return AnyView(loadedView(countries, showSearch: true))
-        case let .failed(error): return AnyView(failedView(error))
+        case .notRequested:
+            return AnyView(notRequestedView)
+        case let .isLoading(last, _):
+            return AnyView(loadingView(last))
+        case let .loaded(countries):
+            return AnyView(loadedView(countries, showSearch: true))
+        case let .failed(error):
+            return AnyView(failedView(error))
         }
     }
     
@@ -108,7 +110,7 @@ private extension CountriesList {
     }
     
     func detailsView(country: Country) -> some View {
-        CountryDetails(country: country)
+        CountryDetails(viewModel: .init(container: viewModel.container, country: country))
     }
 }
 
