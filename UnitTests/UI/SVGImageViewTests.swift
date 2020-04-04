@@ -16,11 +16,18 @@ extension SVGImageView: Inspectable { }
 final class SVGImageViewTests: XCTestCase {
 
     let url = URL(string: "https://test.com/test.png")!
+    
+    func svgImageView(_ image: Loadable<UIImage>,
+                      _ services: DIContainer.Services) -> SVGImageView {
+        SVGImageView(viewModel: .init(
+            container: DIContainer(appState: AppState(), services: services),
+            imageURL: url, image: image))
+    }
 
     func test_imageView_notRequested() {
         let services = DIContainer.Services.mocked(
             imagesService: [.loadImage(url)])
-        let sut = SVGImageView(imageURL: url, image: .notRequested)
+        let sut = svgImageView(.notRequested, services)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.anyView().text())
             services.verify()
@@ -31,8 +38,7 @@ final class SVGImageViewTests: XCTestCase {
     
     func test_imageView_isLoading_initial() {
         let services = DIContainer.Services.mocked()
-        let sut = SVGImageView(imageURL: url, image:
-            .isLoading(last: nil, cancelBag: CancelBag()))
+        let sut = svgImageView(.isLoading(last: nil, cancelBag: CancelBag()), services)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
             services.verify()
@@ -44,8 +50,7 @@ final class SVGImageViewTests: XCTestCase {
     func test_imageView_isLoading_refresh() {
         let services = DIContainer.Services.mocked()
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
-        let sut = SVGImageView(imageURL: url, image:
-            .isLoading(last: image, cancelBag: CancelBag()))
+        let sut = svgImageView(.isLoading(last: image, cancelBag: CancelBag()), services)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
             services.verify()
@@ -57,7 +62,7 @@ final class SVGImageViewTests: XCTestCase {
     func test_imageView_loaded() {
         let services = DIContainer.Services.mocked()
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
-        let sut = SVGImageView(imageURL: url, image: .loaded(image))
+        let sut = svgImageView(.loaded(image), services)
         let exp = sut.inspection.inspect { view in
             let loadedImage = try view.anyView().image().uiImage()
             XCTAssertEqual(loadedImage, image)
@@ -69,7 +74,7 @@ final class SVGImageViewTests: XCTestCase {
     
     func test_imageView_failed() {
         let services = DIContainer.Services.mocked()
-        let sut = SVGImageView(imageURL: url, image: .failed(NSError.test))
+        let sut = svgImageView(.failed(NSError.test), services)
         let exp = sut.inspection.inspect { view in
             let message = try view.anyView().text().string()
             XCTAssertEqual(message, "Unable to load image")

@@ -10,24 +10,23 @@ import SwiftUI
 
 struct ModalDetailsView: View {
     
-    let country: Country
-    @Binding var isDisplayed: Bool
+    @ObservedObject private(set) var viewModel: ViewModel
     let inspection = Inspection<Self>()
     
     var body: some View {
         NavigationView {
             VStack {
-                country.flag.map { url in
+                viewModel.country.flag.map { url in
                     HStack {
                         Spacer()
-                        SVGImageView(imageURL: url)
+                        SVGImageView(viewModel: .init(container: viewModel.container, imageURL: url))
                             .frame(width: 300, height: 200)
                         Spacer()
                     }
                 }
                 closeButton.padding(.top, 40)
             }
-            .navigationBarTitle(Text(country.name), displayMode: .inline)
+            .navigationBarTitle(Text(viewModel.country.name), displayMode: .inline)
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
@@ -35,9 +34,34 @@ struct ModalDetailsView: View {
     }
     
     private var closeButton: some View {
-        Button(action: {
-            self.isDisplayed = false
-        }, label: { Text("Close") })
+        Button(action: self.viewModel.close, label: { Text("Close") })
+    }
+}
+
+// MARK: - ViewModel
+
+extension ModalDetailsView {
+    class ViewModel: ObservableObject {
+    
+        // State
+        let country: Country
+        var isDisplayed: Binding<Bool>
+        
+        // Misc
+        let container: DIContainer
+        private var cancelBag = CancelBag()
+        
+        init(container: DIContainer, country: Country, isDisplayed: Binding<Bool>) {
+            self.country = country
+            self.isDisplayed = isDisplayed
+            self.container = container
+        }
+        
+        // MARK: - Side Effects
+        
+        func close() {
+            isDisplayed.wrappedValue = false
+        }
     }
 }
 
@@ -47,8 +71,8 @@ struct ModalDetailsView_Previews: PreviewProvider {
     @State static var isDisplayed: Bool = true
     
     static var previews: some View {
-        ModalDetailsView(country: Country.mockedData[0], isDisplayed: $isDisplayed)
-            .inject(.preview)
+        ModalDetailsView(viewModel: .init(
+            container: .preview, country: Country.mockedData[0], isDisplayed: $isDisplayed))
     }
 }
 #endif

@@ -12,15 +12,8 @@ import WebKit
 
 struct SVGImageView: View {
     
-    let imageURL: URL
-    @Environment(\.injected) var injected: DIContainer
-    @State private var image: Loadable<UIImage>
+    @ObservedObject private(set) var viewModel: ViewModel
     let inspection = Inspection<Self>()
-    
-    init(imageURL: URL, image: Loadable<UIImage> = .notRequested) {
-        self.imageURL = imageURL
-        self._image = .init(initialValue: image)
-    }
     
     var body: some View {
         content
@@ -28,7 +21,7 @@ struct SVGImageView: View {
     }
     
     private var content: AnyView {
-        switch image {
+        switch viewModel.image {
         case .notRequested: return AnyView(notRequestedView)
         case .isLoading: return AnyView(loadingView)
         case let .loaded(image): return AnyView(loadedView(image))
@@ -37,21 +30,12 @@ struct SVGImageView: View {
     }
 }
 
-// MARK: - Side Effects
-
-private extension SVGImageView {
-    func loadImage() {
-        injected.services.imagesService
-            .load(image: $image, url: imageURL)
-    }
-}
-
 // MARK: - Content
 
 private extension SVGImageView {
     var notRequestedView: some View {
         Text("").onAppear {
-            self.loadImage()
+            self.viewModel.loadImage()
         }
     }
     
@@ -73,13 +57,41 @@ private extension SVGImageView {
     }
 }
 
+// MARK: - ViewModel
+
+extension SVGImageView {
+    class ViewModel: ObservableObject {
+        
+        // State
+        let imageURL: URL
+        @Published var image: Loadable<UIImage>
+        
+        // Misc
+        let container: DIContainer
+        private var cancelBag = CancelBag()
+        
+        init(container: DIContainer, imageURL: URL, image: Loadable<UIImage> = .notRequested) {
+            self.imageURL = imageURL
+            self._image = .init(wrappedValue: image)
+            self.container = container
+        }
+        
+        // MARK: - Side Effects
+        
+        func loadImage() {
+            container.services.imagesService
+                .load(image: binding(to: \.image), url: imageURL)
+        }
+    }
+}
+
 #if DEBUG
 struct SVGImageView_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            SVGImageView(imageURL: URL(string: "https://restcountries.eu/data/usa.svg")!)
-            SVGImageView(imageURL: URL(string: "https://restcountries.eu/data/alb.svg")!)
-            SVGImageView(imageURL: URL(string: "https://restcountries.eu/data/rus.svg")!)
+        ForEach(["usa", "alb", "rus"], id: \.self) { country in
+            SVGImageView(viewModel: SVGImageView.ViewModel(
+                container: .preview,
+                imageURL: URL(string: "https://restcountries.eu/data/\(country).svg")!))
         }
     }
 }

@@ -61,7 +61,9 @@ final class CountryDetailsTests: XCTestCase {
     }
     
     func test_details_loaded() {
-        let services = DIContainer.Services.mocked()
+        let services = DIContainer.Services.mocked(
+            imagesService: [.loadImage(country.flag)]
+        )
         let sut = countryDetailsView(.loaded(Country.Details.mockedData[0]), services)
         let exp = sut.inspection.inspect { view in
             let list = try view.content().list()
@@ -102,7 +104,9 @@ final class CountryDetailsTests: XCTestCase {
     
     func test_sheetPresentation() {
         let services = DIContainer.Services.mocked(
-            imagesService: [.loadImage(country.flag)]
+            // Image is requested by CountryDetails and Details sheet:
+            imagesService: [.loadImage(country.flag),
+                               .loadImage(country.flag)]
         )
         let sut = countryDetailsView(.loaded(Country.Details.mockedData[0]), services)
         let container = sut.viewModel.container

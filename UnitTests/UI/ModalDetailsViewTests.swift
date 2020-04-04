@@ -14,38 +14,44 @@ import ViewInspector
 extension ModalDetailsView: Inspectable { }
 
 final class ModalDetailsViewTests: XCTestCase {
+    
+    let country = Country.mockedData[0]
+    
+    func modalDetailsView(_ isDisplayed: Binding<Bool>, _ services: DIContainer.Services) -> ModalDetailsView {
+        ModalDetailsView(viewModel: ModalDetailsView.ViewModel(
+            container: DIContainer(appState: AppState(), services: services),
+            country: country, isDisplayed: isDisplayed))
+    }
 
     func test_modalDetails() {
-        let country = Country.mockedData[0]
         let services = DIContainer.Services.mocked(
             imagesService: [.loadImage(country.flag)]
         )
         let isDisplayed = Binding(wrappedValue: true)
-        let sut = ModalDetailsView(country: country, isDisplayed: isDisplayed)
+        let sut = modalDetailsView(isDisplayed, services)
         let exp = sut.inspection.inspect { view in
             let vStack = try view.navigationView().vStack(0)
             XCTAssertNoThrow(try vStack.hStack(0).view(SVGImageView.self, 1))
             XCTAssertNoThrow(try vStack.button(1))
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     
     func test_modalDetails_close() {
-        let country = Country.mockedData[0]
         let services = DIContainer.Services.mocked(
             imagesService: [.loadImage(country.flag)]
         )
         let isDisplayed = Binding(wrappedValue: true)
-        let sut = ModalDetailsView(country: country, isDisplayed: isDisplayed)
+        let sut = modalDetailsView(isDisplayed, services)
         let exp = sut.inspection.inspect { view in
             XCTAssertTrue(isDisplayed.wrappedValue)
             try view.navigationView().vStack(0).button(1).tap()
             XCTAssertFalse(isDisplayed.wrappedValue)
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
 }

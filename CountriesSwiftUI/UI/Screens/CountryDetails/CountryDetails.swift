@@ -113,7 +113,7 @@ private extension CountryDetails {
     func flagView(url: URL) -> some View {
         HStack {
             Spacer()
-            SVGImageView(imageURL: url)
+            SVGImageView(viewModel: .init(container: viewModel.container, imageURL: url))
                 .frame(width: 120, height: 80)
                 .onTapGesture {
                     self.viewModel.showCountryDetailsSheet()
@@ -153,9 +153,9 @@ private extension CountryDetails {
     }
     
     func modalDetailsView() -> some View {
-        ModalDetailsView(country: viewModel.country,
-                         isDisplayed: $viewModel.routingState.detailsSheet)
-            .inject(viewModel.container)
+        ModalDetailsView(viewModel: .init(
+            container: viewModel.container, country: viewModel.country,
+            isDisplayed: $viewModel.routingState.detailsSheet))
     }
 }
 
