@@ -6,11 +6,13 @@
 
 ---
 
-# Clean Architecture for SwiftUI + Combine
+# MVVM Architecture for SwiftUI + Combine
 
-A demo project showcasing the setup of the SwiftUI app with Clean Architecture.
+A demo project showcasing the setup of the SwiftUI app with MVVM Architecture.
 
 The app uses the [restcountries.eu](https://restcountries.eu/) REST API to show the list of countries and details about them.
+
+**Check out [master branch](https://github.com/nalexn/clean-architecture-swiftui) for the Clean Architecture revision of the same app.**
 
 ![platforms](https://img.shields.io/badge/platforms-iPhone%20%7C%20iPad%20%7C%20macOS-lightgrey) [![Build Status](https://travis-ci.com/nalexn/clean-architecture-swiftui.svg?branch=master)](https://travis-ci.com/nalexn/clean-architecture-swiftui) [![codecov](https://codecov.io/gh/nalexn/clean-architecture-swiftui/branch/master/graph/badge.svg)](https://codecov.io/gh/nalexn/clean-architecture-swiftui) [![codebeat badge](https://codebeat.co/badges/db33561b-0b2b-4ee1-a941-a08efbd0ebd7)](https://codebeat.co/projects/github-com-nalexn-clean-architecture-swiftui-master)
 
@@ -33,30 +35,32 @@ The app uses the [restcountries.eu](https://restcountries.eu/) REST API to show 
 ## Architecture overview
 
 <p align="center">
-  <img src="https://github.com/nalexn/blob_files/blob/master/images/swiftui_arc_001.png?raw=true" alt="Diagram"/>
+  <img src="https://github.com/nalexn/blob_files/blob/master/images/swiftui_arc_002.png?raw=true" alt="Diagram"/>
 </p>
 
 ### Presentation Layer
 
 **SwiftUI views** that contain no business logic and are a function of the state.
 
-Side effects are triggered by the user's actions (such as a tap on a button) or view lifecycle event `onAppear` and are forwarded to the `Interactors`.
+Side effects are triggered by the user's actions (such as a tap on a button) or view lifecycle event `onAppear` and are forwarded to the `ViewModel`.
 
-State and business logic layer (`AppState` + `Interactors`) are navitely injected into the view hierarchy with `@Environment`.
+`ViewModel` also serves as the data source for the View. `ViewModel` is injected into the view as a constructor parameter.
 
 ### Business Logic Layer
 
-Business Logic Layer is represented by `Interactors`. 
+Business Logic Layer is represented by `ViewModels` and `Services`.
 
-Interactors receive requests to perform work, such as obtaining data from an external source or making computations, but they never return data back directly.
+`Services` receive requests to perform work, such as obtaining data from an external source or making computations, but they never return data back directly.
 
-Instead, they forward the result to the `AppState` or to a `Binding`. The latter is used when the result of work (the data) is used locally by one View and does not belong to the `AppState`.
+Instead, they forward the result to the `AppState` or to a `Binding`. The latter is used when the result of work (the data) is used locally by one `ViewModel` and does not belong to the `AppState`.
+
+`ViewModel` works as an intermediary between `View` and `Services`, encapsulating business logic local to the view. It is observing changes in the `AppState`, providing up-to-date data to the `View` through `Bindings`.
 
 ### Data Access Layer
 
 Data Access Layer is represented by `Repositories`.
 
-Repositories provide asynchronous API (`Publisher` from Combine) for making [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations on the backend or a local database. They don't contain business logic, neither do they mutate the `AppState`. Repositories are accessible and used only by the Interactors.
+Repositories provide asynchronous API (`Publisher` from Combine) for making [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations on the backend or a local database. They don't contain business logic, neither do they mutate the `AppState`. Repositories are accessible and used only by the Services.
 
 ---
 
