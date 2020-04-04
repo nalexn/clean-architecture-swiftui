@@ -21,7 +21,7 @@ struct ContentView: View {
             if viewModel.isRunningTests {
                 Text("Running unit tests")
             } else {
-                CountriesList()
+                CountriesList(viewModel: .init(container: viewModel.container))
                     .attachEnvironmentOverrides(onChange: viewModel.onChangeHandler)
                     .inject(viewModel.container)
             }

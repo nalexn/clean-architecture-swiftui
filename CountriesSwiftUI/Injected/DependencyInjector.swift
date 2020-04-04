@@ -18,8 +18,16 @@ struct DIContainer: EnvironmentKey {
     
     static var defaultValue: Self { Self.default }
     
-    private static let `default` = Self(appState: .init(AppState()),
-                                        services: .stub)
+    private static let `default` = DIContainer(appState: AppState(), services: .stub)
+    
+    init(appState: Store<AppState>, services: DIContainer.Services) {
+        self.appState = appState
+        self.services = services
+    }
+    
+    init(appState: AppState, services: DIContainer.Services) {
+        self.init(appState: Store(appState), services: services)
+    }
 }
 
 extension EnvironmentValues {
@@ -32,7 +40,7 @@ extension EnvironmentValues {
 #if DEBUG
 extension DIContainer {
     static var preview: Self {
-        .init(appState: .init(AppState.preview), services: .stub)
+        .init(appState: AppState.preview, services: .stub)
     }
 }
 #endif
@@ -43,8 +51,7 @@ extension View {
     
     func inject(_ appState: AppState,
                 _ services: DIContainer.Services) -> some View {
-        let container = DIContainer(appState: .init(appState),
-                                    services: services)
+        let container = DIContainer(appState: appState, services: services)
         return inject(container)
     }
     

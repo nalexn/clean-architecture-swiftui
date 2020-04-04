@@ -9,15 +9,12 @@
 import SwiftUI
 import Combine
 
+// MARK: - View
+
 struct CountriesList: View {
     
+    @ObservedObject private(set) var viewModel: ViewModel
     @Environment(\.locale) private var locale: Locale
-    @Environment(\.injected) private var injected: DIContainer
-    @State private var countriesSearch = CountriesSearch()
-    @State private var routingState: Routing = .init()
-    private var routingBinding: Binding<Routing> {
-        $routingState.dispatched(to: injected.appState, \.routing.countriesList)
-    }
     let inspection = Inspection<Self>()
     
     var body: some View {
@@ -25,21 +22,18 @@ struct CountriesList: View {
             NavigationView {
                 self.content
                     .navigationBarTitle("Countries".localized(self.locale))
-                    .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
+                    .navigationBarHidden(self.viewModel.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }
             .modifier(NavigationViewStyle())
             .padding(.leading, self.leadingPadding(geometry))
         }
-        .onAppear { self.countriesSearch.locale = self.locale }
-        .onReceive(keyboardHeightUpdate) { self.countriesSearch.keyboardHeight = $0 }
-        .onReceive(countriesUpdate) { self.countriesSearch.all = $0 }
-        .onReceive(routingUpdate) { self.routingState = $0 }
+        .modifier(viewModel.localeReader)
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
     private var content: AnyView {
-        switch countriesSearch.filtered {
+        switch viewModel.countriesSearch.filtered {
         case .notRequested: return AnyView(notRequestedView)
         case let .isLoading(last, _): return AnyView(loadingView(last))
         case let .loaded(countries): return AnyView(loadedView(countries, showSearch: true))
@@ -69,21 +63,12 @@ private extension CountriesList {
     }
 }
 
-// MARK: - Side Effects
-
-private extension CountriesList {
-    func loadCountries() {
-        injected.services.countriesService
-            .loadCountries()
-    }
-}
-
 // MARK: - Loading Content
 
 private extension CountriesList {
     var notRequestedView: some View {
         Text("").onAppear {
-            self.loadCountries()
+            self.viewModel.loadCountries()
         }
     }
     
@@ -98,7 +83,7 @@ private extension CountriesList {
     
     func failedView(_ error: Error) -> some View {
         ErrorView(error: error, retryAction: {
-            self.loadCountries()
+            self.viewModel.loadCountries()
         })
     }
 }
@@ -109,17 +94,17 @@ private extension CountriesList {
     func loadedView(_ countries: [Country], showSearch: Bool) -> some View {
         VStack {
             if showSearch {
-                SearchBar(text: $countriesSearch.searchText)
+                SearchBar(text: $viewModel.countriesSearch.searchText)
             }
             List(countries) { country in
                 NavigationLink(
                     destination: self.detailsView(country: country),
                     tag: country.alpha3Code,
-                    selection: self.routingBinding.countryDetails) {
+                    selection: self.$viewModel.routingState.countryDetails) {
                         CountryCell(country: country)
                     }
             }
-        }.padding(.bottom, self.countriesSearch.keyboardHeight)
+        }.padding(.bottom, self.viewModel.countriesSearch.keyboardHeight)
     }
     
     func detailsView(country: Country) -> some View {
@@ -127,66 +112,12 @@ private extension CountriesList {
     }
 }
 
-// MARK: - Filtering Countries
-
-extension CountriesList {
-    struct CountriesSearch {
-        
-        private(set) var filtered: Loadable<[Country]> = .notRequested
-        var all: Loadable<[Country]> = .notRequested {
-            didSet { filterCountries() }
-        }
-        var searchText: String = "" {
-            didSet { filterCountries() }
-        }
-        var keyboardHeight: CGFloat = 0
-        var locale = Locale.current
-        
-        private mutating func filterCountries() {
-            if searchText.count == 0 {
-                filtered = all
-            } else {
-                filtered = all.map { countries in
-                    countries.filter {
-                        $0.name(locale: locale)
-                            .range(of: searchText, options: .caseInsensitive,
-                                   range: nil, locale: nil) != nil
-                    }
-                }
-            }
-        }
-    }
-}
-
-// MARK: - Routing
-
-extension CountriesList {
-    struct Routing: Equatable {
-        var countryDetails: Country.Code?
-    }
-}
-
-// MARK: - State Updates
-
-private extension CountriesList {
-    
-    var routingUpdate: AnyPublisher<Routing, Never> {
-        injected.appState.updates(for: \.routing.countriesList)
-    }
-    
-    var countriesUpdate: AnyPublisher<Loadable<[Country]>, Never> {
-        injected.appState.updates(for: \.userData.countries)
-    }
-    
-    var keyboardHeightUpdate: AnyPublisher<CGFloat, Never> {
-        injected.appState.updates(for: \.system.keyboardHeight)
-    }
-}
+// MARK: - Preview
 
 #if DEBUG
 struct CountriesList_Previews: PreviewProvider {
     static var previews: some View {
-        CountriesList().inject(.preview)
+        CountriesList(viewModel: .init(container: .preview))
     }
 }
 #endif

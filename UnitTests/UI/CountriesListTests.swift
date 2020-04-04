@@ -8,6 +8,7 @@
 
 import XCTest
 import ViewInspector
+import Combine
 @testable import CountriesSwiftUI
 
 extension CountriesList: Inspectable { }
@@ -16,6 +17,13 @@ extension CountryCell: Inspectable { }
 extension ErrorView: Inspectable { }
 
 final class CountriesListTests: XCTestCase {
+    
+    func countriesListView(_ appState: AppState,
+                           _ services: DIContainer.Services
+    ) -> CountriesList {
+        CountriesList(viewModel: CountriesList.ViewModel(
+            container: DIContainer(appState: appState, services: services)))
+    }
 
     func test_countries_notRequested() {
         let appState = AppState()
@@ -23,12 +31,12 @@ final class CountriesListTests: XCTestCase {
         let services = DIContainer.Services.mocked(
             countriesService: [.loadCountries]
         )
-        let sut = CountriesList()
+        let sut = countriesListView(appState, services)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.content().text())
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(appState, services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     
@@ -36,14 +44,14 @@ final class CountriesListTests: XCTestCase {
         var appState = AppState()
         let services = DIContainer.Services.mocked()
         appState.userData.countries = .isLoading(last: nil, cancelBag: CancelBag())
-        let sut = CountriesList()
+        let sut = countriesListView(appState, services)
         let exp = sut.inspection.inspect { view in
             let vStack = try view.content().vStack()
             XCTAssertNoThrow(try vStack.view(ActivityIndicatorView.self, 0))
             XCTAssertThrowsError(try vStack.list(1))
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(appState, services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     
@@ -52,7 +60,7 @@ final class CountriesListTests: XCTestCase {
         appState.userData.countries = .isLoading(last: Country.mockedData,
                                                  cancelBag: CancelBag())
         let services = DIContainer.Services.mocked()
-        let sut = CountriesList()
+        let sut = countriesListView(appState, services)
         let exp = sut.inspection.inspect { view in
             let vStack = try view.content().vStack()
             XCTAssertNoThrow(try vStack.view(ActivityIndicatorView.self, 0))
@@ -61,7 +69,7 @@ final class CountriesListTests: XCTestCase {
             XCTAssertNoThrow(try countries.list(1))
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(appState, services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     
@@ -69,7 +77,7 @@ final class CountriesListTests: XCTestCase {
         var appState = AppState()
         appState.userData.countries = .loaded(Country.mockedData)
         let services = DIContainer.Services.mocked()
-        let sut = CountriesList()
+        let sut = countriesListView(appState, services)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.content().vStack().view(SearchBar.self, 0))
             let cell = try view.firstRowLink()
@@ -77,7 +85,7 @@ final class CountriesListTests: XCTestCase {
             XCTAssertEqual(cell.country, Country.mockedData[0])
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(appState, services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     
@@ -85,12 +93,12 @@ final class CountriesListTests: XCTestCase {
         var appState = AppState()
         appState.userData.countries = .failed(NSError.test)
         let services = DIContainer.Services.mocked()
-        let sut = CountriesList()
+        let sut = countriesListView(appState, services)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.content().view(ErrorView.self))
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(appState, services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     
@@ -100,15 +108,13 @@ final class CountriesListTests: XCTestCase {
         let services = DIContainer.Services.mocked(
             countriesService: [.loadCountries]
         )
-        let container = DIContainer(appState: .init(appState),
-                                    services: services)
-        let sut = CountriesList()
+        let sut = countriesListView(appState, services)
         let exp = sut.inspection.inspect { view in
             let errorView = try view.content().view(ErrorView.self)
             try errorView.vStack().button(2).tap()
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(container))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     
@@ -117,9 +123,9 @@ final class CountriesListTests: XCTestCase {
         var appState = AppState()
         appState.userData.countries = .loaded(countries)
         let services = DIContainer.Services.mocked()
-        let container = DIContainer(appState: .init(appState), services: services)
+        let sut = countriesListView(appState, services)
+        let container = sut.viewModel.container
         XCTAssertNil(container.appState.value.routing.countriesList.countryDetails)
-        let sut = CountriesList()
         let exp = sut.inspection.inspect { view in
             let firstCountryRow = try view.firstRowLink()
             try firstCountryRow.activate()
@@ -128,7 +134,7 @@ final class CountriesListTests: XCTestCase {
             try firstCountryRow.view(CountryDetails.self).content().text().callOnAppear()
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(container))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
 }
@@ -149,7 +155,8 @@ final class LocalizationTests: XCTestCase {
 final class CountriesListFilterTests: XCTestCase {
     
     func test_countries_filtering() {
-        var sut = CountriesList.CountriesSearch()
+        let publisher = ObservableObjectPublisher()
+        var sut = CountriesList.ViewModel.CountriesSearch(searchResultsWillChange: publisher)
         let countries = Country.mockedData
         sut.all = .loaded(countries)
         XCTAssertEqual(sut.filtered.value, countries)
