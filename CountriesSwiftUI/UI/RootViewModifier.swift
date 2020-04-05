@@ -29,6 +29,7 @@ extension RootViewAppearance {
         
         init(container: DIContainer) {
             container.appState.map(\.system.isActive)
+                .removeDuplicates()
                 .assign(to: \.isActive, on: self)
                 .store(in: cancelBag)
         }

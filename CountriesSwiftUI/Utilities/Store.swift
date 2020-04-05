@@ -29,11 +29,6 @@ extension Store {
         update(&value)
         self.value = value
     }
-    
-    func updates<Value>(for keyPath: KeyPath<Output, Value>) ->
-        AnyPublisher<Value, Failure> where Value: Equatable {
-        return map(keyPath).removeDuplicates().eraseToAnyPublisher()
-    }
 }
 
 // MARK: -

@@ -39,10 +39,13 @@ extension CountriesList {
                 $routingState
                     .sink { appState[\.routing.countriesList] = $0 }
                 appState.map(\.routing.countriesList)
+                    .removeDuplicates()
                     .assign(to: \.routingState, on: self)
                 appState.map(\.userData.countries)
+                    .removeDuplicates()
                     .assign(to: \.countries.all, on: self)
                 appState.map(\.system.keyboardHeight)
+                    .removeDuplicates()
                     .assign(to: \.keyboardHeight, on: self)
             }
         }
