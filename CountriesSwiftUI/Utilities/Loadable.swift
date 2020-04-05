@@ -7,6 +7,9 @@
 //
 
 import Foundation
+import SwiftUI
+
+typealias LoadableSubject<Value> = Binding<Loadable<Value>>
 
 enum Loadable<T> {
 
@@ -31,6 +34,10 @@ enum Loadable<T> {
 }
 
 extension Loadable {
+    
+    mutating func setIsLoading(cancelBag: CancelBag) {
+        self = .isLoading(last: value, cancelBag: cancelBag)
+    }
     
     mutating func cancelLoading() {
         switch self {

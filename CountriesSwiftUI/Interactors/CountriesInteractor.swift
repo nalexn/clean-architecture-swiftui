@@ -12,7 +12,7 @@ import SwiftUI
 
 protocol CountriesInteractor {
     func loadCountries()
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country)
+    func load(countryDetails: LoadableSubject<Country.Details>, country: Country)
 }
 
 struct RealCountriesInteractor: CountriesInteractor {
@@ -26,19 +26,17 @@ struct RealCountriesInteractor: CountriesInteractor {
     }
 
     func loadCountries() {
-        let countries = appState.value.userData.countries.value
         let cancelBag = CancelBag()
-        appState[\.userData.countries] = .isLoading(last: countries, cancelBag: cancelBag)
+        appState[\.userData.countries].setIsLoading(cancelBag: cancelBag)
         weak var weakAppState = appState
         webRepository.loadCountries()
             .sinkToLoadable { weakAppState?[\.userData.countries] = $0 }
             .store(in: cancelBag)
     }
 
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
+    func load(countryDetails: LoadableSubject<Country.Details>, country: Country) {
         let cancelBag = CancelBag()
-        countryDetails.wrappedValue = .isLoading(last: countryDetails.wrappedValue.value,
-                                                 cancelBag: cancelBag)
+        countryDetails.wrappedValue.setIsLoading(cancelBag: cancelBag)
         let countriesArray = appState
             .map { $0.userData.countries }
             .tryMap { countries -> [Country] in
@@ -64,6 +62,6 @@ struct StubCountriesInteractor: CountriesInteractor {
     func loadCountries() {
     }
     
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
+    func load(countryDetails: LoadableSubject<Country.Details>, country: Country) {
     }
 }
