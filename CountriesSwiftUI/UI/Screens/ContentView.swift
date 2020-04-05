@@ -23,7 +23,7 @@ struct ContentView: View {
             } else {
                 CountriesList(viewModel: .init(container: viewModel.container))
                     .attachEnvironmentOverrides(onChange: viewModel.onChangeHandler)
-                    .inject(viewModel.container)
+                    .modifier(RootViewAppearance(viewModel: .init(container: viewModel.container)))
             }
         }
     }

@@ -23,7 +23,7 @@ final class DeepLinkUITests: XCTestCase {
             let firstRowLink = try view.firstRowLink()
             XCTAssertTrue(try firstRowLink.isActive())
         }
-        ViewHosting.host(view: sut.inject(container))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     

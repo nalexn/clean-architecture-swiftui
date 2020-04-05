@@ -33,7 +33,7 @@ final class SVGImageViewTests: XCTestCase {
             XCTAssertNoThrow(try view.anyView().text())
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     
@@ -44,7 +44,7 @@ final class SVGImageViewTests: XCTestCase {
             XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     
@@ -56,7 +56,7 @@ final class SVGImageViewTests: XCTestCase {
             XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
     
@@ -69,7 +69,7 @@ final class SVGImageViewTests: XCTestCase {
             XCTAssertEqual(loadedImage, image)
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 3)
     }
     
@@ -81,7 +81,7 @@ final class SVGImageViewTests: XCTestCase {
             XCTAssertEqual(message, "Unable to load image")
             services.verify()
         }
-        ViewHosting.host(view: sut.inject(AppState(), services))
+        ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
 }

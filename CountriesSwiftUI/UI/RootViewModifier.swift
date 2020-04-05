@@ -13,16 +13,24 @@ import Combine
 
 struct RootViewAppearance: ViewModifier {
     
-    @Environment(\.injected) private var injected: DIContainer
-    @State private var isActive: Bool = false
+    @ObservedObject private(set) var viewModel: ViewModel
     
     func body(content: Content) -> some View {
         content
-            .blur(radius: isActive ? 0 : 10)
-            .onReceive(stateUpdate) { self.isActive = $0 }
+            .blur(radius: viewModel.isActive ? 0 : 10)
     }
-    
-    private var stateUpdate: AnyPublisher<Bool, Never> {
-        injected.appState.updates(for: \.system.isActive)
+}
+
+extension RootViewAppearance {
+    class ViewModel: ObservableObject {
+        
+        @Published var isActive: Bool = false
+        private let cancelBag = CancelBag()
+        
+        init(container: DIContainer) {
+            container.appState.map(\.system.isActive)
+                .assign(to: \.isActive, on: self)
+                .store(in: cancelBag)
+        }
     }
 }
