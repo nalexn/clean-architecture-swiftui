@@ -48,7 +48,7 @@ struct MockedCountriesService: Mock, CountriesService {
         register(.loadCountries)
     }
     
-    func load(countryDetails: Binding<Loadable<Country.Details>>, country: Country) {
+    func load(countryDetails: LoadableSubject<Country.Details>, country: Country) {
         register(.loadCountryDetails(country))
     }
 }
@@ -67,7 +67,7 @@ struct MockedImagesService: Mock, ImagesService {
         self.actions = .init(expected: expected)
     }
     
-    func load(image: Binding<Loadable<UIImage>>, url: URL?) {
+    func load(image: LoadableSubject<UIImage>, url: URL?) {
         register(.loadImage(url))
     }
 }

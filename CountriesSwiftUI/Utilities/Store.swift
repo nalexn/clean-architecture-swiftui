@@ -39,7 +39,7 @@ extension Store {
 // MARK: -
 
 extension ObservableObject {
-    func binding<Value>(to keyPath: WritableKeyPath<Self, Value>) -> Binding<Value> {
+    func loadableSubject<Value>(_ keyPath: WritableKeyPath<Self, Loadable<Value>>) -> LoadableSubject<Value> {
         let defaultValue = self[keyPath: keyPath]
         return .init(get: { [weak self] in
             self?[keyPath: keyPath] ?? defaultValue

@@ -50,7 +50,7 @@ extension CountryDetails {
         
         func loadCountryDetails() {
             container.services.countriesService
-                .load(countryDetails: binding(to: \.details), country: country)
+                .load(countryDetails: loadableSubject(\.details), country: country)
         }
         
         func showCountryDetailsSheet() {

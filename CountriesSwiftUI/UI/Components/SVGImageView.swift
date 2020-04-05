@@ -80,7 +80,7 @@ extension SVGImageView {
         
         func loadImage() {
             container.services.imagesService
-                .load(image: binding(to: \.image), url: imageURL)
+                .load(image: loadableSubject(\.image), url: imageURL)
         }
     }
 }

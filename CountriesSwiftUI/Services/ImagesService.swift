@@ -11,7 +11,7 @@ import Foundation
 import SwiftUI
 
 protocol ImagesService {
-    func load(image: Binding<Loadable<UIImage>>, url: URL?)
+    func load(image: LoadableSubject<UIImage>, url: URL?)
 }
 
 struct RealImagesService: ImagesService {
@@ -22,7 +22,7 @@ struct RealImagesService: ImagesService {
         self.webRepository = webRepository
     }
     
-    func load(image: Binding<Loadable<UIImage>>, url: URL?) {
+    func load(image: LoadableSubject<UIImage>, url: URL?) {
         guard let url = url else {
             image.wrappedValue = .notRequested; return
         }
@@ -37,6 +37,6 @@ struct RealImagesService: ImagesService {
 }
 
 struct StubImagesService: ImagesService {
-    func load(image: Binding<Loadable<UIImage>>, url: URL?) {
+    func load(image: LoadableSubject<UIImage>, url: URL?) {
     }
 }
