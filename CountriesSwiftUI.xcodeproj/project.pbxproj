@@ -46,6 +46,7 @@
 		F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C923777D440014E142 /* SVGImageViewTests.swift */; };
 		F661F2CC23783E360014E142 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2CB23783E360014E142 /* Helpers.swift */; };
 		F66EDB6823F1599F00A01B9F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F66EDB6A23F1599F00A01B9F /* Localizable.strings */; };
+		F67451F5243A4CC200A4B498 /* RootViewAppearanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67451F4243A4CC200A4B498 /* RootViewAppearanceTests.swift */; };
 		F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */; };
 		F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* DependencyInjector.swift */; };
 		F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD642368875A00C83258 /* CountriesWebRepository.swift */; };
@@ -124,6 +125,7 @@
 		F66EDB6C23F168FF00A01B9F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F66EDB6D23F1691400A01B9F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F66EDB6E23F1692000A01B9F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F67451F4243A4CC200A4B498 /* RootViewAppearanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewAppearanceTests.swift; sourceTree = "<group>"; };
 		F67833D22369CCBD0065272F /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67833D62369CCBD0065272F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
@@ -181,11 +183,12 @@
 		F60CC501236C3C80007E84B2 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				F6500B4923C8F2AC0086FD70 /* DeepLinkUITests.swift */,
 				F6E7ACE423F83BEB00AB48AB /* ContentViewTests.swift */,
 				F60CC502236C3CA8007E84B2 /* CountriesListTests.swift */,
 				F60CC506236C5CFA007E84B2 /* CountryDetailsTests.swift */,
+				F6500B4923C8F2AC0086FD70 /* DeepLinkUITests.swift */,
 				F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */,
+				F67451F4243A4CC200A4B498 /* RootViewAppearanceTests.swift */,
 				F661F2C923777D440014E142 /* SVGImageViewTests.swift */,
 				F6F606A723CF25EC00F36F5D /* SearchBarTests.swift */,
 				F60CC508236C6084007E84B2 /* ViewPreviewsTests.swift */,
@@ -568,6 +571,7 @@
 			files = (
 				F60CC507236C5CFA007E84B2 /* CountryDetailsTests.swift in Sources */,
 				F60829712369CE0100DB292E /* RequestMocking.swift in Sources */,
+				F67451F5243A4CC200A4B498 /* RootViewAppearanceTests.swift in Sources */,
 				F661F2C5237772CE0014E142 /* ImagesInteractorTests.swift in Sources */,
 				F6F003B3236AF9F100AAC7C6 /* LoadableTests.swift in Sources */,
 				F60829762369D58A00DB292E /* CountriesWebRepositoryTests.swift in Sources */,
