@@ -134,9 +134,11 @@ private extension CountriesList {
     func loadedView(_ countries: [Country], showSearch: Bool, showLoading: Bool) -> some View {
         VStack {
             if showSearch {
-                SearchBar(text: $countriesSearch.searchText.onSet({ _ in
-                    self.reloadCountries()
-                }))
+                SearchBar(text: $countriesSearch.searchText
+                    .throttled(seconds: 0.5) { _ in
+                        self.reloadCountries()
+                    }
+                )
             }
             if showLoading {
                 ActivityIndicatorView().padding()

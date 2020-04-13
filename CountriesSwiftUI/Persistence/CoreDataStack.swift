@@ -13,14 +13,21 @@ protocol PersistentStore {
     typealias DBOperation<Result> = (NSManagedObjectContext) throws -> Result
     
     func count<T>(_ fetchRequest: NSFetchRequest<T>) -> Int
-    func fetch<T>(_ fetchRequest: NSFetchRequest<T>) -> AnyPublisher<[T], Error>
+    func fetch<T, V>(_ fetchRequest: NSFetchRequest<T>,
+                     map: @escaping (T) throws -> V?) -> AnyPublisher<[V], Error>
     func update<Result>(_ operation: @escaping DBOperation<Result>) -> AnyPublisher<Result, Error>
 }
 
-struct CoreDataStack: PersistentStore {
+class CoreDataStack: PersistentStore {
     
     let container: NSPersistentContainer
-    private let bgQueue = DispatchQueue(label: "coredata_io")
+    private let bgReadOnlyQueue = DispatchQueue(label: "coredata_read")
+    private let bgUpdateQueue = DispatchQueue(label: "coredata_update")
+    private lazy var bgReadContext: NSManagedObjectContext = {
+        let context = container.newBackgroundContext()
+        context.configureAsReadOnlyContext()
+        return context
+    }()
     
     init(directory: FileManager.SearchPathDirectory = .documentDirectory,
          version vNumber: UInt) {
@@ -30,33 +37,50 @@ struct CoreDataStack: PersistentStore {
             let store = NSPersistentStoreDescription(url: url)
             container.persistentStoreDescriptions = [store]
         }
-        bgQueue.suspend()
-        container.loadPersistentStores { [weak bgQueue] (storeDescription, error) in
+        let queues = [bgReadOnlyQueue, bgUpdateQueue]
+        queues.forEach { $0.suspend() }
+        container.loadPersistentStores { (storeDescription, error) in
             if let error = error {
                 print("CoreDataStack initialization error: \(error)")
             } else {
-                bgQueue?.resume()
+                queues.forEach { $0.resume() }
             }
         }
-        container.viewContext.configureAsMainContext()
     }
     
     func count<T>(_ fetchRequest: NSFetchRequest<T>) -> Int {
         return (try? container.viewContext.count(for: fetchRequest)) ?? 0
     }
     
-    func fetch<T>(_ fetchRequest: NSFetchRequest<T>) -> AnyPublisher<[T], Error> {
-        return container.viewContext
-            .loadAsynchronously(fetchRequest)
-            .eraseToAnyPublisher()
+    func fetch<T, V>(_ fetchRequest: NSFetchRequest<T>,
+                     map: @escaping (T) throws -> V?) -> AnyPublisher<[V], Error> {
+        return Future<[V], Error> { [weak self] promise in
+            self?.bgReadOnlyQueue.async {
+                guard let context = self?.bgReadContext else { return }
+                context.performAndWait {
+                    do {
+                        let managedObjects = try context.fetch(fetchRequest)
+                        let results = try managedObjects.compactMap(map)
+                        // Do not reset to keep the memcache
+                        // context.reset()
+                        promise(.success(results))
+                    } catch {
+                        context.reset()
+                        promise(.failure(error))
+                    }
+                }
+            }
+        }
+        .receive(on: DispatchQueue.main)
+        .eraseToAnyPublisher()
     }
     
     func update<Result>(_ operation: @escaping DBOperation<Result>) -> AnyPublisher<Result, Error> {
-        return Future<Result, Error> { [weak bgQueue, weak container] promise in
-            bgQueue?.async { [weak container] in
+        return Future<Result, Error> { [weak bgUpdateQueue, weak container] promise in
+            bgUpdateQueue?.async { [weak container] in
                 guard let container = container else { return }
                 let context = container.newBackgroundContext()
-                context.configureAsBackgroundUpdateContext()
+                context.configureAsUpdateContext()
                 context.performAndWait {
                     do {
                         let result = try operation(context)

@@ -40,9 +40,8 @@ struct RealCountriesDBRepository: CountriesDBRepository {
     func countries(search: String, locale: Locale) -> AnyPublisher<[Country], Error> {
         let fetchRequest = CountryMO.countries(search: search, locale: locale)
         return persistentStore
-            .fetch(fetchRequest)
-            .map { managedObjects in
-                managedObjects.compactMap { Country(managedObject: $0) }
+            .fetch(fetchRequest) {
+                Country(managedObject: $0)
             }
             .eraseToAnyPublisher()
     }
@@ -61,10 +60,10 @@ struct RealCountriesDBRepository: CountriesDBRepository {
     func countryDetails(country: Country) -> AnyPublisher<Country.Details?, Error> {
         let fetchRequest = CountryDetailsMO.details(country: country)
         return persistentStore
-            .fetch(fetchRequest)
-            .map { managedObjects in
-                managedObjects.first.flatMap { Country.Details(managedObject: $0) }
+            .fetch(fetchRequest) {
+                Country.Details(managedObject: $0)
             }
+            .map { $0.first }
             .eraseToAnyPublisher()
     }
 }

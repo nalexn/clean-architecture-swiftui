@@ -46,12 +46,30 @@ extension Binding where Value: Equatable {
 }
 
 extension Binding {
-    func onSet(_ perform: @escaping (Value) -> Void) -> Self {
+    typealias ValueClosure = (Value) -> Void
+    
+    func onSet(_ perform: @escaping ValueClosure) -> Self {
         return .init(get: { () -> Value in
             self.wrappedValue
         }, set: { value in
             self.wrappedValue = value
             perform(value)
+        })
+    }
+    
+    func throttled(seconds: TimeInterval, _ perform: @escaping ValueClosure) -> Self {
+        let cancelBag = CancelBag()
+        let publisher = PassthroughSubject<Value, Never>()
+        publisher
+            .throttle(for: .seconds(seconds), scheduler: DispatchQueue.main, latest: true)
+            .sink(receiveValue: { perform($0) })
+            .store(in: cancelBag)
+        return .init(get: { () -> Value in
+            self.wrappedValue
+        }, set: { value in
+            self.wrappedValue = value
+            publisher.send(value)
+            _ = cancelBag // retain
         })
     }
 }

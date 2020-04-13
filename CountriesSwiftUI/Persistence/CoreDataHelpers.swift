@@ -33,29 +33,16 @@ extension ManagedEntity where Self: NSManagedObject {
 
 extension NSManagedObjectContext {
     
-    func configureAsMainContext() {
+    func configureAsReadOnlyContext() {
         automaticallyMergesChangesFromParent = true
         mergePolicy = NSRollbackMergePolicy
         undoManager = nil
         shouldDeleteInaccessibleFaults = true
     }
     
-    func configureAsBackgroundUpdateContext() {
+    func configureAsUpdateContext() {
         mergePolicy = NSOverwriteMergePolicy
         undoManager = nil
-    }
-    
-    func loadAsynchronously<T>(_ fetchRequest: NSFetchRequest<T>) -> Future<[T], Error> {
-        return Future<[T], Error> { [weak self] promise in
-            let asyncRequest = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { result in
-                promise(.success(result.finalResult ?? []))
-            }
-            do {
-                try self?.execute(asyncRequest)
-            } catch {
-                promise(.failure(error))
-            }
-        }
     }
 }
 
