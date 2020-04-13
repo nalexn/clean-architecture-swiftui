@@ -24,7 +24,7 @@ struct RealCountriesDBRepository: CountriesDBRepository {
     let persistentStore: PersistentStore
     
     func hasLoadedCountries() -> Bool {
-        let fetchRequest = CountryMO.justOneRandomCountry()
+        let fetchRequest = CountryMO.justOneCountry()
         return persistentStore.count(fetchRequest) > 0
     }
     
@@ -49,8 +49,7 @@ struct RealCountriesDBRepository: CountriesDBRepository {
     func store(countryDetails: Country.Details.Intermediate) -> AnyPublisher<Country.Details?, Error> {
         return persistentStore
             .update { context in
-                let neighbors = CountryMO
-                    .countries(names: countryDetails.borders, locale: .backendDefault)
+                let neighbors = CountryMO.countries(alpha3codes: countryDetails.borders)
                 let borders = try context.fetch(neighbors)
                 let details = countryDetails.store(in: context, borders: borders)
                 return details.flatMap { Country.Details(managedObject: $0) }
@@ -72,9 +71,9 @@ struct RealCountriesDBRepository: CountriesDBRepository {
 
 extension CountryMO {
     
-    static func justOneRandomCountry() -> NSFetchRequest<CountryMO> {
+    static func justOneCountry() -> NSFetchRequest<CountryMO> {
         let request = newFetchRequest()
-        request.predicate = NSPredicate(value: true)
+        request.predicate = NSPredicate(format: "alpha3code == %@", "USA")
         request.fetchLimit = 1
         return request
     }
@@ -94,9 +93,10 @@ extension CountryMO {
         return request
     }
     
-    static func countries(names: [String], locale: Locale) -> NSFetchRequest<CountryMO> {
+    static func countries(alpha3codes: [String]) -> NSFetchRequest<CountryMO> {
         let request = newFetchRequest()
-        request.predicate = NSPredicate(value: true)
+        request.predicate = NSPredicate(format: "alpha3code in %@", alpha3codes)
+        request.fetchLimit = alpha3codes.count
         return request
     }
 }
@@ -104,7 +104,8 @@ extension CountryMO {
 extension CountryDetailsMO {
     static func details(country: Country) -> NSFetchRequest<CountryDetailsMO> {
         let request = newFetchRequest()
-        request.predicate = NSPredicate(value: true)
+        request.predicate = NSPredicate(format: "country.alpha3code == %@", country.alpha3Code)
+        request.fetchLimit = 1
         return request
     }
 }

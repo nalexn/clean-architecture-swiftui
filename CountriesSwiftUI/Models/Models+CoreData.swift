@@ -37,6 +37,7 @@ extension Country.Details {
         let borders = (managedObject.borders ?? NSSet())
             .toArray(of: CountryMO.self)
             .compactMap { Country(managedObject: $0) }
+            .sorted(by: { $0.name < $1.name })
         
         self.init(capital: capital, currencies: currencies, neighbors: borders)
     }
