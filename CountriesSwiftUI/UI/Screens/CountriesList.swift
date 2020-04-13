@@ -11,21 +11,23 @@ import Combine
 
 struct CountriesList: View {
     
-    @Environment(\.injected) private var injected: DIContainer
     @State private var countriesSearch = CountriesSearch()
     @State private(set) var countries: Loadable<[Country]> = .notRequested
     @State private var routingState: Routing = .init()
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countriesList)
     }
+    @Environment(\.injected) private var injected: DIContainer
+    @Environment(\.locale) private var locale: Locale
     private let localeContainer = LocaleReader.Container()
+    
     let inspection = Inspection<Self>()
     
     var body: some View {
         GeometryReader { geometry in
             NavigationView {
                 self.content
-                    .navigationBarTitle("Countries".localized(self.localeContainer.locale))
+                    .navigationBarTitle("Countries".localized(self.locale))
                     .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }
@@ -70,13 +72,15 @@ private extension CountriesList {
     
     struct LocaleReader: EnvironmentalModifier {
         
+        /**
+         Retains the locale, provided by the Environment.
+         Variable `@Environment(\.locale) var locale: Locale`
+         from the view is not accessible when searching by name
+         */
         class Container {
             var locale: Locale = .backendDefault
         }
         let container: Container
-        
-        // Used for triggering the update when locale changes:
-        @Environment(\.locale) private var updateTrigger: Locale
         
         func resolve(in environment: EnvironmentValues) -> some ViewModifier {
             container.locale = environment.locale
