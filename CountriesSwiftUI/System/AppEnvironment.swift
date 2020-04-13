@@ -27,7 +27,7 @@ extension AppEnvironment {
         */
         let session = configuredURLSession()
         let webRepositories = configuredWebRepositories(session: session)
-        let dbRepositories = configuredDBRepositories()
+        let dbRepositories = configuredDBRepositories(appState: appState)
         let interactors = configuredInteractors(appState: appState,
                                                 dbRepositories: dbRepositories,
                                                 webRepositories: webRepositories)
@@ -58,8 +58,15 @@ extension AppEnvironment {
                                         countriesRepository: countriesWebRepository)
     }
     
-    private static func configuredDBRepositories() -> DBRepositoriesContainer {
-        let persistentStore = CoreDataStack(directory: .documentDirectory, version: 1)
+    private static func configuredDBRepositories(appState: Store<AppState>) -> DBRepositoriesContainer {
+        let releaseMemoryCache = appState
+            .updates(for: \.system.isActive)
+            .filter { !$0 }
+            .dropFirst()
+            .map { _ in () }
+            .eraseToAnyPublisher()
+        let persistentStore = CoreDataStack(directory: .documentDirectory, version: 1,
+                                            releaseMemoryCache: releaseMemoryCache)
         let countriesDBRepository = RealCountriesDBRepository(persistentStore: persistentStore)
         return .init(countriesRepository: countriesDBRepository)
     }
