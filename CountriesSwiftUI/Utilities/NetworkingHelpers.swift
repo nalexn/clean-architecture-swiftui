@@ -10,6 +10,19 @@ import SwiftUI
 import Combine
 import Foundation
 
+extension Just where Output == Void {
+    static func withErrorType() -> AnyPublisher<Void, Error> {
+        return withErrorType(())
+    }
+}
+
+extension Just {
+    static func withErrorType(_ value: Output) -> AnyPublisher<Output, Error> {
+        return Future<Output, Error> { $0(.success(value)) }
+            .eraseToAnyPublisher()
+    }
+}
+
 extension Publisher {
     func sinkToResult(_ result: @escaping (Result<Output, Failure>) -> Void) -> AnyCancellable {
         return sink(receiveCompletion: { completion in

@@ -27,7 +27,10 @@ extension AppEnvironment {
         */
         let session = configuredURLSession()
         let webRepositories = configuredWebRepositories(session: session)
-        let interactors = configuredInteractors(appState: appState, webRepositories: webRepositories)
+        let dbRepositories = configuredDBRepositories()
+        let interactors = configuredInteractors(appState: appState,
+                                                dbRepositories: dbRepositories,
+                                                webRepositories: webRepositories)
         let systemEventsHandler = RealSystemEventsHandler(appState: appState)
         let diContainer = DIContainer(appState: appState, interactors: interactors)
         return AppEnvironment(container: diContainer,
@@ -40,7 +43,7 @@ extension AppEnvironment {
         configuration.timeoutIntervalForResource = 120
         configuration.waitsForConnectivity = true
         configuration.httpMaximumConnectionsPerHost = 5
-        configuration.requestCachePolicy = .returnCacheDataElseLoad
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         return URLSession(configuration: configuration)
     }
     
@@ -55,11 +58,19 @@ extension AppEnvironment {
                                         countriesRepository: countriesWebRepository)
     }
     
+    private static func configuredDBRepositories() -> DBRepositoriesContainer {
+        let persistentStore = CoreDataStack(directory: .documentDirectory, version: 1)
+        let countriesDBRepository = RealCountriesDBRepository(persistentStore: persistentStore)
+        return .init(countriesRepository: countriesDBRepository)
+    }
+    
     private static func configuredInteractors(appState: Store<AppState>,
+                                              dbRepositories: DBRepositoriesContainer,
                                               webRepositories: WebRepositoriesContainer
     ) -> DIContainer.Interactors {
         let countriesInteractor = RealCountriesInteractor(
             webRepository: webRepositories.countriesRepository,
+            dbRepository: dbRepositories.countriesRepository,
             appState: appState)
         let imagesInteractor = RealImagesInteractor(
             webRepository: webRepositories.imageRepository)
@@ -72,5 +83,9 @@ private extension AppEnvironment {
     struct WebRepositoriesContainer {
         let imageRepository: ImageWebRepository
         let countriesRepository: CountriesWebRepository
+    }
+    
+    struct DBRepositoriesContainer {
+        let countriesRepository: CountriesDBRepository
     }
 }
