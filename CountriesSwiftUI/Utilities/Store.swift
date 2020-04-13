@@ -64,12 +64,9 @@ extension Binding {
             .throttle(for: .seconds(seconds), scheduler: DispatchQueue.main, latest: true)
             .sink(receiveValue: { perform($0) })
             .store(in: cancelBag)
-        return .init(get: { () -> Value in
-            self.wrappedValue
-        }, set: { value in
-            self.wrappedValue = value
+        return onSet { value in
             publisher.send(value)
             _ = cancelBag // retain
-        })
+        }
     }
 }
