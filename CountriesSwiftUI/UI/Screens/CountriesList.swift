@@ -12,7 +12,7 @@ import Combine
 struct CountriesList: View {
     
     @State private var countriesSearch = CountriesSearch()
-    @State private(set) var countries: Loadable<LazyList<Country>> = .notRequested
+    @State private(set) var countries: Loadable<LazyList<Country>>
     @State private var routingState: Routing = .init()
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countriesList)
@@ -22,6 +22,10 @@ struct CountriesList: View {
     private let localeContainer = LocaleReader.Container()
     
     let inspection = Inspection<Self>()
+    
+    init(countries: Loadable<LazyList<Country>> = .notRequested) {
+        self._countries = .init(initialValue: countries)
+    }
     
     var body: some View {
         GeometryReader { geometry in

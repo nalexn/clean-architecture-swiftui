@@ -137,9 +137,29 @@ extension LazyList: RandomAccessCollection {
     }
 }
 
+extension LazyList: Equatable where T: Equatable {
+    static func == (lhs: LazyList<T>, rhs: LazyList<T>) -> Bool {
+        guard lhs.count == rhs.count else { return false }
+        return zip(lhs, rhs).first(where: { $0 != $1 }) == nil
+    }
+}
+
+extension LazyList: CustomStringConvertible {
+    var description: String {
+        let elements = self.reduce("", { str, element in
+            if str.count == 0 {
+                return "\(element)"
+            }
+            return str + ", \(element)"
+        })
+        return "LazyList<[\(elements)]>"
+    }
+}
+
 extension RandomAccessCollection {
     var lazyList: LazyList<Element> {
         return .init(count: self.count, useCache: false) {
+            guard $0 < self.count else { return nil }
             let index = self.index(self.startIndex, offsetBy: $0)
             return self[index]
         }

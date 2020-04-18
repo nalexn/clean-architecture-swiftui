@@ -34,7 +34,7 @@ extension DIContainer.Interactors {
 struct MockedCountriesInteractor: Mock, CountriesInteractor {
     
     enum Action: Equatable {
-        case loadCountries
+        case loadCountries(search: String, locale: Locale)
         case loadCountryDetails(Country)
     }
     
@@ -44,8 +44,8 @@ struct MockedCountriesInteractor: Mock, CountriesInteractor {
         self.actions = .init(expected: expected)
     }
     
-    func loadCountries() {
-        register(.loadCountries)
+    func load(countries: LoadableSubject<LazyList<Country>>, search: String, locale: Locale) {
+        register(.loadCountries(search: search, locale: locale))
     }
     
     func load(countryDetails: LoadableSubject<Country.Details>, country: Country) {

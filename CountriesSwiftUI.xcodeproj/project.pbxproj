@@ -48,6 +48,7 @@
 		F661F2C5237772CE0014E142 /* ImagesInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */; };
 		F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C923777D440014E142 /* SVGImageViewTests.swift */; };
 		F661F2CC23783E360014E142 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2CB23783E360014E142 /* Helpers.swift */; };
+		F6621FE9244B3DE100DC583F /* MockedDBRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6621FE7244B324200DC583F /* MockedDBRepositories.swift */; };
 		F66EDB6823F1599F00A01B9F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F66EDB6A23F1599F00A01B9F /* Localizable.strings */; };
 		F67451F5243A4CC200A4B498 /* RootViewAppearanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67451F4243A4CC200A4B498 /* RootViewAppearanceTests.swift */; };
 		F674964A244B059A00E1D76B /* LazyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6749649244B059A00E1D76B /* LazyList.swift */; };
@@ -129,6 +130,7 @@
 		F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesInteractorTests.swift; sourceTree = "<group>"; };
 		F661F2C923777D440014E142 /* SVGImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageViewTests.swift; sourceTree = "<group>"; };
 		F661F2CB23783E360014E142 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		F6621FE7244B324200DC583F /* MockedDBRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedDBRepositories.swift; sourceTree = "<group>"; };
 		F66EDB6723F1599800A01B9F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F66EDB6923F1599F00A01B9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F66EDB6C23F168FF00A01B9F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -376,6 +378,7 @@
 				F68B5307237441AD00D6337C /* Mock.swift */,
 				F68B530423743D8600D6337C /* MockedInteractors.swift */,
 				F6F003B7236B04B400AAC7C6 /* MockedWebRepositories.swift */,
+				F6621FE7244B324200DC583F /* MockedDBRepositories.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -620,6 +623,7 @@
 				F6E7ACE523F83BEB00AB48AB /* ContentViewTests.swift in Sources */,
 				F60CC50B236C622C007E84B2 /* ModalDetailsViewTests.swift in Sources */,
 				F6500B4A23C8F2AC0086FD70 /* DeepLinkUITests.swift in Sources */,
+				F6621FE9244B3DE100DC583F /* MockedDBRepositories.swift in Sources */,
 				F68B5308237441AD00D6337C /* Mock.swift in Sources */,
 				F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */,
 				F6F606A823CF25EC00F36F5D /* SearchBarTests.swift in Sources */,
