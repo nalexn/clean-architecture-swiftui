@@ -21,7 +21,8 @@ protocol PersistentStore {
 class CoreDataStack: PersistentStore {
     
     let container: NSPersistentContainer
-    private let bgUpdateQueue = DispatchQueue(label: "coredata_update")
+    private let isStoreLoaded = CurrentValueSubject<Bool, Error>(false)
+    private let bgQueue = DispatchQueue(label: "coredata")
     
     init(directory: FileManager.SearchPathDirectory = .documentDirectory, version vNumber: UInt) {
         let version = Version(vNumber)
@@ -30,13 +31,16 @@ class CoreDataStack: PersistentStore {
             let store = NSPersistentStoreDescription(url: url)
             container.persistentStoreDescriptions = [store]
         }
-        container.viewContext.configureAsReadOnlyContext()
-        bgUpdateQueue.suspend()
-        container.loadPersistentStores { [weak bgUpdateQueue] (storeDescription, error) in
-            if let error = error {
-                print("CoreDataStack initialization error: \(error)")
-            } else {
-                bgUpdateQueue?.resume()
+        bgQueue.async { [weak self] in
+            self?.container.loadPersistentStores { (storeDescription, error) in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        self?.isStoreLoaded.send(completion: .failure(error))
+                    } else {
+                        self?.container.viewContext.configureAsReadOnlyContext()
+                        self?.isStoreLoaded.value = true
+                    }
+                }
             }
         }
     }
@@ -48,7 +52,7 @@ class CoreDataStack: PersistentStore {
     func fetch<T, V>(_ fetchRequest: NSFetchRequest<T>,
                      map: @escaping (T) -> V?) -> AnyPublisher<LazyList<V>, Error> {
         assert(Thread.isMainThread)
-        return Future<LazyList<V>, Error> { [weak self] promise in
+        let fetch = Future<LazyList<V>, Error> { [weak self] promise in
             guard let context = self?.container.viewContext else { return }
             context.performAndWait {
                 do {
@@ -62,13 +66,15 @@ class CoreDataStack: PersistentStore {
                 }
             }
         }
-        .eraseToAnyPublisher()
+        return onStoreIsReady
+            .flatMap { fetch }
+            .eraseToAnyPublisher()
     }
     
     func update<Result>(_ operation: @escaping DBOperation<Result>) -> AnyPublisher<Result, Error> {
-        return Future<Result, Error> { [weak bgUpdateQueue, weak container] promise in
-            bgUpdateQueue?.async { [weak container] in
-                guard let container = container else { return }
+        let update = Future<Result, Error> { [weak self] promise in
+            self?.bgQueue.async {
+                guard let container = self?.container else { return }
                 let context = container.newBackgroundContext()
                 context.configureAsUpdateContext()
                 context.performAndWait {
@@ -86,8 +92,18 @@ class CoreDataStack: PersistentStore {
                 }
             }
         }
-        .receive(on: DispatchQueue.main)
-        .eraseToAnyPublisher()
+        return onStoreIsReady
+            .flatMap { update }
+//          .subscribe(on: bgQueue) // Does not work as stated in the docs. Using `bgQueue.async`
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    private var onStoreIsReady: AnyPublisher<Void, Error> {
+        return isStoreLoaded
+            .filter { $0 }
+            .map { _ in }
+            .eraseToAnyPublisher()
     }
 }
 
