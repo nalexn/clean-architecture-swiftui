@@ -52,6 +52,7 @@
 		F66EDB6823F1599F00A01B9F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F66EDB6A23F1599F00A01B9F /* Localizable.strings */; };
 		F67451F5243A4CC200A4B498 /* RootViewAppearanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67451F4243A4CC200A4B498 /* RootViewAppearanceTests.swift */; };
 		F674964A244B059A00E1D76B /* LazyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6749649244B059A00E1D76B /* LazyList.swift */; };
+		F67B3B1F244B667B00DA7FA6 /* LazyListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67B3B1E244B667B00DA7FA6 /* LazyListTests.swift */; };
 		F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */; };
 		F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD532366E2E200C83258 /* DependencyInjector.swift */; };
 		F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DBD642368875A00C83258 /* CountriesWebRepository.swift */; };
@@ -140,6 +141,7 @@
 		F6749649244B059A00E1D76B /* LazyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyList.swift; sourceTree = "<group>"; };
 		F67833D22369CCBD0065272F /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F67833D62369CCBD0065272F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F67B3B1E244B667B00DA7FA6 /* LazyListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyListTests.swift; sourceTree = "<group>"; };
 		F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
 		F67DBD532366E2E200C83258 /* DependencyInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjector.swift; sourceTree = "<group>"; };
 		F67DBD642368875A00C83258 /* CountriesWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesWebRepository.swift; sourceTree = "<group>"; };
@@ -360,6 +362,7 @@
 			children = (
 				F6F003B0236AF31400AAC7C6 /* SystemEventsHandlerTests.swift */,
 				F6F003B2236AF9F100AAC7C6 /* LoadableTests.swift */,
+				F67B3B1E244B667B00DA7FA6 /* LazyListTests.swift */,
 				F60829742369D55700DB292E /* Repositories */,
 				F6F003B4236B034A00AAC7C6 /* Interactors */,
 				F60CC501236C3C80007E84B2 /* UI */,
@@ -617,6 +620,7 @@
 				F6F003B8236B04B400AAC7C6 /* MockedWebRepositories.swift in Sources */,
 				F60829732369CE5300DB292E /* MockedResponse.swift in Sources */,
 				F60CC503236C3CA8007E84B2 /* CountriesListTests.swift in Sources */,
+				F67B3B1F244B667B00DA7FA6 /* LazyListTests.swift in Sources */,
 				F60829782369DCD200DB292E /* TestHelpers.swift in Sources */,
 				F661F2BC237757040014E142 /* ImageWebRepositoryTests.swift in Sources */,
 				F6F003AF236A290E00AAC7C6 /* WebRepositoryTests.swift in Sources */,

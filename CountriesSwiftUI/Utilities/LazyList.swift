@@ -24,14 +24,22 @@ struct LazyList<T> {
     }
     
     func element(at index: Int) throws -> T {
-        if useCache, let element = cache[index] {
+        guard useCache else {
+            return try get(at: index)
+        }
+        return try cache.sync { elements in
+            if let element = elements[index] {
+                return element
+            }
+            let element = try get(at: index)
+            elements[index] = element
             return element
         }
+    }
+    
+    private func get(at index: Int) throws -> T {
         guard let element = try access(index) else {
             throw Error.elementIsNil(index: index)
-        }
-        if useCache {
-            cache[index] = element
         }
         return element
     }
@@ -48,29 +56,15 @@ private extension LazyList {
         
         private var elements = [Int: T]()
         
-        subscript(index: Int) -> T? {
-            get {
-                sync {
-                    $0[index]
-                }
-            }
-            set {
-                sync {
-                    $0[index] = newValue
-                }
-            }
-        }
-        
-        private func sync<V>(_ access: (inout [Int: T]) -> V?) -> V? {
-            if Thread.isMainThread {
-                return access(&elements)
-            } else {
-                var result: V?
-                DispatchQueue.main.sync {
-                    result = access(&elements)
+        func sync(_ access: (inout [Int: T]) throws -> T) throws -> T {
+            guard Thread.isMainThread else {
+                var result: T!
+                try DispatchQueue.main.sync {
+                    result = try access(&elements)
                 }
                 return result
             }
+            return try access(&elements)
         }
     }
 }
@@ -99,6 +93,9 @@ extension LazyList: Sequence {
         
         mutating func next() -> Element? {
             index += 1
+            guard index < list.count else {
+                return nil
+            }
             do {
                 return try list.element(at: index)
             } catch _ {
