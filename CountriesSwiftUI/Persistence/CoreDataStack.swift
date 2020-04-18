@@ -57,8 +57,15 @@ class CoreDataStack: PersistentStore {
             context.performAndWait {
                 do {
                     let managedObjects = try context.fetch(fetchRequest)
-                    let results = LazyList<V>(count: managedObjects.count, useCache: true) {
-                        map(managedObjects[$0])
+                    let results = LazyList<V>(count: managedObjects.count,
+                                              useCache: true) { [weak context] in
+                        let object = managedObjects[$0]
+                        let mapped = map(object)
+                        if let mo = object as? NSManagedObject {
+                            // Turning object into a fault
+                            context?.refresh(mo, mergeChanges: false)
+                        }
+                        return mapped
                     }
                     promise(.success(results))
                 } catch {
