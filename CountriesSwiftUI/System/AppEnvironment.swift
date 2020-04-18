@@ -59,14 +59,7 @@ extension AppEnvironment {
     }
     
     private static func configuredDBRepositories(appState: Store<AppState>) -> DBRepositoriesContainer {
-        let releaseMemoryCache = appState
-            .updates(for: \.system.isActive)
-            .filter { !$0 }
-            .dropFirst()
-            .map { _ in () }
-            .eraseToAnyPublisher()
-        let persistentStore = CoreDataStack(directory: .documentDirectory, version: 1,
-                                            releaseMemoryCache: releaseMemoryCache)
+        let persistentStore = CoreDataStack(directory: .documentDirectory, version: 1)
         let countriesDBRepository = RealCountriesDBRepository(persistentStore: persistentStore)
         return .init(countriesRepository: countriesDBRepository)
     }

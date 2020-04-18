@@ -21,8 +21,6 @@ protocol PersistentStore {
 class CoreDataStack: PersistentStore {
     
     let container: NSPersistentContainer
-    let releaseMemoryCache: AnyPublisher<Void, Never>
-    private let cancelBag = CancelBag()
     private let bgReadOnlyQueue = DispatchQueue(label: "coredata_read")
     private let bgUpdateQueue = DispatchQueue(label: "coredata_update")
     private lazy var bgReadContext: NSManagedObjectContext = {
@@ -31,10 +29,7 @@ class CoreDataStack: PersistentStore {
         return context
     }()
     
-    init(directory: FileManager.SearchPathDirectory = .documentDirectory,
-         version vNumber: UInt,
-         releaseMemoryCache: AnyPublisher<Void, Never>) {
-        self.releaseMemoryCache = releaseMemoryCache
+    init(directory: FileManager.SearchPathDirectory = .documentDirectory, version vNumber: UInt) {
         let version = Version(vNumber)
         container = NSPersistentContainer(name: version.modelName)
         if let url = version.dbFileURL(directory) {
@@ -50,12 +45,6 @@ class CoreDataStack: PersistentStore {
                 queues.forEach { $0.resume() }
             }
         }
-        releaseMemoryCache.sink { [weak self] in
-            self?.bgReadOnlyQueue.async {
-                self?.bgReadContext.reset()
-            }
-        }
-        .store(in: cancelBag)
     }
     
     func count<T>(_ fetchRequest: NSFetchRequest<T>) -> Int {
