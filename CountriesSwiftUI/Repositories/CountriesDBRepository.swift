@@ -13,7 +13,7 @@ protocol CountriesDBRepository {
     func hasLoadedCountries() -> Bool
     
     func store(countries: [Country]) -> AnyPublisher<Void, Error>
-    func countries(search: String, locale: Locale) -> AnyPublisher<[Country], Error>
+    func countries(search: String, locale: Locale) -> AnyPublisher<LazyList<Country>, Error>
     
     func store(countryDetails: Country.Details.Intermediate) -> AnyPublisher<Country.Details?, Error>
     func countryDetails(country: Country) -> AnyPublisher<Country.Details?, Error>
@@ -37,11 +37,11 @@ struct RealCountriesDBRepository: CountriesDBRepository {
             }
     }
     
-    func countries(search: String, locale: Locale) -> AnyPublisher<[Country], Error> {
+    func countries(search: String, locale: Locale) -> AnyPublisher<LazyList<Country>, Error> {
         let fetchRequest = CountryMO.countries(search: search, locale: locale)
         return persistentStore
             .fetch(fetchRequest) {
-                Country(managedObject: $0)
+                return Country(managedObject: $0)
             }
             .eraseToAnyPublisher()
     }
@@ -90,6 +90,7 @@ extension CountryMO {
             request.predicate = NSCompoundPredicate(type: .or, subpredicates: [nameMatch, localizedMatch])
         }
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        request.fetchBatchSize = 10
         return request
     }
     

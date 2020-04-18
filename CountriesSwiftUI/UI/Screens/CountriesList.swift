@@ -12,7 +12,7 @@ import Combine
 struct CountriesList: View {
     
     @State private var countriesSearch = CountriesSearch()
-    @State private(set) var countries: Loadable<[Country]> = .notRequested
+    @State private(set) var countries: Loadable<LazyList<Country>> = .notRequested
     @State private var routingState: Routing = .init()
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countriesList)
@@ -117,7 +117,7 @@ private extension CountriesList {
         }
     }
     
-    func loadingView(_ previouslyLoaded: [Country]?) -> some View {
+    func loadingView(_ previouslyLoaded: LazyList<Country>?) -> some View {
         if let countries = previouslyLoaded {
             return AnyView(loadedView(countries, showSearch: true, showLoading: true))
         } else {
@@ -135,11 +135,11 @@ private extension CountriesList {
 // MARK: - Displaying Content
 
 private extension CountriesList {
-    func loadedView(_ countries: [Country], showSearch: Bool, showLoading: Bool) -> some View {
+    func loadedView(_ countries: LazyList<Country>, showSearch: Bool, showLoading: Bool) -> some View {
         VStack {
             if showSearch {
                 SearchBar(text: $countriesSearch.searchText
-                    .throttled(seconds: 0.5) { _ in
+                    .onSet { _ in
                         self.reloadCountries()
                     }
                 )
@@ -196,7 +196,7 @@ private extension CountriesList {
 #if DEBUG
 struct CountriesList_Previews: PreviewProvider {
     static var previews: some View {
-        CountriesList(countries: .loaded(Country.mockedData))
+        CountriesList(countries: .loaded(Country.mockedData.lazyList))
             .inject(.preview)
     }
 }

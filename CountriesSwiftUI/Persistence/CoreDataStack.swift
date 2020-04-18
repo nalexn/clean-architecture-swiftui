@@ -14,20 +14,14 @@ protocol PersistentStore {
     
     func count<T>(_ fetchRequest: NSFetchRequest<T>) -> Int
     func fetch<T, V>(_ fetchRequest: NSFetchRequest<T>,
-                     map: @escaping (T) throws -> V?) -> AnyPublisher<[V], Error>
+                     map: @escaping (T) -> V?) -> AnyPublisher<LazyList<V>, Error>
     func update<Result>(_ operation: @escaping DBOperation<Result>) -> AnyPublisher<Result, Error>
 }
 
 class CoreDataStack: PersistentStore {
     
     let container: NSPersistentContainer
-    private let bgReadOnlyQueue = DispatchQueue(label: "coredata_read")
     private let bgUpdateQueue = DispatchQueue(label: "coredata_update")
-    private lazy var bgReadContext: NSManagedObjectContext = {
-        let context = container.newBackgroundContext()
-        context.configureAsReadOnlyContext()
-        return context
-    }()
     
     init(directory: FileManager.SearchPathDirectory = .documentDirectory, version vNumber: UInt) {
         let version = Version(vNumber)
@@ -36,13 +30,13 @@ class CoreDataStack: PersistentStore {
             let store = NSPersistentStoreDescription(url: url)
             container.persistentStoreDescriptions = [store]
         }
-        let queues = [bgReadOnlyQueue, bgUpdateQueue]
-        queues.forEach { $0.suspend() }
-        container.loadPersistentStores { (storeDescription, error) in
+        container.viewContext.configureAsReadOnlyContext()
+        bgUpdateQueue.suspend()
+        container.loadPersistentStores { [weak bgUpdateQueue] (storeDescription, error) in
             if let error = error {
                 print("CoreDataStack initialization error: \(error)")
             } else {
-                queues.forEach { $0.resume() }
+                bgUpdateQueue?.resume()
             }
         }
     }
@@ -52,25 +46,22 @@ class CoreDataStack: PersistentStore {
     }
     
     func fetch<T, V>(_ fetchRequest: NSFetchRequest<T>,
-                     map: @escaping (T) throws -> V?) -> AnyPublisher<[V], Error> {
-        return Future<[V], Error> { [weak self] promise in
-            self?.bgReadOnlyQueue.async {
-                guard let context = self?.bgReadContext else { return }
-                context.performAndWait {
-                    do {
-                        let managedObjects = try context.fetch(fetchRequest)
-                        let results = try managedObjects.compactMap(map)
-                        // Do not reset to keep the memcache
-                        // context.reset()
-                        promise(.success(results))
-                    } catch {
-                        context.reset()
-                        promise(.failure(error))
+                     map: @escaping (T) -> V?) -> AnyPublisher<LazyList<V>, Error> {
+        assert(Thread.isMainThread)
+        return Future<LazyList<V>, Error> { [weak self] promise in
+            guard let context = self?.container.viewContext else { return }
+            context.performAndWait {
+                do {
+                    let managedObjects = try context.fetch(fetchRequest)
+                    let results = LazyList<V>(count: managedObjects.count, useCache: true) {
+                        map(managedObjects[$0])
                     }
+                    promise(.success(results))
+                } catch {
+                    promise(.failure(error))
                 }
             }
         }
-        .receive(on: DispatchQueue.main)
         .eraseToAnyPublisher()
     }
     

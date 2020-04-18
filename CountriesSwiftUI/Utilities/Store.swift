@@ -56,17 +56,4 @@ extension Binding {
             perform(value)
         })
     }
-    
-    func throttled(seconds: TimeInterval, _ perform: @escaping ValueClosure) -> Self {
-        let cancelBag = CancelBag()
-        let publisher = PassthroughSubject<Value, Never>()
-        publisher
-            .throttle(for: .seconds(seconds), scheduler: DispatchQueue.main, latest: true)
-            .sink(receiveValue: { perform($0) })
-            .store(in: cancelBag)
-        return onSet { value in
-            publisher.send(value)
-            _ = cancelBag // retain
-        }
-    }
 }
