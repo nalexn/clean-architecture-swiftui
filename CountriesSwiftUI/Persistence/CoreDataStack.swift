@@ -18,9 +18,9 @@ protocol PersistentStore {
     func update<Result>(_ operation: @escaping DBOperation<Result>) -> AnyPublisher<Result, Error>
 }
 
-class CoreDataStack: PersistentStore {
+struct CoreDataStack: PersistentStore {
     
-    let container: NSPersistentContainer
+    private let container: NSPersistentContainer
     private let isStoreLoaded = CurrentValueSubject<Bool, Error>(false)
     private let bgQueue = DispatchQueue(label: "coredata")
     
@@ -31,14 +31,14 @@ class CoreDataStack: PersistentStore {
             let store = NSPersistentStoreDescription(url: url)
             container.persistentStoreDescriptions = [store]
         }
-        bgQueue.async { [weak self] in
-            self?.container.loadPersistentStores { (storeDescription, error) in
+        bgQueue.async { [weak isStoreLoaded, weak container] in
+            container?.loadPersistentStores { (storeDescription, error) in
                 DispatchQueue.main.async {
                     if let error = error {
-                        self?.isStoreLoaded.send(completion: .failure(error))
+                        isStoreLoaded?.send(completion: .failure(error))
                     } else {
-                        self?.container.viewContext.configureAsReadOnlyContext()
-                        self?.isStoreLoaded.value = true
+                        container?.viewContext.configureAsReadOnlyContext()
+                        isStoreLoaded?.value = true
                     }
                 }
             }
@@ -46,14 +46,15 @@ class CoreDataStack: PersistentStore {
     }
     
     func count<T>(_ fetchRequest: NSFetchRequest<T>) -> Int {
+        guard isStoreLoaded.value else { return 0 }
         return (try? container.viewContext.count(for: fetchRequest)) ?? 0
     }
     
     func fetch<T, V>(_ fetchRequest: NSFetchRequest<T>,
                      map: @escaping (T) -> V?) -> AnyPublisher<LazyList<V>, Error> {
         assert(Thread.isMainThread)
-        let fetch = Future<LazyList<V>, Error> { [weak self] promise in
-            guard let context = self?.container.viewContext else { return }
+        let fetch = Future<LazyList<V>, Error> { [weak container] promise in
+            guard let context = container?.viewContext else { return }
             context.performAndWait {
                 do {
                     let managedObjects = try context.fetch(fetchRequest)
@@ -79,10 +80,9 @@ class CoreDataStack: PersistentStore {
     }
     
     func update<Result>(_ operation: @escaping DBOperation<Result>) -> AnyPublisher<Result, Error> {
-        let update = Future<Result, Error> { [weak self] promise in
-            self?.bgQueue.async {
-                guard let container = self?.container else { return }
-                let context = container.newBackgroundContext()
+        let update = Future<Result, Error> { [weak bgQueue, weak container] promise in
+            bgQueue?.async {
+                guard let context = container?.newBackgroundContext() else { return }
                 context.configureAsUpdateContext()
                 context.performAndWait {
                     do {
