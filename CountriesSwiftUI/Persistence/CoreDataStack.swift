@@ -14,7 +14,7 @@ protocol PersistentStore {
     
     func count<T>(_ fetchRequest: NSFetchRequest<T>) -> Int
     func fetch<T, V>(_ fetchRequest: NSFetchRequest<T>,
-                     map: @escaping (T) -> V?) -> AnyPublisher<LazyList<V>, Error>
+                     map: @escaping (T) throws -> V?) -> AnyPublisher<LazyList<V>, Error>
     func update<Result>(_ operation: @escaping DBOperation<Result>) -> AnyPublisher<Result, Error>
 }
 
@@ -24,10 +24,12 @@ struct CoreDataStack: PersistentStore {
     private let isStoreLoaded = CurrentValueSubject<Bool, Error>(false)
     private let bgQueue = DispatchQueue(label: "coredata")
     
-    init(directory: FileManager.SearchPathDirectory = .documentDirectory, version vNumber: UInt) {
+    init(directory: FileManager.SearchPathDirectory = .documentDirectory,
+         domainMask: FileManager.SearchPathDomainMask = .userDomainMask,
+         version vNumber: UInt) {
         let version = Version(vNumber)
         container = NSPersistentContainer(name: version.modelName)
-        if let url = version.dbFileURL(directory) {
+        if let url = version.dbFileURL(directory, domainMask) {
             let store = NSPersistentStoreDescription(url: url)
             container.persistentStoreDescriptions = [store]
         }
@@ -51,7 +53,7 @@ struct CoreDataStack: PersistentStore {
     }
     
     func fetch<T, V>(_ fetchRequest: NSFetchRequest<T>,
-                     map: @escaping (T) -> V?) -> AnyPublisher<LazyList<V>, Error> {
+                     map: @escaping (T) throws -> V?) -> AnyPublisher<LazyList<V>, Error> {
         assert(Thread.isMainThread)
         let fetch = Future<LazyList<V>, Error> { [weak container] promise in
             guard let context = container?.viewContext else { return }
@@ -61,7 +63,7 @@ struct CoreDataStack: PersistentStore {
                     let results = LazyList<V>(count: managedObjects.count,
                                               useCache: true) { [weak context] in
                         let object = managedObjects[$0]
-                        let mapped = map(object)
+                        let mapped = try map(object)
                         if let mo = object as? NSManagedObject {
                             // Turning object into a fault
                             context?.refresh(mo, mergeChanges: false)
@@ -128,9 +130,10 @@ extension CoreDataStack {
             return "db_model_v1"
         }
         
-        func dbFileURL(_ directory: FileManager.SearchPathDirectory) -> URL? {
+        func dbFileURL(_ directory: FileManager.SearchPathDirectory,
+                       _ domainMask: FileManager.SearchPathDomainMask) -> URL? {
             return FileManager.default
-                .urls(for: directory, in: .userDomainMask).first?
+                .urls(for: directory, in: domainMask).first?
                 .appendingPathComponent(subpathToDB)
         }
         

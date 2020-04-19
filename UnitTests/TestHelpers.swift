@@ -38,6 +38,17 @@ extension Result where Success: Equatable {
     }
 }
 
+extension Result where Success == Void {
+    func assertSuccess(file: StaticString = #file, line: UInt = #line) {
+        switch self {
+        case let .failure(error):
+            XCTFail("Unexpected error: \(error)", file: file, line: line)
+        case .success:
+            break
+        }
+    }
+}
+
 extension Result {
     func assertFailure(_ message: String, file: StaticString = #file, line: UInt = #line) {
         switch self {
