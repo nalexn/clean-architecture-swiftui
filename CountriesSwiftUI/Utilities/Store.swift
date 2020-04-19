@@ -41,11 +41,19 @@ extension Store {
 extension Binding where Value: Equatable {
     func dispatched<State>(to state: Store<State>,
                            _ keyPath: WritableKeyPath<State, Value>) -> Self {
+        return onSet { state[keyPath] = $0 }
+    }
+}
+
+extension Binding {
+    typealias ValueClosure = (Value) -> Void
+    
+    func onSet(_ perform: @escaping ValueClosure) -> Self {
         return .init(get: { () -> Value in
             self.wrappedValue
         }, set: { value in
             self.wrappedValue = value
-            state[keyPath] = value
+            perform(value)
         })
     }
 }

@@ -25,6 +25,7 @@ The app uses the [restcountries.eu](https://restcountries.eu/) REST API to show 
 * Decoupled **Presentation**, **Business Logic**, and **Data Access** layers
 * Full test coverage, including the UI (thanks to the [ViewInspector](https://github.com/nalexn/ViewInspector))
 * **Redux**-like centralized `AppState` as the single source of truth
+* Data persistence with **CoreData**
 * Native SwiftUI dependency injection
 * **Programmatic navigation** (deep links support)
 * Simple yet flexible networking layer built on Generics
@@ -53,6 +54,14 @@ Business Logic Layer is represented by `Interactors`.
 Interactors receive requests to perform work, such as obtaining data from an external source or making computations, but they never return data back directly.
 
 Instead, they forward the result to the `AppState` or to a `Binding`. The latter is used when the result of work (the data) is used locally by one View and does not belong to the `AppState`.
+
+[Previously](https://github.com/nalexn/clean-architecture-swiftui/releases/tag/1.0), this app did not use CoreData for persistence, and all loaded data were stored in the `AppState`.
+
+With the persistence layer in place we have a choice - either to load the DB content onto the `AppState`, or serve the data from `Interactors` on an on-demand basis.
+
+The first option suits best when you don't have a lot of data, for example, when you just store the last used login email in the `UserDefaults`. Then, the corresponding string value can just be loaded onto the `AppState` at launch and updated by the `Interactor` when the user changes the input.
+
+The second option is better when you have massive amounts of data and introduce a fully-fledged database for storing it locally.
 
 ### Data Access Layer
 

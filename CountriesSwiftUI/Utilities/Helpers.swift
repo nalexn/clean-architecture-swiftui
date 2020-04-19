@@ -19,7 +19,7 @@ extension ProcessInfo {
 
 extension String {
     func localized(_ locale: Locale) -> String {
-        let localeId = String(locale.identifier.prefix(2))
+        let localeId = locale.shortIdentifier
         guard let path = Bundle.main.path(forResource: localeId, ofType: "lproj"),
             let bundle = Bundle(path: path) else {
             return NSLocalizedString(self, comment: "")

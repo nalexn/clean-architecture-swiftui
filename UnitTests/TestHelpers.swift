@@ -38,6 +38,17 @@ extension Result where Success: Equatable {
     }
 }
 
+extension Result where Success == Void {
+    func assertSuccess(file: StaticString = #file, line: UInt = #line) {
+        switch self {
+        case let .failure(error):
+            XCTFail("Unexpected error: \(error)", file: file, line: line)
+        case .success:
+            break
+        }
+    }
+}
+
 extension Result {
     func assertFailure(_ message: String, file: StaticString = #file, line: UInt = #line) {
         switch self {
@@ -51,9 +62,53 @@ extension Result {
 
 extension Result {
     func publish() -> AnyPublisher<Success, Failure> {
-        return publisher
-            .delay(for: .milliseconds(10), scheduler: RunLoop.main)
+        return publisher.publish()
+    }
+}
+
+extension Publisher {
+    func publish() -> AnyPublisher<Output, Failure> {
+        delay(for: .milliseconds(10), scheduler: RunLoop.main)
             .eraseToAnyPublisher()
+    }
+}
+
+// MARK: - XCTestCase
+
+func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T,
+                       _ expression2: @autoclosure () throws -> T,
+                       removing prefixes: [String],
+                       file: StaticString = #file, line: UInt = #line) where T: Equatable {
+    do {
+        let exp1 = try expression1()
+        let exp2 = try expression2()
+        if exp1 != exp2 {
+            let desc1 = prefixes.reduce(String(describing: exp1), { (str, prefix) in
+                str.replacingOccurrences(of: prefix, with: "")
+            })
+            let desc2 = prefixes.reduce(String(describing: exp2), { (str, prefix) in
+                str.replacingOccurrences(of: prefix, with: "")
+            })
+            XCTFail("XCTAssertEqual failed:\n\n\(desc1)\n\nis not equal to\n\n\(desc2)", file: file, line: line)
+        }
+    } catch {
+        XCTFail("Unexpected exception: \(error)")
+    }
+}
+
+protocol PrefixRemovable { }
+
+extension PrefixRemovable {
+    static var prefixes: [String] {
+        let name = String(reflecting: Self.self)
+        var components = name.components(separatedBy: ".")
+        let module = components.removeFirst()
+        let fullTypeName = components.joined(separator: ".")
+        return [
+            "\(module).",
+            "Loadable<\(fullTypeName)>",
+            "Loadable<LazyList<\(fullTypeName)>>"
+        ]
     }
 }
 
@@ -82,6 +137,7 @@ struct BindingWithPublisher<Value> {
 
 enum MockError: Swift.Error {
     case valueNotSet
+    case codeDataModel
 }
 
 extension NSError {
