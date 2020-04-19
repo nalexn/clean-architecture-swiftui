@@ -11,14 +11,16 @@ import Combine
 import Foundation
 
 extension Just where Output == Void {
-    static func withErrorType() -> AnyPublisher<Void, Error> {
-        return withErrorType(())
+    static func withErrorType<E>(_ errorType: E.Type) -> AnyPublisher<Void, E> {
+        return withErrorType((), E.self)
     }
 }
 
 extension Just {
-    static func withErrorType(_ value: Output) -> AnyPublisher<Output, Error> {
-        return Future<Output, Error> { $0(.success(value)) }
+    static func withErrorType<E>(_ value: Output, _ errorType: E.Type
+    ) -> AnyPublisher<Output, E> {
+        return Just(value)
+            .setFailureType(to: E.self)
             .eraseToAnyPublisher()
     }
 }

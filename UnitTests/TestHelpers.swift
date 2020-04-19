@@ -62,8 +62,13 @@ extension Result {
 
 extension Result {
     func publish() -> AnyPublisher<Success, Failure> {
-        return publisher
-            .delay(for: .milliseconds(10), scheduler: RunLoop.main)
+        return publisher.publish()
+    }
+}
+
+extension Publisher {
+    func publish() -> AnyPublisher<Output, Failure> {
+        delay(for: .milliseconds(10), scheduler: RunLoop.main)
             .eraseToAnyPublisher()
     }
 }
@@ -132,6 +137,7 @@ struct BindingWithPublisher<Value> {
 
 enum MockError: Swift.Error {
     case valueNotSet
+    case codeDataModel
 }
 
 extension NSError {

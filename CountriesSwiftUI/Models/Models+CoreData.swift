@@ -46,13 +46,15 @@ extension Country.Details {
 extension Country.Details.Intermediate {
     
     @discardableResult
-    func store(in context: NSManagedObjectContext, borders: [CountryMO]) -> CountryDetailsMO? {
+    func store(in context: NSManagedObjectContext,
+               country: CountryMO, borders: [CountryMO]) -> CountryDetailsMO? {
         guard let details = CountryDetailsMO.insertNew(in: context)
             else { return nil }
         details.capital = capital
         let storedCurrencies = currencies.compactMap { $0.store(in: context) }
         details.currencies = NSSet(array: storedCurrencies)
         details.borders = NSSet(array: borders)
+        country.countryDetails = details
         return details
     }
 }

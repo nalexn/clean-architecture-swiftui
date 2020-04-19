@@ -46,7 +46,8 @@ final class MockedCountriesDBRepository: Mock, CountriesDBRepository {
         return fetchCountriesResult.publish()
     }
     
-    func store(countryDetails: Country.Details.Intermediate) -> AnyPublisher<Country.Details?, Error> {
+    func store(countryDetails: Country.Details.Intermediate,
+               for country: Country) -> AnyPublisher<Country.Details?, Error> {
         register(.storeCountryDetails(countryDetails))
         return storeCountryDetailsResult.publish()
     }

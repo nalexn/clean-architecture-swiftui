@@ -35,9 +35,9 @@ struct RealCountriesInteractor: CountriesInteractor {
         let shouldLoadFromWeb = !dbRepository.hasLoadedCountries()
         
         Just<Void>
-            .withErrorType()
+            .withErrorType(Error.self)
             .flatMap { _ -> AnyPublisher<Void, Error> in
-                return shouldLoadFromWeb ? self.loadAndStoreCountriesFromWeb() : Just<Void>.withErrorType()
+                return shouldLoadFromWeb ? self.loadAndStoreCountriesFromWeb() : Just<Void>.withErrorType(Error.self)
             }
             .flatMap { [dbRepository] in
                 dbRepository.countries(search: search, locale: locale)
@@ -64,7 +64,7 @@ struct RealCountriesInteractor: CountriesInteractor {
             .countryDetails(country: country)
             .flatMap { details -> AnyPublisher<Country.Details?, Error> in
                 if details != nil {
-                    return Just<Country.Details?>.withErrorType(details)
+                    return Just<Country.Details?>.withErrorType(details, Error.self)
                 } else {
                     return self.loadAndStoreCountryDetailsFromWeb(country: country)
                 }
@@ -77,7 +77,7 @@ struct RealCountriesInteractor: CountriesInteractor {
         return webRepository
             .loadCountryDetails(country: country)
             .flatMap { [dbRepository] in
-                dbRepository.store(countryDetails: $0)
+                dbRepository.store(countryDetails: $0, for: country)
             }
             .eraseToAnyPublisher()
     }

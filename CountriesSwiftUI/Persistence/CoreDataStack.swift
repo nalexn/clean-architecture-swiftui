@@ -118,6 +118,10 @@ struct CoreDataStack: PersistentStore {
 
 // MARK: - Versioning
 
+extension CoreDataStack.Version {
+    static var actual: UInt { 1 }
+}
+
 extension CoreDataStack {
     struct Version {
         private let number: UInt

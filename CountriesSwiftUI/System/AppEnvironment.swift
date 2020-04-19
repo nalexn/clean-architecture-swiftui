@@ -59,7 +59,7 @@ extension AppEnvironment {
     }
     
     private static func configuredDBRepositories(appState: Store<AppState>) -> DBRepositoriesContainer {
-        let persistentStore = CoreDataStack(version: 1)
+        let persistentStore = CoreDataStack(version: CoreDataStack.Version.actual)
         let countriesDBRepository = RealCountriesDBRepository(persistentStore: persistentStore)
         return .init(countriesRepository: countriesDBRepository)
     }
