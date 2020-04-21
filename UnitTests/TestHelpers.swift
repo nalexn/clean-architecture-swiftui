@@ -50,12 +50,14 @@ extension Result where Success == Void {
 }
 
 extension Result {
-    func assertFailure(_ message: String, file: StaticString = #file, line: UInt = #line) {
+    func assertFailure(_ message: String? = nil, file: StaticString = #file, line: UInt = #line) {
         switch self {
         case let .success(value):
             XCTFail("Unexpected success: \(value)", file: file, line: line)
         case let .failure(error):
-            XCTAssertEqual(error.localizedDescription, message, file: file, line: line)
+            if let message = message {
+                XCTAssertEqual(error.localizedDescription, message, file: file, line: line)
+            }
         }
     }
 }

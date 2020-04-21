@@ -66,7 +66,7 @@ private extension DeepLinkUITests {
         let imagesRepo = MockedImageWebRepository()
         
         // Mocking successful loading the list of countries:
-        countriesDBRepo.hasLoadedCountriesResult = false
+        countriesDBRepo.hasLoadedCountriesResult = .success(false)
         countriesWebRepo.countriesResponse = .success(countries)
         countriesDBRepo.storeCountriesResult = .success(())
         countriesDBRepo.fetchCountriesResult = .success(countries.lazyList)

@@ -69,32 +69,43 @@ final class CoreDataStackV1Tests: CoreDataStackTests {
             return nil
         }
         .sinkToResult { result in
-            result.assertFailure("The file couldn’t be saved because you don’t have permission.")
+            result.assertFailure()
             exp.fulfill()
         }
         .store(in: cancelBag)
         wait(for: [exp], timeout: 1)
     }
     
-    func test_counting_whenStoreIsNotLoaded() {
+    func test_counting_onEmptyStore() {
         let request = CountryMO.newFetchRequest()
         request.predicate = NSPredicate(value: true)
-        XCTAssertEqual(sut.count(request), 0)
+        let exp = XCTestExpectation(description: #function)
+        sut.count(request)
+        .sinkToResult { result in
+            result.assertSuccess(value: 0)
+            exp.fulfill()
+        }
+        .store(in: cancelBag)
+        wait(for: [exp], timeout: 1)
     }
     
     func test_storing_and_countring() {
         let countries = Country.mockedData
+        
+        let request = CountryMO.newFetchRequest()
+        request.predicate = NSPredicate(value: true)
+        
         let exp = XCTestExpectation(description: #function)
         sut.update { context in
             countries.forEach {
                 $0.store(in: context)
             }
         }
+        .flatMap { _ in
+            self.sut.count(request)
+        }
         .sinkToResult { result in
-            result.assertSuccess()
-            let request = CountryMO.newFetchRequest()
-            request.predicate = NSPredicate(value: true)
-            XCTAssertEqual(self.sut.count(request), countries.count)
+            result.assertSuccess(value: countries.count)
             exp.fulfill()
         }
         .store(in: cancelBag)

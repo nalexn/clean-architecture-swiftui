@@ -12,7 +12,7 @@ import Combine
 protocol PersistentStore {
     typealias DBOperation<Result> = (NSManagedObjectContext) throws -> Result
     
-    func count<T>(_ fetchRequest: NSFetchRequest<T>) -> Int
+    func count<T>(_ fetchRequest: NSFetchRequest<T>) -> AnyPublisher<Int, Error>
     func fetch<T, V>(_ fetchRequest: NSFetchRequest<T>,
                      map: @escaping (T) throws -> V?) -> AnyPublisher<LazyList<V>, Error>
     func update<Result>(_ operation: @escaping DBOperation<Result>) -> AnyPublisher<Result, Error>
@@ -47,9 +47,19 @@ struct CoreDataStack: PersistentStore {
         }
     }
     
-    func count<T>(_ fetchRequest: NSFetchRequest<T>) -> Int {
-        guard isStoreLoaded.value else { return 0 }
-        return (try? container.viewContext.count(for: fetchRequest)) ?? 0
+    func count<T>(_ fetchRequest: NSFetchRequest<T>) -> AnyPublisher<Int, Error> {
+        return onStoreIsReady
+            .flatMap { [weak container] in
+                Future<Int, Error> { promise in
+                    do {
+                        let count = try container?.viewContext.count(for: fetchRequest) ?? 0
+                        promise(.success(count))
+                    } catch {
+                        promise(.failure(error))
+                    }
+                }
+            }
+            .eraseToAnyPublisher()
     }
     
     func fetch<T, V>(_ fetchRequest: NSFetchRequest<T>,

@@ -51,7 +51,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         
         // Configuring responses from repositories
         
-        mockedDBRepo.hasLoadedCountriesResult = true
+        mockedDBRepo.hasLoadedCountriesResult = .success(true)
         mockedDBRepo.fetchCountriesResult = .success(list.lazyList)
         
         let countries = BindingWithPublisher(value: Loadable<LazyList<Country>>.notRequested)
@@ -84,7 +84,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         
         // Configuring responses from repositories
         
-        mockedDBRepo.hasLoadedCountriesResult = true
+        mockedDBRepo.hasLoadedCountriesResult = .success(true)
         mockedDBRepo.fetchCountriesResult = .failure(error)
         
         let countries = BindingWithPublisher(value: Loadable<LazyList<Country>>.notRequested)
@@ -118,7 +118,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         // Configuring responses from repositories
         
         mockedWebRepo.countriesResponse = .failure(error)
-        mockedDBRepo.hasLoadedCountriesResult = false
+        mockedDBRepo.hasLoadedCountriesResult = .success(false)
         
         let countries = BindingWithPublisher(value: Loadable<LazyList<Country>>.notRequested)
         sut.load(countries: countries.binding, search: "abc", locale: .backendDefault)
@@ -153,7 +153,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         // Configuring responses from repositories
         
         mockedWebRepo.countriesResponse = .success(list)
-        mockedDBRepo.hasLoadedCountriesResult = false
+        mockedDBRepo.hasLoadedCountriesResult = .success(false)
         mockedDBRepo.storeCountriesResult = .success(())
         mockedDBRepo.fetchCountriesResult = .success(list.lazyList)
         
@@ -190,7 +190,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         // Configuring responses from repositories
         
         mockedWebRepo.countriesResponse = .success(list)
-        mockedDBRepo.hasLoadedCountriesResult = false
+        mockedDBRepo.hasLoadedCountriesResult = .success(false)
         mockedDBRepo.storeCountriesResult = .failure(error)
         
         let countries = BindingWithPublisher(value: Loadable<LazyList<Country>>.notRequested)

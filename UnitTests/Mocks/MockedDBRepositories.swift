@@ -23,7 +23,7 @@ final class MockedCountriesDBRepository: Mock, CountriesDBRepository {
     }
     var actions = MockActions<Action>(expected: [])
     
-    var hasLoadedCountriesResult: Bool = true
+    var hasLoadedCountriesResult: Result<Bool, Error> = .failure(MockError.valueNotSet)
     var storeCountriesResult: Result<Void, Error> = .failure(MockError.valueNotSet)
     var fetchCountriesResult: Result<LazyList<Country>, Error> = .failure(MockError.valueNotSet)
     var storeCountryDetailsResult: Result<Country.Details?, Error> = .failure(MockError.valueNotSet)
@@ -31,9 +31,9 @@ final class MockedCountriesDBRepository: Mock, CountriesDBRepository {
     
     // MARK: - API
     
-    func hasLoadedCountries() -> Bool {
+    func hasLoadedCountries() -> AnyPublisher<Bool, Error> {
         register(.hasLoadedCountries)
-        return hasLoadedCountriesResult
+        return hasLoadedCountriesResult.publish()
     }
     
     func store(countries: [Country]) -> AnyPublisher<Void, Error> {

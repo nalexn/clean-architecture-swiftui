@@ -32,12 +32,17 @@ struct RealCountriesInteractor: CountriesInteractor {
         let cancelBag = CancelBag()
         countries.wrappedValue.setIsLoading(cancelBag: cancelBag)
         
-        let shouldLoadFromWeb = !dbRepository.hasLoadedCountries()
-        
         Just<Void>
             .withErrorType(Error.self)
-            .flatMap { _ -> AnyPublisher<Void, Error> in
-                return shouldLoadFromWeb ? self.loadAndStoreCountriesFromWeb() : Just<Void>.withErrorType(Error.self)
+            .flatMap { [dbRepository] _ -> AnyPublisher<Bool, Error> in
+                dbRepository.hasLoadedCountries()
+            }
+            .flatMap { hasLoaded -> AnyPublisher<Void, Error> in
+                if hasLoaded {
+                    return Just<Void>.withErrorType(Error.self)
+                } else {
+                    return self.loadAndStoreCountriesFromWeb()
+                }
             }
             .flatMap { [dbRepository] in
                 dbRepository.countries(search: search, locale: locale)

@@ -32,9 +32,9 @@ final class MockedPersistentStore: Mock, PersistentStore {
     
     // MARK: - count
     
-    func count<T>(_ fetchRequest: NSFetchRequest<T>) -> Int {
+    func count<T>(_ fetchRequest: NSFetchRequest<T>) -> AnyPublisher<Int, Error> {
         register(.count)
-        return countResult
+        return Just<Int>.withErrorType(countResult, Error.self).publish()
     }
     
     // MARK: - fetch

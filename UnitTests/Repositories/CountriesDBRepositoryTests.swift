@@ -38,11 +38,21 @@ final class CountriesListDBRepoTests: CountriesDBRepositoryTests {
             .count,
             .count
         ])
+        let exp = XCTestExpectation(description: #function)
         mockedStore.countResult = 0
-        XCTAssertFalse(sut.hasLoadedCountries())
-        mockedStore.countResult = 10
-        XCTAssertTrue(sut.hasLoadedCountries())
-        mockedStore.verify()
+        sut.hasLoadedCountries()
+            .flatMap { value -> AnyPublisher<Bool, Error> in
+                XCTAssertFalse(value)
+                self.mockedStore.countResult = 10
+                return self.sut.hasLoadedCountries()
+            }
+            .sinkToResult { result in
+                result.assertSuccess(value: true)
+                self.mockedStore.verify()
+                exp.fulfill()
+            }
+            .store(in: cancelBag)
+        wait(for: [exp], timeout: 0.5)
     }
     
     func test_storeCountries() {

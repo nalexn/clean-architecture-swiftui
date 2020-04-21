@@ -10,7 +10,7 @@ import CoreData
 import Combine
 
 protocol CountriesDBRepository {
-    func hasLoadedCountries() -> Bool
+    func hasLoadedCountries() -> AnyPublisher<Bool, Error>
     
     func store(countries: [Country]) -> AnyPublisher<Void, Error>
     func countries(search: String, locale: Locale) -> AnyPublisher<LazyList<Country>, Error>
@@ -24,9 +24,12 @@ struct RealCountriesDBRepository: CountriesDBRepository {
     
     let persistentStore: PersistentStore
     
-    func hasLoadedCountries() -> Bool {
+    func hasLoadedCountries() -> AnyPublisher<Bool, Error> {
         let fetchRequest = CountryMO.justOneCountry()
-        return persistentStore.count(fetchRequest) > 0
+        return persistentStore
+            .count(fetchRequest)
+            .map { $0 > 0 }
+            .eraseToAnyPublisher()
     }
     
     func store(countries: [Country]) -> AnyPublisher<Void, Error> {
