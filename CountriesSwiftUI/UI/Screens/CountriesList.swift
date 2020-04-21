@@ -159,6 +159,7 @@ private extension CountriesList {
                         CountryCell(country: country)
                     }
             }
+            .id(countries.count)
         }.padding(.bottom, self.countriesSearch.keyboardHeight)
     }
     
