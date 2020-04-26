@@ -95,7 +95,9 @@ private extension CountriesList {
     func loadedView(_ countries: LazyList<Country>, showSearch: Bool, showLoading: Bool) -> some View {
         VStack {
             if showSearch {
-                SearchBar(text: $viewModel.countriesSearch.searchText)
+                SearchBar(text: $viewModel.countriesSearch.searchText.onSet({ _ in
+                    self.viewModel.reloadCountries()
+                }))
             }
             if showLoading {
                 ActivityIndicatorView().padding()
