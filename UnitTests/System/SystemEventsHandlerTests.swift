@@ -15,7 +15,19 @@ final class SystemEventsHandlerTests: XCTestCase {
     var sut: RealSystemEventsHandler!
 
     override func setUp() {
-        sut = RealSystemEventsHandler(appState: .init(AppState()))
+        let interactors = DIContainer.Interactors(
+            countriesInteractor: MockedCountriesInteractor(expected: []),
+            imagesInteractor: MockedImagesInteractor(expected: []),
+            userPermissionsInteractor: MockedUserPermissionsInteractor(expected: []))
+        let container = DIContainer(appState: AppState(),
+                                    interactors: interactors)
+        let deepLinksHandler = MockedDeepLinksHandler()
+        let pushNotificationsHandler = DummyPushNotificationsHandler()
+        let pushTokenWebRepository = MockedPushTokenWebRepository()
+        sut = RealSystemEventsHandler(container: container,
+                                      deepLinksHandler: deepLinksHandler,
+                                      pushNotificationsHandler: pushNotificationsHandler,
+                                      pushTokenWebRepository: pushTokenWebRepository)
     }
 
     func test_didBecomeActive() {
@@ -93,4 +105,10 @@ private extension UIOpenURLContext {
         }
     }
 
+}
+
+extension RealSystemEventsHandler {
+    var appState: Store<AppState> {
+        self.container.appState
+    }
 }

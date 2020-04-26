@@ -42,10 +42,10 @@ extension AppEnvironment {
         let diContainer = DIContainer(appState: appState, interactors: interactors)
         let deepLinksHandler = RealDeepLinksHandler(container: diContainer)
         let pushNotificationsHandler = RealPushNotificationsHandler(deepLinksHandler: deepLinksHandler)
-        let systemEventsHandler = RealSystemEventsHandler(container: diContainer,
-                                                          webRepositories: webRepositories,
-                                                          deepLinksHandler: deepLinksHandler,
-                                                          pushNotificationsHandler: pushNotificationsHandler)
+        let systemEventsHandler = RealSystemEventsHandler(
+            container: diContainer, deepLinksHandler: deepLinksHandler,
+            pushNotificationsHandler: pushNotificationsHandler,
+            pushTokenWebRepository: webRepositories.pushTokenWebRepository)
         return AppEnvironment(container: diContainer,
                               systemEventsHandler: systemEventsHandler)
     }

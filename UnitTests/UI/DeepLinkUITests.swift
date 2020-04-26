@@ -83,7 +83,9 @@ private extension DeepLinkUITests {
                                                           dbRepository: countriesDBRepo,
                                                           appState: store)
         let imagesInteractor = RealImagesInteractor(webRepository: imagesRepo)
+        let permissionsInteractor = RealUserPermissionsInteractor(appState: store, openAppSettings: { })
         return DIContainer.Interactors(countriesInteractor: countriesInteractor,
-                                       imagesInteractor: imagesInteractor)
+                                       imagesInteractor: imagesInteractor,
+                                       userPermissionsInteractor: permissionsInteractor)
     }
 }

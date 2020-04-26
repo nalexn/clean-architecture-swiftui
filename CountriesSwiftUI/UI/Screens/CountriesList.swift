@@ -32,8 +32,8 @@ struct CountriesList: View {
         GeometryReader { geometry in
             NavigationView {
                 self.content
-                    .navigationBarTitle("Countries".localized(self.locale))
                     .navigationBarItems(trailing: self.permissionsButton)
+                    .navigationBarTitle("Countries".localized(self.locale))
                     .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum DeepLink {
+enum DeepLink: Equatable {
     
     case showCountryFlag(alpha3Code: Country.Code)
     

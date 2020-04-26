@@ -20,21 +20,21 @@ protocol SystemEventsHandler {
 
 struct RealSystemEventsHandler: SystemEventsHandler {
     
-    private let container: DIContainer
-    private let deepLinksHandler: DeepLinksHandler
-    private let pushNotificationsHandler: PushNotificationsHandler
-    private let pushTokenWebRepository: PushTokenWebRepository
+    let container: DIContainer
+    let deepLinksHandler: DeepLinksHandler
+    let pushNotificationsHandler: PushNotificationsHandler
+    let pushTokenWebRepository: PushTokenWebRepository
     private var cancelBag = CancelBag()
     
     init(container: DIContainer,
-         webRepositories: DIContainer.WebRepositories,
          deepLinksHandler: DeepLinksHandler,
-         pushNotificationsHandler: PushNotificationsHandler) {
+         pushNotificationsHandler: PushNotificationsHandler,
+         pushTokenWebRepository: PushTokenWebRepository) {
         
         self.container = container
         self.deepLinksHandler = deepLinksHandler
         self.pushNotificationsHandler = pushNotificationsHandler
-        self.pushTokenWebRepository = webRepositories.pushTokenWebRepository
+        self.pushTokenWebRepository = pushTokenWebRepository
         
         installKeyboardHeightObserver()
         installPushNotificationsSubscriberOnLaunch()
