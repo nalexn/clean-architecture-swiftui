@@ -89,4 +89,14 @@ final class LoadableTests: XCTestCase {
         }
         XCTAssertNotNil(failedErrValue.error)
     }
+    
+    func test_throwingMap() {
+        let value = Loadable<Int>.loaded(5)
+        let sut = value.map { _ in throw NSError.test }
+        XCTAssertNotNil(sut.error)
+    }
+    
+    func test_valueIsMissing() {
+        XCTAssertEqual(ValueIsMissingError().localizedDescription, "Data is missing")
+    }
 }

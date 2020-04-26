@@ -52,18 +52,9 @@ extension Country.Currency: Identifiable {
     var id: String { code }
 }
 
-extension Country.Details.Intermediate {
-    func substituteNeighbors(countries: [Country]) -> Country.Details {
-        let countries = self.borders.compactMap { code in
-            return countries.first(where: { $0.alpha3Code == code })
-        }
-        return Country.Details(capital: capital, currencies: currencies, neighbors: countries)
-    }
-}
-
 extension Country {
     func name(locale: Locale) -> String {
-        let localeId = String(locale.identifier.prefix(2))
+        let localeId = locale.shortIdentifier
         if let value = translations[localeId], let localizedName = value {
             return localizedName
         }

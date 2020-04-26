@@ -56,3 +56,21 @@ final class MockedImageWebRepository: TestWebRepository, Mock, ImageWebRepositor
         return imageResponse.publish()
     }
 }
+
+// MARK: - PushTokenWebRepository
+
+final class MockedPushTokenWebRepository: TestWebRepository, Mock, PushTokenWebRepository {
+    enum Action: Equatable {
+        case register(Data)
+    }
+    var actions = MockActions<Action>(expected: [])
+    
+    init(expected: [Action]) {
+        self.actions = .init(expected: expected)
+    }
+    
+    func register(devicePushToken: Data) -> AnyPublisher<Void, Error> {
+        register(.register(devicePushToken))
+        return Just<Void>.withErrorType(Error.self)
+    }
+}

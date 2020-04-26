@@ -1,0 +1,10 @@
+{
+   "Simulator Target Bundle": "com.countries.swiftui",
+   "aps" : {
+      "alert" : {
+         "title": "SwiftUI Countries",
+         "body" : "🇦🇩Tap to see Andorra's flag"
+      },
+      "country" : "AND"
+   }
+}

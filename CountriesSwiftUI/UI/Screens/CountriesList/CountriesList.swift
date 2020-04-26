@@ -20,7 +20,7 @@ struct CountriesList: View {
             NavigationView {
                 self.content
                     .navigationBarTitle("Countries".localized(self.locale))
-                    .navigationBarHidden(self.viewModel.keyboardHeight > 0)
+                    .navigationBarHidden(self.viewModel.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }
             .modifier(NavigationViewStyle())
@@ -31,13 +31,13 @@ struct CountriesList: View {
     }
     
     private var content: AnyView {
-        switch viewModel.countries.filtered {
+        switch viewModel.countries {
         case .notRequested:
             return AnyView(notRequestedView)
         case let .isLoading(last, _):
             return AnyView(loadingView(last))
         case let .loaded(countries):
-            return AnyView(loadedView(countries, showSearch: true))
+            return AnyView(loadedView(countries, showSearch: true, showLoading: false))
         case let .failed(error):
             return AnyView(failedView(error))
         }
@@ -70,22 +70,21 @@ private extension CountriesList {
 private extension CountriesList {
     var notRequestedView: some View {
         Text("").onAppear {
-            self.viewModel.loadCountries()
+            self.viewModel.reloadCountries()
         }
     }
     
-    func loadingView(_ previouslyLoaded: [Country]?) -> some View {
-        VStack {
-            ActivityIndicatorView().padding()
-            previouslyLoaded.map {
-                loadedView($0, showSearch: false)
-            }
+    func loadingView(_ previouslyLoaded: LazyList<Country>?) -> some View {
+        if let countries = previouslyLoaded {
+            return AnyView(loadedView(countries, showSearch: true, showLoading: true))
+        } else {
+            return AnyView(ActivityIndicatorView().padding())
         }
     }
     
     func failedView(_ error: Error) -> some View {
         ErrorView(error: error, retryAction: {
-            self.viewModel.loadCountries()
+            self.viewModel.reloadCountries()
         })
     }
 }
@@ -93,10 +92,13 @@ private extension CountriesList {
 // MARK: - Displaying Content
 
 private extension CountriesList {
-    func loadedView(_ countries: [Country], showSearch: Bool) -> some View {
+    func loadedView(_ countries: LazyList<Country>, showSearch: Bool, showLoading: Bool) -> some View {
         VStack {
             if showSearch {
-                SearchBar(text: $viewModel.countries.searchText)
+                SearchBar(text: $viewModel.countriesSearch.searchText)
+            }
+            if showLoading {
+                ActivityIndicatorView().padding()
             }
             List(countries) { country in
                 NavigationLink(
@@ -106,7 +108,7 @@ private extension CountriesList {
                         CountryCell(country: country)
                     }
             }
-        }.padding(.bottom, self.viewModel.keyboardHeight)
+        }.padding(.bottom, self.viewModel.countriesSearch.keyboardHeight)
     }
     
     func detailsView(country: Country) -> some View {

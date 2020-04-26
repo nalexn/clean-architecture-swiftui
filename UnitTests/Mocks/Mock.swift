@@ -43,7 +43,7 @@ final class MockActions<Action> where Action: Equatable {
         if factual == expected { return }
         let factualNames = factual.map { "." + String(describing: $0) }
         let expectedNames = expected.map { "." + String(describing: $0) }
-        XCTFail("\(name)\nExpected:\n\(expectedNames)\nReceived:\n\(factualNames)", file: file, line: line)
+        XCTFail("\(name)\n\nExpected:\n\n\(expectedNames)\n\nReceived:\n\n\(factualNames)", file: file, line: line)
     }
     
     private var name: String {

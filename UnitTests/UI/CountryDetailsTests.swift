@@ -61,6 +61,22 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    func test_details_isLoading_cancellation() {
+        let services = DIContainer.Services.mocked()
+        let container = DIContainer(appState: AppState(), services: services)
+        let viewModel = CountryDetails.ViewModel(
+            container: container, country: country, details:
+            .isLoading(last: Country.Details.mockedData[0], cancelBag: CancelBag()))
+        let sut = CountryDetails(viewModel: viewModel)
+        let exp = sut.inspection.inspect { view in
+            XCTAssertNoThrow(try view.content().vStack().view(ActivityIndicatorView.self, 0))
+            try view.content().vStack().button(1).tap()
+            services.verify()
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 2)
+    }
+    
     func test_details_loaded() {
         let services = DIContainer.Services.mocked(
             imagesService: [.loadImage(country.flag)]

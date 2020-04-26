@@ -43,7 +43,6 @@ final class DeepLinkUITests: XCTestCase {
 }
 
 // MARK: - Setup
-
 private extension DeepLinkUITests {
     
     func appStateWithDeepLink() -> Store<AppState> {
@@ -55,17 +54,37 @@ private extension DeepLinkUITests {
     }
     
     func mockedServices(store: Store<AppState>) -> DIContainer.Services {
-        let countriesRepo = MockedCountriesWebRepository()
-        countriesRepo.countriesResponse = .success(Country.mockedData)
-        let details = Country.Details.Intermediate(capital: "", currencies: [], borders: [])
-        countriesRepo.detailsResponse = .success(details)
-        let imagesRepo = MockedImageWebRepository()
+        
+        let countries = Country.mockedData
         let testImage = UIColor.red.image(CGSize(width: 40, height: 40))
+        let detailsIntermediate = Country.Details.Intermediate(capital: "", currencies: [], borders: [])
+        let details = Country.Details(capital: "", currencies: [], neighbors: [])
+        
+        let countriesDBRepo = MockedCountriesDBRepository()
+        let countriesWebRepo = MockedCountriesWebRepository()
+        let imagesRepo = MockedImageWebRepository()
+        
+        // Mocking successful loading the list of countries:
+        countriesDBRepo.hasLoadedCountriesResult = .success(false)
+        countriesWebRepo.countriesResponse = .success(countries)
+        countriesDBRepo.storeCountriesResult = .success(())
+        countriesDBRepo.fetchCountriesResult = .success(countries.lazyList)
+        
+        // Mocking successful loading the country details:
+        countriesDBRepo.fetchCountryDetailsResult = .success(nil)
+        countriesWebRepo.detailsResponse = .success(detailsIntermediate)
+        countriesDBRepo.storeCountryDetailsResult = .success(details)
+        
+        // Mocking successful loading of the flag:
         imagesRepo.imageResponse = .success(testImage)
         
-        let countriesService = RealCountriesService(webRepository: countriesRepo, appState: store)
+        let countriesService = RealCountriesService(webRepository: countriesWebRepo,
+                                                    dbRepository: countriesDBRepo,
+                                                    appState: store)
         let imagesService = RealImagesService(webRepository: imagesRepo)
+        let permissionService = RealUserPermissionsService(appState: store, openAppSettings: { })
         return DIContainer.Services(countriesService: countriesService,
-                                       imagesService: imagesService)
+                                    imagesService: imagesService,
+                                    userPermissionsService: permissionService)
     }
 }
