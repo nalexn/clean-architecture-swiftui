@@ -32,7 +32,7 @@ class UserPermissionsInteractorTests: XCTestCase {
             XCTAssertEqual(self.state.value, AppState())
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 0.3)
+        wait(for: [exp], timeout: 0.5)
     }
     
     // MARK: - Push
@@ -48,7 +48,7 @@ class UserPermissionsInteractorTests: XCTestCase {
             XCTAssertNotEqual(self.state.value.permissions.push, .unknown)
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 0.3)
+        wait(for: [exp], timeout: 0.5)
     }
     
     func test_pushSecondResolveStatus() {
@@ -63,7 +63,7 @@ class UserPermissionsInteractorTests: XCTestCase {
             XCTAssertNotEqual(self.state.value.permissions.push, .unknown)
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 0.3)
+        wait(for: [exp], timeout: 0.5)
     }
     
     func test_pushRequestPermissionNotDetermined() {
@@ -77,7 +77,7 @@ class UserPermissionsInteractorTests: XCTestCase {
             XCTAssertNotEqual(self.state.value.permissions.push, .unknown)
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 0.3)
+        wait(for: [exp], timeout: 0.5)
     }
     
     func test_pushRequestPermissionDenied() {
@@ -88,7 +88,7 @@ class UserPermissionsInteractorTests: XCTestCase {
             exp.fulfill()
         }
         sut.request(permission: .pushNotifications)
-        wait(for: [exp], timeout: 0.3)
+        wait(for: [exp], timeout: 0.5)
     }
     
     func test_authorizationStatusMapping() {
