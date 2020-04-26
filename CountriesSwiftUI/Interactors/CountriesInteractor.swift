@@ -11,6 +11,7 @@ import Foundation
 import SwiftUI
 
 protocol CountriesInteractor {
+    func refreshCountriesList() -> AnyPublisher<Void, Error>
     func load(countries: LoadableSubject<LazyList<Country>>, search: String, locale: Locale)
     func load(countryDetails: LoadableSubject<Country.Details>, country: Country)
 }
@@ -41,7 +42,7 @@ struct RealCountriesInteractor: CountriesInteractor {
                 if hasLoaded {
                     return Just<Void>.withErrorType(Error.self)
                 } else {
-                    return self.loadAndStoreCountriesFromWeb()
+                    return self.refreshCountriesList()
                 }
             }
             .flatMap { [dbRepository] in
@@ -51,7 +52,7 @@ struct RealCountriesInteractor: CountriesInteractor {
             .store(in: cancelBag)
     }
     
-    private func loadAndStoreCountriesFromWeb() -> AnyPublisher<Void, Error> {
+    func refreshCountriesList() -> AnyPublisher<Void, Error> {
         webRepository
             .loadCountries()
             .flatMap { [dbRepository] in
@@ -89,6 +90,10 @@ struct RealCountriesInteractor: CountriesInteractor {
 }
 
 struct StubCountriesInteractor: CountriesInteractor {
+    
+    func refreshCountriesList() -> AnyPublisher<Void, Error> {
+        return Just<Void>.withErrorType(Error.self)
+    }
     
     func load(countries: LoadableSubject<LazyList<Country>>, search: String, locale: Locale) {
     }

@@ -66,6 +66,10 @@
 		F68B5308237441AD00D6337C /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B5307237441AD00D6337C /* Mock.swift */; };
 		F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B53092376EE8C00D6337C /* ImageWebRepository.swift */; };
 		F68B530C23771A9400D6337C /* ImagesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B530B23771A9400D6337C /* ImagesInteractor.swift */; };
+		F695DF8624559F8D00A65A04 /* PushNotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF8524559F8D00A65A04 /* PushNotificationsHandler.swift */; };
+		F695DF892455AD9300A65A04 /* DeepLinksHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF872455A28200A65A04 /* DeepLinksHandler.swift */; };
+		F695DF8B2455B04100A65A04 /* UserPermissionsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF8A2455B04100A65A04 /* UserPermissionsInteractor.swift */; };
+		F695DF8D2455D36900A65A04 /* PushTokenWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF8C2455D36900A65A04 /* PushTokenWebRepository.swift */; };
 		F6B6212423B52AE600CD00C7 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = F6B6212323B52AE600CD00C7 /* ViewInspector */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
@@ -159,6 +163,10 @@
 		F68B5307237441AD00D6337C /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		F68B53092376EE8C00D6337C /* ImageWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWebRepository.swift; sourceTree = "<group>"; };
 		F68B530B23771A9400D6337C /* ImagesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesInteractor.swift; sourceTree = "<group>"; };
+		F695DF8524559F8D00A65A04 /* PushNotificationsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationsHandler.swift; sourceTree = "<group>"; };
+		F695DF872455A28200A65A04 /* DeepLinksHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinksHandler.swift; sourceTree = "<group>"; };
+		F695DF8A2455B04100A65A04 /* UserPermissionsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPermissionsInteractor.swift; sourceTree = "<group>"; };
+		F695DF8C2455D36900A65A04 /* PushTokenWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTokenWebRepository.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
@@ -294,6 +302,8 @@
 				F64495E62360D66400C9BB1F /* SceneDelegate.swift */,
 				F661F2B5237734FA0014E142 /* AppEnvironment.swift */,
 				F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */,
+				F695DF8524559F8D00A65A04 /* PushNotificationsHandler.swift */,
+				F695DF872455A28200A65A04 /* DeepLinksHandler.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -336,6 +346,7 @@
 			children = (
 				F64495FF2360D8B000C9BB1F /* CountriesInteractor.swift */,
 				F68B530B23771A9400D6337C /* ImagesInteractor.swift */,
+				F695DF8A2455B04100A65A04 /* UserPermissionsInteractor.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -409,6 +420,7 @@
 				F6238A942444627D00DD30EA /* CountriesDBRepository.swift */,
 				F67DBD642368875A00C83258 /* CountriesWebRepository.swift */,
 				F68B53092376EE8C00D6337C /* ImageWebRepository.swift */,
+				F695DF8C2455D36900A65A04 /* PushTokenWebRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -589,6 +601,7 @@
 				F6218DB22362FD3100917938 /* CountryCell.swift in Sources */,
 				F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */,
 				F64496102361B64700C9BB1F /* CountriesList.swift in Sources */,
+				F695DF8624559F8D00A65A04 /* PushNotificationsHandler.swift in Sources */,
 				F67F62B324430AE800A6ED11 /* CoreDataStack.swift in Sources */,
 				F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */,
 				F661F2CC23783E360014E142 /* Helpers.swift in Sources */,
@@ -599,14 +612,17 @@
 				F64495E92360D66400C9BB1F /* ContentView.swift in Sources */,
 				F67DBD652368875A00C83258 /* CountriesWebRepository.swift in Sources */,
 				F644960C2360EAD000C9BB1F /* APICall.swift in Sources */,
+				F695DF8D2455D36900A65A04 /* PushTokenWebRepository.swift in Sources */,
 				F64496122361BB4900C9BB1F /* InteractorsContainer.swift in Sources */,
 				F6218DB42363051D00917938 /* CountryDetails.swift in Sources */,
 				F60B5E3F2438DA57009BCBB3 /* Store.swift in Sources */,
 				F62822B4236478DE00823BA1 /* ModalDetailsView.swift in Sources */,
+				F695DF8B2455B04100A65A04 /* UserPermissionsInteractor.swift in Sources */,
 				F68B530C23771A9400D6337C /* ImagesInteractor.swift in Sources */,
 				F6C1F9D723CE3034005A98C8 /* SearchBar.swift in Sources */,
 				F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */,
 				F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */,
+				F695DF892455AD9300A65A04 /* DeepLinksHandler.swift in Sources */,
 				F6238A91244337D400DD30EA /* CoreDataHelpers.swift in Sources */,
 				F64496082360DFB700C9BB1F /* Models.swift in Sources */,
 				F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */,

@@ -14,7 +14,7 @@ import Foundation
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    private var systemEventsHandler: SystemEventsHandler?
+    private(set) var systemEventsHandler: SystemEventsHandler?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {

@@ -28,6 +28,15 @@ extension String {
     }
 }
 
+extension Result {
+    var isSuccess: Bool {
+        switch self {
+        case .success: return true
+        case .failure: return false
+        }
+    }
+}
+
 // MARK: - View Inspection helper
 
 internal final class Inspection<V> where V: View {

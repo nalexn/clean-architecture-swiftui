@@ -17,6 +17,7 @@ struct CountriesList: View {
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countriesList)
     }
+    @State private var canRequestPushPermission: Bool = false
     @Environment(\.injected) private var injected: DIContainer
     @Environment(\.locale) private var locale: Locale
     private let localeContainer = LocaleReader.Container()
@@ -32,6 +33,7 @@ struct CountriesList: View {
             NavigationView {
                 self.content
                     .navigationBarTitle("Countries".localized(self.locale))
+                    .navigationBarItems(trailing: self.permissionsButton)
                     .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }
@@ -41,6 +43,7 @@ struct CountriesList: View {
         .modifier(LocaleReader(container: localeContainer))
         .onReceive(keyboardHeightUpdate) { self.countriesSearch.keyboardHeight = $0 }
         .onReceive(routingUpdate) { self.routingState = $0 }
+        .onReceive(canRequestPushPermissionUpdate) { self.canRequestPushPermission = $0 }
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
@@ -59,6 +62,16 @@ struct CountriesList: View {
             return geometry.size.width < geometry.size.height ? 0.5 : -0.5
         }
         return 0
+    }
+    
+    private var permissionsButton: some View {
+        Group {
+            if canRequestPushPermission {
+                Button(action: requestPushPermission, label: { Text("Allow Push") })
+            } else {
+                EmptyView()
+            }
+        }
     }
 }
 
@@ -110,15 +123,18 @@ private extension CountriesList {
                   search: countriesSearch.searchText,
                   locale: localeContainer.locale)
     }
+    
+    func requestPushPermission() {
+        injected.interactors.userPermissionsInteractor
+            .request(permission: .pushNotifications)
+    }
 }
 
 // MARK: - Loading Content
 
 private extension CountriesList {
     var notRequestedView: some View {
-        Text("").onAppear {
-            self.reloadCountries()
-        }
+        Text("").onAppear(perform: reloadCountries)
     }
     
     func loadingView(_ previouslyLoaded: LazyList<Country>?) -> some View {
@@ -195,6 +211,12 @@ private extension CountriesList {
     
     var keyboardHeightUpdate: AnyPublisher<CGFloat, Never> {
         injected.appState.updates(for: \.system.keyboardHeight)
+    }
+    
+    var canRequestPushPermissionUpdate: AnyPublisher<Bool, Never> {
+        injected.appState.updates(for: AppState.permissionKeyPath(for: .pushNotifications))
+            .map { $0 == .notRequested || $0 == .denied }
+            .eraseToAnyPublisher()
     }
 }
 

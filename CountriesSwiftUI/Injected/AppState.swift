@@ -13,6 +13,7 @@ struct AppState: Equatable {
     var userData = UserData()
     var routing = ViewRouting()
     var system = System()
+    var permissions = Permissions()
 }
 
 extension AppState {
@@ -40,10 +41,25 @@ extension AppState {
     }
 }
 
+extension AppState {
+    struct Permissions: Equatable {
+        var push: Permission.Status = .unknown
+    }
+    
+    static func permissionKeyPath(for permission: Permission) -> WritableKeyPath<AppState, Permission.Status> {
+        let pathToPermissions = \AppState.permissions
+        switch permission {
+        case .pushNotifications:
+            return pathToPermissions.appending(path: \.push)
+        }
+    }
+}
+
 func == (lhs: AppState, rhs: AppState) -> Bool {
     return lhs.userData == rhs.userData &&
         lhs.routing == rhs.routing &&
-        lhs.system == rhs.system
+        lhs.system == rhs.system &&
+        lhs.permissions == rhs.permissions
 }
 
 #if DEBUG

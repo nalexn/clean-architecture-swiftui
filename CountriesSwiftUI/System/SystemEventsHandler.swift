@@ -13,19 +13,55 @@ protocol SystemEventsHandler {
     func sceneOpenURLContexts(_ urlContexts: Set<UIOpenURLContext>)
     func sceneDidBecomeActive()
     func sceneWillResignActive()
+    func handlePushRegistration(result: Result<Data, Error>)
+    func appDidReceiveRemoteNotification(payload: NotificationPayload,
+                                         fetchCompletion: @escaping FetchCompletion)
 }
 
 struct RealSystemEventsHandler: SystemEventsHandler {
     
-    let appState: Store<AppState>
-    private var subscriptions = Set<AnyCancellable>()
+    private let container: DIContainer
+    private let deepLinksHandler: DeepLinksHandler
+    private let pushNotificationsHandler: PushNotificationsHandler
+    private let pushTokenWebRepository: PushTokenWebRepository
+    private var cancelBag = CancelBag()
     
-    init(appState: Store<AppState>) {
-        self.appState = appState
+    init(container: DIContainer,
+         webRepositories: DIContainer.WebRepositories,
+         deepLinksHandler: DeepLinksHandler,
+         pushNotificationsHandler: PushNotificationsHandler) {
+        
+        self.container = container
+        self.deepLinksHandler = deepLinksHandler
+        self.pushNotificationsHandler = pushNotificationsHandler
+        self.pushTokenWebRepository = webRepositories.pushTokenWebRepository
+        
+        installKeyboardHeightObserver()
+        installPushNotificationsSubscriberOnLaunch()
+    }
+     
+    private func installKeyboardHeightObserver() {
+        let appState = container.appState
         NotificationCenter.default.keyboardHeightPublisher
             .sink { [appState] height in
                 appState[\.system.keyboardHeight] = height
-            }.store(in: &subscriptions)
+            }
+            .store(in: cancelBag)
+    }
+     
+    private func installPushNotificationsSubscriberOnLaunch() {
+        weak var permissions = container.interactors.userPermissionsInteractor
+        container.appState
+            .updates(for: AppState.permissionKeyPath(for: .pushNotifications))
+            .first(where: { $0 != .unknown })
+            .sink { status in
+                if status == .granted {
+                    // If the permission was granted on previous launch
+                    // requesting the push token again:
+                    permissions?.request(permission: .pushNotifications)
+                }
+            }
+            .store(in: cancelBag)
     }
     
     func sceneOpenURLContexts(_ urlContexts: Set<UIOpenURLContext>) {
@@ -34,22 +70,36 @@ struct RealSystemEventsHandler: SystemEventsHandler {
     }
     
     func handle(url: URL) {
-        guard let deelLink = parseDeepLink(url: url) else { return }
-        switch deelLink {
-        case let .showCountryFlag(alpha3Code):
-            appState.bulkUpdate {
-                $0.routing.countriesList.countryDetails = alpha3Code
-                $0.routing.countryDetails.detailsSheet = true
-            }
-        }
+        guard let deepLink = DeepLink(url: url) else { return }
+        deepLinksHandler.open(deepLink: deepLink)
     }
     
     func sceneDidBecomeActive() {
-        appState[\.system.isActive] = true
+        container.appState[\.system.isActive] = true
+        container.interactors.userPermissionsInteractor.resolveStatus(for: .pushNotifications)
     }
     
     func sceneWillResignActive() {
-        appState[\.system.isActive] = false
+        container.appState[\.system.isActive] = false
+    }
+    
+    func handlePushRegistration(result: Result<Data, Error>) {
+        if let pushToken = try? result.get() {
+            pushTokenWebRepository
+                .register(devicePushToken: pushToken)
+                .sinkToResult { _ in }
+                .store(in: cancelBag)
+        }
+    }
+    
+    func appDidReceiveRemoteNotification(payload: NotificationPayload,
+                                         fetchCompletion: @escaping FetchCompletion) {
+        container.interactors.countriesInteractor
+            .refreshCountriesList()
+            .sinkToResult { result in
+                fetchCompletion(result.isSuccess ? .newData : .failed)
+            }
+            .store(in: cancelBag)
     }
 }
 
@@ -70,26 +120,5 @@ private extension Notification {
     var keyboardHeight: CGFloat {
         return (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?
             .cgRectValue.height ?? 0
-    }
-}
-
-// MARK: - Deep Links
-
-private extension RealSystemEventsHandler {
-    enum DeepLink {
-        case showCountryFlag(alpha3Code: Country.Code)
-    }
-    
-    func parseDeepLink(url: URL) -> DeepLink? {
-        guard
-            let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
-            components.host == "www.example.com",
-            let query = components.queryItems
-            else { return nil }
-        if let item = query.first(where: { $0.name == "alpha3code" }),
-            let alpha3Code = item.value {
-            return .showCountryFlag(alpha3Code: Country.Code(alpha3Code))
-        }
-        return nil
     }
 }
