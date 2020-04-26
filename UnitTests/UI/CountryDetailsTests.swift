@@ -55,6 +55,20 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    func test_details_isLoading_cancellation() {
+        let interactors = DIContainer.Interactors.mocked()
+        let sut = CountryDetails(country: country, details:
+            .isLoading(last: Country.Details.mockedData[0], cancelBag: CancelBag())
+        )
+        let exp = sut.inspection.inspect { view in
+            XCTAssertNoThrow(try view.content().vStack().view(ActivityIndicatorView.self, 0))
+            try view.content().vStack().button(1).tap()
+            interactors.verify()
+        }
+        ViewHosting.host(view: sut.inject(AppState(), interactors))
+        wait(for: [exp], timeout: 2)
+    }
+    
     func test_details_loaded() {
         let interactors = DIContainer.Interactors.mocked(
             imagesInteractor: [.loadImage(country.flag)]

@@ -78,6 +78,7 @@
 		F6B6212423B52AE600CD00C7 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = F6B6212323B52AE600CD00C7 /* ViewInspector */; };
 		F6B8832124561C5E00EA4067 /* PushTokenWebRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B8832024561C5E00EA4067 /* PushTokenWebRepositoryTests.swift */; };
 		F6B8832324561DDB00EA4067 /* UserPermissionsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B8832224561DDB00EA4067 /* UserPermissionsInteractorTests.swift */; };
+		F6B883252456326D00EA4067 /* HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B883242456326D00EA4067 /* HelpersTests.swift */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
 		F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB919236382E7003E69F2 /* SVGImageView.swift */; };
@@ -181,6 +182,7 @@
 		F695DF982456111300A65A04 /* DeepLinksHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinksHandlerTests.swift; sourceTree = "<group>"; };
 		F6B8832024561C5E00EA4067 /* PushTokenWebRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTokenWebRepositoryTests.swift; sourceTree = "<group>"; };
 		F6B8832224561DDB00EA4067 /* UserPermissionsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPermissionsInteractorTests.swift; sourceTree = "<group>"; };
+		F6B883242456326D00EA4067 /* HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpersTests.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
@@ -426,6 +428,7 @@
 			children = (
 				F6F003B2236AF9F100AAC7C6 /* LoadableTests.swift */,
 				F67B3B1E244B667B00DA7FA6 /* LazyListTests.swift */,
+				F6B883242456326D00EA4067 /* HelpersTests.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -710,6 +713,7 @@
 				F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */,
 				F6F606A823CF25EC00F36F5D /* SearchBarTests.swift in Sources */,
 				F6B8832324561DDB00EA4067 /* UserPermissionsInteractorTests.swift in Sources */,
+				F6B883252456326D00EA4067 /* HelpersTests.swift in Sources */,
 				F695DF952455F2BB00A65A04 /* SceneDelegateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
