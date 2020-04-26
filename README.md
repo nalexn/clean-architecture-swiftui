@@ -27,7 +27,7 @@ The app uses the [restcountries.eu](https://restcountries.eu/) REST API to show 
 * **Redux**-like centralized `AppState` as the single source of truth
 * Data persistence with **CoreData**
 * Native SwiftUI dependency injection
-* **Programmatic navigation** (deep links support)
+* **Programmatic navigation**. Push notifications with deep link
 * Simple yet flexible networking layer built on Generics
 * Handling of the system events (such as `didBecomeActive`, `willResignActive`)
 * Built with SOLID, DRY, KISS, YAGNI in mind
