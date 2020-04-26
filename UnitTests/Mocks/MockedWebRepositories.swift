@@ -64,7 +64,6 @@ final class MockedPushTokenWebRepository: TestWebRepository, Mock, PushTokenWebR
         case register(Data)
     }
     var actions = MockActions<Action>(expected: [])
-    var registerTokenResponse: Result<Void, Error> = .failure(MockError.valueNotSet)
     
     init(expected: [Action]) {
         self.actions = .init(expected: expected)
@@ -72,6 +71,6 @@ final class MockedPushTokenWebRepository: TestWebRepository, Mock, PushTokenWebR
     
     func register(devicePushToken: Data) -> AnyPublisher<Void, Error> {
         register(.register(devicePushToken))
-        return registerTokenResponse.publish()
+        return Just<Void>.withErrorType(Error.self)
     }
 }

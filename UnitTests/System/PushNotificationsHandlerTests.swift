@@ -11,10 +11,12 @@ import UserNotifications
 @testable import CountriesSwiftUI
 
 class PushNotificationsHandlerTests: XCTestCase {
+    
+    var sut: RealPushNotificationsHandler!
 
     func test_isCenterDelegate() {
         let mockedHandler = MockedDeepLinksHandler(expected: [])
-        let sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
+        sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
         let center = UNUserNotificationCenter.current()
         XCTAssertTrue(center.delegate === sut)
         mockedHandler.verify()
@@ -22,7 +24,7 @@ class PushNotificationsHandlerTests: XCTestCase {
 
     func test_emptyPayload() {
         let mockedHandler = MockedDeepLinksHandler(expected: [])
-        let sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
+        sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
         let exp = XCTestExpectation(description: #function)
         sut.handleNotification(userInfo: [:]) {
             mockedHandler.verify()
@@ -35,7 +37,7 @@ class PushNotificationsHandlerTests: XCTestCase {
         let mockedHandler = MockedDeepLinksHandler(expected: [
             .open(.showCountryFlag(alpha3Code: "USA"))
         ])
-        let sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
+        sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
         let exp = XCTestExpectation(description: #function)
         let userInfo: [String: Any] = [
             "aps": ["country": "USA"]

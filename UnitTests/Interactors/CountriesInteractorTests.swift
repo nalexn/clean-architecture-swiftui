@@ -355,6 +355,7 @@ final class LoadCountryDetailsTests: CountriesInteractorTests {
     
     func test_stubInteractor() {
         let sut = StubCountriesInteractor()
+        sut.refreshCountriesList().sinkToResult({ _ in }).store(in: &subscriptions)
         let countries = BindingWithPublisher(value: Loadable<LazyList<Country>>.notRequested)
         sut.load(countries: countries.binding, search: "", locale: .backendDefault)
         let details = BindingWithPublisher(value: Loadable<Country.Details>.notRequested)

@@ -52,6 +52,22 @@ final class SystemEventsHandlerTests: XCTestCase {
                                       pushNotificationsHandler: pushNotificationsHandler,
                                       pushTokenWebRepository: pushTokenWebRepository)
     }
+    
+    func test_noSideEffectOnInit() {
+        setupSut()
+        sut.container.appState[\.permissions.push] = .denied
+        let reference = sut.container.appState.value
+        verify(appState: reference)
+    }
+    
+    func test_subscribesOnPushIfGranted() {
+        setupSut(permissions: [
+            .request(.pushNotifications)
+        ])
+        sut.container.appState[\.permissions.push] = .granted
+        let reference = sut.container.appState.value
+        verify(appState: reference)
+    }
 
     func test_didBecomeActive() {
         setupSut(permissions: [
@@ -123,11 +139,10 @@ final class SystemEventsHandlerTests: XCTestCase {
         verify()
     }
     
-    func test_silentRemoteNotification() {
+    func test_silentRemoteNotificationSuccess() {
         setupSut(countries: [
             .refreshCountriesList
         ])
-        pushTokenWebRepository?.registerTokenResponse = .success(())
         let exp = XCTestExpectation(description: #function)
         sut.appDidReceiveRemoteNotification(payload: [:]) { result in
             XCTAssertEqual(result, .newData)
