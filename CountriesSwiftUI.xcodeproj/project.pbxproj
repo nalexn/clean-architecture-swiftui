@@ -73,6 +73,8 @@
 		F695DF8F2455DEDE00A65A04 /* MockedSystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF8E2455DEDE00A65A04 /* MockedSystemEventsHandler.swift */; };
 		F695DF932455F09100A65A04 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF922455F09100A65A04 /* AppDelegateTests.swift */; };
 		F695DF952455F2BB00A65A04 /* SceneDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF942455F2BB00A65A04 /* SceneDelegateTests.swift */; };
+		F695DF972455F4CB00A65A04 /* PushNotificationsHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF962455F4CB00A65A04 /* PushNotificationsHandlerTests.swift */; };
+		F695DF992456111300A65A04 /* DeepLinksHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF982456111300A65A04 /* DeepLinksHandlerTests.swift */; };
 		F6B6212423B52AE600CD00C7 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = F6B6212323B52AE600CD00C7 /* ViewInspector */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
@@ -173,6 +175,8 @@
 		F695DF8E2455DEDE00A65A04 /* MockedSystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedSystemEventsHandler.swift; sourceTree = "<group>"; };
 		F695DF922455F09100A65A04 /* AppDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
 		F695DF942455F2BB00A65A04 /* SceneDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegateTests.swift; sourceTree = "<group>"; };
+		F695DF962455F4CB00A65A04 /* PushNotificationsHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationsHandlerTests.swift; sourceTree = "<group>"; };
+		F695DF982456111300A65A04 /* DeepLinksHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinksHandlerTests.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
@@ -307,9 +311,9 @@
 				F64495E42360D66400C9BB1F /* AppDelegate.swift */,
 				F64495E62360D66400C9BB1F /* SceneDelegate.swift */,
 				F661F2B5237734FA0014E142 /* AppEnvironment.swift */,
-				F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */,
-				F695DF8524559F8D00A65A04 /* PushNotificationsHandler.swift */,
 				F695DF872455A28200A65A04 /* DeepLinksHandler.swift */,
+				F695DF8524559F8D00A65A04 /* PushNotificationsHandler.swift */,
+				F67DBD5123663BCD00C83258 /* SystemEventsHandler.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -457,6 +461,8 @@
 				F695DF922455F09100A65A04 /* AppDelegateTests.swift */,
 				F695DF942455F2BB00A65A04 /* SceneDelegateTests.swift */,
 				F6F003B0236AF31400AAC7C6 /* SystemEventsHandlerTests.swift */,
+				F695DF962455F4CB00A65A04 /* PushNotificationsHandlerTests.swift */,
+				F695DF982456111300A65A04 /* DeepLinksHandlerTests.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -671,6 +677,7 @@
 				F67451F5243A4CC200A4B498 /* RootViewAppearanceTests.swift in Sources */,
 				F661F2C5237772CE0014E142 /* ImagesInteractorTests.swift in Sources */,
 				F6F003B3236AF9F100AAC7C6 /* LoadableTests.swift in Sources */,
+				F695DF992456111300A65A04 /* DeepLinksHandlerTests.swift in Sources */,
 				F60829762369D58A00DB292E /* CountriesWebRepositoryTests.swift in Sources */,
 				F6F003B6236B036800AAC7C6 /* CountriesInteractorTests.swift in Sources */,
 				F60CC509236C6084007E84B2 /* ViewPreviewsTests.swift in Sources */,
@@ -688,6 +695,7 @@
 				F6E7ACE523F83BEB00AB48AB /* ContentViewTests.swift in Sources */,
 				F60CC50B236C622C007E84B2 /* ModalDetailsViewTests.swift in Sources */,
 				F695DF8F2455DEDE00A65A04 /* MockedSystemEventsHandler.swift in Sources */,
+				F695DF972455F4CB00A65A04 /* PushNotificationsHandlerTests.swift in Sources */,
 				F6500B4A23C8F2AC0086FD70 /* DeepLinkUITests.swift in Sources */,
 				F6621FE9244B3DE100DC583F /* MockedDBRepositories.swift in Sources */,
 				F68B5308237441AD00D6337C /* Mock.swift in Sources */,

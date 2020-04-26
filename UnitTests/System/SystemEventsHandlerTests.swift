@@ -13,17 +13,40 @@ import UIKit
 final class SystemEventsHandlerTests: XCTestCase {
     
     var sut: RealSystemEventsHandler!
+    
+    var appState: AppState {
+        return sut.container.appState.value
+    }
+    var interactors: DIContainer.Interactors {
+        return sut.container.interactors
+    }
+    var deepLinksHandler: MockedDeepLinksHandler? {
+        return sut.deepLinksHandler as? MockedDeepLinksHandler
+    }
+    var pushTokenWebRepository: MockedPushTokenWebRepository? {
+        return sut.pushTokenWebRepository as? MockedPushTokenWebRepository
+    }
+    
+    func verify(appState: AppState = AppState(), file: StaticString = #file, line: UInt = #line) {
+        interactors.verify(file: file, line: line)
+        deepLinksHandler?.verify(file: file, line: line)
+        pushTokenWebRepository?.verify(file: file, line: line)
+        XCTAssertEqual(self.appState, appState, file: file, line: line)
+    }
 
-    override func setUp() {
+    func setupSut(countries: [MockedCountriesInteractor.Action] = [],
+                  permissions: [MockedUserPermissionsInteractor.Action] = [],
+                  deepLink: [MockedDeepLinksHandler.Action] = [],
+                  pushToken: [MockedPushTokenWebRepository.Action] = []) {
         let interactors = DIContainer.Interactors(
-            countriesInteractor: MockedCountriesInteractor(expected: []),
+            countriesInteractor: MockedCountriesInteractor(expected: countries),
             imagesInteractor: MockedImagesInteractor(expected: []),
-            userPermissionsInteractor: MockedUserPermissionsInteractor(expected: []))
+            userPermissionsInteractor: MockedUserPermissionsInteractor(expected: permissions))
         let container = DIContainer(appState: AppState(),
                                     interactors: interactors)
-        let deepLinksHandler = MockedDeepLinksHandler(expected: [])
+        let deepLinksHandler = MockedDeepLinksHandler(expected: deepLink)
         let pushNotificationsHandler = DummyPushNotificationsHandler()
-        let pushTokenWebRepository = MockedPushTokenWebRepository()
+        let pushTokenWebRepository = MockedPushTokenWebRepository(expected: pushToken)
         sut = RealSystemEventsHandler(container: container,
                                       deepLinksHandler: deepLinksHandler,
                                       pushNotificationsHandler: pushNotificationsHandler,
@@ -31,29 +54,33 @@ final class SystemEventsHandlerTests: XCTestCase {
     }
 
     func test_didBecomeActive() {
+        setupSut(permissions: [
+            .resolveStatus(.pushNotifications)
+        ])
         sut.sceneDidBecomeActive()
         var reference = AppState()
         XCTAssertFalse(reference.system.isActive)
         reference.system.isActive = true
-        XCTAssertEqual(sut.appState.value, reference)
+        verify(appState: reference)
     }
     
     func test_willResignActive() {
+        setupSut(permissions: [
+            .resolveStatus(.pushNotifications)
+        ])
         sut.sceneDidBecomeActive()
         sut.sceneWillResignActive()
-        let reference = AppState()
-        XCTAssertEqual(sut.appState.value, reference)
+        verify()
     }
 
     func test_openURLContexts_countryDeepLink() {
         let countries = Country.mockedData
-        let deepLinkURL = "https://www.example.com/?alpha3code=\(countries[0].alpha3Code)"
+        let code = countries[0].alpha3Code
+        let deepLinkURL = "https://www.example.com/?alpha3code=\(code)"
+        setupSut(deepLink: [.open(.showCountryFlag(alpha3Code: code))])
         let contexts = UIOpenURLContext.contexts(deepLinkURL)
-        XCTAssertNil(sut.appState.value.routing.countriesList.countryDetails)
-        XCTAssertFalse(sut.appState.value.routing.countryDetails.detailsSheet)
         sut.sceneOpenURLContexts(contexts)
-        XCTAssertEqual(sut.appState.value.routing.countriesList.countryDetails, countries[0].alpha3Code)
-        XCTAssertTrue(sut.appState.value.routing.countryDetails.detailsSheet)
+        verify()
     }
     
     func test_openURLContexts_randomURL() {
@@ -61,17 +88,16 @@ final class SystemEventsHandlerTests: XCTestCase {
         let contexts1 = UIOpenURLContext.contexts(url1)
         let url2 = "https://www.domain.com/test/?alpha3code=USD"
         let contexts2 = UIOpenURLContext.contexts(url2)
-        let reference = AppState()
+        setupSut()
         sut.sceneOpenURLContexts(contexts1)
-        XCTAssertEqual(sut.appState.value, reference)
         sut.sceneOpenURLContexts(contexts2)
-        XCTAssertEqual(sut.appState.value, reference)
+        verify()
     }
     
     func test_openURLContexts_emptyContexts() {
-        let reference = AppState()
+        setupSut()
         sut.sceneOpenURLContexts(Set<UIOpenURLContext>())
-        XCTAssertEqual(sut.appState.value, reference)
+        verify()
     }
     
     #if os(iOS) && !targetEnvironment(macCatalyst)
@@ -80,12 +106,36 @@ final class SystemEventsHandlerTests: XCTestCase {
         let window = try XCTUnwrap(UIApplication.shared.windows.first, "Cannot extract the host view")
         window.makeKeyAndVisible()
         window.addSubview(textFiled)
-        XCTAssertEqual(sut.appState.value.system.keyboardHeight, 0)
+        setupSut()
+        XCTAssertEqual(appState.system.keyboardHeight, 0)
         textFiled.becomeFirstResponder()
-        XCTAssertGreaterThan(sut.appState.value.system.keyboardHeight, 0)
+        XCTAssertGreaterThan(appState.system.keyboardHeight, 0)
         textFiled.removeFromSuperview()
+        verify()
     }
     #endif
+    
+    func test_handlePushRegistration() {
+        setupSut(pushToken: [
+            .register(Data())
+        ])
+        sut.handlePushRegistration(result: .success(Data()))
+        verify()
+    }
+    
+    func test_silentRemoteNotification() {
+        setupSut(countries: [
+            .refreshCountriesList
+        ])
+        pushTokenWebRepository?.registerTokenResponse = .success(())
+        let exp = XCTestExpectation(description: #function)
+        sut.appDidReceiveRemoteNotification(payload: [:]) { result in
+            XCTAssertEqual(result, .newData)
+            self.verify()
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 0.1)
+    }
 }
 
 private extension UIOpenURLContext {
@@ -105,10 +155,4 @@ private extension UIOpenURLContext {
         }
     }
 
-}
-
-extension RealSystemEventsHandler {
-    var appState: Store<AppState> {
-        self.container.appState
-    }
 }

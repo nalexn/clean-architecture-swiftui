@@ -69,7 +69,7 @@ struct RealSystemEventsHandler: SystemEventsHandler {
         handle(url: url)
     }
     
-    func handle(url: URL) {
+    private func handle(url: URL) {
         guard let deepLink = DeepLink(url: url) else { return }
         deepLinksHandler.open(deepLink: deepLink)
     }

@@ -27,9 +27,13 @@ extension RealPushNotificationsHandler: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        
-        guard let userInfo = response.notification.request.content.userInfo["aps"] as? NotificationPayload,
-            let countryCode = userInfo["country"] as? Country.Code else {
+        let userInfo = response.notification.request.content.userInfo
+        handleNotification(userInfo: userInfo, completionHandler: completionHandler)
+    }
+    
+    func handleNotification(userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) {
+        guard let payload = userInfo["aps"] as? NotificationPayload,
+            let countryCode = payload["country"] as? Country.Code else {
             completionHandler()
             return
         }

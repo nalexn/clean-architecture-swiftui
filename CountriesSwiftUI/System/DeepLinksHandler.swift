@@ -21,6 +21,7 @@ enum DeepLink: Equatable {
         if let item = query.first(where: { $0.name == "alpha3code" }),
             let alpha3Code = item.value {
             self = .showCountryFlag(alpha3Code: Country.Code(alpha3Code))
+            return
         }
         return nil
     }
