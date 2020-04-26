@@ -71,6 +71,8 @@
 		F695DF8B2455B04100A65A04 /* UserPermissionsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF8A2455B04100A65A04 /* UserPermissionsInteractor.swift */; };
 		F695DF8D2455D36900A65A04 /* PushTokenWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF8C2455D36900A65A04 /* PushTokenWebRepository.swift */; };
 		F695DF8F2455DEDE00A65A04 /* MockedSystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF8E2455DEDE00A65A04 /* MockedSystemEventsHandler.swift */; };
+		F695DF932455F09100A65A04 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF922455F09100A65A04 /* AppDelegateTests.swift */; };
+		F695DF952455F2BB00A65A04 /* SceneDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F695DF942455F2BB00A65A04 /* SceneDelegateTests.swift */; };
 		F6B6212423B52AE600CD00C7 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = F6B6212323B52AE600CD00C7 /* ViewInspector */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
@@ -169,6 +171,8 @@
 		F695DF8A2455B04100A65A04 /* UserPermissionsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPermissionsInteractor.swift; sourceTree = "<group>"; };
 		F695DF8C2455D36900A65A04 /* PushTokenWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTokenWebRepository.swift; sourceTree = "<group>"; };
 		F695DF8E2455DEDE00A65A04 /* MockedSystemEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedSystemEventsHandler.swift; sourceTree = "<group>"; };
+		F695DF922455F09100A65A04 /* AppDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
+		F695DF942455F2BB00A65A04 /* SceneDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegateTests.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
@@ -450,6 +454,8 @@
 		F695DF902455EEE100A65A04 /* System */ = {
 			isa = PBXGroup;
 			children = (
+				F695DF922455F09100A65A04 /* AppDelegateTests.swift */,
+				F695DF942455F2BB00A65A04 /* SceneDelegateTests.swift */,
 				F6F003B0236AF31400AAC7C6 /* SystemEventsHandlerTests.swift */,
 			);
 			path = System;
@@ -676,6 +682,7 @@
 				F67B3B1F244B667B00DA7FA6 /* LazyListTests.swift in Sources */,
 				F60829782369DCD200DB292E /* TestHelpers.swift in Sources */,
 				F661F2BC237757040014E142 /* ImageWebRepositoryTests.swift in Sources */,
+				F695DF932455F09100A65A04 /* AppDelegateTests.swift in Sources */,
 				F67D1272244C7AA2006A8CC4 /* CountriesDBRepositoryTests.swift in Sources */,
 				F6F003AF236A290E00AAC7C6 /* WebRepositoryTests.swift in Sources */,
 				F6E7ACE523F83BEB00AB48AB /* ContentViewTests.swift in Sources */,
@@ -687,6 +694,7 @@
 				F67B3B22244C5B8700DA7FA6 /* CoreDataStackTests.swift in Sources */,
 				F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */,
 				F6F606A823CF25EC00F36F5D /* SearchBarTests.swift in Sources */,
+				F695DF952455F2BB00A65A04 /* SceneDelegateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

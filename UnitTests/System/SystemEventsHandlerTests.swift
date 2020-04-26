@@ -21,7 +21,7 @@ final class SystemEventsHandlerTests: XCTestCase {
             userPermissionsInteractor: MockedUserPermissionsInteractor(expected: []))
         let container = DIContainer(appState: AppState(),
                                     interactors: interactors)
-        let deepLinksHandler = MockedDeepLinksHandler()
+        let deepLinksHandler = MockedDeepLinksHandler(expected: [])
         let pushNotificationsHandler = DummyPushNotificationsHandler()
         let pushTokenWebRepository = MockedPushTokenWebRepository()
         sut = RealSystemEventsHandler(container: container,

@@ -22,6 +22,10 @@ final class MockedSystemEventsHandler: Mock, SystemEventsHandler {
     }
     var actions = MockActions<Action>(expected: [])
     
+    init(expected: [Action]) {
+        self.actions = .init(expected: expected)
+    }
+    
     func sceneOpenURLContexts(_ urlContexts: Set<UIOpenURLContext>) {
         register(.openURL)
     }
@@ -55,6 +59,10 @@ final class MockedDeepLinksHandler: Mock, DeepLinksHandler {
         case open(DeepLink)
     }
     var actions = MockActions<Action>(expected: [])
+    
+    init(expected: [Action]) {
+        self.actions = .init(expected: expected)
+    }
     
     func open(deepLink: DeepLink) {
         register(.open(deepLink))

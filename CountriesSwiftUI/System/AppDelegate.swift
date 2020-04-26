@@ -14,6 +14,10 @@ typealias FetchCompletion = (UIBackgroundFetchResult) -> Void
 
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    lazy var systemEventsHandler: SystemEventsHandler? = {
+        self.systemEventsHandler(UIApplication.shared)
+    }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -21,17 +25,17 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        systemEventsHandler(application)?.handlePushRegistration(result: .success(deviceToken))
+        systemEventsHandler?.handlePushRegistration(result: .success(deviceToken))
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        systemEventsHandler(application)?.handlePushRegistration(result: .failure(error))
+        systemEventsHandler?.handlePushRegistration(result: .failure(error))
     }
     
     func application(_ application: UIApplication,
                      didReceiveRemoteNotification userInfo: NotificationPayload,
                      fetchCompletionHandler completionHandler: @escaping FetchCompletion) {
-        systemEventsHandler(application)?
+        systemEventsHandler?
             .appDidReceiveRemoteNotification(payload: userInfo, fetchCompletion: completionHandler)
     }
     
