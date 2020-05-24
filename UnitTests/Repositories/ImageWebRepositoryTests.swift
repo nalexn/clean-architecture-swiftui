@@ -89,7 +89,7 @@ final class ImageWebRepositoryTests: XCTestCase {
         
         let exp = XCTestExpectation(description: "Completion")
         sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
-            result.assertFailure(APIError.unexpectedResponse.localizedDescription)
+            result.assertFailure(APIError.imageProcessing([]).localizedDescription)
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
@@ -109,7 +109,7 @@ final class ImageWebRepositoryTests: XCTestCase {
         
         let exp = XCTestExpectation(description: "Completion")
         sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
-            result.assertFailure(APIError.unexpectedResponse.localizedDescription)
+            result.assertFailure(APIError.imageProcessing([]).localizedDescription)
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
@@ -134,7 +134,7 @@ final class ImageWebRepositoryTests: XCTestCase {
         
         let exp = XCTestExpectation(description: "Completion")
         sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
-            result.assertFailure(APIError.unexpectedResponse.localizedDescription)
+            result.assertFailure(APIError.imageProcessing([]).localizedDescription)
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
@@ -153,7 +153,7 @@ final class ImageWebRepositoryTests: XCTestCase {
         
         let exp = XCTestExpectation(description: "Completion")
         sut.load(imageURL: imageURL, width: 300).sinkToResult { result in
-            result.assertFailure(APIError.unexpectedResponse.localizedDescription)
+            result.assertFailure(APIError.imageProcessing([]).localizedDescription)
             exp.fulfill()
         }.store(in: &subscriptions)
         wait(for: [exp], timeout: 2)
