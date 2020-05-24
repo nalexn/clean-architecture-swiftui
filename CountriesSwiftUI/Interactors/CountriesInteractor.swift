@@ -53,8 +53,9 @@ struct RealCountriesInteractor: CountriesInteractor {
     }
     
     func refreshCountriesList() -> AnyPublisher<Void, Error> {
-        webRepository
+        return webRepository
             .loadCountries()
+            .ensureTimeSpan(requestHoldBackTimeInterval)
             .flatMap { [dbRepository] in
                 dbRepository.store(countries: $0)
             }
@@ -82,10 +83,15 @@ struct RealCountriesInteractor: CountriesInteractor {
     private func loadAndStoreCountryDetailsFromWeb(country: Country) -> AnyPublisher<Country.Details?, Error> {
         return webRepository
             .loadCountryDetails(country: country)
+            .ensureTimeSpan(requestHoldBackTimeInterval)
             .flatMap { [dbRepository] in
                 dbRepository.store(countryDetails: $0, for: country)
             }
             .eraseToAnyPublisher()
+    }
+    
+    private var requestHoldBackTimeInterval: TimeInterval {
+        return ProcessInfo.processInfo.isRunningTests ? 0 : 0.5
     }
 }
 
