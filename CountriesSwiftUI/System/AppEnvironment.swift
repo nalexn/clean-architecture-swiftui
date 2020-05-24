@@ -57,6 +57,7 @@ extension AppEnvironment {
         configuration.waitsForConnectivity = true
         configuration.httpMaximumConnectionsPerHost = 5
         configuration.requestCachePolicy = .returnCacheDataElseLoad
+        configuration.urlCache = .shared
         return URLSession(configuration: configuration)
     }
     
