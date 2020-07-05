@@ -30,7 +30,6 @@ struct CountryDetails: View {
     var body: some View {
         content
             .navigationBarTitle(country.name(locale: locale))
-            .modifier(NavigationBarBugFixer(goBack: self.goBack))
             .onReceive(routingUpdate) { self.routingState = $0 }
             .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
@@ -84,34 +83,6 @@ private extension CountryDetails {
         ErrorView(error: error, retryAction: {
             self.loadCountryDetails()
         })
-    }
-}
-
-// MARK: - A workaround for a bug in NavigationBar
-// https://stackoverflow.com/q/58404725/2923345
-
-private struct NavigationBarBugFixer: ViewModifier {
-        
-    let goBack: () -> Void
-    
-    func body(content: Content) -> some View {
-        #if targetEnvironment(simulator)
-        let isiPhoneSimulator = UIDevice.current.userInterfaceIdiom == .phone
-        return Group {
-            if ProcessInfo.processInfo.isRunningTests {
-                content
-            } else {
-                content
-                    .navigationBarBackButtonHidden(true)
-                    .navigationBarItems(leading: Button(action: {
-                        print("Please note that NavigationView currently does not work correctly on the iOS Simulator.")
-                        self.goBack()
-                    }, label: { Text(isiPhoneSimulator ? "Back" : "") }))
-            }
-        }
-        #else
-        return content
-        #endif
     }
 }
 

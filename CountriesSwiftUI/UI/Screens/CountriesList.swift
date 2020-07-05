@@ -37,8 +37,7 @@ struct CountriesList: View {
                     .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }
-            .modifier(NavigationViewStyle())
-            .padding(.leading, self.leadingPadding(geometry))
+            .navigationViewStyle(DoubleColumnNavigationViewStyle())
         }
         .modifier(LocaleReader(container: localeContainer))
         .onReceive(keyboardHeightUpdate) { self.countriesSearch.keyboardHeight = $0 }
@@ -56,14 +55,6 @@ struct CountriesList: View {
         }
     }
     
-    private func leadingPadding(_ geometry: GeometryProxy) -> CGFloat {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            // A hack for correct display of the SplitView on iPads
-            return geometry.size.width < geometry.size.height ? 0.5 : -0.5
-        }
-        return 0
-    }
-    
     private var permissionsButton: some View {
         Group {
             if canRequestPushPermission {
@@ -76,16 +67,6 @@ struct CountriesList: View {
 }
 
 private extension CountriesList {
-    struct NavigationViewStyle: ViewModifier {
-        func body(content: Content) -> some View {
-            #if targetEnvironment(macCatalyst)
-            return content
-            #else
-            return content
-                .navigationViewStyle(StackNavigationViewStyle())
-            #endif
-        }
-    }
     
     struct LocaleReader: EnvironmentalModifier {
         
