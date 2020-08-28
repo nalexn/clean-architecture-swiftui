@@ -55,10 +55,6 @@ private extension CountryDetails {
     func showCountryDetailsSheet() {
         injected.appState[\.routing.countryDetails.detailsSheet] = true
     }
-    
-    func goBack() {
-        injected.appState[\.routing.countriesList.countryDetails] = nil
-    }
 }
 
 // MARK: - Loading Content
