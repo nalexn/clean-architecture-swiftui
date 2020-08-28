@@ -57,9 +57,5 @@ extension CountryDetails {
         func showCountryDetailsSheet() {
             routingState.detailsSheet = true
         }
-        
-        func goBack() {
-            container.appState[\.routing.countriesList.countryDetails] = nil
-        }
     }
 }
