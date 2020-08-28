@@ -44,9 +44,23 @@ struct RealDeepLinksHandler: DeepLinksHandler {
     func open(deepLink: DeepLink) {
         switch deepLink {
         case let .showCountryFlag(alpha3Code):
-            container.appState.bulkUpdate {
-                $0.routing.countriesList.countryDetails = alpha3Code
-                $0.routing.countryDetails.detailsSheet = true
+            let routeToDestination = {
+                self.container.appState.bulkUpdate {
+                    $0.routing.countriesList.countryDetails = alpha3Code
+                    $0.routing.countryDetails.detailsSheet = true
+                }
+            }
+            /*
+             SwiftUI is unable to perform complex navigation involving
+             simultaneous dismissal or older screens and presenting new ones.
+             A work around is to perform the navigation in two steps:
+             */
+            let defaultRouting = AppState.ViewRouting()
+            if container.appState.value.routing != defaultRouting {
+                self.container.appState[\.routing] = defaultRouting
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: routeToDestination)
+            } else {
+                routeToDestination()
             }
         }
     }
