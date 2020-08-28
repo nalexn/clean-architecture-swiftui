@@ -33,7 +33,7 @@ struct CountriesList: View {
             NavigationView {
                 self.content
                     .navigationBarItems(trailing: self.permissionsButton)
-                    .navigationBarTitle("Countries".localized(self.locale))
+                    .navigationBarTitle("Countries")
                     .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }
