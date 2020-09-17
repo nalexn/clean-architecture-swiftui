@@ -73,7 +73,7 @@ extension UNAuthorizationStatus {
         switch self {
         case .denied: return .denied
         case .authorized: return .granted
-        case .notDetermined, .provisional: return .notRequested
+        case .notDetermined, .provisional, .ephemeral: return .notRequested
         @unknown default: return .notRequested
         }
     }
