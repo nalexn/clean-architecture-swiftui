@@ -157,11 +157,19 @@ private extension CountriesList {
                     }
             }
             .id(countries.count)
-        }.padding(.bottom, self.countriesSearch.keyboardHeight)
+        }.padding(.bottom, bottomInset)
     }
     
     func detailsView(country: Country) -> some View {
         CountryDetails(country: country)
+    }
+    
+    var bottomInset: CGFloat {
+        if #available(iOS 14, *) {
+            return 0
+        } else {
+            return countriesSearch.keyboardHeight
+        }
     }
 }
 
