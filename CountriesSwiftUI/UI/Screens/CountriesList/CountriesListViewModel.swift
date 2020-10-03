@@ -36,6 +36,7 @@ extension CountriesList {
         @Published var routingState: Routing
         @Published var countriesSearch = CountriesSearch()
         @Published var countries: Loadable<LazyList<Country>>
+        @Published var canRequestPushPermission: Bool = false
         
         // Misc
         let container: DIContainer
@@ -52,6 +53,9 @@ extension CountriesList {
                 appState.map(\.routing.countriesList)
                     .removeDuplicates()
                     .assign(to: \.routingState, on: self)
+                appState.updates(for: AppState.permissionKeyPath(for: .pushNotifications))
+                    .map { $0 == .notRequested || $0 == .denied }
+                    .assign(to: \.canRequestPushPermission, on: self)
             }
         }
         
@@ -66,6 +70,11 @@ extension CountriesList {
                 .load(countries: loadableSubject(\.countries),
                       search: countriesSearch.searchText,
                       locale: countriesSearch.locale)
+        }
+        
+        func requestPushPermission() {
+            container.services.userPermissionsService
+                .request(permission: .pushNotifications)
         }
     }
 }
