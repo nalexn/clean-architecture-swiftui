@@ -11,57 +11,103 @@ import Combine
 
 struct CountriesList: View {
     
-    @ObservedObject private(set) var viewModel: ViewModel
+    @State private var countriesSearch = CountriesSearch()
+    @State private(set) var countries: Loadable<LazyList<Country>>
+    @State private var routingState: Routing = .init()
+    private var routingBinding: Binding<Routing> {
+        $routingState.dispatched(to: injected.appState, \.routing.countriesList)
+    }
+    @State private var canRequestPushPermission: Bool = false
+    @Environment(\.injected) private var injected: DIContainer
     @Environment(\.locale) private var locale: Locale
+    private let localeContainer = LocaleReader.Container()
+    
     let inspection = Inspection<Self>()
+    
+    init(countries: Loadable<LazyList<Country>> = .notRequested) {
+        self._countries = .init(initialValue: countries)
+    }
     
     var body: some View {
         GeometryReader { geometry in
             NavigationView {
                 self.content
-                    .navigationBarTitle("Countries".localized(self.locale))
-                    .navigationBarHidden(self.viewModel.countriesSearch.keyboardHeight > 0)
+                    .navigationBarItems(trailing: self.permissionsButton)
+                    .navigationBarTitle("Countries")
+                    .navigationBarHidden(self.countriesSearch.keyboardHeight > 0)
                     .animation(.easeOut(duration: 0.3))
             }
-            .modifier(NavigationViewStyle())
-            .padding(.leading, self.leadingPadding(geometry))
+            .navigationViewStyle(DoubleColumnNavigationViewStyle())
         }
-        .modifier(viewModel.localeReader)
+        .modifier(LocaleReader(container: localeContainer))
+        .onReceive(keyboardHeightUpdate) { self.countriesSearch.keyboardHeight = $0 }
+        .onReceive(routingUpdate) { self.routingState = $0 }
+        .onReceive(canRequestPushPermissionUpdate) { self.canRequestPushPermission = $0 }
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
     private var content: AnyView {
-        switch viewModel.countries {
-        case .notRequested:
-            return AnyView(notRequestedView)
-        case let .isLoading(last, _):
-            return AnyView(loadingView(last))
-        case let .loaded(countries):
-            return AnyView(loadedView(countries, showSearch: true, showLoading: false))
-        case let .failed(error):
-            return AnyView(failedView(error))
+        switch countries {
+        case .notRequested: return AnyView(notRequestedView)
+        case let .isLoading(last, _): return AnyView(loadingView(last))
+        case let .loaded(countries): return AnyView(loadedView(countries, showSearch: true, showLoading: false))
+        case let .failed(error): return AnyView(failedView(error))
         }
     }
     
-    private func leadingPadding(_ geometry: GeometryProxy) -> CGFloat {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            // A hack for correct display of the SplitView on iPads
-            return geometry.size.width < geometry.size.height ? 0.5 : -0.5
+    private var permissionsButton: some View {
+        Group {
+            if canRequestPushPermission {
+                Button(action: requestPushPermission, label: { Text("Allow Push") })
+            } else {
+                EmptyView()
+            }
         }
-        return 0
     }
 }
 
 private extension CountriesList {
-    struct NavigationViewStyle: ViewModifier {
-        func body(content: Content) -> some View {
-            #if targetEnvironment(macCatalyst)
-            return content
-            #else
-            return content
-                .navigationViewStyle(StackNavigationViewStyle())
-            #endif
+    
+    struct LocaleReader: EnvironmentalModifier {
+        
+        /**
+         Retains the locale, provided by the Environment.
+         Variable `@Environment(\.locale) var locale: Locale`
+         from the view is not accessible when searching by name
+         */
+        class Container {
+            var locale: Locale = .backendDefault
         }
+        let container: Container
+        
+        func resolve(in environment: EnvironmentValues) -> some ViewModifier {
+            container.locale = environment.locale
+            return DummyViewModifier()
+        }
+        
+        private struct DummyViewModifier: ViewModifier {
+            func body(content: Content) -> some View {
+                // Cannot return just `content` because SwiftUI
+                // flattens modifiers that do nothing to the `content`
+                content.onAppear()
+            }
+        }
+    }
+}
+
+// MARK: - Side Effects
+
+private extension CountriesList {
+    func reloadCountries() {
+        injected.interactors.countriesInteractor
+            .load(countries: $countries,
+                  search: countriesSearch.searchText,
+                  locale: localeContainer.locale)
+    }
+    
+    func requestPushPermission() {
+        injected.interactors.userPermissionsInteractor
+            .request(permission: .pushNotifications)
     }
 }
 
@@ -69,9 +115,7 @@ private extension CountriesList {
 
 private extension CountriesList {
     var notRequestedView: some View {
-        Text("").onAppear {
-            self.viewModel.reloadCountries()
-        }
+        Text("").onAppear(perform: reloadCountries)
     }
     
     func loadingView(_ previouslyLoaded: LazyList<Country>?) -> some View {
@@ -84,7 +128,7 @@ private extension CountriesList {
     
     func failedView(_ error: Error) -> some View {
         ErrorView(error: error, retryAction: {
-            self.viewModel.reloadCountries()
+            self.reloadCountries()
         })
     }
 }
@@ -95,9 +139,11 @@ private extension CountriesList {
     func loadedView(_ countries: LazyList<Country>, showSearch: Bool, showLoading: Bool) -> some View {
         VStack {
             if showSearch {
-                SearchBar(text: $viewModel.countriesSearch.searchText.onSet({ _ in
-                    self.viewModel.reloadCountries()
-                }))
+                SearchBar(text: $countriesSearch.searchText
+                    .onSet { _ in
+                        self.reloadCountries()
+                    }
+                )
             }
             if showLoading {
                 ActivityIndicatorView().padding()
@@ -106,24 +152,68 @@ private extension CountriesList {
                 NavigationLink(
                     destination: self.detailsView(country: country),
                     tag: country.alpha3Code,
-                    selection: self.$viewModel.routingState.countryDetails) {
+                    selection: self.routingBinding.countryDetails) {
                         CountryCell(country: country)
                     }
             }
-        }.padding(.bottom, self.viewModel.countriesSearch.keyboardHeight)
+            .id(countries.count)
+        }.padding(.bottom, bottomInset)
     }
     
     func detailsView(country: Country) -> some View {
-        CountryDetails(viewModel: .init(container: viewModel.container, country: country))
+        CountryDetails(country: country)
+    }
+    
+    var bottomInset: CGFloat {
+        if #available(iOS 14, *) {
+            return 0
+        } else {
+            return countriesSearch.keyboardHeight
+        }
     }
 }
 
-// MARK: - Preview
+// MARK: - Search State
+
+extension CountriesList {
+    struct CountriesSearch {
+        var searchText: String = ""
+        var keyboardHeight: CGFloat = 0
+    }
+}
+
+// MARK: - Routing
+
+extension CountriesList {
+    struct Routing: Equatable {
+        var countryDetails: Country.Code?
+    }
+}
+
+// MARK: - State Updates
+
+private extension CountriesList {
+    
+    var routingUpdate: AnyPublisher<Routing, Never> {
+        injected.appState.updates(for: \.routing.countriesList)
+    }
+    
+    var keyboardHeightUpdate: AnyPublisher<CGFloat, Never> {
+        injected.appState.updates(for: \.system.keyboardHeight)
+    }
+    
+    var canRequestPushPermissionUpdate: AnyPublisher<Bool, Never> {
+        injected.appState.updates(for: AppState.permissionKeyPath(for: .pushNotifications))
+            .map { $0 == .notRequested || $0 == .denied }
+            .eraseToAnyPublisher()
+    }
+}
 
 #if DEBUG
 struct CountriesList_Previews: PreviewProvider {
     static var previews: some View {
-        CountriesList(viewModel: .init(container: .preview))
+        CountriesList(countries: .loaded(Country.mockedData.lazyList))
+            .inject(.preview)
     }
 }
 #endif
