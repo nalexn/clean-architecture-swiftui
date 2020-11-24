@@ -116,8 +116,7 @@ final class CountryDetailsTests: XCTestCase {
     func test_sheetPresentation() {
         let interactors = DIContainer.Interactors.mocked(
             // Image is requested by CountryDetails and Details sheet:
-            imagesInteractor: [.loadImage(country.flag),
-                               .loadImage(country.flag)]
+            imagesInteractor: [.loadImage(country.flag)]
         )
         let container = DIContainer(appState: .init(AppState()), interactors: interactors)
         XCTAssertFalse(container.appState.value.routing.countryDetails.detailsSheet)
