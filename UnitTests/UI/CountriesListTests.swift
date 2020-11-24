@@ -54,7 +54,7 @@ final class CountriesListTests: XCTestCase {
             XCTAssertNoThrow(try view.searchBar())
             XCTAssertNoThrow(try view.loadingIndicator())
             let cell = try view.firstRowLink()
-                .label().view(CountryCell.self).actualView()
+                .labelView().view(CountryCell.self).actualView()
             XCTAssertEqual(cell.country, Country.mockedData[0])
             XCTAssertEqual(container.appState.value, AppState())
             container.services.verify()
@@ -71,7 +71,7 @@ final class CountriesListTests: XCTestCase {
             XCTAssertNoThrow(try view.searchBar())
             XCTAssertThrowsError(try view.loadingIndicator())
             let cell = try view.firstRowLink()
-                .label().view(CountryCell.self).actualView()
+                .labelView().view(CountryCell.self).actualView()
             XCTAssertEqual(cell.country, Country.mockedData[0])
             XCTAssertEqual(container.appState.value, AppState())
             container.services.verify()
@@ -137,7 +137,7 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(sut.name(locale: locale), "Xyz")
     }
     
-    func test_string_for_locale() {
+    func test_string_for_locale() throws {
         let sut = "Countries".localized(Locale(identifier: "fr"))
         XCTAssertEqual(sut, "Des pays")
     }

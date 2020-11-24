@@ -55,4 +55,16 @@ final class ModalDetailsViewTests: XCTestCase {
         ViewHosting.host(view: sut)
         wait(for: [exp], timeout: 2)
     }
+    
+    func test_modalDetails_close_localization() throws {
+        let services = DIContainer.Services.mocked(
+            imagesService: [.loadImage(country.flag)]
+        )
+        let isDisplayed = Binding(wrappedValue: true)
+        let sut = modalDetailsView(isDisplayed, services)
+        let button = try sut.inspect().navigationView().vStack(0).button(1)
+        let labelText = try button.labelView().text()
+        XCTAssertEqual(try labelText.string(), "Close")
+        XCTAssertEqual(try labelText.string(locale: Locale(identifier: "fr")), "Fermer")
+    }
 }
