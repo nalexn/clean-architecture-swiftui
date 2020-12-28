@@ -30,7 +30,7 @@ final class SVGImageViewTests: XCTestCase {
             imagesService: [.loadImage(url)])
         let sut = svgImageView(.notRequested, services)
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.anyView().text())
+            XCTAssertNoThrow(try view.find(text: ""))
             services.verify()
         }
         ViewHosting.host(view: sut)
@@ -41,7 +41,7 @@ final class SVGImageViewTests: XCTestCase {
         let services = DIContainer.Services.mocked()
         let sut = svgImageView(.isLoading(last: nil, cancelBag: CancelBag()), services)
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
+            XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
             services.verify()
         }
         ViewHosting.host(view: sut)
@@ -53,7 +53,7 @@ final class SVGImageViewTests: XCTestCase {
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
         let sut = svgImageView(.isLoading(last: image, cancelBag: CancelBag()), services)
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
+            XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
             services.verify()
         }
         ViewHosting.host(view: sut)
@@ -65,7 +65,7 @@ final class SVGImageViewTests: XCTestCase {
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
         let sut = svgImageView(.loaded(image), services)
         let exp = sut.inspection.inspect { view in
-            let loadedImage = try view.anyView().image().uiImage()
+            let loadedImage = try view.find(ViewType.Image.self).uiImage()
             XCTAssertEqual(loadedImage, image)
             services.verify()
         }
@@ -77,8 +77,7 @@ final class SVGImageViewTests: XCTestCase {
         let services = DIContainer.Services.mocked()
         let sut = svgImageView(.failed(NSError.test), services)
         let exp = sut.inspection.inspect { view in
-            let message = try view.anyView().text().string()
-            XCTAssertEqual(message, "Unable to load image")
+            XCTAssertNoThrow(try view.find(text: "Unable to load image"))
             services.verify()
         }
         ViewHosting.host(view: sut)

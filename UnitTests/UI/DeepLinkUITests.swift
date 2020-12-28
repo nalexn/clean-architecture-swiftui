@@ -20,7 +20,7 @@ final class DeepLinkUITests: XCTestCase {
         let container = DIContainer(appState: store, services: services)
         let sut = CountriesList(viewModel: .init(container: container))
         let exp = sut.inspection.inspect(after: 0.1) { view in
-            let firstRowLink = try view.firstRowLink()
+            let firstRowLink = try view.content().find(ViewType.NavigationLink.self)
             XCTAssertTrue(try firstRowLink.isActive())
         }
         ViewHosting.host(view: sut)
@@ -34,7 +34,7 @@ final class DeepLinkUITests: XCTestCase {
         let container = DIContainer(appState: store, services: services)
         let sut = CountryDetails(viewModel: .init(container: container, country: Country.mockedData[0]))
         let exp = sut.inspection.inspect(after: 0.1) { view in
-            XCTAssertNoThrow(try view.content().list())
+            XCTAssertNoThrow(try view.find(ViewType.List.self))
             XCTAssertTrue(store.value.routing.countryDetails.detailsSheet)
         }
         ViewHosting.host(view: sut)

@@ -31,9 +31,8 @@ final class ModalDetailsViewTests: XCTestCase {
         let isDisplayed = Binding(wrappedValue: true)
         let sut = modalDetailsView(isDisplayed, services)
         let exp = sut.inspection.inspect { view in
-            let vStack = try view.navigationView().vStack(0)
-            XCTAssertNoThrow(try vStack.hStack(0).view(SVGImageView.self, 1))
-            XCTAssertNoThrow(try vStack.button(1))
+            XCTAssertNoThrow(try view.find(SVGImageView.self))
+            XCTAssertNoThrow(try view.find(button: "Close"))
             services.verify()
         }
         ViewHosting.host(view: sut)
@@ -48,7 +47,7 @@ final class ModalDetailsViewTests: XCTestCase {
         let sut = modalDetailsView(isDisplayed, services)
         let exp = sut.inspection.inspect { view in
             XCTAssertTrue(isDisplayed.wrappedValue)
-            try view.navigationView().vStack(0).button(1).tap()
+            try view.find(button: "Close").tap()
             XCTAssertFalse(isDisplayed.wrappedValue)
             services.verify()
         }
@@ -62,8 +61,7 @@ final class ModalDetailsViewTests: XCTestCase {
         )
         let isDisplayed = Binding(wrappedValue: true)
         let sut = modalDetailsView(isDisplayed, services)
-        let button = try sut.inspect().navigationView().vStack(0).button(1)
-        let labelText = try button.labelView().text()
+        let labelText = try sut.inspect().find(text: "Close")
         XCTAssertEqual(try labelText.string(), "Close")
         XCTAssertEqual(try labelText.string(locale: Locale(identifier: "fr")), "Fermer")
     }
