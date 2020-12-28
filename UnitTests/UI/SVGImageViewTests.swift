@@ -22,7 +22,7 @@ final class SVGImageViewTests: XCTestCase {
             imagesInteractor: [.loadImage(url)])
         let sut = SVGImageView(imageURL: url, image: .notRequested)
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.anyView().text())
+            XCTAssertNoThrow(try view.find(text: ""))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
@@ -34,7 +34,7 @@ final class SVGImageViewTests: XCTestCase {
         let sut = SVGImageView(imageURL: url, image:
             .isLoading(last: nil, cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
+            XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
@@ -47,7 +47,7 @@ final class SVGImageViewTests: XCTestCase {
         let sut = SVGImageView(imageURL: url, image:
             .isLoading(last: image, cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.anyView().view(ActivityIndicatorView.self))
+            XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
@@ -59,7 +59,7 @@ final class SVGImageViewTests: XCTestCase {
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
         let sut = SVGImageView(imageURL: url, image: .loaded(image))
         let exp = sut.inspection.inspect { view in
-            let loadedImage = try view.anyView().image().uiImage()
+            let loadedImage = try view.find(ViewType.Image.self).uiImage()
             XCTAssertEqual(loadedImage, image)
             interactors.verify()
         }
@@ -71,8 +71,7 @@ final class SVGImageViewTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let sut = SVGImageView(imageURL: url, image: .failed(NSError.test))
         let exp = sut.inspection.inspect { view in
-            let message = try view.anyView().text().string()
-            XCTAssertEqual(message, "Unable to load image")
+            XCTAssertNoThrow(try view.find(text: "Unable to load image"))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))

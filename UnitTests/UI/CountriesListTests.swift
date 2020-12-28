@@ -51,10 +51,10 @@ final class CountriesListTests: XCTestCase {
         let sut = CountriesList(countries: .isLoading(
             last: Country.mockedData.lazyList, cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.searchBar())
-            XCTAssertNoThrow(try view.loadingIndicator())
-            let cell = try view.firstRowLink()
-                .labelView().view(CountryCell.self).actualView()
+            let content = try view.content()
+            XCTAssertNoThrow(try content.find(SearchBar.self))
+            XCTAssertNoThrow(try content.find(ActivityIndicatorView.self))
+            let cell = try content.find(CountryCell.self).actualView()
             XCTAssertEqual(cell.country, Country.mockedData[0])
             XCTAssertEqual(container.appState.value, AppState())
             container.interactors.verify()
@@ -67,10 +67,10 @@ final class CountriesListTests: XCTestCase {
         let container = DIContainer(appState: AppState(), interactors: .mocked())
         let sut = CountriesList(countries: .loaded(Country.mockedData.lazyList))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.searchBar())
-            XCTAssertThrowsError(try view.loadingIndicator())
-            let cell = try view.firstRowLink()
-                .labelView().view(CountryCell.self).actualView()
+            let content = try view.content()
+            XCTAssertNoThrow(try content.find(SearchBar.self))
+            XCTAssertThrowsError(try content.find(ActivityIndicatorView.self))
+            let cell = try content.find(CountryCell.self).actualView()
             XCTAssertEqual(cell.country, Country.mockedData[0])
             XCTAssertEqual(container.appState.value, AppState())
             container.interactors.verify()
@@ -112,11 +112,11 @@ final class CountriesListTests: XCTestCase {
         XCTAssertNil(container.appState.value.routing.countriesList.countryDetails)
         let sut = CountriesList(countries: .loaded(countries.lazyList))
         let exp = sut.inspection.inspect { view in
-            let firstCountryRow = try view.firstRowLink()
+            let firstCountryRow = try view.content().find(ViewType.NavigationLink.self)
             try firstCountryRow.activate()
             let selected = container.appState.value.routing.countriesList.countryDetails
             XCTAssertEqual(selected, countries[0].alpha3Code)
-            try firstCountryRow.view(CountryDetails.self).content().text().callOnAppear()
+            _ = try firstCountryRow.find(where: { try $0.callOnAppear(); return true })
             container.interactors.verify()
         }
         ViewHosting.host(view: sut.inject(container))
@@ -142,15 +142,6 @@ final class LocalizationTests: XCTestCase {
 extension InspectableView where View == ViewType.View<CountriesList> {
     func content() throws -> InspectableView<ViewType.AnyView> {
         return try geometryReader().navigationView()
-            .navigationBarItems().anyView()
-    }
-    func searchBar() throws -> InspectableView<ViewType.View<SearchBar>> {
-        return try content().vStack().view(SearchBar.self, 0)
-    }
-    func loadingIndicator() throws -> InspectableView<ViewType.View<ActivityIndicatorView>> {
-        return try content().vStack().view(ActivityIndicatorView.self, 1)
-    }
-    func firstRowLink() throws -> InspectableView<ViewType.NavigationLink> {
-        return try content().vStack().list(2).forEach(0).hStack(0).navigationLink(0)
+            .navigationBarItems(AnyView.self).anyView()
     }
 }

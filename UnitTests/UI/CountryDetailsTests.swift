@@ -23,7 +23,7 @@ final class CountryDetailsTests: XCTestCase {
         )
         let sut = CountryDetails(country: country, details: .notRequested)
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().text())
+            XCTAssertNoThrow(try view.find(text: ""))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
@@ -35,7 +35,7 @@ final class CountryDetailsTests: XCTestCase {
         let sut = CountryDetails(country: country, details:
             .isLoading(last: nil, cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().vStack().view(ActivityIndicatorView.self, 0))
+            XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
@@ -48,7 +48,7 @@ final class CountryDetailsTests: XCTestCase {
             .isLoading(last: Country.Details.mockedData[0], cancelBag: CancelBag())
         )
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().vStack().view(ActivityIndicatorView.self, 0))
+            XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
@@ -61,8 +61,8 @@ final class CountryDetailsTests: XCTestCase {
             .isLoading(last: Country.Details.mockedData[0], cancelBag: CancelBag())
         )
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().vStack().view(ActivityIndicatorView.self, 0))
-            try view.content().vStack().button(1).tap()
+            XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
+            try view.find(button: "Cancel loading").tap()
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
@@ -77,11 +77,8 @@ final class CountryDetailsTests: XCTestCase {
             .loaded(Country.Details.mockedData[0])
         )
         let exp = sut.inspection.inspect { view in
-            let list = try view.content().list()
-            XCTAssertNoThrow(try list.hStack(0).view(SVGImageView.self, 1))
-            let countryCode = try list.section(1).view(DetailRow.self, 0)
-                .hStack().text(0).string()
-            XCTAssertEqual(countryCode, self.country.alpha3Code)
+            XCTAssertNoThrow(try view.find(SVGImageView.self))
+            XCTAssertNoThrow(try view.find(DetailRow.self).find(text: self.country.alpha3Code))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
@@ -92,7 +89,7 @@ final class CountryDetailsTests: XCTestCase {
         let interactors = DIContainer.Interactors.mocked()
         let sut = CountryDetails(country: country, details: .failed(NSError.test))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().view(ErrorView.self))
+            XCTAssertNoThrow(try view.find(ErrorView.self))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))
@@ -105,7 +102,7 @@ final class CountryDetailsTests: XCTestCase {
         )
         let sut = CountryDetails(country: country, details: .failed(NSError.test))
         let exp = sut.inspection.inspect { view in
-            let errorView = try view.content().view(ErrorView.self)
+            let errorView = try view.find(ErrorView.self)
             try errorView.vStack().button(2).tap()
             interactors.verify()
         }
@@ -122,7 +119,7 @@ final class CountryDetailsTests: XCTestCase {
         XCTAssertFalse(container.appState.value.routing.countryDetails.detailsSheet)
         let sut = CountryDetails(country: country, details: .loaded(Country.Details.mockedData[0]))
         let exp1 = sut.inspection.inspect { view in
-            try view.content().list().hStack(0).view(SVGImageView.self, 1).callOnTapGesture()
+            try view.find(SVGImageView.self).callOnTapGesture()
         }
         let exp2 = sut.inspection.inspect(after: 0.5) { view in
             XCTAssertTrue(container.appState.value.routing.countryDetails.detailsSheet)
@@ -130,13 +127,5 @@ final class CountryDetailsTests: XCTestCase {
         }
         ViewHosting.host(view: sut.inject(container))
         wait(for: [exp1, exp2], timeout: 2)
-    }
-}
-
-// MARK: - CountryDetails inspection helper
-
-extension InspectableView where View == ViewType.View<CountryDetails> {
-    func content() throws -> InspectableView<ViewType.AnyView> {
-        return try anyView()
     }
 }
