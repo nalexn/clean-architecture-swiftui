@@ -59,7 +59,7 @@ final class SVGImageViewTests: XCTestCase {
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
         let sut = SVGImageView(imageURL: url, image: .loaded(image))
         let exp = sut.inspection.inspect { view in
-            let loadedImage = try view.find(ViewType.Image.self).uiImage()
+            let loadedImage = try view.find(ViewType.Image.self).actualImage().uiImage()
             XCTAssertEqual(loadedImage, image)
             interactors.verify()
         }
