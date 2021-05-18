@@ -117,9 +117,16 @@ final class CountryDetailsTests: XCTestCase {
     }
     
     func test_sheetPresentation() {
-        let services = DIContainer.Services.mocked(
+        let images: [MockedImagesService.Action]
+        if #available(iOS 14.0, *) {
+            // Image is requested by Details sheet only:
+            images = [.loadImage(country.flag)]
+        } else {
             // Image is requested by CountryDetails and Details sheet:
-            imagesService: [.loadImage(country.flag)]
+            images = [.loadImage(country.flag), .loadImage(country.flag)]
+        }
+        let services = DIContainer.Services.mocked(
+            imagesService: images
         )
         let sut = countryDetailsView(.loaded(Country.Details.mockedData[0]), services)
         let container = sut.viewModel.container
