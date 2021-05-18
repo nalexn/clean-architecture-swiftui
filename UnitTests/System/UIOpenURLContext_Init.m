@@ -11,8 +11,7 @@
 @implementation UIOpenURLContext (Init)
 
 + (instancetype)createInstance {
-    NSString *name = NSStringFromClass([self class]);
-    return [[NSClassFromString(name) alloc] init];
+    return [[self alloc] init];
 }
 
 @end
