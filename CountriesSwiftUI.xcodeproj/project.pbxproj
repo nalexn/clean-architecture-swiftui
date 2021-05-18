@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52333A932654463B0034072B /* UIOpenURLContext_Init.m in Sources */ = {isa = PBXBuildFile; fileRef = 52333A922654463B0034072B /* UIOpenURLContext_Init.m */; };
 		F60829712369CE0100DB292E /* RequestMocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829702369CE0100DB292E /* RequestMocking.swift */; };
 		F60829732369CE5300DB292E /* MockedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829722369CE5300DB292E /* MockedResponse.swift */; };
 		F60829762369D58A00DB292E /* CountriesWebRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829752369D58A00DB292E /* CountriesWebRepositoryTests.swift */; };
@@ -104,6 +105,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		52333A90265445F30034072B /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		52333A91265445F30034072B /* UIOpenURLContext_Init.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIOpenURLContext_Init.h; sourceTree = "<group>"; };
+		52333A922654463B0034072B /* UIOpenURLContext_Init.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIOpenURLContext_Init.m; sourceTree = "<group>"; };
 		F60829702369CE0100DB292E /* RequestMocking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestMocking.swift; sourceTree = "<group>"; };
 		F60829722369CE5300DB292E /* MockedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedResponse.swift; sourceTree = "<group>"; };
 		F60829752369D58A00DB292E /* CountriesWebRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesWebRepositoryTests.swift; sourceTree = "<group>"; };
@@ -471,6 +475,9 @@
 				F6F003B0236AF31400AAC7C6 /* SystemEventsHandlerTests.swift */,
 				F695DF962455F4CB00A65A04 /* PushNotificationsHandlerTests.swift */,
 				F695DF982456111300A65A04 /* DeepLinksHandlerTests.swift */,
+				52333A91265445F30034072B /* UIOpenURLContext_Init.h */,
+				52333A922654463B0034072B /* UIOpenURLContext_Init.m */,
+				52333A90265445F30034072B /* UnitTests-Bridging-Header.h */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -553,6 +560,7 @@
 					};
 					F67833D12369CCBD0065272F = {
 						CreatedOnToolsVersion = 11.1;
+						LastSwiftMigration = 1250;
 						TestTargetID = F64495E02360D66400C9BB1F;
 					};
 				};
@@ -705,6 +713,7 @@
 				F6E7ACE523F83BEB00AB48AB /* ContentViewTests.swift in Sources */,
 				F60CC50B236C622C007E84B2 /* ModalDetailsViewTests.swift in Sources */,
 				F695DF8F2455DEDE00A65A04 /* MockedSystemEventsHandler.swift in Sources */,
+				52333A932654463B0034072B /* UIOpenURLContext_Init.m in Sources */,
 				F695DF972455F4CB00A65A04 /* PushNotificationsHandlerTests.swift in Sources */,
 				F6500B4A23C8F2AC0086FD70 /* DeepLinkUITests.swift in Sources */,
 				F6621FE9244B3DE100DC583F /* MockedDBRepositories.swift in Sources */,
@@ -923,6 +932,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
@@ -934,6 +944,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.countries.swiftui.UnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/System/UnitTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CountriesSwiftUI.app/CountriesSwiftUI";
@@ -944,6 +956,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
@@ -955,6 +968,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.countries.swiftui.UnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/System/UnitTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CountriesSwiftUI.app/CountriesSwiftUI";

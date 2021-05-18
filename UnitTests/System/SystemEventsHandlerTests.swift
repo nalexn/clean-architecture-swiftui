@@ -155,18 +155,21 @@ final class SystemEventsHandlerTests: XCTestCase {
 
 private extension UIOpenURLContext {
     static func contexts(_ urlString: String) -> Set<UIOpenURLContext> {
-        return Set([Test(urlString)])
+        UIOpenURLContext.createInstance()
+        return Set([Test.create(url: urlString)])
     }
 }
 
 private extension UIOpenURLContext {
     final class Test: UIOpenURLContext {
         
-        let urlString: String
+        var urlString: String = ""
         override var url: URL { URL(string: urlString)! }
         
-        init(_ urlString: String) {
-            self.urlString = urlString
+        static func create(url: String) -> Test {
+            let instance = createInstance()
+            instance.urlString = url
+            return instance
         }
     }
 
