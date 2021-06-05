@@ -22,7 +22,7 @@ extension Permission {
     }
 }
 
-protocol UserPermissionsService: class {
+protocol UserPermissionsService: AnyObject {
     func resolveStatus(for permission: Permission)
     func request(permission: Permission)
 }
