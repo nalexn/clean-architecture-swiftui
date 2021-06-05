@@ -27,6 +27,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()
         }
         self.systemEventsHandler = environment.systemEventsHandler
+        if !connectionOptions.urlContexts.isEmpty {
+            systemEventsHandler?.sceneOpenURLContexts(connectionOptions.urlContexts)
+        }
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
