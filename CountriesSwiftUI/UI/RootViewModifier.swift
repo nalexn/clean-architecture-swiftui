@@ -14,12 +14,12 @@ import Combine
 struct RootViewAppearance: ViewModifier {
     
     @ObservedObject private(set) var viewModel: ViewModel
-    var didAppear: ((Self.Body) -> Void)?
+    internal let inspection = Inspection<Self>()
     
     func body(content: Content) -> some View {
         content
             .blur(radius: viewModel.isActive ? 0 : 10)
-            .onAppear { self.didAppear?(self.body(content: content)) }
+            .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
 }
 

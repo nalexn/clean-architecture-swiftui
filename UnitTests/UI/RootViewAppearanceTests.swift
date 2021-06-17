@@ -11,20 +11,18 @@ import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
+extension RootViewAppearance: Inspectable { }
+
 final class RootViewAppearanceTests: XCTestCase {
 
     func test_blur_whenInactive() {
-        let exp = XCTestExpectation(description: #function)
         let container = DIContainer(appState: .init(AppState()),
                                     services: .mocked())
+        let sut = RootViewAppearance(viewModel: .init(container: container))
         XCTAssertFalse(container.appState.value.system.isActive)
-        var sut = RootViewAppearance(viewModel: .init(container: container))
-        sut.didAppear = { body in
-            body.inspect { content in
-                XCTAssertEqual(try content.blur().radius, 10)
-            }
-            ViewHosting.expel()
-            exp.fulfill()
+        let exp = sut.inspection.inspect { modifier in
+            let content = try modifier.viewModifierContent()
+            XCTAssertEqual(try content.blur().radius, 10)
         }
         let view = EmptyView().modifier(sut)
         ViewHosting.host(view: view)
@@ -32,18 +30,14 @@ final class RootViewAppearanceTests: XCTestCase {
     }
     
     func test_blur_whenActive() {
-        let exp = XCTestExpectation(description: #function)
         let container = DIContainer(appState: .init(AppState()),
                                     services: .mocked())
         container.appState[\.system.isActive] = true
         XCTAssertTrue(container.appState.value.system.isActive)
-        var sut = RootViewAppearance(viewModel: .init(container: container))
-        sut.didAppear = { body in
-            body.inspect { content in
-                XCTAssertEqual(try content.blur().radius, 0)
-            }
-            ViewHosting.expel()
-            exp.fulfill()
+        let sut = RootViewAppearance(viewModel: .init(container: container))
+        let exp = sut.inspection.inspect { modifier in
+            let content = try modifier.viewModifierContent()
+            XCTAssertEqual(try content.blur().radius, 0)
         }
         let view = EmptyView().modifier(sut)
         ViewHosting.host(view: view)
