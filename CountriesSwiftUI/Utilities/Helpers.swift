@@ -39,7 +39,7 @@ extension Result {
 
 // MARK: - View Inspection helper
 
-internal final class Inspection<V> where V: View {
+internal final class Inspection<V> {
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
     

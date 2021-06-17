@@ -11,27 +11,18 @@ import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
-private typealias ModifierContent = _ViewModifier_Content<RootViewAppearance>
-
-extension ModifierContent: Inspectable { }
+extension RootViewAppearance: Inspectable { }
 
 final class RootViewAppearanceTests: XCTestCase {
 
     func test_blur_whenInactive() {
         let sut = RootViewAppearance()
-        let exp = XCTestExpectation(description: #function)
         let container = DIContainer(appState: .init(AppState()),
                                     interactors: .mocked())
         XCTAssertFalse(container.appState.value.system.isActive)
-        DispatchQueue.main.async {
-            sut.inspection.send { body in
-                body.inspect { content in
-                    XCTAssertEqual(try content.anyView()
-                        .view(ModifierContent.self).blur().radius, 10)
-                }
-                ViewHosting.expel()
-                exp.fulfill()
-            }
+        let exp = sut.inspection.inspect { modifier in
+            let content = try modifier.viewModifierContent()
+            XCTAssertEqual(try content.blur().radius, 10)
         }
         let view = EmptyView().modifier(sut)
             .environment(\.injected, container)
@@ -41,20 +32,13 @@ final class RootViewAppearanceTests: XCTestCase {
     
     func test_blur_whenActive() {
         let sut = RootViewAppearance()
-        let exp = XCTestExpectation(description: #function)
         let container = DIContainer(appState: .init(AppState()),
                                     interactors: .mocked())
         container.appState[\.system.isActive] = true
         XCTAssertTrue(container.appState.value.system.isActive)
-        DispatchQueue.main.async {
-            sut.inspection.send { body in
-                body.inspect { content in
-                    XCTAssertEqual(try content.anyView()
-                        .view(ModifierContent.self).blur().radius, 0)
-                }
-                ViewHosting.expel()
-                exp.fulfill()
-            }
+        let exp = sut.inspection.inspect { modifier in
+            let content = try modifier.viewModifierContent()
+            XCTAssertEqual(try content.blur().radius, 0)
         }
         let view = EmptyView().modifier(sut)
             .environment(\.injected, container)
