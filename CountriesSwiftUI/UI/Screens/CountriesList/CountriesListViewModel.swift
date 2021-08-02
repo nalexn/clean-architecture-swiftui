@@ -52,10 +52,10 @@ extension CountriesList {
                     .sink { appState[\.routing.countriesList] = $0 }
                 appState.map(\.routing.countriesList)
                     .removeDuplicates()
-                    .assign(to: \.routingState, on: self)
+                    .weakAssign(to: \.routingState, on: self)
                 appState.updates(for: AppState.permissionKeyPath(for: .pushNotifications))
                     .map { $0 == .notRequested || $0 == .denied }
-                    .assign(to: \.canRequestPushPermission, on: self)
+                    .weakAssign(to: \.canRequestPushPermission, on: self)
             }
         }
         

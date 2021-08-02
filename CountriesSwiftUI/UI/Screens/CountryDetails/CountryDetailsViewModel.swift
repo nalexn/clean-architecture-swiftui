@@ -43,7 +43,7 @@ extension CountryDetails {
                     .sink { appState[\.routing.countryDetails] = $0 }
                 appState.map(\.routing.countryDetails)
                     .removeDuplicates()
-                    .assign(to: \.routingState, on: self)
+                    .weakAssign(to: \.routingState, on: self)
             }
         }
         
