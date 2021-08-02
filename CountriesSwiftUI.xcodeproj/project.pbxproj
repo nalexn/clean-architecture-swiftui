@@ -1021,7 +1021,7 @@
 			repositoryURL = "https://github.com/nalexn/EnvironmentOverrides";
 			requirement = {
 				kind = exactVersion;
-				version = 0.0.3;
+				version = 0.0.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
