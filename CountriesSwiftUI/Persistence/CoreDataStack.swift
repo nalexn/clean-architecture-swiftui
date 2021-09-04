@@ -18,33 +18,16 @@ protocol PersistentStore {
     func update<Result>(_ operation: @escaping DBOperation<Result>) -> AnyPublisher<Result, Error>
 }
 
-struct CoreDataStack: PersistentStore {
+final class CoreDataStack: PersistentStore {
     
-    private let container: NSPersistentContainer
+    private var container: NSPersistentContainer
     private let isStoreLoaded = CurrentValueSubject<Bool, Error>(false)
     private let bgQueue = DispatchQueue(label: "coredata")
     
-    init(directory: FileManager.SearchPathDirectory = .documentDirectory,
-         domainMask: FileManager.SearchPathDomainMask = .userDomainMask,
-         version vNumber: UInt) {
+    init(version vNumber: UInt, directory: DBFileDirectory = .default) {
         let version = Version(vNumber)
         container = NSPersistentContainer(name: version.modelName)
-        if let url = version.dbFileURL(directory, domainMask) {
-            let store = NSPersistentStoreDescription(url: url)
-            container.persistentStoreDescriptions = [store]
-        }
-        bgQueue.async { [weak isStoreLoaded, weak container] in
-            container?.loadPersistentStores { (storeDescription, error) in
-                DispatchQueue.main.async {
-                    if let error = error {
-                        isStoreLoaded?.send(completion: .failure(error))
-                    } else {
-                        container?.viewContext.configureAsReadOnlyContext()
-                        isStoreLoaded?.value = true
-                    }
-                }
-            }
-        }
+        bootstrap(version: version, directory: directory)
     }
     
     func count<T>(_ fetchRequest: NSFetchRequest<T>) -> AnyPublisher<Int, Error> {
@@ -129,7 +112,7 @@ struct CoreDataStack: PersistentStore {
 // MARK: - Versioning
 
 extension CoreDataStack.Version {
-    static var actual: UInt { 1 }
+    static var actual: UInt { 2 }
 }
 
 extension CoreDataStack {
@@ -144,15 +127,100 @@ extension CoreDataStack {
             return "db_model_v1"
         }
         
-        func dbFileURL(_ directory: FileManager.SearchPathDirectory,
-                       _ domainMask: FileManager.SearchPathDomainMask) -> URL? {
-            return FileManager.default
-                .urls(for: directory, in: domainMask).first?
+        func dbFileURL(directory: DBFileDirectory) -> URL? {
+            return directory.url(version: number)?
                 .appendingPathComponent(subpathToDB)
         }
         
         private var subpathToDB: String {
             return "db.sql"
+        }
+    }
+}
+
+extension CoreDataStack {
+    enum DBFileDirectory {
+        case `default`
+        case custom(URL)
+        
+        func url(version: UInt) -> URL? {
+            switch self {
+            case .default:
+                let fm = FileManager.default
+                if version < 2 {
+                    return fm.urls(for: .documentDirectory, in: .userDomainMask).first
+                }
+                // Replace below with appropriate file URL
+                // fm.containerURL(forSecurityApplicationGroupIdentifier: "group.com.my.app")
+                return fm.urls(for: .cachesDirectory, in: .userDomainMask).first
+            case .custom(let url):
+                return url.appendingPathComponent("v_\(version)")
+            }
+        }
+    }
+}
+
+// MARK: - Bootstrap
+
+private extension CoreDataStack {
+    
+    func bootstrap(version: Version, directory: DBFileDirectory) {
+        let fm = FileManager.default
+        let fileURLs = dbFileURLs(version: version, directory: directory)
+        fileURLs
+            .map { $0.deletingLastPathComponent() }
+            .forEach {
+                try? fm.createDirectory(at: $0, withIntermediateDirectories: true, attributes: nil)
+            }
+        container.persistentStoreDescriptions = fileURLs
+            .map { NSPersistentStoreDescription(url: $0) }
+        bgQueue.async { [weak self] in
+            self?.container.loadPersistentStores { (storeDescription, error) in
+                self?.migrateDatabase(to: version, directory: directory)
+                DispatchQueue.main.async {
+                    if let error = error {
+                        self?.isStoreLoaded.send(completion: .failure(error))
+                    } else {
+                        self?.container.viewContext.configureAsReadOnlyContext()
+                        self?.isStoreLoaded.value = true
+                    }
+                }
+            }
+        }
+    }
+    
+    func dbFileURLs(version: Version, directory: DBFileDirectory) -> [URL] {
+        let currentFileURL = version.dbFileURL(directory: directory)
+        if let oldFileURL = Version(1).dbFileURL(directory: directory),
+           oldFileURL != currentFileURL,
+           FileManager.default.fileExists(atPath: oldFileURL.path) {
+            return [oldFileURL, currentFileURL].compactMap { $0 }
+        }
+        return [currentFileURL].compactMap { $0 }
+    }
+    
+    func migrateDatabase(to version: Version, directory: DBFileDirectory) {
+        let coordinator = container.persistentStoreCoordinator
+        if let oldFileURL = Version(1).dbFileURL(directory: directory),
+           let currentFileURL = version.dbFileURL(directory: directory), oldFileURL != currentFileURL,
+           let oldStore = coordinator.persistentStore(for: oldFileURL),
+           let storeType = container.persistentStoreDescriptions
+                .first(where: { $0.url == oldFileURL })?.type {
+            do {
+                try coordinator.migratePersistentStore(
+                    oldStore, to: currentFileURL, options: nil, withType: storeType)
+                let fileCoordinator = NSFileCoordinator(filePresenter: nil)
+                fileCoordinator.coordinate(writingItemAt: oldFileURL, options: .forDeleting,
+                                           error: nil, byAccessor: { url in
+                    do {
+                        try FileManager.default.removeItem(at: url)
+                    } catch {
+                        print("Error delieting old DB file: \(error)")
+                    }
+                })
+            } catch {
+                print("Error migrating DB to new file location: \(error)")
+            }
         }
     }
 }

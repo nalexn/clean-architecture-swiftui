@@ -88,12 +88,7 @@ final class MockedPersistentStore: Mock, PersistentStore {
     // MARK: - Database
     
     private let dbVersion = CoreDataStack.Version(CoreDataStack.Version.actual)
-    
-    private var dbURL: URL {
-        guard let url = dbVersion.dbFileURL(.cachesDirectory, .userDomainMask)
-            else { fatalError() }
-        return url
-    }
+    private var dbURL: URL! { dbVersion.dbFileURL(directory: .tests) }
     
     private lazy var container: NSPersistentContainer = {
         let container = NSPersistentContainer(name: dbVersion.modelName)

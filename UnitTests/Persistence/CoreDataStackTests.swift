@@ -10,16 +10,22 @@ import XCTest
 import Combine
 @testable import CountriesSwiftUI
 
+extension CoreDataStack.DBFileDirectory {
+    static let testsURL = FileManager.default.temporaryDirectory.appendingPathComponent("tests")
+    static var tests: CoreDataStack.DBFileDirectory {
+        return .custom(testsURL)
+    }
+}
+
 class CoreDataStackTests: XCTestCase {
     
     var sut: CoreDataStack!
-    let testDirectory: FileManager.SearchPathDirectory = .cachesDirectory
     var dbVersion: UInt { fatalError("Override") }
     var cancelBag = CancelBag()
     
     override func setUp() {
         eraseDBFiles()
-        sut = CoreDataStack(directory: testDirectory, version: dbVersion)
+        sut = CoreDataStack(version: dbVersion, directory: .tests)
     }
     
     override func tearDown() {
@@ -29,16 +35,13 @@ class CoreDataStackTests: XCTestCase {
     }
     
     func eraseDBFiles() {
-        let version = CoreDataStack.Version(dbVersion)
-        if let url = version.dbFileURL(testDirectory, .userDomainMask) {
-            try? FileManager().removeItem(at: url)
-        }
+        try? FileManager().removeItem(at: CoreDataStack.DBFileDirectory.testsURL)
     }
 }
 
 // MARK: - Version 1
 
-final class CoreDataStackV1Tests: CoreDataStackTests {
+class CoreDataStackV1Tests: CoreDataStackTests {
     
     override var dbVersion: UInt { 1 }
 
@@ -59,8 +62,9 @@ final class CoreDataStackV1Tests: CoreDataStackTests {
     }
     
     func test_inaccessibleDirectory() {
-        let sut = CoreDataStack(directory: .adminApplicationDirectory,
-                                domainMask: .systemDomainMask, version: dbVersion)
+        let inaccessibleURL = FileManager.default
+            .urls(for: .adminApplicationDirectory, in: .systemDomainMask).first!
+        let sut = CoreDataStack(version: dbVersion, directory: .custom(inaccessibleURL))
         let exp = XCTestExpectation(description: #function)
         let request = CountryMO.newFetchRequest()
         request.predicate = NSPredicate(value: true)
@@ -149,5 +153,45 @@ final class CoreDataStackV1Tests: CoreDataStackTests {
             }
             .store(in: cancelBag)
         wait(for: [exp], timeout: 1)
+    }
+}
+
+// MARK: - Version 2
+
+final class CoreDataStackV2Tests: CoreDataStackV1Tests {
+    
+    override var dbVersion: UInt { 2 }
+    
+    func test_migration_from_v1() {
+        sut = nil
+        eraseDBFiles()
+        var oldStack: CoreDataStack? = CoreDataStack(version: 1, directory: .tests)
+        var newStack: CoreDataStack?
+        let countries = Country.mockedData
+        let exp = XCTestExpectation(description: #function)
+        let fm = FileManager.default
+        let oldURL = CoreDataStack.Version(1).dbFileURL(directory: .tests)!.path
+        let newURL = CoreDataStack.Version(dbVersion).dbFileURL(directory: .tests)!.path
+        oldStack!
+            .update { context in
+                countries.forEach { $0.store(in: context) }
+            }
+            .flatMap { _ -> AnyPublisher<Int, Error> in
+                XCTAssertTrue(fm.fileExists(atPath: oldURL))
+                newStack = CoreDataStack(version: self.dbVersion, directory: .tests)
+                let request = CountryMO.newFetchRequest()
+                request.predicate = NSPredicate(value: true)
+                return newStack!.count(request)
+            }
+            .sinkToResult { result in
+                result.assertSuccess(value: countries.count)
+                XCTAssertFalse(fm.fileExists(atPath: oldURL))
+                XCTAssertTrue(fm.fileExists(atPath: newURL))
+                exp.fulfill()
+                oldStack = nil
+                newStack = nil
+            }
+            .store(in: cancelBag)
+        wait(for: [exp], timeout: 3)
     }
 }
