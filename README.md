@@ -10,7 +10,7 @@
 
 A demo project showcasing the setup of the SwiftUI app with Clean Architecture.
 
-The app uses the [restcountries.eu](https://restcountries.eu/) REST API to show the list of countries and details about them.
+The app uses the [restcountries.com](https://restcountries.com/) REST API to show the list of countries and details about them.
 
 **Check out [mvvm branch](https://github.com/nalexn/clean-architecture-swiftui/tree/mvvm) for the MVVM revision of the same app.**
 

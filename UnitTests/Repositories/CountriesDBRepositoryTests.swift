@@ -142,7 +142,7 @@ private extension Country {
                 translations: ["fr": "United States in Frénch",
                                "ja": "Unitd States in Japaneese"],
                 population: 125000000,
-                flag: URL(string: "https://restcountries.eu/data/usa.svg"),
+                flag: URL(string: "https://flagcdn.com/us.svg"),
                 alpha3Code: "USA"),
         Country(name: "Canada",
                 translations: ["ja": "Canada not in French"],

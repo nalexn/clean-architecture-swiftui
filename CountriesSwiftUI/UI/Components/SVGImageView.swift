@@ -77,9 +77,9 @@ private extension SVGImageView {
 struct SVGImageView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            SVGImageView(imageURL: URL(string: "https://restcountries.eu/data/usa.svg")!)
-            SVGImageView(imageURL: URL(string: "https://restcountries.eu/data/alb.svg")!)
-            SVGImageView(imageURL: URL(string: "https://restcountries.eu/data/rus.svg")!)
+            SVGImageView(imageURL: URL(string: "https://flagcdn.com/us.svg")!)
+            SVGImageView(imageURL: URL(string: "https://flagcdn.com/al.svg")!)
+            SVGImageView(imageURL: URL(string: "https://flagcdn.com/ru.svg")!)
         }
     }
 }
