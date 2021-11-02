@@ -117,14 +117,7 @@ final class CountryDetailsTests: XCTestCase {
     }
     
     func test_sheetPresentation() {
-        let images: [MockedImagesService.Action]
-        if #available(iOS 14.0, *) {
-            // Image is requested by Details sheet only:
-            images = [.loadImage(country.flag)]
-        } else {
-            // Image is requested by CountryDetails and Details sheet:
-            images = [.loadImage(country.flag), .loadImage(country.flag)]
-        }
+        let images: [MockedImagesService.Action] = [.loadImage(country.flag), .loadImage(country.flag)]
         let services = DIContainer.Services.mocked(
             imagesService: images
         )

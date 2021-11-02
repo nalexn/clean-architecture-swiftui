@@ -64,7 +64,7 @@ extension AppEnvironment {
     private static func configuredWebRepositories(session: URLSession) -> DIContainer.WebRepositories {
         let countriesWebRepository = RealCountriesWebRepository(
             session: session,
-            baseURL: "https://restcountries.eu/rest/v2")
+            baseURL: "https://restcountries.com/v2")
         let imageWebRepository = RealImageWebRepository(
             session: session,
             baseURL: "https://ezgif.com")

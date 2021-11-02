@@ -146,7 +146,6 @@ final class LocalizationTests: XCTestCase {
 // MARK: - CountriesList inspection helper
 extension InspectableView where View == ViewType.View<CountriesList> {
     func content() throws -> InspectableView<ViewType.AnyView> {
-        return try geometryReader().navigationView()
-            .navigationBarItems(0).anyView()
+        return try find(ViewType.AnyView.self)
     }
 }

@@ -89,7 +89,7 @@ extension SVGImageView {
 struct SVGImageView_Previews: PreviewProvider {
     static var previews: some View {
         SVGImageView(viewModel: SVGImageView.ViewModel(
-            container: .preview, imageURL: URL(string: "https://restcountries.eu/data/usa.svg")!))
+            container: .preview, imageURL: URL(string: "https://flagcdn.com/us.svg")!))
     }
 }
 #endif
