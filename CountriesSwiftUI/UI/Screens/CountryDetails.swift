@@ -34,12 +34,16 @@ struct CountryDetails: View {
             .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
-    private var content: AnyView {
+    @ViewBuilder private var content: some View {
         switch details {
-        case .notRequested: return AnyView(notRequestedView)
-        case .isLoading: return AnyView(loadingView)
-        case let .loaded(countryDetails): return AnyView(loadedView(countryDetails))
-        case let .failed(error): return AnyView(failedView(error))
+        case .notRequested:
+            notRequestedView
+        case .isLoading:
+            loadingView
+        case let .loaded(countryDetails):
+            loadedView(countryDetails)
+        case let .failed(error):
+            failedView(error)
         }
     }
 }

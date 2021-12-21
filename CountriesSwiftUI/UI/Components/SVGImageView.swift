@@ -27,12 +27,16 @@ struct SVGImageView: View {
             .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
-    private var content: AnyView {
+    @ViewBuilder private var content: some View {
         switch image {
-        case .notRequested: return AnyView(notRequestedView)
-        case .isLoading: return AnyView(loadingView)
-        case let .loaded(image): return AnyView(loadedView(image))
-        case let .failed(error): return AnyView(failedView(error))
+        case .notRequested:
+            notRequestedView
+        case .isLoading:
+            loadingView
+        case let .loaded(image):
+            loadedView(image)
+        case let .failed(error):
+            failedView(error)
         }
     }
 }

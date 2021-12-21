@@ -46,12 +46,16 @@ struct CountriesList: View {
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
-    private var content: AnyView {
+    @ViewBuilder private var content: some View {
         switch countries {
-        case .notRequested: return AnyView(notRequestedView)
-        case let .isLoading(last, _): return AnyView(loadingView(last))
-        case let .loaded(countries): return AnyView(loadedView(countries, showSearch: true, showLoading: false))
-        case let .failed(error): return AnyView(failedView(error))
+        case .notRequested:
+            notRequestedView
+        case let .isLoading(last, _):
+            loadingView(last)
+        case let .loaded(countries):
+            loadedView(countries, showSearch: true, showLoading: false)
+        case let .failed(error):
+            failedView(error)
         }
     }
     
