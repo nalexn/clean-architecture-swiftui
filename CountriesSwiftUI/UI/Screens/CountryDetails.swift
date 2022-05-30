@@ -111,7 +111,7 @@ private extension CountryDetails {
         HStack {
             Spacer()
             SVGImageView(imageURL: url)
-                .frame(width: 120, height: 80)
+//                .frame(width: 120, height: 80)
                 .onTapGesture {
                     self.showCountryDetailsSheet()
                 }

@@ -57,7 +57,7 @@ private extension DeepLinkUITests {
     func mockedInteractors(store: Store<AppState>) -> DIContainer.Interactors {
         
         let countries = Country.mockedData
-        let testImage = UIColor.red.image(CGSize(width: 40, height: 40))
+        let testImage = Data()
         let detailsIntermediate = Country.Details.Intermediate(capital: "", currencies: [], borders: [])
         let details = Country.Details(capital: "", currencies: [], neighbors: [])
         

@@ -8,16 +8,16 @@
 
 import SwiftUI
 import Combine
-import WebKit
+import SVGView
 
 struct SVGImageView: View {
     
     let imageURL: URL
     @Environment(\.injected) var injected: DIContainer
-    @State private var image: Loadable<UIImage>
+    @State private var image: Loadable<Data>
     let inspection = Inspection<Self>()
     
-    init(imageURL: URL, image: Loadable<UIImage> = .notRequested) {
+    init(imageURL: URL, image: Loadable<Data> = .notRequested) {
         self.imageURL = imageURL
         self._image = .init(initialValue: image)
     }
@@ -70,10 +70,10 @@ private extension SVGImageView {
             .padding()
     }
     
-    func loadedView(_ image: UIImage) -> some View {
-        Image(uiImage: image)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
+    func loadedView(_ image: Data) -> some View {
+        SVGView(data: image)
+            .scaleEffect(0.2, anchor: .topLeading)
+            .frame(width: 200, height: 140, alignment: .center)
     }
 }
 

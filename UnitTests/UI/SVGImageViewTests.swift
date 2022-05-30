@@ -8,10 +8,12 @@
 
 import XCTest
 import SwiftUI
+import SVGView
 import ViewInspector
 @testable import CountriesSwiftUI
 
 extension SVGImageView: Inspectable { }
+extension SVGView: Inspectable { }
 
 final class SVGImageViewTests: XCTestCase {
 
@@ -43,9 +45,8 @@ final class SVGImageViewTests: XCTestCase {
     
     func test_imageView_isLoading_refresh() {
         let interactors = DIContainer.Interactors.mocked()
-        let image = UIColor.red.image(CGSize(width: 10, height: 10))
         let sut = SVGImageView(imageURL: url, image:
-            .isLoading(last: image, cancelBag: CancelBag()))
+            .isLoading(last: Data(), cancelBag: CancelBag()))
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
             interactors.verify()
@@ -56,11 +57,10 @@ final class SVGImageViewTests: XCTestCase {
     
     func test_imageView_loaded() {
         let interactors = DIContainer.Interactors.mocked()
-        let image = UIColor.red.image(CGSize(width: 10, height: 10))
+        let image = Data()
         let sut = SVGImageView(imageURL: url, image: .loaded(image))
         let exp = sut.inspection.inspect { view in
-            let loadedImage = try view.find(ViewType.Image.self).actualImage().uiImage()
-            XCTAssertEqual(loadedImage, image)
+            XCTAssertNoThrow(try view.find(ViewType.View<SVGView>.self))
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))

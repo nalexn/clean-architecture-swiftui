@@ -49,9 +49,9 @@ final class MockedImageWebRepository: TestWebRepository, Mock, ImageWebRepositor
     }
     var actions = MockActions<Action>(expected: [])
     
-    var imageResponse: Result<UIImage, Error> = .failure(MockError.valueNotSet)
+    var imageResponse: Result<Data, Error> = .failure(MockError.valueNotSet)
     
-    func load(imageURL: URL, width: Int) -> AnyPublisher<UIImage, Error> {
+    func load(imageURL: URL) -> AnyPublisher<Data, Error> {
         register(.loadImage(imageURL))
         return imageResponse.publish()
     }

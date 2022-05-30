@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		522A537B2844DCAC002A3CE7 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 522A537A2844DCAC002A3CE7 /* SVGView */; };
 		52333A932654463B0034072B /* UIOpenURLContext_Init.m in Sources */ = {isa = PBXBuildFile; fileRef = 52333A922654463B0034072B /* UIOpenURLContext_Init.m */; };
 		F60829712369CE0100DB292E /* RequestMocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829702369CE0100DB292E /* RequestMocking.swift */; };
 		F60829732369CE5300DB292E /* MockedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829722369CE5300DB292E /* MockedResponse.swift */; };
@@ -44,8 +45,6 @@
 		F661F2B6237734FA0014E142 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B5237734FA0014E142 /* AppEnvironment.swift */; };
 		F661F2B8237738CE0014E142 /* RootViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B7237738CE0014E142 /* RootViewModifier.swift */; };
 		F661F2BC237757040014E142 /* ImageWebRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2BB237757040014E142 /* ImageWebRepositoryTests.swift */; };
-		F661F2BF237761A80014E142 /* svg_convert_01.html in Resources */ = {isa = PBXBuildFile; fileRef = F661F2BD237761A80014E142 /* svg_convert_01.html */; };
-		F661F2C0237761A80014E142 /* svg_convert_02.html in Resources */ = {isa = PBXBuildFile; fileRef = F661F2BE237761A80014E142 /* svg_convert_02.html */; };
 		F661F2C5237772CE0014E142 /* ImagesInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */; };
 		F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C923777D440014E142 /* SVGImageViewTests.swift */; };
 		F661F2CC23783E360014E142 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2CB23783E360014E142 /* Helpers.swift */; };
@@ -145,8 +144,6 @@
 		F661F2B5237734FA0014E142 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		F661F2B7237738CE0014E142 /* RootViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModifier.swift; sourceTree = "<group>"; };
 		F661F2BB237757040014E142 /* ImageWebRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWebRepositoryTests.swift; sourceTree = "<group>"; };
-		F661F2BD237761A80014E142 /* svg_convert_01.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = svg_convert_01.html; sourceTree = "<group>"; };
-		F661F2BE237761A80014E142 /* svg_convert_02.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = svg_convert_02.html; sourceTree = "<group>"; };
 		F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesInteractorTests.swift; sourceTree = "<group>"; };
 		F661F2C923777D440014E142 /* SVGImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageViewTests.swift; sourceTree = "<group>"; };
 		F661F2CB23783E360014E142 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -205,6 +202,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				522A537B2844DCAC002A3CE7 /* SVGView in Frameworks */,
 				F6E7ACE223F5D1EC00AB48AB /* EnvironmentOverrides in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -251,8 +249,6 @@
 		F60CC50E236C8963007E84B2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F661F2BD237761A80014E142 /* svg_convert_01.html */,
-				F661F2BE237761A80014E142 /* svg_convert_02.html */,
 				F67833D62369CCBD0065272F /* Info.plist */,
 			);
 			path = Resources;
@@ -519,6 +515,7 @@
 			name = CountriesSwiftUI;
 			packageProductDependencies = (
 				F6E7ACE123F5D1EC00AB48AB /* EnvironmentOverrides */,
+				522A537A2844DCAC002A3CE7 /* SVGView */,
 			);
 			productName = CountriesSwiftUI;
 			productReference = F64495E12360D66400C9BB1F /* CountriesSwiftUI.app */;
@@ -580,6 +577,7 @@
 			packageReferences = (
 				F6B6212223B52AE600CD00C7 /* XCRemoteSwiftPackageReference "ViewInspector" */,
 				F6E7ACE023F5D1EC00AB48AB /* XCRemoteSwiftPackageReference "EnvironmentOverrides" */,
+				522A53792844DCAC002A3CE7 /* XCRemoteSwiftPackageReference "SVGView" */,
 			);
 			productRefGroup = F64495E22360D66400C9BB1F /* Products */;
 			projectDirPath = "";
@@ -607,8 +605,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F661F2BF237761A80014E142 /* svg_convert_01.html in Resources */,
-				F661F2C0237761A80014E142 /* svg_convert_02.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -812,7 +808,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -868,7 +864,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -890,10 +886,12 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = CountriesSwiftUI/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.countries.swiftui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -915,10 +913,12 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = CountriesSwiftUI/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.countries.swiftui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -942,6 +942,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.countries.swiftui.UnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/System/UnitTests-Bridging-Header.h";
@@ -966,6 +967,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.countries.swiftui.UnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/System/UnitTests-Bridging-Header.h";
@@ -1008,12 +1010,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		522A53792844DCAC002A3CE7 /* XCRemoteSwiftPackageReference "SVGView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/SVGView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		F6B6212223B52AE600CD00C7 /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nalexn/ViewInspector";
 			requirement = {
 				kind = exactVersion;
-				version = 0.9.0;
+				version = 0.9.1;
 			};
 		};
 		F6E7ACE023F5D1EC00AB48AB /* XCRemoteSwiftPackageReference "EnvironmentOverrides" */ = {
@@ -1027,6 +1037,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		522A537A2844DCAC002A3CE7 /* SVGView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 522A53792844DCAC002A3CE7 /* XCRemoteSwiftPackageReference "SVGView" */;
+			productName = SVGView;
+		};
 		F6B6212323B52AE600CD00C7 /* ViewInspector */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F6B6212223B52AE600CD00C7 /* XCRemoteSwiftPackageReference "ViewInspector" */;

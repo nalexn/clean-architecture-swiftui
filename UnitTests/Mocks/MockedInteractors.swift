@@ -77,7 +77,7 @@ struct MockedImagesInteractor: Mock, ImagesInteractor {
         self.actions = .init(expected: expected)
     }
     
-    func load(image: LoadableSubject<UIImage>, url: URL?) {
+    func load(image: LoadableSubject<Data>, url: URL?) {
         register(.loadImage(url))
     }
 }
