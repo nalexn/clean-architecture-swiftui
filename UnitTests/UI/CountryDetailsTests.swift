@@ -83,7 +83,7 @@ final class CountryDetailsTests: XCTestCase {
         )
         let sut = countryDetailsView(.loaded(Country.Details.mockedData[0]), services)
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.find(SVGImageView.self))
+            XCTAssertNoThrow(try view.find(ImageView.self))
             XCTAssertNoThrow(try view.find(DetailRow.self).find(text: self.country.alpha3Code))
             services.verify()
         }
@@ -125,7 +125,7 @@ final class CountryDetailsTests: XCTestCase {
         let container = sut.viewModel.container
         XCTAssertFalse(container.appState.value.routing.countryDetails.detailsSheet)
         let exp1 = sut.inspection.inspect { view in
-            try view.find(SVGImageView.self).callOnTapGesture()
+            try view.find(ImageView.self).callOnTapGesture()
         }
         let exp2 = sut.inspection.inspect(after: 0.5) { view in
             XCTAssertTrue(container.appState.value.routing.countryDetails.detailsSheet)

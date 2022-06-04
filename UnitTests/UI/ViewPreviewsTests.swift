@@ -41,7 +41,7 @@ final class ViewPreviewsTests: XCTestCase {
         try view.inspect().view(ErrorView.self).actualView().retryAction()
     }
     
-    func test_svgImageView_previews() {
-        _ = SVGImageView_Previews.previews
+    func test_imageView_previews() {
+        _ = ImageView_Previews.previews
     }
 }

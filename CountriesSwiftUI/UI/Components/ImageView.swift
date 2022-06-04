@@ -1,5 +1,5 @@
 //
-//  SVGImageView.swift
+//  ImageView.swift
 //  CountriesSwiftUI
 //
 //  Created by Alexey Naumov on 25.10.2019.
@@ -8,9 +8,8 @@
 
 import SwiftUI
 import Combine
-import WebKit
 
-struct SVGImageView: View {
+struct ImageView: View {
     
     @ObservedObject private(set) var viewModel: ViewModel
     let inspection = Inspection<Self>()
@@ -20,19 +19,32 @@ struct SVGImageView: View {
             .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
-    private var content: AnyView {
+    @ViewBuilder private var content: some View {
         switch viewModel.image {
-        case .notRequested: return AnyView(notRequestedView)
-        case .isLoading: return AnyView(loadingView)
-        case let .loaded(image): return AnyView(loadedView(image))
-        case let .failed(error): return AnyView(failedView(error))
+        case .notRequested:
+            notRequestedView
+        case .isLoading:
+            loadingView
+        case let .loaded(image):
+            loadedView(image)
+        case let .failed(error):
+            failedView(error)
         }
+    }
+}
+
+// MARK: - Side Effects
+
+private extension ImageView.ViewModel {
+    func loadImage() {
+        container.services.imagesService
+            .load(image: loadableSubject(\.image), url: imageURL)
     }
 }
 
 // MARK: - Content
 
-private extension SVGImageView {
+private extension ImageView {
     var notRequestedView: some View {
         Text("").onAppear {
             self.viewModel.loadImage()
@@ -50,8 +62,8 @@ private extension SVGImageView {
             .padding()
     }
     
-    func loadedView(_ image: UIImage) -> some View {
-        Image(uiImage: image)
+    func loadedView(_ uiImage: UIImage) -> some View {
+        Image(uiImage: uiImage)
             .resizable()
             .aspectRatio(contentMode: .fit)
     }
@@ -59,7 +71,7 @@ private extension SVGImageView {
 
 // MARK: - ViewModel
 
-extension SVGImageView {
+extension ImageView {
     class ViewModel: ObservableObject {
         
         // State
@@ -75,21 +87,14 @@ extension SVGImageView {
             self._image = .init(initialValue: image)
             self.container = container
         }
-        
-        // MARK: - Side Effects
-        
-        func loadImage() {
-            container.services.imagesService
-                .load(image: loadableSubject(\.image), url: imageURL)
-        }
     }
 }
 
 #if DEBUG
-struct SVGImageView_Previews: PreviewProvider {
+struct ImageView_Previews: PreviewProvider {
     static var previews: some View {
-        SVGImageView(viewModel: SVGImageView.ViewModel(
-            container: .preview, imageURL: URL(string: "https://flagcdn.com/us.svg")!))
+        ImageView(viewModel: ImageView.ViewModel(
+            container: .preview, imageURL: URL(string: "https://flagcdn.com/w640/us.jpg")!))
     }
 }
 #endif

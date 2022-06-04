@@ -1,5 +1,5 @@
 //
-//  SVGImageViewTests.swift
+//  ImageViewTests.swift
 //  UnitTests
 //
 //  Created by Alexey Naumov on 10.11.2019.
@@ -11,24 +11,24 @@ import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
-extension SVGImageView: Inspectable { }
+extension ImageView: Inspectable { }
 
-final class SVGImageViewTests: XCTestCase {
+final class ImageViewTests: XCTestCase {
 
     let url = URL(string: "https://test.com/test.png")!
     
-    func svgImageView(_ image: Loadable<UIImage>,
-                      _ services: DIContainer.Services) -> SVGImageView {
+    func imageView(_ image: Loadable<UIImage>,
+                   _ services: DIContainer.Services) -> ImageView {
         let container = DIContainer(appState: AppState(), services: services)
-        let viewModel = SVGImageView.ViewModel(
+        let viewModel = ImageView.ViewModel(
             container: container, imageURL: url, image: image)
-        return SVGImageView(viewModel: viewModel)
+        return ImageView(viewModel: viewModel)
     }
 
     func test_imageView_notRequested() {
         let services = DIContainer.Services.mocked(
             imagesService: [.loadImage(url)])
-        let sut = svgImageView(.notRequested, services)
+        let sut = imageView(.notRequested, services)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.find(text: ""))
             services.verify()
@@ -39,7 +39,7 @@ final class SVGImageViewTests: XCTestCase {
     
     func test_imageView_isLoading_initial() {
         let services = DIContainer.Services.mocked()
-        let sut = svgImageView(.isLoading(last: nil, cancelBag: CancelBag()), services)
+        let sut = imageView(.isLoading(last: nil, cancelBag: CancelBag()), services)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
             services.verify()
@@ -51,7 +51,7 @@ final class SVGImageViewTests: XCTestCase {
     func test_imageView_isLoading_refresh() {
         let services = DIContainer.Services.mocked()
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
-        let sut = svgImageView(.isLoading(last: image, cancelBag: CancelBag()), services)
+        let sut = imageView(.isLoading(last: image, cancelBag: CancelBag()), services)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
             services.verify()
@@ -63,7 +63,7 @@ final class SVGImageViewTests: XCTestCase {
     func test_imageView_loaded() {
         let services = DIContainer.Services.mocked()
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
-        let sut = svgImageView(.loaded(image), services)
+        let sut = imageView(.loaded(image), services)
         let exp = sut.inspection.inspect { view in
             let loadedImage = try view.find(ViewType.Image.self).actualImage().uiImage()
             XCTAssertEqual(loadedImage, image)
@@ -75,7 +75,7 @@ final class SVGImageViewTests: XCTestCase {
     
     func test_imageView_failed() {
         let services = DIContainer.Services.mocked()
-        let sut = svgImageView(.failed(NSError.test), services)
+        let sut = imageView(.failed(NSError.test), services)
         let exp = sut.inspection.inspect { view in
             XCTAssertNoThrow(try view.find(text: "Unable to load image"))
             services.verify()

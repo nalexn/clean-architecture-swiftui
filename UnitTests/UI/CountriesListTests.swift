@@ -24,7 +24,7 @@ final class CountriesListTests: XCTestCase {
             ))
         let sut = CountriesList(viewModel: .init(container: container, countries: .notRequested))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().text())
+            XCTAssertNoThrow(try view.content().text(0))
             XCTAssertEqual(container.appState.value, AppState())
             container.services.verify()
         }
@@ -38,7 +38,7 @@ final class CountriesListTests: XCTestCase {
             .isLoading(last: nil, cancelBag: CancelBag())))
         let exp = sut.inspection.inspect { view in
             let content = try view.content()
-            XCTAssertNoThrow(try content.view(ActivityIndicatorView.self))
+            XCTAssertNoThrow(try content.find(ActivityIndicatorView.self))
             XCTAssertEqual(container.appState.value, AppState())
             container.services.verify()
         }
@@ -85,7 +85,7 @@ final class CountriesListTests: XCTestCase {
         let sut = CountriesList(viewModel: .init(container: container, countries:
             .failed(NSError.test)))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().view(ErrorView.self))
+            XCTAssertNoThrow(try view.content().view(ErrorView.self, 0))
             XCTAssertEqual(container.appState.value, AppState())
             container.services.verify()
         }
@@ -100,7 +100,7 @@ final class CountriesListTests: XCTestCase {
         let sut = CountriesList(viewModel: .init(container: container, countries:
             .failed(NSError.test)))
         let exp = sut.inspection.inspect { view in
-            let errorView = try view.content().view(ErrorView.self)
+            let errorView = try view.content().view(ErrorView.self, 0)
             try errorView.vStack().button(2).tap()
             XCTAssertEqual(container.appState.value, AppState())
             container.services.verify()
@@ -145,7 +145,7 @@ final class LocalizationTests: XCTestCase {
 
 // MARK: - CountriesList inspection helper
 extension InspectableView where View == ViewType.View<CountriesList> {
-    func content() throws -> InspectableView<ViewType.AnyView> {
-        return try find(ViewType.AnyView.self)
+    func content() throws -> InspectableView<ViewType.NavigationView> {
+        return try geometryReader().navigationView()
     }
 }

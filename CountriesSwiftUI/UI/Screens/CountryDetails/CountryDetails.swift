@@ -21,16 +21,16 @@ struct CountryDetails: View {
             .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
     
-    private var content: AnyView {
+    @ViewBuilder private var content: some View {
         switch viewModel.details {
         case .notRequested:
-            return AnyView(notRequestedView)
+            notRequestedView
         case .isLoading:
-            return AnyView(loadingView)
+            loadingView
         case let .loaded(details):
-            return AnyView(loadedView(country: viewModel.country, details: details))
+            loadedView(country: viewModel.country, details: details)
         case let .failed(error):
-            return AnyView(failedView(error))
+            failedView(error)
         }
     }
 }
@@ -84,7 +84,7 @@ private extension CountryDetails {
     func flagView(url: URL) -> some View {
         HStack {
             Spacer()
-            SVGImageView(viewModel: .init(container: viewModel.container, imageURL: url))
+            ImageView(viewModel: .init(container: viewModel.container, imageURL: url))
                 .frame(width: 120, height: 80)
                 .onTapGesture {
                     self.viewModel.showCountryDetailsSheet()

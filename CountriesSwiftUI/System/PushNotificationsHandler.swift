@@ -29,7 +29,7 @@ extension RealPushNotificationsHandler: UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler:
         @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.alert, .sound])
+        completionHandler([.list, .banner, .sound])
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
