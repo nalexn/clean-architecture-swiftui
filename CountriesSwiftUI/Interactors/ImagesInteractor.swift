@@ -28,7 +28,7 @@ struct RealImagesInteractor: ImagesInteractor {
         }
         let cancelBag = CancelBag()
         image.wrappedValue.setIsLoading(cancelBag: cancelBag)
-        webRepository.load(imageURL: url, width: 300)
+        webRepository.load(imageURL: url)
             .sinkToLoadable {
                 image.wrappedValue = $0
             }

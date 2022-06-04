@@ -44,10 +44,8 @@
 		F661F2B6237734FA0014E142 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B5237734FA0014E142 /* AppEnvironment.swift */; };
 		F661F2B8237738CE0014E142 /* RootViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2B7237738CE0014E142 /* RootViewModifier.swift */; };
 		F661F2BC237757040014E142 /* ImageWebRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2BB237757040014E142 /* ImageWebRepositoryTests.swift */; };
-		F661F2BF237761A80014E142 /* svg_convert_01.html in Resources */ = {isa = PBXBuildFile; fileRef = F661F2BD237761A80014E142 /* svg_convert_01.html */; };
-		F661F2C0237761A80014E142 /* svg_convert_02.html in Resources */ = {isa = PBXBuildFile; fileRef = F661F2BE237761A80014E142 /* svg_convert_02.html */; };
 		F661F2C5237772CE0014E142 /* ImagesInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */; };
-		F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C923777D440014E142 /* SVGImageViewTests.swift */; };
+		F661F2CA23777D440014E142 /* ImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2C923777D440014E142 /* ImageViewTests.swift */; };
 		F661F2CC23783E360014E142 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F2CB23783E360014E142 /* Helpers.swift */; };
 		F6621FE9244B3DE100DC583F /* MockedDBRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6621FE7244B324200DC583F /* MockedDBRepositories.swift */; };
 		F66EDB6823F1599F00A01B9F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F66EDB6A23F1599F00A01B9F /* Localizable.strings */; };
@@ -82,7 +80,7 @@
 		F6B883252456326D00EA4067 /* HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B883242456326D00EA4067 /* HelpersTests.swift */; };
 		F6BDB91623636865003E69F2 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91523636865003E69F2 /* DetailRow.swift */; };
 		F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */; };
-		F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB919236382E7003E69F2 /* SVGImageView.swift */; };
+		F6BDB91A236382E7003E69F2 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BDB919236382E7003E69F2 /* ImageView.swift */; };
 		F6C1F9D723CE3034005A98C8 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F9D623CE3034005A98C8 /* SearchBar.swift */; };
 		F6E7ACE223F5D1EC00AB48AB /* EnvironmentOverrides in Frameworks */ = {isa = PBXBuildFile; productRef = F6E7ACE123F5D1EC00AB48AB /* EnvironmentOverrides */; };
 		F6E7ACE523F83BEB00AB48AB /* ContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E7ACE423F83BEB00AB48AB /* ContentViewTests.swift */; };
@@ -145,10 +143,8 @@
 		F661F2B5237734FA0014E142 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		F661F2B7237738CE0014E142 /* RootViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModifier.swift; sourceTree = "<group>"; };
 		F661F2BB237757040014E142 /* ImageWebRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWebRepositoryTests.swift; sourceTree = "<group>"; };
-		F661F2BD237761A80014E142 /* svg_convert_01.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = svg_convert_01.html; sourceTree = "<group>"; };
-		F661F2BE237761A80014E142 /* svg_convert_02.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = svg_convert_02.html; sourceTree = "<group>"; };
 		F661F2C4237772CE0014E142 /* ImagesInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesInteractorTests.swift; sourceTree = "<group>"; };
-		F661F2C923777D440014E142 /* SVGImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageViewTests.swift; sourceTree = "<group>"; };
+		F661F2C923777D440014E142 /* ImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewTests.swift; sourceTree = "<group>"; };
 		F661F2CB23783E360014E142 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		F6621FE7244B324200DC583F /* MockedDBRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedDBRepositories.swift; sourceTree = "<group>"; };
 		F66EDB6723F1599800A01B9F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -189,7 +185,7 @@
 		F6B883242456326D00EA4067 /* HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpersTests.swift; sourceTree = "<group>"; };
 		F6BDB91523636865003E69F2 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
-		F6BDB919236382E7003E69F2 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
+		F6BDB919236382E7003E69F2 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		F6C1F9D623CE3034005A98C8 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		F6E7ACE423F83BEB00AB48AB /* ContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewTests.swift; sourceTree = "<group>"; };
 		F6F003AE236A290E00AAC7C6 /* WebRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRepositoryTests.swift; sourceTree = "<group>"; };
@@ -241,7 +237,7 @@
 				F6500B4923C8F2AC0086FD70 /* DeepLinkUITests.swift */,
 				F60CC50A236C622C007E84B2 /* ModalDetailsViewTests.swift */,
 				F67451F4243A4CC200A4B498 /* RootViewAppearanceTests.swift */,
-				F661F2C923777D440014E142 /* SVGImageViewTests.swift */,
+				F661F2C923777D440014E142 /* ImageViewTests.swift */,
 				F6F606A723CF25EC00F36F5D /* SearchBarTests.swift */,
 				F60CC508236C6084007E84B2 /* ViewPreviewsTests.swift */,
 			);
@@ -251,8 +247,6 @@
 		F60CC50E236C8963007E84B2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F661F2BD237761A80014E142 /* svg_convert_01.html */,
-				F661F2BE237761A80014E142 /* svg_convert_02.html */,
 				F67833D62369CCBD0065272F /* Info.plist */,
 			);
 			path = Resources;
@@ -276,7 +270,7 @@
 				F6BDB91523636865003E69F2 /* DetailRow.swift */,
 				F6218DB523634D4100917938 /* ErrorView.swift */,
 				F6BDB91723637C5F003E69F2 /* ActivityIndicatorView.swift */,
-				F6BDB919236382E7003E69F2 /* SVGImageView.swift */,
+				F6BDB919236382E7003E69F2 /* ImageView.swift */,
 				F6C1F9D623CE3034005A98C8 /* SearchBar.swift */,
 			);
 			path = Components;
@@ -607,8 +601,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F661F2BF237761A80014E142 /* svg_convert_01.html in Resources */,
-				F661F2C0237761A80014E142 /* svg_convert_02.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,7 +667,7 @@
 				F64496082360DFB700C9BB1F /* Models.swift in Sources */,
 				F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */,
 				F661F2B8237738CE0014E142 /* RootViewModifier.swift in Sources */,
-				F6BDB91A236382E7003E69F2 /* SVGImageView.swift in Sources */,
+				F6BDB91A236382E7003E69F2 /* ImageView.swift in Sources */,
 				F661F2B6237734FA0014E142 /* AppEnvironment.swift in Sources */,
 				F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */,
 				F644960E2360EF6C00C9BB1F /* WebRepository.swift in Sources */,
@@ -719,7 +711,7 @@
 				F6621FE9244B3DE100DC583F /* MockedDBRepositories.swift in Sources */,
 				F68B5308237441AD00D6337C /* Mock.swift in Sources */,
 				F67B3B22244C5B8700DA7FA6 /* CoreDataStackTests.swift in Sources */,
-				F661F2CA23777D440014E142 /* SVGImageViewTests.swift in Sources */,
+				F661F2CA23777D440014E142 /* ImageViewTests.swift in Sources */,
 				F6F606A823CF25EC00F36F5D /* SearchBarTests.swift in Sources */,
 				F6B8832324561DDB00EA4067 /* UserPermissionsInteractorTests.swift in Sources */,
 				F6B883252456326D00EA4067 /* HelpersTests.swift in Sources */,
@@ -812,7 +804,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -868,7 +860,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -890,10 +882,12 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = CountriesSwiftUI/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.countries.swiftui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -915,10 +909,12 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = CountriesSwiftUI/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.countries.swiftui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -942,6 +938,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.countries.swiftui.UnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/System/UnitTests-Bridging-Header.h";
@@ -966,6 +963,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.countries.swiftui.UnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/System/UnitTests-Bridging-Header.h";
@@ -1013,7 +1011,7 @@
 			repositoryURL = "https://github.com/nalexn/ViewInspector";
 			requirement = {
 				kind = exactVersion;
-				version = 0.9.0;
+				version = 0.9.1;
 			};
 		};
 		F6E7ACE023F5D1EC00AB48AB /* XCRemoteSwiftPackageReference "EnvironmentOverrides" */ = {

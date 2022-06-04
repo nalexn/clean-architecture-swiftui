@@ -110,7 +110,7 @@ private extension CountryDetails {
     func flagView(url: URL) -> some View {
         HStack {
             Spacer()
-            SVGImageView(imageURL: url)
+            ImageView(imageURL: url)
                 .frame(width: 120, height: 80)
                 .onTapGesture {
                     self.showCountryDetailsSheet()

@@ -1,5 +1,5 @@
 //
-//  SVGImageView.swift
+//  ImageView.swift
 //  CountriesSwiftUI
 //
 //  Created by Alexey Naumov on 25.10.2019.
@@ -8,9 +8,8 @@
 
 import SwiftUI
 import Combine
-import WebKit
 
-struct SVGImageView: View {
+struct ImageView: View {
     
     let imageURL: URL
     @Environment(\.injected) var injected: DIContainer
@@ -43,7 +42,7 @@ struct SVGImageView: View {
 
 // MARK: - Side Effects
 
-private extension SVGImageView {
+private extension ImageView {
     func loadImage() {
         injected.interactors.imagesInteractor
             .load(image: $image, url: imageURL)
@@ -52,7 +51,7 @@ private extension SVGImageView {
 
 // MARK: - Content
 
-private extension SVGImageView {
+private extension ImageView {
     var notRequestedView: some View {
         Text("").onAppear {
             self.loadImage()
@@ -70,20 +69,20 @@ private extension SVGImageView {
             .padding()
     }
     
-    func loadedView(_ image: UIImage) -> some View {
-        Image(uiImage: image)
+    func loadedView(_ uiImage: UIImage) -> some View {
+        Image(uiImage: uiImage)
             .resizable()
             .aspectRatio(contentMode: .fit)
     }
 }
 
 #if DEBUG
-struct SVGImageView_Previews: PreviewProvider {
+struct ImageView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            SVGImageView(imageURL: URL(string: "https://flagcdn.com/us.svg")!)
-            SVGImageView(imageURL: URL(string: "https://flagcdn.com/al.svg")!)
-            SVGImageView(imageURL: URL(string: "https://flagcdn.com/ru.svg")!)
+            ImageView(imageURL: URL(string: "https://flagcdn.com/w640/us.jpg")!)
+            ImageView(imageURL: URL(string: "https://flagcdn.com/w640/al.jpg")!)
+            ImageView(imageURL: URL(string: "https://flagcdn.com/w640/ru.jpg")!)
         }
     }
 }
