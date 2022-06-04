@@ -47,7 +47,7 @@ For the example of handling the **authentication state** in the app, you can ref
 
 Side effects are triggered by the user's actions (such as a tap on a button) or view lifecycle event `onAppear` and are forwarded to the `Interactors`.
 
-State and business logic layer (`AppState` + `Interactors`) are navitely injected into the view hierarchy with `@Environment`.
+State and business logic layer (`AppState` + `Interactors`) are natively injected into the view hierarchy with `@Environment`.
 
 ### Business Logic Layer
 
