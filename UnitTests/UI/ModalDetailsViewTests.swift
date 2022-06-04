@@ -23,7 +23,7 @@ final class ModalDetailsViewTests: XCTestCase {
         let isDisplayed = Binding(wrappedValue: true)
         let sut = ModalDetailsView(country: country, isDisplayed: isDisplayed)
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.find(SVGImageView.self))
+            XCTAssertNoThrow(try view.find(ImageView.self))
             XCTAssertNoThrow(try view.find(button: "Close"))
             interactors.verify()
         }

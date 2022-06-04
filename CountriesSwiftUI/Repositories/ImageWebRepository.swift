@@ -10,7 +10,7 @@ import Combine
 import UIKit
 
 protocol ImageWebRepository: WebRepository {
-    func load(imageURL: URL) -> AnyPublisher<Data, Error>
+    func load(imageURL: URL) -> AnyPublisher<UIImage, Error>
 }
 
 struct RealImageWebRepository: ImageWebRepository {
@@ -24,7 +24,7 @@ struct RealImageWebRepository: ImageWebRepository {
         self.baseURL = baseURL
     }
     
-    func load(imageURL: URL) -> AnyPublisher<Data, Error> {
+    func load(imageURL: URL) -> AnyPublisher<UIImage, Error> {
         return download(rawImageURL: imageURL)
             .subscribe(on: bgQueue)
             .receive(on: DispatchQueue.main)
@@ -32,9 +32,16 @@ struct RealImageWebRepository: ImageWebRepository {
             .eraseToAnyPublisher()
     }
     
-    private func download(rawImageURL: URL) -> AnyPublisher<Data, Error> {
+    private func download(rawImageURL: URL) -> AnyPublisher<UIImage, Error> {
         let urlRequest = URLRequest(url: rawImageURL)
         return session.dataTaskPublisher(for: urlRequest)
             .requestData()
+            .tryMap { data -> UIImage in
+                guard let image = UIImage(data: data) else {
+                    throw APIError.imageDeserialization
+                }
+                return image
+            }
+            .eraseToAnyPublisher()
     }
 }

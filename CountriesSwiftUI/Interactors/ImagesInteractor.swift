@@ -11,7 +11,7 @@ import Foundation
 import SwiftUI
 
 protocol ImagesInteractor {
-    func load(image: LoadableSubject<Data>, url: URL?)
+    func load(image: LoadableSubject<UIImage>, url: URL?)
 }
 
 struct RealImagesInteractor: ImagesInteractor {
@@ -22,7 +22,7 @@ struct RealImagesInteractor: ImagesInteractor {
         self.webRepository = webRepository
     }
     
-    func load(image: LoadableSubject<Data>, url: URL?) {
+    func load(image: LoadableSubject<UIImage>, url: URL?) {
         guard let url = url else {
             image.wrappedValue = .notRequested; return
         }
@@ -37,6 +37,6 @@ struct RealImagesInteractor: ImagesInteractor {
 }
 
 struct StubImagesInteractor: ImagesInteractor {
-    func load(image: LoadableSubject<Data>, url: URL?) {
+    func load(image: LoadableSubject<UIImage>, url: URL?) {
     }
 }

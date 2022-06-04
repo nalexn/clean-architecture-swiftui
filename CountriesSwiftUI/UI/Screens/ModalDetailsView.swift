@@ -20,7 +20,7 @@ struct ModalDetailsView: View {
                 country.flag.map { url in
                     HStack {
                         Spacer()
-                        SVGImageView(imageURL: url)
+                        ImageView(imageURL: url)
                             .frame(width: 300, height: 200)
                         Spacer()
                     }

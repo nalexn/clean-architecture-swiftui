@@ -14,7 +14,7 @@ final class ImageWebRepositoryTests: XCTestCase {
 
     private var sut: RealImageWebRepository!
     private var subscriptions = Set<AnyCancellable>()
-    private let testImage = Data()
+    private lazy var testImage = UIColor.red.image(CGSize(width: 40, height: 40))
     
     typealias Mock = RequestMocking.MockedResponse
 
@@ -31,7 +31,7 @@ final class ImageWebRepositoryTests: XCTestCase {
     func test_loadImage_success() throws {
         
         let imageURL = try XCTUnwrap(URL(string: "https://image.service.com/myimage.png"))
-        let responseData = testImage
+        let responseData = try XCTUnwrap(testImage.pngData())
         let mock = Mock(url: imageURL, result: .success(responseData))
         RequestMocking.add(mock: mock)
         
@@ -39,7 +39,7 @@ final class ImageWebRepositoryTests: XCTestCase {
         sut.load(imageURL: imageURL).sinkToResult { result in
             switch result {
             case let .success(resultValue):
-                XCTAssertEqual(resultValue, self.testImage)
+                XCTAssertEqual(resultValue.size, self.testImage.size)
             case let .failure(error):
                 XCTFail("Unexpected error: \(error)")
             }
