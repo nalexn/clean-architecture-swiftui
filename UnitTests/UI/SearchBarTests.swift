@@ -11,8 +11,6 @@ import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
-extension SearchBar: Inspectable { }
-
 final class SearchBarTests: XCTestCase {
 
     func test_searchBarCoordinator_beginEditing() {

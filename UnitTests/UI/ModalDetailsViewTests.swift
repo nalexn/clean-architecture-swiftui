@@ -11,8 +11,6 @@ import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
-extension ModalDetailsView: Inspectable { }
-
 final class ModalDetailsViewTests: XCTestCase {
     
     let country = Country.mockedData[0]

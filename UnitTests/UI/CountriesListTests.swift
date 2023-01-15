@@ -10,11 +10,6 @@ import XCTest
 import ViewInspector
 @testable import CountriesSwiftUI
 
-extension CountriesList: Inspectable { }
-extension ActivityIndicatorView: Inspectable { }
-extension CountryCell: Inspectable { }
-extension ErrorView: Inspectable { }
-
 final class CountriesListTests: XCTestCase {
 
     func test_countries_notRequested() {

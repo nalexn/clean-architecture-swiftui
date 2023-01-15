@@ -148,4 +148,4 @@ extension NSError {
     }
 }
 
-extension Inspection: InspectionEmissary where V: Inspectable { }
+extension Inspection: InspectionEmissary { }

@@ -2,8 +2,6 @@ import XCTest
 import ViewInspector
 @testable import CountriesSwiftUI
 
-extension ContentView: Inspectable { }
-
 final class ContentViewTests: XCTestCase {
 
     func test_content_for_tests() throws {
