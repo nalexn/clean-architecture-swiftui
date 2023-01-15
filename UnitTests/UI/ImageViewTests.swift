@@ -11,8 +11,6 @@ import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
-extension ImageView: Inspectable { }
-
 final class ImageViewTests: XCTestCase {
 
     let url = URL(string: "https://test.com/test.png")!

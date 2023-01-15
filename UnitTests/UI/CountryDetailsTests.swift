@@ -10,9 +10,6 @@ import XCTest
 import ViewInspector
 @testable import CountriesSwiftUI
 
-extension CountryDetails: Inspectable { }
-extension DetailRow: Inspectable { }
-
 final class CountryDetailsTests: XCTestCase {
     
     let country = Country.mockedData[0]

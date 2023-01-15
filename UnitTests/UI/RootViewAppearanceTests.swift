@@ -11,8 +11,6 @@ import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
-extension RootViewAppearance: Inspectable { }
-
 final class RootViewAppearanceTests: XCTestCase {
 
     func test_blur_whenInactive() {
