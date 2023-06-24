@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -545,8 +545,9 @@
 		F64495D92360D66400C9BB1F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1110;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "Alexey Naumov";
 				TargetAttributes = {
 					F64495E02360D66400C9BB1F = {
@@ -609,6 +610,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		F62DF39A237AFE9400CE1234 /* Run swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
