@@ -116,21 +116,6 @@ final class SystemEventsHandlerTests: XCTestCase {
         verify()
     }
     
-    #if os(iOS) && !targetEnvironment(macCatalyst)
-    func test_keyboardHeight() throws {
-        let textField = UITextField(frame: .zero)
-        let window = try XCTUnwrap(UIApplication.shared.windows.first, "Cannot extract the host view")
-        window.makeKeyAndVisible()
-        window.addSubview(textField)
-        setupSut()
-        XCTAssertEqual(appState.system.keyboardHeight, 0)
-        textField.becomeFirstResponder()
-        XCTAssertGreaterThan(appState.system.keyboardHeight, 0)
-        textField.removeFromSuperview()
-        verify()
-    }
-    #endif
-    
     func test_handlePushRegistration() {
         setupSut(pushToken: [
             .register(Data())

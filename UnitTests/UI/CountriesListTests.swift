@@ -88,7 +88,7 @@ final class CountriesListTests: XCTestCase {
     
     func test_countries_failed_retry() {
         let container = DIContainer(appState: AppState(), interactors: .mocked(
-            countriesInteractor: [.loadCountries(search: "", locale: .current)]
+            countriesInteractor: [.loadCountries(search: "", locale: Locale(identifier: ""))]
         ))
         let sut = CountriesList(countries: .failed(NSError.test))
         let exp = sut.inspection.inspect { view in
