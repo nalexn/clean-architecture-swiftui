@@ -106,6 +106,7 @@
 		52333A90265445F30034072B /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		52333A91265445F30034072B /* UIOpenURLContext_Init.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIOpenURLContext_Init.h; sourceTree = "<group>"; };
 		52333A922654463B0034072B /* UIOpenURLContext_Init.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIOpenURLContext_Init.m; sourceTree = "<group>"; };
+		B106B77D2A62773200926901 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F60829702369CE0100DB292E /* RequestMocking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestMocking.swift; sourceTree = "<group>"; };
 		F60829722369CE5300DB292E /* MockedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedResponse.swift; sourceTree = "<group>"; };
 		F60829752369D58A00DB292E /* CountriesWebRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesWebRepositoryTests.swift; sourceTree = "<group>"; };
@@ -570,6 +571,7 @@
 				fr,
 				es,
 				ja,
+				ko,
 			);
 			mainGroup = F64495D82360D66400C9BB1F;
 			packageReferences = (
@@ -747,6 +749,7 @@
 				F66EDB6C23F168FF00A01B9F /* fr */,
 				F66EDB6D23F1691400A01B9F /* es */,
 				F66EDB6E23F1692000A01B9F /* ja */,
+				B106B77D2A62773200926901 /* ko */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
