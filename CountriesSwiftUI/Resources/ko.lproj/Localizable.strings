@@ -1,0 +1,17 @@
+
+"Running unit tests" = "유닛 테스트 실행중";
+"Countries" = "국가";
+"Basic Info" = "기본 정보";
+"Code" = "코드";
+"Population" = "인구";
+"Capital" = "수도";
+"Currencies" = "통화";
+"Neighboring countries" = "인접 국가";
+"Close" = "닫기";
+"Population %lld" = "인구 %lld";
+"An Error Occured" = "오류가 발생했습니다.";
+"Retry" = "재시도";
+"Unable to load image" = "이미지를 불러올 수 없습니다.";
+"Back" = "뒤로가기";
+"Cancel loading" = "로딩 취소";
+"Canceled by user" = "사용자에 의해 취소됨";
