@@ -60,7 +60,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         countries.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .loaded(list.lazyList)
             ], removing: Country.prefixes)
             self.mockedWebRepo.verify()
@@ -93,7 +93,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         countries.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .failed(error)
             ], removing: Country.prefixes)
             self.mockedWebRepo.verify()
@@ -126,7 +126,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         countries.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .failed(error)
             ], removing: Country.prefixes)
             self.mockedWebRepo.verify()
@@ -163,7 +163,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         countries.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .loaded(list.lazyList)
             ], removing: Country.prefixes)
             self.mockedWebRepo.verify()
@@ -199,7 +199,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         countries.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .failed(error)
             ], removing: Country.prefixes)
             self.mockedWebRepo.verify()
@@ -236,7 +236,7 @@ final class LoadCountryDetailsTests: CountriesInteractorTests {
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .loaded(data.details)
             ], removing: Country.prefixes)
             self.mockedWebRepo.verify()
@@ -270,7 +270,7 @@ final class LoadCountryDetailsTests: CountriesInteractorTests {
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .failed(error)
             ], removing: Country.prefixes)
             self.mockedWebRepo.verify()
@@ -307,7 +307,7 @@ final class LoadCountryDetailsTests: CountriesInteractorTests {
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .failed(error)
             ], removing: Country.prefixes)
             self.mockedWebRepo.verify()
@@ -343,7 +343,7 @@ final class LoadCountryDetailsTests: CountriesInteractorTests {
         details.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .loaded(data.details)
             ], removing: Country.prefixes)
             self.mockedWebRepo.verify()

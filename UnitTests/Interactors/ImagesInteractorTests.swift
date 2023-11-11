@@ -57,7 +57,7 @@ final class ImagesInteractorTests: XCTestCase {
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .loaded(self.testImage)
             ])
             self.verifyRepoActions()
@@ -76,7 +76,7 @@ final class ImagesInteractorTests: XCTestCase {
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
+                .isLoading(last: nil, cancelBag: .test),
                 .failed(error)
             ])
             self.verifyRepoActions()
@@ -95,7 +95,7 @@ final class ImagesInteractorTests: XCTestCase {
         image.updatesRecorder.sink { updates in
             XCTAssertEqual(updates, [
                 .loaded(self.testImage),
-                .isLoading(last: self.testImage, cancelBag: CancelBag()),
+                .isLoading(last: self.testImage, cancelBag: .test),
                 .failed(error)
             ])
             self.verifyRepoActions()
