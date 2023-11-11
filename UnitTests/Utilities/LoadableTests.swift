@@ -61,8 +61,8 @@ final class LoadableTests: XCTestCase {
         ]
         let expect: [Loadable<String>] = [
             .notRequested,
-            .isLoading(last: nil, cancelBag: CancelBag()),
-            .isLoading(last: "5", cancelBag: CancelBag()),
+            .isLoading(last: nil, cancelBag: .test),
+            .isLoading(last: "5", cancelBag: .test),
             .loaded("7"),
             .failed(NSError.test)
         ]
@@ -98,5 +98,11 @@ final class LoadableTests: XCTestCase {
     
     func test_valueIsMissing() {
         XCTAssertEqual(ValueIsMissingError().localizedDescription, "Data is missing")
+    }
+}
+
+extension CancelBag {
+    static var test: CancelBag {
+        return CancelBag(equalToAny: true)
     }
 }

@@ -41,9 +41,13 @@ final class AppDelegateTests: XCTestCase {
         eventsHandler.verify()
     }
     
-    func test_systemEventsHandler() {
+    func test_systemEventsHandler() throws {
+        #if targetEnvironment(simulator)
+        throw XCTSkip()
+        #else
         let sut = AppDelegate()
         let handler = sut.systemEventsHandler
         XCTAssertTrue(handler is RealSystemEventsHandler)
+        #endif
     }
 }

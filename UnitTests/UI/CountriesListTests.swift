@@ -90,7 +90,7 @@ final class CountriesListTests: XCTestCase {
     
     func test_countries_failed_retry() {
         let container = DIContainer(appState: AppState(), services: .mocked(
-            countriesService: [.loadCountries(search: "", locale: .current)]
+            countriesService: [.loadCountries(search: "", locale: Locale(identifier: ""))]
         ))
         let sut = CountriesList(viewModel: .init(container: container, countries:
             .failed(NSError.test)))

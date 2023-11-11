@@ -10,6 +10,15 @@ import Combine
 
 final class CancelBag {
     fileprivate(set) var subscriptions = Set<AnyCancellable>()
+    private let equalToAny: Bool
+    
+    init(equalToAny: Bool = false) {
+        self.equalToAny = equalToAny
+    }
+    
+    func isEqual(to other: CancelBag) -> Bool {
+        return other === self || other.equalToAny || self.equalToAny
+    }
     
     func cancel() {
         subscriptions.removeAll()
