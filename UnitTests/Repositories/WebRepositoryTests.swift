@@ -146,7 +146,7 @@ extension TestWebRepository {
         
         var path: String {
             if self == .urlError {
-                return "😋😋😋"
+                return "\\"
             }
             return "/test/path"
         }
