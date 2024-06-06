@@ -44,6 +44,7 @@ struct CountriesList: View {
         .onReceive(routingUpdate) { self.routingState = $0 }
         .onReceive(canRequestPushPermissionUpdate) { self.canRequestPushPermission = $0 }
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+        .flipsForRightToLeftLayoutDirection(true)
     }
     
     @ViewBuilder private var content: some View {
