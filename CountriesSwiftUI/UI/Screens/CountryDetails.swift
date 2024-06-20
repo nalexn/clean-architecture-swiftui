@@ -20,7 +20,7 @@ struct CountryDetails: View {
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countryDetails)
     }
-    private let inspection = Inspection<Self>()
+    let inspection = Inspection<Self>()
     
     init(country: Country, details: Loadable<Country.Details> = .notRequested) {
         self.country = country

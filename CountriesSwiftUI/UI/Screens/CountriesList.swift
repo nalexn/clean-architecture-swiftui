@@ -22,7 +22,7 @@ struct CountriesList: View {
     @Environment(\.locale) private var locale: Locale
     private let localeContainer = LocaleReader.Container()
     
-    private let inspection = Inspection<Self>()
+    let inspection = Inspection<Self>()
     
     init(countries: Loadable<LazyList<Country>> = .notRequested) {
         self._countries = .init(initialValue: countries)
