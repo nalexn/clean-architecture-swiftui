@@ -11,7 +11,7 @@ import Combine
 
 struct ImageView: View {
     
-    let imageURL: URL
+    private let imageURL: URL
     @Environment(\.injected) var injected: DIContainer
     @State private var image: Loadable<UIImage>
     let inspection = Inspection<Self>()

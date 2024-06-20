@@ -11,7 +11,7 @@ import Combine
 
 struct CountryDetails: View {
     
-    let country: Country
+    private let country: Country
     
     @Environment(\.locale) var locale: Locale
     @Environment(\.injected) private var injected: DIContainer
@@ -20,7 +20,7 @@ struct CountryDetails: View {
     private var routingBinding: Binding<Routing> {
         $routingState.dispatched(to: injected.appState, \.routing.countryDetails)
     }
-    let inspection = Inspection<Self>()
+    private let inspection = Inspection<Self>()
     
     init(country: Country, details: Loadable<Country.Details> = .notRequested) {
         self.country = country

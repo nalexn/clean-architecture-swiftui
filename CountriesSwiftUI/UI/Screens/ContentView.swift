@@ -32,7 +32,7 @@ struct ContentView: View {
         }
     }
     
-    var onChangeHandler: (EnvironmentValues.Diff) -> Void {
+    private var onChangeHandler: (EnvironmentValues.Diff) -> Void {
         return { diff in
             if !diff.isDisjoint(with: [.locale, .sizeCategory]) {
                 self.container.appState[\.routing] = AppState.ViewRouting()

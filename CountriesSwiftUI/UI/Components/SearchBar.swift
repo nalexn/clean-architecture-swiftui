@@ -31,7 +31,7 @@ struct SearchBar: UIViewRepresentable {
 extension SearchBar {
     final class Coordinator: NSObject, UISearchBarDelegate {
         
-        let text: Binding<String>
+        private let text: Binding<String>
         
         init(text: Binding<String>) {
             self.text = text
