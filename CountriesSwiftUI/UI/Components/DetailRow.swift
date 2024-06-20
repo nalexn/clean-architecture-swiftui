@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct DetailRow: View {
-    let leftLabel: Text
-    let rightLabel: Text
+    private let leftLabel: Text
+    private let rightLabel: Text
     
     init(leftLabel: Text, rightLabel: Text) {
         self.leftLabel = leftLabel

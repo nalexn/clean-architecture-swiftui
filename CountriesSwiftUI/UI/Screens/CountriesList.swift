@@ -22,7 +22,7 @@ struct CountriesList: View {
     @Environment(\.locale) private var locale: Locale
     private let localeContainer = LocaleReader.Container()
     
-    let inspection = Inspection<Self>()
+    private let inspection = Inspection<Self>()
     
     init(countries: Loadable<LazyList<Country>> = .notRequested) {
         self._countries = .init(initialValue: countries)
@@ -199,15 +199,15 @@ extension CountriesList {
 
 private extension CountriesList {
     
-    var routingUpdate: AnyPublisher<Routing, Never> {
+    private var routingUpdate: AnyPublisher<Routing, Never> {
         injected.appState.updates(for: \.routing.countriesList)
     }
     
-    var keyboardHeightUpdate: AnyPublisher<CGFloat, Never> {
+    private var keyboardHeightUpdate: AnyPublisher<CGFloat, Never> {
         injected.appState.updates(for: \.system.keyboardHeight)
     }
     
-    var canRequestPushPermissionUpdate: AnyPublisher<Bool, Never> {
+    private var canRequestPushPermissionUpdate: AnyPublisher<Bool, Never> {
         injected.appState.updates(for: AppState.permissionKeyPath(for: .pushNotifications))
             .map { $0 == .notRequested || $0 == .denied }
             .eraseToAnyPublisher()
