@@ -89,6 +89,7 @@ final class CoreDataStackV1Tests: CoreDataStackTests {
         wait(for: [exp], timeout: 1)
     }
     
+    @MainActor
     func test_storing_and_countring() {
         let countries = Country.mockedData
         
@@ -125,6 +126,7 @@ final class CoreDataStackV1Tests: CoreDataStackTests {
         wait(for: [exp], timeout: 1)
     }
     
+    @MainActor
     func test_fetching() {
         let countries = Country.mockedData
         let exp = XCTestExpectation(description: #function)

@@ -12,8 +12,10 @@ import ViewInspector
 
 final class CountryDetailsTests: XCTestCase {
     
+    @MainActor
     let country = Country.mockedData[0]
 
+    @MainActor
     func test_details_notRequested() {
         let interactors = DIContainer.Interactors.mocked(
             countriesInteractor: [.loadCountryDetails(country)]
@@ -27,6 +29,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_details_isLoading_initial() {
         let interactors = DIContainer.Interactors.mocked()
         let sut = CountryDetails(country: country, details:
@@ -39,6 +42,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_details_isLoading_refresh() {
         let interactors = DIContainer.Interactors.mocked()
         let sut = CountryDetails(country: country, details:
@@ -52,6 +56,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_details_isLoading_cancellation() {
         let interactors = DIContainer.Interactors.mocked()
         let sut = CountryDetails(country: country, details:
@@ -66,6 +71,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_details_loaded() {
         let interactors = DIContainer.Interactors.mocked(
             imagesInteractor: [.loadImage(country.flag)]
@@ -82,6 +88,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 3)
     }
     
+    @MainActor
     func test_details_failed() {
         let interactors = DIContainer.Interactors.mocked()
         let sut = CountryDetails(country: country, details: .failed(NSError.test))
@@ -93,6 +100,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_details_failed_retry() {
         let interactors = DIContainer.Interactors.mocked(
             countriesInteractor: [.loadCountryDetails(country)]
@@ -107,6 +115,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_sheetPresentation() {
         let images: [MockedImagesInteractor.Action] = [.loadImage(country.flag), .loadImage(country.flag)]
         let interactors = DIContainer.Interactors.mocked(

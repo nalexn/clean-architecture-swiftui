@@ -55,6 +55,7 @@ final class CountriesListDBRepoTests: CountriesDBRepositoryTests {
         wait(for: [exp], timeout: 0.5)
     }
     
+    @MainActor
     func test_storeCountries() {
         let countries = Country.mockedData
         mockedStore.actions = .init(expected: [
@@ -71,6 +72,7 @@ final class CountriesListDBRepoTests: CountriesDBRepositoryTests {
         wait(for: [exp], timeout: 0.5)
     }
     
+    @MainActor
     func test_fetchAllCountries() throws {
         let countries = Country.mockedData
         let sortedCountries = countries.sorted(by: { $0.name < $1.name })

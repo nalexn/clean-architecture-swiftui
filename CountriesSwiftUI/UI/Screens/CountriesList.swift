@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 struct CountriesList: View {
     
     @State private var countriesSearch = CountriesSearch()
@@ -140,6 +141,7 @@ private extension CountriesList {
 
 // MARK: - Displaying Content
 
+@MainActor
 private extension CountriesList {
     func loadedView(_ countries: LazyList<Country>, showSearch: Bool, showLoading: Bool) -> some View {
         VStack {

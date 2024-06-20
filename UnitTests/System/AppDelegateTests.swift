@@ -12,6 +12,7 @@ import UIKit
 
 final class AppDelegateTests: XCTestCase {
 
+    @MainActor
     func test_didFinishLaunching() {
         let sut = AppDelegate()
         let eventsHandler = MockedSystemEventsHandler(expected: [])
@@ -20,6 +21,7 @@ final class AppDelegateTests: XCTestCase {
         eventsHandler.verify()
     }
     
+    @MainActor
     func test_pushRegistration() {
         let sut = AppDelegate()
         let eventsHandler = MockedSystemEventsHandler(expected: [
@@ -31,6 +33,7 @@ final class AppDelegateTests: XCTestCase {
         eventsHandler.verify()
     }
     
+    @MainActor
     func test_didRecevieRemoteNotification() {
         let sut = AppDelegate()
         let eventsHandler = MockedSystemEventsHandler(expected: [
@@ -41,6 +44,7 @@ final class AppDelegateTests: XCTestCase {
         eventsHandler.verify()
     }
     
+    @MainActor
     func test_systemEventsHandler() throws {
         #if targetEnvironment(simulator)
         throw XCTSkip()

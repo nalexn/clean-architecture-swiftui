@@ -13,6 +13,7 @@ import ViewInspector
 
 final class ModalDetailsViewTests: XCTestCase {
 
+    @MainActor
     func test_modalDetails() {
         let country = Country.mockedData[0]
         let interactors = DIContainer.Interactors.mocked(
@@ -29,6 +30,7 @@ final class ModalDetailsViewTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_modalDetails_close() {
         let country = Country.mockedData[0]
         let interactors = DIContainer.Interactors.mocked(
@@ -46,6 +48,7 @@ final class ModalDetailsViewTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_modalDetails_close_localization() throws {
         let isDisplayed = Binding(wrappedValue: true)
         let sut = ModalDetailsView(country: Country.mockedData[0], isDisplayed: isDisplayed)

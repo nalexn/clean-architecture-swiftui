@@ -13,6 +13,7 @@ import ViewInspector
 
 final class SearchBarTests: XCTestCase {
 
+    @MainActor
     func test_searchBarCoordinator_beginEditing() {
         let text = Binding(wrappedValue: "abc")
         let sut = SearchBar.Coordinator(text: text)
@@ -23,6 +24,7 @@ final class SearchBarTests: XCTestCase {
         XCTAssertEqual(text.wrappedValue, "abc")
     }
     
+    @MainActor
     func test_searchBarCoordinator_endEditing() {
         let text = Binding(wrappedValue: "abc")
         let sut = SearchBar.Coordinator(text: text)
@@ -33,6 +35,7 @@ final class SearchBarTests: XCTestCase {
         XCTAssertEqual(text.wrappedValue, "abc")
     }
     
+    @MainActor
     func test_searchBarCoordinator_textDidChange() {
         let text = Binding(wrappedValue: "abc")
         let sut = SearchBar.Coordinator(text: text)
@@ -42,6 +45,7 @@ final class SearchBarTests: XCTestCase {
         XCTAssertEqual(text.wrappedValue, "test")
     }
     
+    @MainActor
     func test_searchBarCoordinator_cancelButtonClicked() {
         let text = Binding(wrappedValue: "abc")
         let sut = SearchBar.Coordinator(text: text)

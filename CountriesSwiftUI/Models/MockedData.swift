@@ -10,6 +10,7 @@ import Foundation
 
 #if DEBUG
 
+@MainActor
 extension Country {
     static let mockedData: [Country] = [
         Country(name: "United States", translations: [:], population: 125000000,
@@ -19,6 +20,7 @@ extension Country {
     ]
 }
 
+@MainActor
 extension Country.Details {
     static var mockedData: [Country.Details] = {
         let neighbors = Country.mockedData
@@ -31,6 +33,7 @@ extension Country.Details {
     }()
 }
 
+@MainActor
 extension Country.Currency {
     static let mockedData: [Country.Currency] = [
         Country.Currency(code: "USD", symbol: "$", name: "US Dollar"),

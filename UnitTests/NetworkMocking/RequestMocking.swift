@@ -19,18 +19,28 @@ extension URLSession {
 }
 
 extension RequestMocking {
-    static private var mocks: [MockedResponse] = []
-    
+    private final class MocksContainer: @unchecked Sendable {
+        var mocks: [MockedResponse] = []
+    }
+    static private let container = MocksContainer()
+    static private let lock = NSLock()
+
     static func add(mock: MockedResponse) {
-        mocks.append(mock)
+        lock.withLock {
+            container.mocks.append(mock)
+        }
     }
     
     static func removeAllMocks() {
-        mocks.removeAll()
+        lock.withLock {
+            container.mocks.removeAll()
+        }
     }
     
     static private func mock(for request: URLRequest) -> MockedResponse? {
-        return mocks.first { $0.url == request.url }
+        return lock.withLock {
+            container.mocks.first { $0.url == request.url }
+        }
     }
 }
 
@@ -61,7 +71,7 @@ final class RequestMocking: URLProtocol {
                 httpVersion: "HTTP/1.1",
                 headerFields: mock.headers) {
             DispatchQueue.main.asyncAfter(deadline: .now() + mock.loadingTime) { [weak self] in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
                 switch mock.result {
                 case let .success(data):

@@ -13,6 +13,7 @@ import SwiftUI
 
 final class CountriesListTests: XCTestCase {
 
+    @MainActor
     func test_countries_notRequested() {
         let container = DIContainer(appState: AppState(), interactors:
             .mocked(
@@ -28,6 +29,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_isLoading_initial() {
         let container = DIContainer(appState: AppState(), interactors: .mocked())
         let sut = CountriesList(countries: .isLoading(last: nil, cancelBag: CancelBag()))
@@ -41,6 +43,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_isLoading_refresh() {
         let container = DIContainer(appState: AppState(), interactors: .mocked())
         let sut = CountriesList(countries: .isLoading(
@@ -58,6 +61,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_loaded() {
         let container = DIContainer(appState: AppState(), interactors: .mocked())
         let sut = CountriesList(countries: .loaded(Country.mockedData.lazyList))
@@ -74,6 +78,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_failed() {
         let container = DIContainer(appState: AppState(), interactors: .mocked())
         let sut = CountriesList(countries: .failed(NSError.test))
@@ -86,6 +91,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_failed_retry() {
         let container = DIContainer(appState: AppState(), interactors: .mocked(
             countriesInteractor: [.loadCountries(search: "", locale: Locale(identifier: ""))]
@@ -101,6 +107,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_navigation_to_details() {
         let countries = Country.mockedData
         let container = DIContainer(appState: AppState(), interactors: .mocked())

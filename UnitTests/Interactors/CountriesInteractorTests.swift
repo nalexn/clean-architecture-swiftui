@@ -37,6 +37,7 @@ class CountriesInteractorTests: XCTestCase {
 
 final class LoadCountriesTests: CountriesInteractorTests {
     
+    @MainActor
     func test_filledDB_successfulSearch() {
         let list = Country.mockedData
         
@@ -136,6 +137,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_emptyDB_successfulRequest_successfulStoring() {
         let list = Country.mockedData
         
@@ -173,6 +175,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_emptyDB_successfulRequest_failedStoring() {
         let list = Country.mockedData
         let error = NSError.test
@@ -214,6 +217,7 @@ final class LoadCountriesTests: CountriesInteractorTests {
 
 final class LoadCountryDetailsTests: CountriesInteractorTests {
     
+    @MainActor
     func test_filledDB_successfulSearch() {
         let country = Country.mockedData[0]
         let data = countryDetails(neighbors: [])
@@ -246,6 +250,7 @@ final class LoadCountryDetailsTests: CountriesInteractorTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_filledDB_dataNotFound_failedRequest() {
         let country = Country.mockedData[0]
         let error = NSError.test
@@ -280,6 +285,7 @@ final class LoadCountryDetailsTests: CountriesInteractorTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_filledDB_dataNotFound_successfulRequest_failedStoring() {
         let country = Country.mockedData[0]
         let data = countryDetails(neighbors: [])
@@ -317,6 +323,7 @@ final class LoadCountryDetailsTests: CountriesInteractorTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_filledDB_dataNotFound_successfulRequest_successfulStoring() {
         let country = Country.mockedData[0]
         let data = countryDetails(neighbors: [])
@@ -353,6 +360,7 @@ final class LoadCountryDetailsTests: CountriesInteractorTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_stubInteractor() {
         let sut = StubCountriesInteractor()
         sut.refreshCountriesList().sinkToResult({ _ in }).store(in: &subscriptions)
@@ -364,6 +372,7 @@ final class LoadCountryDetailsTests: CountriesInteractorTests {
     
     // MARK: - Helper
     
+    @MainActor
     private func recordAppStateUserDataUpdates(for timeInterval: TimeInterval = 0.5)
         -> AnyPublisher<[AppState.UserData], Never> {
         return Future<[AppState.UserData], Never> { (completion) in

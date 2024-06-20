@@ -12,10 +12,12 @@ import UIKit
 
 final class SceneDelegateTests: XCTestCase {
     
+    @MainActor
     private lazy var scene: UIScene = {
         UIApplication.shared.connectedScenes.first!
     }()
     
+    @MainActor
     func test_openURLContexts() {
         let sut = SceneDelegate()
         let eventsHandler = MockedSystemEventsHandler(expected: [
@@ -26,6 +28,7 @@ final class SceneDelegateTests: XCTestCase {
         eventsHandler.verify()
     }
     
+    @MainActor
     func test_didBecomeActive() {
         let sut = SceneDelegate()
         let eventsHandler = MockedSystemEventsHandler(expected: [
@@ -36,6 +39,7 @@ final class SceneDelegateTests: XCTestCase {
         eventsHandler.verify()
     }
     
+    @MainActor
     func test_willResignActive() {
         let sut = SceneDelegate()
         let eventsHandler = MockedSystemEventsHandler(expected: [
