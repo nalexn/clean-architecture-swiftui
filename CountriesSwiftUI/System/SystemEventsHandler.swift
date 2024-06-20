@@ -24,7 +24,7 @@ struct RealSystemEventsHandler: SystemEventsHandler {
     let deepLinksHandler: DeepLinksHandler
     let pushNotificationsHandler: PushNotificationsHandler
     let pushTokenWebRepository: PushTokenWebRepository
-    private var cancelBag = CancelBag()
+    private let cancelBag = CancelBag()
     
     init(container: DIContainer,
          deepLinksHandler: DeepLinksHandler,

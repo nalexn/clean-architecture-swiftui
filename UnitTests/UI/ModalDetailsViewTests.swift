@@ -13,8 +13,10 @@ import ViewInspector
 
 final class ModalDetailsViewTests: XCTestCase {
     
+    @MainActor
     let country = Country.mockedData[0]
     
+    @MainActor
     func modalDetailsView(_ isDisplayed: Binding<Bool>, _ services: DIContainer.Services) -> ModalDetailsView {
         let container = DIContainer(appState: AppState(), services: services)
         let viewModel = ModalDetailsView.ViewModel(
@@ -22,6 +24,7 @@ final class ModalDetailsViewTests: XCTestCase {
         return ModalDetailsView(viewModel: viewModel)
     }
 
+    @MainActor
     func test_modalDetails() {
         let services = DIContainer.Services.mocked(
             imagesService: [.loadImage(country.flag)]
@@ -37,6 +40,7 @@ final class ModalDetailsViewTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_modalDetails_close() {
         let services = DIContainer.Services.mocked(
             imagesService: [.loadImage(country.flag)]
@@ -53,6 +57,7 @@ final class ModalDetailsViewTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_modalDetails_close_localization() throws {
         let services = DIContainer.Services.mocked(
             imagesService: [.loadImage(country.flag)]

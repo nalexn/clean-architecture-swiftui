@@ -30,6 +30,7 @@ final class CountriesWebRepositoryTests: XCTestCase {
     
     // MARK: - All Countries
 
+    @MainActor
     func test_allCountries() throws {
         let data = Country.mockedData
         try mock(.allCountries, result: .success(data))
@@ -41,6 +42,7 @@ final class CountriesWebRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countryDetails() throws {
         let countries = Country.mockedData
         let value = Country.Details.Intermediate(
@@ -56,6 +58,7 @@ final class CountriesWebRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countryDetails_whenDetailsAreEmpty() throws {
         let countries = Country.mockedData
         try mock(.countryDetails(countries[0]), result: .success([Country.Details.Intermediate]()))

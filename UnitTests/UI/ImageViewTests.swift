@@ -15,6 +15,7 @@ final class ImageViewTests: XCTestCase {
 
     let url = URL(string: "https://test.com/test.png")!
     
+    @MainActor
     func imageView(_ image: Loadable<UIImage>,
                    _ services: DIContainer.Services) -> ImageView {
         let container = DIContainer(appState: AppState(), services: services)
@@ -23,6 +24,7 @@ final class ImageViewTests: XCTestCase {
         return ImageView(viewModel: viewModel)
     }
 
+    @MainActor
     func test_imageView_notRequested() {
         let services = DIContainer.Services.mocked(
             imagesService: [.loadImage(url)])
@@ -35,6 +37,7 @@ final class ImageViewTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_imageView_isLoading_initial() {
         let services = DIContainer.Services.mocked()
         let sut = imageView(.isLoading(last: nil, cancelBag: CancelBag()), services)
@@ -46,6 +49,7 @@ final class ImageViewTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_imageView_isLoading_refresh() {
         let services = DIContainer.Services.mocked()
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
@@ -58,6 +62,7 @@ final class ImageViewTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_imageView_loaded() {
         let services = DIContainer.Services.mocked()
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
@@ -71,6 +76,7 @@ final class ImageViewTests: XCTestCase {
         wait(for: [exp], timeout: 3)
     }
     
+    @MainActor
     func test_imageView_failed() {
         let services = DIContainer.Services.mocked()
         let sut = imageView(.failed(NSError.test), services)

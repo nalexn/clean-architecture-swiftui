@@ -36,6 +36,7 @@ class CountriesServiceTests: XCTestCase {
 // MARK: - load(countries: search: locale:)
 final class LoadCountriesTests: CountriesServiceTests {
     
+    @MainActor
     func test_filledDB_successfulSearch() {
         let list = Country.mockedData
         
@@ -135,6 +136,7 @@ final class LoadCountriesTests: CountriesServiceTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_emptyDB_successfulRequest_successfulStoring() {
         let list = Country.mockedData
         
@@ -172,6 +174,7 @@ final class LoadCountriesTests: CountriesServiceTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_emptyDB_successfulRequest_failedStoring() {
         let list = Country.mockedData
         let error = NSError.test
@@ -212,6 +215,7 @@ final class LoadCountriesTests: CountriesServiceTests {
 // MARK: - load(countryDetails: country: )
 final class LoadCountryDetailsTests: CountriesServiceTests {
     
+    @MainActor
     func test_filledDB_successfulSearch() {
         let country = Country.mockedData[0]
         let data = countryDetails(neighbors: [])
@@ -244,6 +248,7 @@ final class LoadCountryDetailsTests: CountriesServiceTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_filledDB_dataNotFound_failedRequest() {
         let country = Country.mockedData[0]
         let error = NSError.test
@@ -278,6 +283,7 @@ final class LoadCountryDetailsTests: CountriesServiceTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_filledDB_dataNotFound_successfulRequest_failedStoring() {
         let country = Country.mockedData[0]
         let data = countryDetails(neighbors: [])
@@ -315,6 +321,7 @@ final class LoadCountryDetailsTests: CountriesServiceTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_filledDB_dataNotFound_successfulRequest_successfulStoring() {
         let country = Country.mockedData[0]
         let data = countryDetails(neighbors: [])
@@ -351,6 +358,7 @@ final class LoadCountryDetailsTests: CountriesServiceTests {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_stubService() {
         let sut = StubCountriesService()
         let countries = BindingWithPublisher(value: Loadable<LazyList<Country>>.notRequested)
@@ -361,6 +369,7 @@ final class LoadCountryDetailsTests: CountriesServiceTests {
     
     // MARK: - Helper
     
+    @MainActor
     private func recordAppStateUserDataUpdates(for timeInterval: TimeInterval = 0.5)
         -> AnyPublisher<[AppState.UserData], Never> {
         return Future<[AppState.UserData], Never> { (completion) in

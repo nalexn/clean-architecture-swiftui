@@ -13,7 +13,7 @@ struct LazyList<T> {
     typealias Access = (Int) throws -> T?
     private let access: Access
     private let useCache: Bool
-    private var cache = Cache()
+    private let cache = Cache()
     
     let count: Int
     

@@ -34,6 +34,7 @@ class DeepLinksHandlerTests: XCTestCase {
         XCTAssertEqual(container.appState.value, expectedState)
     }
     
+    @MainActor
     func test_openingDeeplinkFromNonDefaultRouting() {
         let services: DIContainer.Services = .mocked()
         var initialState = AppState()

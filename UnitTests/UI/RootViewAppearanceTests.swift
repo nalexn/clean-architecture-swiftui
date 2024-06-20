@@ -13,6 +13,7 @@ import ViewInspector
 
 final class RootViewAppearanceTests: XCTestCase {
 
+    @MainActor
     func test_blur_whenInactive() {
         let container = DIContainer(appState: .init(AppState()),
                                     services: .mocked())
@@ -27,6 +28,7 @@ final class RootViewAppearanceTests: XCTestCase {
         wait(for: [exp], timeout: 0.1)
     }
     
+    @MainActor
     func test_blur_whenActive() {
         let container = DIContainer(appState: .init(AppState()),
                                     services: .mocked())

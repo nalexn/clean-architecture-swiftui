@@ -39,6 +39,7 @@ final class WebRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_webRepository_parseError() throws {
         let data = Country.mockedData
         try mock(.test, result: .success(data))

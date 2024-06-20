@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 struct CountryDetails: View {
     
     @ObservedObject private(set) var viewModel: ViewModel
@@ -62,6 +63,7 @@ private extension CountryDetails {
 
 // MARK: - Displaying Content
 
+@MainActor
 private extension CountryDetails {
     func loadedView(country: Country, details: Country.Details) -> some View {
         List {

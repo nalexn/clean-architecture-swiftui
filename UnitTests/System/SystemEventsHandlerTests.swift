@@ -88,6 +88,7 @@ final class SystemEventsHandlerTests: XCTestCase {
         verify()
     }
 
+    @MainActor
     func test_openURLContexts_countryDeepLink() {
         let countries = Country.mockedData
         let code = countries[0].alpha3Code
@@ -98,6 +99,7 @@ final class SystemEventsHandlerTests: XCTestCase {
         verify()
     }
     
+    @MainActor
     func test_openURLContexts_randomURL() {
         let url1 = "https://www.example.com/link/?param=USD"
         let contexts1 = UIOpenURLContext.contexts(url1)

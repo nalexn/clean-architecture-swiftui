@@ -13,8 +13,8 @@ import Combine
 
 final class DeepLinkUITests: XCTestCase {
     
+    @MainActor
     func test_countriesList_selectsCountry() {
-        
         let store = appStateWithDeepLink()
         let services = mockedServices(store: store)
         let container = DIContainer(appState: store, services: services)
@@ -27,8 +27,8 @@ final class DeepLinkUITests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countryDetails_presentsSheet() {
-        
         let store = appStateWithDeepLink()
         let services = mockedServices(store: store)
         let container = DIContainer(appState: store, services: services)
@@ -43,6 +43,8 @@ final class DeepLinkUITests: XCTestCase {
 }
 
 // MARK: - Setup
+
+@MainActor
 private extension DeepLinkUITests {
     
     func appStateWithDeepLink() -> Store<AppState> {

@@ -12,8 +12,10 @@ import ViewInspector
 
 final class CountryDetailsTests: XCTestCase {
     
+    @MainActor
     let country = Country.mockedData[0]
     
+    @MainActor
     func countryDetailsView(_ details: Loadable<Country.Details>,
                             _ services: DIContainer.Services
     ) -> CountryDetails {
@@ -23,6 +25,7 @@ final class CountryDetailsTests: XCTestCase {
         return CountryDetails(viewModel: viewModel)
     }
 
+    @MainActor
     func test_details_notRequested() {
         let services = DIContainer.Services.mocked(
             countriesService: [.loadCountryDetails(country)]
@@ -36,6 +39,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_details_isLoading_initial() {
         let services = DIContainer.Services.mocked()
         let sut = countryDetailsView(.isLoading(last: nil, cancelBag: CancelBag()), services)
@@ -47,6 +51,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_details_isLoading_refresh() {
         let services = DIContainer.Services.mocked()
         let sut = countryDetailsView(.isLoading(last: Country.Details.mockedData[0], cancelBag: CancelBag()), services)
@@ -58,6 +63,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_details_isLoading_cancellation() {
         let services = DIContainer.Services.mocked()
         let container = DIContainer(appState: AppState(), services: services)
@@ -74,6 +80,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_details_loaded() {
         let services = DIContainer.Services.mocked(
             imagesService: [.loadImage(country.flag)]
@@ -88,6 +95,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 3)
     }
     
+    @MainActor
     func test_details_failed() {
         let services = DIContainer.Services.mocked()
         let sut = countryDetailsView(.failed(NSError.test), services)
@@ -99,6 +107,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_details_failed_retry() {
         let services = DIContainer.Services.mocked(
             countriesService: [.loadCountryDetails(country)]
@@ -113,6 +122,7 @@ final class CountryDetailsTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_sheetPresentation() {
         let images: [MockedImagesService.Action] = [.loadImage(country.flag), .loadImage(country.flag)]
         let services = DIContainer.Services.mocked(

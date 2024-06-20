@@ -12,6 +12,7 @@ import ViewInspector
 
 final class CountriesListTests: XCTestCase {
 
+    @MainActor
     func test_countries_notRequested() {
         let container = DIContainer(appState: AppState(), services:
             .mocked(
@@ -27,6 +28,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_isLoading_initial() {
         let container = DIContainer(appState: AppState(), services: .mocked())
         let sut = CountriesList(viewModel: .init(container: container, countries:
@@ -41,6 +43,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_isLoading_refresh() {
         let container = DIContainer(appState: AppState(), services: .mocked())
         let sut = CountriesList(viewModel: .init(container: container, countries:
@@ -58,6 +61,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_loaded() {
         let container = DIContainer(appState: AppState(), services: .mocked())
         let sut = CountriesList(viewModel: .init(container: container, countries:
@@ -75,6 +79,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_failed() {
         let container = DIContainer(appState: AppState(), services: .mocked())
         let sut = CountriesList(viewModel: .init(container: container, countries:
@@ -88,6 +93,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_failed_retry() {
         let container = DIContainer(appState: AppState(), services: .mocked(
             countriesService: [.loadCountries(search: "", locale: Locale(identifier: ""))]
@@ -104,6 +110,7 @@ final class CountriesListTests: XCTestCase {
         wait(for: [exp], timeout: 2)
     }
     
+    @MainActor
     func test_countries_navigation_to_details() {
         let countries = Country.mockedData
         let container = DIContainer(appState: AppState(), services: .mocked(

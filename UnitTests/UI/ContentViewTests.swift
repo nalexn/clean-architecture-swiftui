@@ -16,6 +16,7 @@ final class ContentViewTests: XCTestCase {
         XCTAssertNoThrow(try sut.inspect().group().view(CountriesList.self, 0))
     }
     
+    @MainActor
     func test_change_handler_for_colorScheme() throws {
         var appState = AppState()
         appState.routing.countriesList = .init(countryDetails: "USA")
@@ -27,6 +28,7 @@ final class ContentViewTests: XCTestCase {
         container.services.verify()
     }
     
+    @MainActor
     func test_change_handler_for_sizeCategory() throws {
         var appState = AppState()
         appState.routing.countriesList = .init(countryDetails: "USA")
