@@ -10,7 +10,7 @@ import XCTest
 import Combine
 @testable import CountriesSwiftUI
 
-class UserPermissionsInteractorTests: XCTestCase {
+final class UserPermissionsInteractorTests: XCTestCase {
     
     var state = Store<AppState>(AppState())
     var sut: RealUserPermissionsInteractor!

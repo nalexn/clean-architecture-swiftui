@@ -9,7 +9,7 @@
 import XCTest
 @testable import CountriesSwiftUI
 
-class HelpersTests: XCTestCase {
+final class HelpersTests: XCTestCase {
 
     func test_localized_knownLocale() {
         let sut = "Countries".localized(Locale(identifier: "fr"))

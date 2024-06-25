@@ -81,7 +81,7 @@ private extension CountriesList {
          Variable `@Environment(\.locale) var locale: Locale`
          from the view is not accessible when searching by name
          */
-        class Container {
+        final class Container {
             var locale: Locale = .backendDefault
         }
         let container: Container

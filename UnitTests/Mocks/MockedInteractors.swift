@@ -84,7 +84,7 @@ struct MockedImagesInteractor: Mock, ImagesInteractor {
 
 // MARK: - ImagesInteractor
 
-class MockedUserPermissionsInteractor: Mock, UserPermissionsInteractor {
+final class MockedUserPermissionsInteractor: Mock, UserPermissionsInteractor {
     
     enum Action: Equatable {
         case resolveStatus(Permission)
