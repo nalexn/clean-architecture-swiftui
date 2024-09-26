@@ -16,7 +16,7 @@ protocol ManagedEntity: NSFetchRequestResult { }
 extension ManagedEntity where Self: NSManagedObject {
     
     static var entityName: String {
-        let nameMO = String(describing: Self.self)
+        let nameMO = String(describing: self)
         let suffixIndex = nameMO.index(nameMO.endIndex, offsetBy: -2)
         return String(nameMO[..<suffixIndex])
     }

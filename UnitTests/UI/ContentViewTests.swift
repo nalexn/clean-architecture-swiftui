@@ -7,13 +7,13 @@ final class ContentViewTests: XCTestCase {
     func test_content_for_tests() throws {
         let viewModel = ContentView.ViewModel(container: .defaultValue, isRunningTests: true)
         let sut = ContentView(viewModel: viewModel)
-        XCTAssertNoThrow(try sut.inspect().group().text(0))
+        XCTAssertNoThrow(try sut.inspect().implicitAnyView().group().text(0))
     }
     
     func test_content_for_build() throws {
         let viewModel = ContentView.ViewModel(container: .defaultValue, isRunningTests: false)
         let sut = ContentView(viewModel: viewModel)
-        XCTAssertNoThrow(try sut.inspect().group().view(CountriesList.self, 0))
+        XCTAssertNoThrow(try sut.inspect().find(CountriesList.self))
     }
     
     @MainActor

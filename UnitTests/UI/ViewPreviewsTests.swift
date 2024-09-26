@@ -45,7 +45,7 @@ final class ViewPreviewsTests: XCTestCase {
     @MainActor
     func test_errorView_previews() throws {
         let view = ErrorView_Previews.previews
-        try view.inspect().view(ErrorView.self).actualView().retryAction()
+        try view.inspect().implicitAnyView().view(ErrorView.self).actualView().retryAction()
     }
     
     @MainActor

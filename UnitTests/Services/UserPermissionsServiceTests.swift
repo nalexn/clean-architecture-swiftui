@@ -10,7 +10,7 @@ import XCTest
 import Combine
 @testable import CountriesSwiftUI
 
-class UserPermissionsServiceTests: XCTestCase {
+final class UserPermissionsServiceTests: XCTestCase {
     
     var state = Store<AppState>(AppState())
     var sut: RealUserPermissionsService!

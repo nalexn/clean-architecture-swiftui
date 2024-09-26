@@ -11,6 +11,7 @@ import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
+@MainActor
 final class RootViewAppearanceTests: XCTestCase {
 
     @MainActor
@@ -20,7 +21,7 @@ final class RootViewAppearanceTests: XCTestCase {
         let sut = RootViewAppearance(viewModel: .init(container: container))
         XCTAssertFalse(container.appState.value.system.isActive)
         let exp = sut.inspection.inspect { modifier in
-            let content = try modifier.viewModifierContent()
+            let content = try modifier.implicitAnyView().viewModifierContent()
             XCTAssertEqual(try content.blur().radius, 10)
         }
         let view = EmptyView().modifier(sut)
@@ -36,7 +37,7 @@ final class RootViewAppearanceTests: XCTestCase {
         XCTAssertTrue(container.appState.value.system.isActive)
         let sut = RootViewAppearance(viewModel: .init(container: container))
         let exp = sut.inspection.inspect { modifier in
-            let content = try modifier.viewModifierContent()
+            let content = try modifier.implicitAnyView().viewModifierContent()
             XCTAssertEqual(try content.blur().radius, 0)
         }
         let view = EmptyView().modifier(sut)

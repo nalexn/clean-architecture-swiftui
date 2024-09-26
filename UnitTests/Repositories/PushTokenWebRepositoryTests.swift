@@ -10,7 +10,7 @@ import XCTest
 import Combine
 @testable import CountriesSwiftUI
 
-class PushTokenWebRepositoryTests: XCTestCase {
+final class PushTokenWebRepositoryTests: XCTestCase {
 
     private var sut: RealPushTokenWebRepository!
     private var cancelBag = CancelBag()

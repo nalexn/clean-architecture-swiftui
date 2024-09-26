@@ -84,7 +84,7 @@ struct MockedImagesService: Mock, ImagesService {
 
 // MARK: - ImagesService
 
-class MockedUserPermissionsService: Mock, UserPermissionsService {
+final class MockedUserPermissionsService: Mock, UserPermissionsService {
     
     enum Action: Equatable {
         case resolveStatus(Permission)

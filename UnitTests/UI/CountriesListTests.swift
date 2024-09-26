@@ -20,7 +20,7 @@ final class CountriesListTests: XCTestCase {
             ))
         let sut = CountriesList(viewModel: .init(container: container, countries: .notRequested))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().text(0))
+            XCTAssertNoThrow(try view.content().implicitAnyView().implicitAnyView().text(0))
             XCTAssertEqual(container.appState.value, AppState())
             container.services.verify()
         }
@@ -85,7 +85,7 @@ final class CountriesListTests: XCTestCase {
         let sut = CountriesList(viewModel: .init(container: container, countries:
             .failed(NSError.test)))
         let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.content().view(ErrorView.self, 0))
+            XCTAssertNoThrow(try view.content().implicitAnyView().implicitAnyView().view(ErrorView.self, 0))
             XCTAssertEqual(container.appState.value, AppState())
             container.services.verify()
         }
@@ -101,8 +101,8 @@ final class CountriesListTests: XCTestCase {
         let sut = CountriesList(viewModel: .init(container: container, countries:
             .failed(NSError.test)))
         let exp = sut.inspection.inspect { view in
-            let errorView = try view.content().view(ErrorView.self, 0)
-            try errorView.vStack().button(2).tap()
+            let errorView = try view.content().implicitAnyView().implicitAnyView().view(ErrorView.self, 0)
+            try errorView.implicitAnyView().vStack().button(2).tap()
             XCTAssertEqual(container.appState.value, AppState())
             container.services.verify()
         }
@@ -148,6 +148,6 @@ final class LocalizationTests: XCTestCase {
 // MARK: - CountriesList inspection helper
 extension InspectableView where View == ViewType.View<CountriesList> {
     func content() throws -> InspectableView<ViewType.NavigationView> {
-        return try geometryReader().navigationView()
+        return try implicitAnyView().geometryReader().navigationView()
     }
 }

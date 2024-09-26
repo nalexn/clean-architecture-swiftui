@@ -52,7 +52,7 @@ struct LazyList<T> {
 }
 
 private extension LazyList {
-    class Cache {
+    final private class Cache {
         
         private var elements = [Int: T]()
         
