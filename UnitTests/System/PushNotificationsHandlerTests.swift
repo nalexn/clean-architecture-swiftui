@@ -10,7 +10,7 @@ import XCTest
 import UserNotifications
 @testable import CountriesSwiftUI
 
-class PushNotificationsHandlerTests: XCTestCase {
+final class PushNotificationsHandlerTests: XCTestCase {
     
     var sut: RealPushNotificationsHandler!
 

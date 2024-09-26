@@ -9,7 +9,7 @@
 import XCTest
 @testable import CountriesSwiftUI
 
-class DeepLinksHandlerTests: XCTestCase {
+final class DeepLinksHandlerTests: XCTestCase {
 
     func test_noSideEffectOnInit() {
         let interactors: DIContainer.Interactors = .mocked()

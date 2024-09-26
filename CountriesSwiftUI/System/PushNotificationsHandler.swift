@@ -10,7 +10,7 @@ import UserNotifications
 
 protocol PushNotificationsHandler { }
 
-class RealPushNotificationsHandler: NSObject, PushNotificationsHandler {
+final class RealPushNotificationsHandler: NSObject, PushNotificationsHandler {
     
     private let deepLinksHandler: DeepLinksHandler
     
