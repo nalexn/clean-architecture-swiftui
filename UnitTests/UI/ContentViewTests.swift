@@ -6,12 +6,12 @@ final class ContentViewTests: XCTestCase {
 
     func test_content_for_tests() throws {
         let sut = ContentView(container: .defaultValue, isRunningTests: true)
-        XCTAssertNoThrow(try sut.inspect().group().text(0))
+        XCTAssertNoThrow(try sut.inspect().implicitAnyView().group().text(0))
     }
     
     func test_content_for_build() throws {
         let sut = ContentView(container: .defaultValue, isRunningTests: false)
-        XCTAssertNoThrow(try sut.inspect().group().view(CountriesList.self, 0))
+        XCTAssertNoThrow(try sut.inspect().find(CountriesList.self))
     }
     
     func test_change_handler_for_colorScheme() throws {

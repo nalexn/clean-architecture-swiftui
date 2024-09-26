@@ -108,7 +108,7 @@ final class CountryDetailsTests: XCTestCase {
         let sut = CountryDetails(country: country, details: .failed(NSError.test))
         let exp = sut.inspection.inspect { view in
             let errorView = try view.find(ErrorView.self)
-            try errorView.vStack().button(2).tap()
+            try errorView.implicitAnyView().vStack().button(2).tap()
             interactors.verify()
         }
         ViewHosting.host(view: sut.inject(AppState(), interactors))

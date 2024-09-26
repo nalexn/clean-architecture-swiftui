@@ -11,6 +11,7 @@ import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
+@MainActor
 final class RootViewAppearanceTests: XCTestCase {
 
     func test_blur_whenInactive() {
@@ -19,7 +20,7 @@ final class RootViewAppearanceTests: XCTestCase {
                                     interactors: .mocked())
         XCTAssertFalse(container.appState.value.system.isActive)
         let exp = sut.inspection.inspect { modifier in
-            let content = try modifier.viewModifierContent()
+            let content = try modifier.implicitAnyView().viewModifierContent()
             XCTAssertEqual(try content.blur().radius, 10)
         }
         let view = EmptyView().modifier(sut)
@@ -35,7 +36,7 @@ final class RootViewAppearanceTests: XCTestCase {
         container.appState[\.system.isActive] = true
         XCTAssertTrue(container.appState.value.system.isActive)
         let exp = sut.inspection.inspect { modifier in
-            let content = try modifier.viewModifierContent()
+            let content = try modifier.implicitAnyView().viewModifierContent()
             XCTAssertEqual(try content.blur().radius, 0)
         }
         let view = EmptyView().modifier(sut)
