@@ -1,6 +1,6 @@
 //
 //  DIContainer.Interactors.swift
-//  CountriesSwiftUI
+//  Orbit
 //
 //  Created by Alexey Naumov on 24.10.2019.
 //  Copyright © 2019 Alexey Naumov. All rights reserved.

@@ -601,6 +601,7 @@
 			packageReferences = (
 				F6B6212223B52AE600CD00C7 /* XCRemoteSwiftPackageReference "ViewInspector" */,
 				F6E7ACE023F5D1EC00AB48AB /* XCRemoteSwiftPackageReference "EnvironmentOverrides" */,
+				251DB2192CB1E1AF00F25B23 /* XCRemoteSwiftPackageReference "sdk-for-apple" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F64495E22360D66400C9BB1F /* Products */;
@@ -1041,6 +1042,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		251DB2192CB1E1AF00F25B23 /* XCRemoteSwiftPackageReference "sdk-for-apple" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/appwrite/sdk-for-apple";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		F6B6212223B52AE600CD00C7 /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nalexn/ViewInspector";

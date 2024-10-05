@@ -1,6 +1,6 @@
 //
 //  UserPermissionsService.swift
-//  CountriesSwiftUI
+//  Orbit
 //
 //  Created by Alexey Naumov on 26.04.2020.
 //  Copyright © 2020 Alexey Naumov. All rights reserved.

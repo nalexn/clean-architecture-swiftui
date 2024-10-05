@@ -1,6 +1,6 @@
 //
 //  Publisher+WeakAssign.swift
-//  CountriesSwiftUI
+//  Orbit
 //
 //  Created by Amadeu Cavalcante on 01/08/21.
 //  Copyright © 2021 Alexey Naumov. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  CountryDetails.swift
-//  CountriesSwiftUI
+//  Orbit
 //
 //  Created by Alexey Naumov on 25.10.2019.
 //  Copyright © 2019 Alexey Naumov. All rights reserved.
