@@ -8,7 +8,7 @@
 
 import XCTest
 import UserNotifications
-@testable import CountriesSwiftUI
+@testable import Orbit
 
 final class PushNotificationsHandlerTests: XCTestCase {
     

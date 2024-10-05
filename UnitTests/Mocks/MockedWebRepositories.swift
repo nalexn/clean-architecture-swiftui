@@ -8,7 +8,7 @@
 
 import XCTest
 import Combine
-@testable import CountriesSwiftUI
+@testable import Orbit
 
 class TestWebRepository: WebRepository {
     let session: URLSession = .mockedResponsesOnly

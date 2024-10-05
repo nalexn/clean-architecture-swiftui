@@ -1,8 +1,8 @@
 os: osx
 language: swift
 osx_image: xcode12.2
-xcode_project: CountriesSwiftUI.xcodeproj
-xcode_scheme: CountriesSwiftUI
+xcode_project: Orbit.xcodeproj
+xcode_scheme: Orbit
 xcode_sdk: iphonesimulator14.2
 xcode_destination: platform=iOS Simulator,OS=14.2,name=iPhone 8
 after_success:

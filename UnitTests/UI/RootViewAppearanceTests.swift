@@ -9,7 +9,7 @@
 import XCTest
 import SwiftUI
 import ViewInspector
-@testable import CountriesSwiftUI
+@testable import Orbit
 
 @MainActor
 final class RootViewAppearanceTests: XCTestCase {

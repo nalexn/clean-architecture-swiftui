@@ -8,7 +8,7 @@
 
 import XCTest
 import UIKit
-@testable import CountriesSwiftUI
+@testable import Orbit
 
 final class SceneDelegateTests: XCTestCase {
     
