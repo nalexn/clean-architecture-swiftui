@@ -11,19 +11,25 @@ extension DIContainer {
         let countriesService: CountriesService
         let imagesService: ImagesService
         let userPermissionsService: UserPermissionsService
+        let appwriteService: AppwriteServiceProtocol
         
         init(countriesService: CountriesService,
              imagesService: ImagesService,
-             userPermissionsService: UserPermissionsService) {
+             userPermissionsService: UserPermissionsService,
+             appwriteService: AppwriteService
+        ) {
             self.countriesService = countriesService
             self.imagesService = imagesService
             self.userPermissionsService = userPermissionsService
+            self.appwriteService = appwriteService
         }
         
         static var stub: Self {
             .init(countriesService: StubCountriesService(),
                   imagesService: StubImagesService(),
-                  userPermissionsService: StubUserPermissionsService())
+                  userPermissionsService: StubUserPermissionsService(),
+                  appwriteService: AppwriteService()
+            )
         }
     }
 }

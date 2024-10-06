@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		252FF6952CB1E4A200D938F9 /* AppwriteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF6942CB1E46E00D938F9 /* AppwriteService.swift */; };
+		252FF6972CB1E4C300D938F9 /* Appwrite in Frameworks */ = {isa = PBXBuildFile; productRef = 252FF6962CB1E4C300D938F9 /* Appwrite */; };
+		252FF6992CB1F03F00D938F9 /* AroundMeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF6982CB1F03900D938F9 /* AroundMeView.swift */; };
+		252FF69B2CB206B200D938F9 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF69A2CB206B200D938F9 /* UserModels.swift */; };
+		252FF69D2CB2136400D938F9 /* UserManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF69C2CB2135F00D938F9 /* UserManagementService.swift */; };
+		252FF69F2CB2151E00D938F9 /* AccountManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF69E2CB2151E00D938F9 /* AccountManagementService.swift */; };
+		252FF6A12CB23AEC00D938F9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF6A02CB23AEC00D938F9 /* LoginView.swift */; };
 		52333A932654463B0034072B /* UIOpenURLContext_Init.m in Sources */ = {isa = PBXBuildFile; fileRef = 52333A922654463B0034072B /* UIOpenURLContext_Init.m */; };
 		678E0BAF26B749A000B21166 /* Publisher+WeakAssign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678E0BAE26B749A000B21166 /* Publisher+WeakAssign.swift */; };
 		F60829712369CE0100DB292E /* RequestMocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829702369CE0100DB292E /* RequestMocking.swift */; };
@@ -106,6 +113,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		252FF6942CB1E46E00D938F9 /* AppwriteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteService.swift; sourceTree = "<group>"; };
+		252FF6982CB1F03900D938F9 /* AroundMeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AroundMeView.swift; sourceTree = "<group>"; };
+		252FF69A2CB206B200D938F9 /* UserModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
+		252FF69C2CB2135F00D938F9 /* UserManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementService.swift; sourceTree = "<group>"; };
+		252FF69E2CB2151E00D938F9 /* AccountManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagementService.swift; sourceTree = "<group>"; };
+		252FF6A02CB23AEC00D938F9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		52333A90265445F30034072B /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		52333A91265445F30034072B /* UIOpenURLContext_Init.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIOpenURLContext_Init.h; sourceTree = "<group>"; };
 		52333A922654463B0034072B /* UIOpenURLContext_Init.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIOpenURLContext_Init.m; sourceTree = "<group>"; };
@@ -208,6 +221,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				252FF6972CB1E4C300D938F9 /* Appwrite in Frameworks */,
 				F6E7ACE223F5D1EC00AB48AB /* EnvironmentOverrides in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,7 +285,9 @@
 		F62822B523647F8300823BA1 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				252FF6A02CB23AEC00D938F9 /* LoginView.swift */,
 				F64495E82360D66400C9BB1F /* ContentView.swift */,
+				252FF6982CB1F03900D938F9 /* AroundMeView.swift */,
 				F639004E2438B53A002ED15A /* CountriesList */,
 				F60B5E392438BE04009BCBB3 /* CountryDetails */,
 				F62822B3236478DE00823BA1 /* ModalDetailsView.swift */,
@@ -384,6 +400,9 @@
 		F64495FE2360D88D00C9BB1F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				252FF69E2CB2151E00D938F9 /* AccountManagementService.swift */,
+				252FF69C2CB2135F00D938F9 /* UserManagementService.swift */,
+				252FF6942CB1E46E00D938F9 /* AppwriteService.swift */,
 				F64495FF2360D8B000C9BB1F /* CountriesService.swift */,
 				F68B530B23771A9400D6337C /* ImagesService.swift */,
 				F695DF8A2455B04100A65A04 /* UserPermissionsService.swift */,
@@ -410,6 +429,7 @@
 		F64496062360DFAD00C9BB1F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				252FF69A2CB206B200D938F9 /* UserModels.swift */,
 				F64496072360DFB700C9BB1F /* Models.swift */,
 				F67F62B42443276000A6ED11 /* Models+CoreData.swift */,
 				F6863E452364FCC800E9B227 /* MockedData.swift */,
@@ -539,6 +559,7 @@
 			name = Orbit;
 			packageProductDependencies = (
 				F6E7ACE123F5D1EC00AB48AB /* EnvironmentOverrides */,
+				252FF6962CB1E4C300D938F9 /* Appwrite */,
 			);
 			productName = Orbit;
 			productReference = F64495E12360D66400C9BB1F /* Orbit.app */;
@@ -664,12 +685,15 @@
 			files = (
 				F6238A952444627D00DD30EA /* CountriesDBRepository.swift in Sources */,
 				F6863E462364FCC800E9B227 /* MockedData.swift in Sources */,
+				252FF69B2CB206B200D938F9 /* UserModels.swift in Sources */,
 				F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */,
 				F6218DB623634D4100917938 /* ErrorView.swift in Sources */,
 				F674964A244B059A00E1D76B /* LazyList.swift in Sources */,
 				F6238A9624449DC200DD30EA /* db_model_v1.xcdatamodeld in Sources */,
 				F6218DB22362FD3100917938 /* CountryCell.swift in Sources */,
 				F67DBD5223663BCD00C83258 /* SystemEventsHandler.swift in Sources */,
+				252FF69F2CB2151E00D938F9 /* AccountManagementService.swift in Sources */,
+				252FF6952CB1E4A200D938F9 /* AppwriteService.swift in Sources */,
 				F64496102361B64700C9BB1F /* CountriesList.swift in Sources */,
 				F695DF8624559F8D00A65A04 /* PushNotificationsHandler.swift in Sources */,
 				F67F62B324430AE800A6ED11 /* CoreDataStack.swift in Sources */,
@@ -697,12 +721,15 @@
 				F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */,
 				F695DF892455AD9300A65A04 /* DeepLinksHandler.swift in Sources */,
 				F6238A91244337D400DD30EA /* CoreDataHelpers.swift in Sources */,
+				252FF6A12CB23AEC00D938F9 /* LoginView.swift in Sources */,
+				252FF6992CB1F03F00D938F9 /* AroundMeView.swift in Sources */,
 				F64496082360DFB700C9BB1F /* Models.swift in Sources */,
 				F64496032360D8EB00C9BB1F /* Loadable.swift in Sources */,
 				F661F2B8237738CE0014E142 /* RootViewModifier.swift in Sources */,
 				F6BDB91A236382E7003E69F2 /* ImageView.swift in Sources */,
 				F661F2B6237734FA0014E142 /* AppEnvironment.swift in Sources */,
 				F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */,
+				252FF69D2CB2136400D938F9 /* UserManagementService.swift in Sources */,
 				F644960E2360EF6C00C9BB1F /* WebRepository.swift in Sources */,
 				F64496002360D8B000C9BB1F /* CountriesService.swift in Sources */,
 				F64495FD2360D81F00C9BB1F /* AppState.swift in Sources */,
@@ -918,12 +945,12 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Orbit/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cpsc575.orbit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -945,12 +972,12 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Orbit/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cpsc575.orbit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1069,6 +1096,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		252FF6962CB1E4C300D938F9 /* Appwrite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 251DB2192CB1E1AF00F25B23 /* XCRemoteSwiftPackageReference "sdk-for-apple" */;
+			productName = Appwrite;
+		};
 		F6B6212323B52AE600CD00C7 /* ViewInspector */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F6B6212223B52AE600CD00C7 /* XCRemoteSwiftPackageReference "ViewInspector" */;

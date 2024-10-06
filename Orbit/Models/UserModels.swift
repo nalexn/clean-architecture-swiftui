@@ -1,0 +1,42 @@
+//
+//  UserModels.swift
+//  Orbit
+//
+//  Created by Rami Maalouf on 2024-10-05.
+//  Copyright © 2024 CPSC 575. All rights reserved.
+//
+
+
+import Foundation
+import CoreLocation
+import Appwrite
+import Foundation
+import CoreLocation
+
+struct CustomUserAttributes: Codable {
+    let bio: String?
+    let interests: [String]
+    let location: Location
+    let friends: [String]
+    let followers: [String]
+    let following: [String]
+    let profilePictureId: String?  // Reference to the File ID
+    let settings: Settings
+}
+
+struct Location: Codable {
+    let type: String
+    let coordinates: [Double]
+
+    var coordinate: CLLocationCoordinate2D? {
+        guard type == "Point", coordinates.count == 2 else { return nil }
+        return CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
+    }
+}
+
+struct Settings: Codable {
+    let isPrivateProfile: Bool
+    let notificationsEnabled: Bool
+}
+
+typealias User = AppwriteModels.User<CustomUserAttributes>
