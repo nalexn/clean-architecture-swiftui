@@ -14,12 +14,12 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject private(set) var viewModel: ViewModel
-    
+
     @State private var isLoggedIn: Bool = false  // Track login state
 
     var body: some View {
         NavigationView {
-            Group {
+//            Group {
                 if isLoggedIn {
                     // Show the main app content (e.g., CountriesList)
                     CountriesList(viewModel: .init(container: viewModel.container))
@@ -28,13 +28,12 @@ struct ContentView: View {
                             RootViewAppearance(viewModel: .init(container: viewModel.container)))
                 } else {
                     // Show the login view
-                    LoginView  // Pass your Appwrite instance
+                    LoginView()  // Pass your Appwrite instance
                 }
-            }
-            .onAppear {
-                // Check if the user is already logged in
-                checkLoginStatus()
-            }
+//            }
+        }.onAppear {
+            // Check if the user is already logged in
+            checkLoginStatus()
         }
     }
 

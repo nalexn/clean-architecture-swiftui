@@ -6,22 +6,19 @@
 //  Copyright © 2024 CPSC 575. All rights reserved.
 //
 
-
-import Foundation
-import CoreLocation
 import Appwrite
-import Foundation
 import CoreLocation
+import Foundation
 
 struct CustomUserAttributes: Codable {
     let bio: String?
-    let interests: [String]
-    let location: Location
-    let friends: [String]
-    let followers: [String]
-    let following: [String]
-    let profilePictureId: String?  // Reference to the File ID
-    let settings: Settings
+    // let interests: [String]
+    // let location: Location
+    // let friends: [String]
+    // let followers: [String]
+    // let following: [String]
+    // let profilePictureId: String?  // Reference to the File ID
+    // let settings: Settings
 }
 
 struct Location: Codable {

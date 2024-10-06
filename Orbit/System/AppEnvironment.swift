@@ -113,12 +113,14 @@ extension AppEnvironment {
             })
 
         let appwriteService = AppwriteService()
+        let accountManagementService = AccountManagementService(appwriteServiceAccount: appwriteService.account)
 
         return .init(
             countriesService: countriesService,
             imagesService: imagesService,
             userPermissionsService: userPermissionsService,
-            appwriteService: appwriteService)
+            appwriteService: appwriteService,
+            accountManagementService: accountManagementService)
     }
 }
 
