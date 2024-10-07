@@ -15,31 +15,31 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
-    @State private var isLoggedIn: Bool = false  // Track login state
+    @ObservedObject var authVM: AuthViewModel = AuthViewModel()
 
     var body: some View {
         NavigationView {
-//            Group {
-                if isLoggedIn {
-                    // Show the main app content (e.g., CountriesList)
-                    CountriesList(viewModel: .init(container: viewModel.container))
-                        .attachEnvironmentOverrides(onChange: viewModel.onChangeHandler)
-                        .modifier(
-                            RootViewAppearance(viewModel: .init(container: viewModel.container)))
-                } else {
-                    // Show the login view
-                    LoginView()  // Pass your Appwrite instance
-                }
-//            }
+            //            Group {
+            if authVM.isLoggedIn {
+                // Show the main app content (e.g., CountriesList)
+                CountriesList(viewModel: .init(container: viewModel.container))
+                    .attachEnvironmentOverrides(
+                        onChange: viewModel.onChangeHandler
+                    )
+                    .modifier(
+                        RootViewAppearance(
+                            viewModel: .init(container: viewModel.container)))
+            } else {
+                // Show the login view
+                LoginView()
+                //                        .environmentObject(authVM)
+            }
+            //            }
         }.onAppear {
-            // Check if the user is already logged in
-            checkLoginStatus()
+            Task {
+                await authVM.initialize()
+            }
         }
-    }
-
-    private func checkLoginStatus() {
-        // Implement logic to check if the user is logged in
-        // Update isLoggedIn accordingly
     }
 }
 
@@ -51,8 +51,10 @@ extension ContentView {
         let container: DIContainer
         let isRunningTests: Bool
 
-        init(container: DIContainer, isRunningTests: Bool = ProcessInfo.processInfo.isRunningTests)
-        {
+        init(
+            container: DIContainer,
+            isRunningTests: Bool = ProcessInfo.processInfo.isRunningTests
+        ) {
             self.container = container
             self.isRunningTests = isRunningTests
         }

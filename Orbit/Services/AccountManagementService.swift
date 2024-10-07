@@ -17,11 +17,12 @@
 import JSONCodable
 import Appwrite
 import Foundation
+import AppwriteModels
 
 protocol AccountManagementServiceProtocol {
-    func createAccount(_ email: String, _ password: String) async throws
+    func createAccount(_ email: String, _ password: String, _ name: String) async throws
         -> AppwriteModels.User<[String: AnyCodable]>
-    func getAccount() async throws -> User
+    func getAccount() async throws -> User<[String: AnyCodable]>
     func createSession(_ email: String, _ password: String) async throws -> Session
     func createAnonymousSession() async throws -> Session
     func listSessions() async throws -> [Session]
@@ -41,23 +42,23 @@ class AccountManagementService: AccountManagementServiceProtocol {
     // -------------------------------------------------------------------------
     func createAccount(
         _ email: String,
-        _ password: String
+        _ password: String,
+        _ name: String
     ) async throws -> AppwriteModels.User<[String: AnyCodable]> {
         let user = try await account.create(
             userId: ID.unique(),
             email: email,
-            password: password
-                //            name: <#T##String?#>
+            password: password,
+            name: name
         )
 
-        print("User: \(user)")
         return user
-        //        return User.from(map: user.toMap())
+//        return User.from(map: user.toMap())
     }
 
-    func getAccount() async throws -> User {
+    func getAccount() async throws -> User<[String: AnyCodable]> {
         let user = try await account.get()
-        return User.from(map: user.toMap())
+        return user
     }
 
     func createSession(

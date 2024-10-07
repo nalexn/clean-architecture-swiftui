@@ -14,6 +14,15 @@
 		252FF69D2CB2136400D938F9 /* UserManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF69C2CB2135F00D938F9 /* UserManagementService.swift */; };
 		252FF69F2CB2151E00D938F9 /* AccountManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF69E2CB2151E00D938F9 /* AccountManagementService.swift */; };
 		252FF6A12CB23AEC00D938F9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF6A02CB23AEC00D938F9 /* LoginView.swift */; };
+		254F05802CB34F53002562C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 254F057F2CB34F53002562C6 /* Preview Assets.xcassets */; };
+		257C72EB2CB306100030F05E /* AppwriteLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C72EA2CB306100030F05E /* AppwriteLogo.swift */; };
+		257C72ED2CB306350030F05E /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C72EC2CB306350030F05E /* SignupView.swift */; };
+		257C72F52CB340530030F05E /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 257C72F32CB340530030F05E /* Poppins-SemiBold.ttf */; };
+		257C72F62CB340530030F05E /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 257C72F12CB340530030F05E /* Poppins-Light.ttf */; };
+		257C72F72CB340530030F05E /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 257C72F22CB340530030F05E /* Poppins-Regular.ttf */; };
+		257C72F82CB340530030F05E /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 257C72F02CB340530030F05E /* Poppins-Bold.ttf */; };
+		257C72FA2CB340690030F05E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C72F92CB340690030F05E /* Extensions.swift */; };
+		257C72FC2CB3423D0030F05E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 257C72FB2CB3423D0030F05E /* Assets.xcassets */; };
 		52333A932654463B0034072B /* UIOpenURLContext_Init.m in Sources */ = {isa = PBXBuildFile; fileRef = 52333A922654463B0034072B /* UIOpenURLContext_Init.m */; };
 		678E0BAF26B749A000B21166 /* Publisher+WeakAssign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678E0BAE26B749A000B21166 /* Publisher+WeakAssign.swift */; };
 		F60829712369CE0100DB292E /* RequestMocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829702369CE0100DB292E /* RequestMocking.swift */; };
@@ -39,8 +48,6 @@
 		F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495E42360D66400C9BB1F /* AppDelegate.swift */; };
 		F64495E72360D66400C9BB1F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495E62360D66400C9BB1F /* SceneDelegate.swift */; };
 		F64495E92360D66400C9BB1F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495E82360D66400C9BB1F /* ContentView.swift */; };
-		F64495EB2360D66700C9BB1F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F64495EA2360D66700C9BB1F /* Assets.xcassets */; };
-		F64495EE2360D66700C9BB1F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F64495ED2360D66700C9BB1F /* Preview Assets.xcassets */; };
 		F64495F12360D66700C9BB1F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F64495EF2360D66700C9BB1F /* LaunchScreen.storyboard */; };
 		F64495FD2360D81F00C9BB1F /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495FC2360D81F00C9BB1F /* AppState.swift */; };
 		F64496002360D8B000C9BB1F /* CountriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64495FF2360D8B000C9BB1F /* CountriesService.swift */; };
@@ -119,6 +126,15 @@
 		252FF69C2CB2135F00D938F9 /* UserManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementService.swift; sourceTree = "<group>"; };
 		252FF69E2CB2151E00D938F9 /* AccountManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagementService.swift; sourceTree = "<group>"; };
 		252FF6A02CB23AEC00D938F9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		254F057F2CB34F53002562C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		257C72EA2CB306100030F05E /* AppwriteLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteLogo.swift; sourceTree = "<group>"; };
+		257C72EC2CB306350030F05E /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		257C72F02CB340530030F05E /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		257C72F12CB340530030F05E /* Poppins-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Light.ttf"; sourceTree = "<group>"; };
+		257C72F22CB340530030F05E /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		257C72F32CB340530030F05E /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		257C72F92CB340690030F05E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		257C72FB2CB3423D0030F05E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		52333A90265445F30034072B /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		52333A91265445F30034072B /* UIOpenURLContext_Init.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIOpenURLContext_Init.h; sourceTree = "<group>"; };
 		52333A922654463B0034072B /* UIOpenURLContext_Init.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIOpenURLContext_Init.m; sourceTree = "<group>"; };
@@ -148,8 +164,6 @@
 		F64495E42360D66400C9BB1F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F64495E62360D66400C9BB1F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F64495E82360D66400C9BB1F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		F64495EA2360D66700C9BB1F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F64495ED2360D66700C9BB1F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F64495F22360D66700C9BB1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F64495FC2360D81F00C9BB1F /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		F64495FF2360D8B000C9BB1F /* CountriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesService.swift; sourceTree = "<group>"; };
@@ -216,6 +230,14 @@
 		F6F606A723CF25EC00F36F5D /* SearchBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		257C72E72CB305650030F05E /* ViewModels */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		F64495DE2360D66400C9BB1F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -237,6 +259,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		257C72F42CB340530030F05E /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				257C72F02CB340530030F05E /* Poppins-Bold.ttf */,
+				257C72F12CB340530030F05E /* Poppins-Light.ttf */,
+				257C72F22CB340530030F05E /* Poppins-Regular.ttf */,
+				257C72F32CB340530030F05E /* Poppins-SemiBold.ttf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
 		F60829742369D55700DB292E /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,6 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				252FF6A02CB23AEC00D938F9 /* LoginView.swift */,
+				257C72EC2CB306350030F05E /* SignupView.swift */,
 				F64495E82360D66400C9BB1F /* ContentView.swift */,
 				252FF6982CB1F03900D938F9 /* AroundMeView.swift */,
 				F639004E2438B53A002ED15A /* CountriesList */,
@@ -367,9 +401,11 @@
 		F64495F92360D68D00C9BB1F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				257C72E72CB305650030F05E /* ViewModels */,
 				F661F2B7237738CE0014E142 /* RootViewModifier.swift */,
 				F62822B523647F8300823BA1 /* Screens */,
 				F62822B623647FA700823BA1 /* Components */,
+				257C72EA2CB306100030F05E /* AppwriteLogo.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -377,12 +413,13 @@
 		F64495FA2360D69600C9BB1F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F64495EA2360D66700C9BB1F /* Assets.xcassets */,
-				F64495ED2360D66700C9BB1F /* Preview Assets.xcassets */,
+				257C72FB2CB3423D0030F05E /* Assets.xcassets */,
+				254F057F2CB34F53002562C6 /* Preview Assets.xcassets */,
 				F64495EF2360D66700C9BB1F /* LaunchScreen.storyboard */,
 				F64495F22360D66700C9BB1F /* Info.plist */,
 				F6863E4723650E7900E9B227 /* Orbit.entitlements */,
 				F66EDB6A23F1599F00A01B9F /* Localizable.strings */,
+				257C72F42CB340530030F05E /* fonts */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -413,6 +450,7 @@
 		F64496012360D8D800C9BB1F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				257C72F92CB340690030F05E /* Extensions.swift */,
 				F60B5E3E2438DA57009BCBB3 /* Store.swift */,
 				F60B5E3C2438DA47009BCBB3 /* CancelBag.swift */,
 				F64496022360D8EB00C9BB1F /* Loadable.swift */,
@@ -556,6 +594,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				257C72E72CB305650030F05E /* ViewModels */,
+			);
 			name = Orbit;
 			packageProductDependencies = (
 				F6E7ACE123F5D1EC00AB48AB /* EnvironmentOverrides */,
@@ -594,7 +635,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1110;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1600;
 				ORGANIZATIONNAME = "CPSC 575";
 				TargetAttributes = {
 					F64495E02360D66400C9BB1F = {
@@ -640,10 +681,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				254F05802CB34F53002562C6 /* Preview Assets.xcassets in Resources */,
 				F64495F12360D66700C9BB1F /* LaunchScreen.storyboard in Resources */,
 				F66EDB6823F1599F00A01B9F /* Localizable.strings in Resources */,
-				F64495EE2360D66700C9BB1F /* Preview Assets.xcassets in Resources */,
-				F64495EB2360D66700C9BB1F /* Assets.xcassets in Resources */,
+				257C72F52CB340530030F05E /* Poppins-SemiBold.ttf in Resources */,
+				257C72F62CB340530030F05E /* Poppins-Light.ttf in Resources */,
+				257C72F72CB340530030F05E /* Poppins-Regular.ttf in Resources */,
+				257C72F82CB340530030F05E /* Poppins-Bold.ttf in Resources */,
+				257C72FC2CB3423D0030F05E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -684,7 +729,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6238A952444627D00DD30EA /* CountriesDBRepository.swift in Sources */,
+				257C72FA2CB340690030F05E /* Extensions.swift in Sources */,
 				F6863E462364FCC800E9B227 /* MockedData.swift in Sources */,
+				257C72EB2CB306100030F05E /* AppwriteLogo.swift in Sources */,
 				252FF69B2CB206B200D938F9 /* UserModels.swift in Sources */,
 				F64495E52360D66400C9BB1F /* AppDelegate.swift in Sources */,
 				F6218DB623634D4100917938 /* ErrorView.swift in Sources */,
@@ -720,6 +767,7 @@
 				F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */,
 				F67DBD542366E2E200C83258 /* DependencyInjector.swift in Sources */,
 				F695DF892455AD9300A65A04 /* DeepLinksHandler.swift in Sources */,
+				257C72ED2CB306350030F05E /* SignupView.swift in Sources */,
 				F6238A91244337D400DD30EA /* CoreDataHelpers.swift in Sources */,
 				252FF6A12CB23AEC00D938F9 /* LoginView.swift in Sources */,
 				252FF6992CB1F03F00D938F9 /* AroundMeView.swift in Sources */,
@@ -851,6 +899,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -865,7 +914,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -914,6 +963,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -922,7 +972,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -945,12 +995,12 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Orbit/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cpsc575.orbit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -972,12 +1022,12 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Orbit/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cpsc575.orbit;
 				PRODUCT_NAME = "$(TARGET_NAME)";

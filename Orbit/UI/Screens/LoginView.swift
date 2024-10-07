@@ -15,63 +15,105 @@ class LoginViewModel: ObservableObject {
 }
 
 struct LoginView: View {
-    @ObservedObject var viewModel = LoginViewModel()
-    @Environment(\.injected) private var injected: DIContainer  // Access the DIContainer
+    @State private var email = ""
+    @State private var password = ""
+    @State private var isActiveSignup = false
+
+    @ObservedObject var authVM: AuthViewModel = AuthViewModel()
 
     var body: some View {
-        VStack {
-            TextField("Email", text: $viewModel.email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            SecureField("Password", text: $viewModel.password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            Button(action: {
-                Task {
-                    do {
-                        let response = try await injected.services.accountManagementService
-                            .createSession(viewModel.email, viewModel.password)
-                        // Handle successful login (e.g., navigate to the main app view)
-                        if response.userId != nil {
-                            // Navigate to the main app view
-                            viewModel.feedback = "Login successful"
-                        } else {
-                            viewModel.feedback = "Login failed"
+
+        NavigationStack {
+            AppwriteLogo {
+                VStack {
+                    // Declare a NavigationLink with a value that matches your navigationDestination
+                    // Replace the old NavigationLink with navigationDestination
+                    //                    navigationDestination(isPresented: $isActiveSignup) {
+                    //                        SignupView() // Show SignupView when
+                    //                    }
+                    // Declare a NavigationLink with a value that matches your navigationDestination
+                    NavigationLink(
+                        value: "signup",
+                        label: {
+                            EmptyView()  // Same effect as before
                         }
-                    } catch {
-                        // Handle login error (e.g., show an alert)
-                        viewModel.feedback = "Login failed"
-                    }
-                }
-            }) {
-                Text("Login")
-            }
-            .padding()
-            Button(action: {
-                Task {
-                    do {
-                        let response = try await injected.services.accountManagementService
-                            .createAccount(
-                                viewModel.email, viewModel.password)
-                        // Handle successful registration (e.g., navigate to the main app view)
-                        if response.id != nil {
-                            // Navigate to the main app view
-                            viewModel.feedback = "Registration successful"
-                        } else {
-                            viewModel.feedback = "Registration failed"
+                    )
+                    .navigationDestination(for: String.self) { value in
+                        // Define the destination based on the value
+                        if value == "signup" {
+                            SignupView()  // Show SignupView when value is "signup"
                         }
-                    } catch {
-                        // Handle registration error (e.g., show an alert)
-                        viewModel.feedback = "Registration failed"
                     }
+                    HStack {
+                        Text("Welcome back to\nFlAppwrite Jobs")
+                            .largeSemiBoldFont()
+                            .padding(.top, 60)
+                            .multilineTextAlignment(.leading)
+                        Spacer()
+                    }
+                    Spacer().frame(height: 10)
+                    HStack {
+                        Text("Let's sign in.")
+                            .largeLightFont()
+                        Spacer()
+                    }
+                    .padding(.bottom, 30)
+
+                    TextField("E-mail", text: self.$email)
+                        .padding()
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(16.0)
+
+                    SecureField("Password", text: self.$password)
+                        .padding()
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(16.0)
+
+                    Spacer().frame(height: 16)
+
+                    Button("Login") {
+                        Task {
+                            await authVM.login(email: email, password: password)
+                        }
+                    }
+                    .regularFont()
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(width: 300, height: 50)
+                    .background(Color.pink)
+                    .cornerRadius(16.0)
+
+                    HStack {
+                        Text("Anonymous Login")
+                            .onTapGesture {
+                                Task {
+                                    await authVM.loginAnonymous()
+                                }
+                            }
+                        Text(".")
+                        Text("Signup")
+                            .onTapGesture {
+                                isActiveSignup = true
+                            }
+                    }
+                    .regularFont()
+                    .padding(.top, 30)
+                    Spacer()
+
                 }
-            }) {
-                Text("Register")
+                .foregroundColor(.white)
+                .padding([.leading, .trailing], 40)
+
             }
-            .padding()
-            Text(viewModel.feedback)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarHidden(true)
         }
-        .padding()
-        .navigationTitle("Login/Sign Up")
+    }
+}
+
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView()
+            .preferredColorScheme(.dark)
     }
 }

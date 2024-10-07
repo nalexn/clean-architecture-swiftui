@@ -11,14 +11,14 @@ import CoreLocation
 import Foundation
 
 struct CustomUserAttributes: Codable {
-    let bio: String?
-    // let interests: [String]
-    // let location: Location
-    // let friends: [String]
-    // let followers: [String]
-    // let following: [String]
-    // let profilePictureId: String?  // Reference to the File ID
-    // let settings: Settings
+     let bio: String?
+     let interests: [String]
+     let location: Location
+     let friends: [String]
+     let followers: [String]
+     let following: [String]
+     let profilePictureId: String?  // Reference to the File ID
+     let settings: Settings
 }
 
 struct Location: Codable {
@@ -36,4 +36,4 @@ struct Settings: Codable {
     let notificationsEnabled: Bool
 }
 
-typealias User = AppwriteModels.User<CustomUserAttributes>
+typealias UserDocument = AppwriteModels.Document<CustomUserAttributes>
