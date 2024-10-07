@@ -19,7 +19,7 @@ struct LoginView: View {
     @State private var password = ""
     @State private var isActiveSignup = false
 
-    @ObservedObject var authVM: AuthViewModel = AuthViewModel()
+    @EnvironmentObject var authVM: AuthViewModel
 
     var body: some View {
 

@@ -12,7 +12,7 @@ struct SignupView: View {
     @State private var password = ""
     @State private var name = ""
     
-    @ObservedObject var authVM: AuthViewModel = AuthViewModel()
+    @EnvironmentObject var authVM: AuthViewModel
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {

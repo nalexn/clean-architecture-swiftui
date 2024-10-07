@@ -7,7 +7,6 @@
 //
 
 import Combine
-import EnvironmentOverrides
 import SwiftUI
 
 // MARK: - View
@@ -15,10 +14,21 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
+    @StateObject private var authVM: AuthViewModel
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        _authVM =
+            StateObject(
+                wrappedValue: AuthViewModel(
+                    viewModel.container.services.accountManagementService
+                )
+            )
+    }
+
     var body: some View {
-        //        NavigationView {
-        Group {
-            if viewModel.authVM.isLoggedIn {
+        NavigationView {
+            //            Group {
+            if authVM.isLoggedIn {
                 // Show the main app content (e.g., CountriesList)
                 CountriesList(viewModel: .init(container: viewModel.container))
                     .attachEnvironmentOverrides(
@@ -26,18 +36,18 @@ struct ContentView: View {
                     )
                     .modifier(
                         RootViewAppearance(
-                            viewModel: .init(container: viewModel.container)))
+                            viewModel: .init(container: viewModel.container))
+                    )
+                    .environmentObject(authVM)
             } else {
                 // Show the login view
                 LoginView()
-                    .environmentObject(viewModel.authVM)
+                    .environmentObject(authVM)
             }
             //            }
         }.onAppear {
             Task {
-                print("isLoggedIn: \(viewModel.authVM.isLoggedIn)")
-                await viewModel.authVM.initialize()
-                print("isLoggedIn: \(viewModel.authVM.isLoggedIn)")
+                await authVM.initialize()
             }
         }
     }
@@ -51,18 +61,12 @@ extension ContentView {
         let container: DIContainer
         let isRunningTests: Bool
 
-        // Add authVM to the view model
-        @Published var authVM: AuthViewModel
-
         init(
             container: DIContainer,
             isRunningTests: Bool = ProcessInfo.processInfo.isRunningTests
         ) {
             self.container = container
             self.isRunningTests = isRunningTests
-            // Initialize authVM here using the accountManagementService from DI container
-            self.authVM = AuthViewModel(
-                container.services.accountManagementService)
         }
 
         var onChangeHandler: (EnvironmentValues.Diff) -> Void {

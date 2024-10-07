@@ -12,7 +12,7 @@ import SwiftUI
 struct CountriesList: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
-    @ObservedObject var authVM: AuthViewModel = AuthViewModel()
+    @EnvironmentObject var authVM: AuthViewModel
     @Environment(\.locale) private var locale: Locale
     let inspection = Inspection<Self>()
 

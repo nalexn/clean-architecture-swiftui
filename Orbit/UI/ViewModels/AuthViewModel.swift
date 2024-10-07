@@ -20,18 +20,12 @@ class AuthViewModel: ObservableObject {
     }
     @Published var error: String?
     @Published var user: User<[String: AnyCodable]>?
-//    private var account: AccountManagementServiceProtocol
-
-     @Environment(\.injected) private var injected: DIContainer
-//     Computed property to access accountManagementService
-     private var account: AccountManagementServiceProtocol {
-         injected.services.accountManagementService
-     }
+    private var account: AccountManagementServiceProtocol
 
     // Initialize with DIContainer
-//    init(_ account: AccountManagementServiceProtocol) {
-//        self.account = account
-//    }
+    init(_ account: AccountManagementServiceProtocol) {
+        self.account = account
+    }
     //    static let shared = AuthViewModel()
 
     @MainActor
