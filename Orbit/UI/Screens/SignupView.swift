@@ -11,10 +11,10 @@ struct SignupView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var name = ""
-    
+
     @EnvironmentObject var authVM: AuthViewModel
     @Environment(\.presentationMode) var presentationMode
-    
+
     var body: some View {
         AppwriteLogo {
             VStack {
@@ -28,15 +28,15 @@ struct SignupView: View {
                     Spacer()
                 }
                 .padding([.top, .bottom], 30)
-                
+
                 HStack {
-                    Text("Join\nFlAppwrite jobs")
+                    Text("Join Millions of\n other users!")
                         .largeSemiBoldFont()
                     Spacer()
                 }
-                
+
                 Spacer().frame(height: 10)
-                
+
                 HStack {
                     Text("Create an account")
                         .largeLightFont()
@@ -44,34 +44,35 @@ struct SignupView: View {
                     Spacer()
                 }
                 .padding(.bottom, 30)
-                
+
                 TextField("Name", text: self.$name)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(16.0)
-                
+
                 TextField("E-mail", text: self.$email)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(16.0)
-                
+
                 SecureField("Password", text: self.$password)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(16.0)
                 Spacer().frame(height: 16)
                 Button("Create account") {
-                    Task{
-                    await authVM.create(name: name, email: email, password: password)
+                    Task {
+                        await authVM.create(
+                            name: name, email: email, password: password)
                     }
                 }
                 .regularFont()
                 .foregroundColor(.white)
                 .padding()
-                .frame( maxWidth: .infinity, maxHeight: 60)
+                .frame(maxWidth: .infinity, maxHeight: 60)
                 .background(Color.pink)
                 .cornerRadius(16.0)
-                
+
                 Spacer()
             }
             .padding([.leading, .trailing], 27.5)

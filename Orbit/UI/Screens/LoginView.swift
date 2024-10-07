@@ -32,20 +32,11 @@ struct LoginView: View {
                     //                        SignupView() // Show SignupView when
                     //                    }
                     // Declare a NavigationLink with a value that matches your navigationDestination
-                    NavigationLink(
-                        value: "signup",
-                        label: {
-                            EmptyView()  // Same effect as before
-                        }
-                    )
-                    .navigationDestination(for: String.self) { value in
-                        // Define the destination based on the value
-                        if value == "signup" {
-                            SignupView()  // Show SignupView when value is "signup"
-                        }
+                    NavigationLink(destination: SignupView(), isActive: $isActiveSignup) {
+                        EmptyView()
                     }
                     HStack {
-                        Text("Welcome back to\nFlAppwrite Jobs")
+                        Text("Welcome back to\nOrbit")
                             .largeSemiBoldFont()
                             .padding(.top, 60)
                             .multilineTextAlignment(.leading)

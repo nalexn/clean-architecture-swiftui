@@ -16,10 +16,16 @@ class AuthViewModel: ObservableObject {
         didSet {
             print("isLoggedIn: \(isLoggedIn)")
         }
-            
+
     }
-    @Published var error: String?
+    @Published var error: String? {
+        didSet {
+            print("error: \(error ?? "nil")")
+        }
+    }
     @Published var user: User<[String: AnyCodable]>?
+    @Published var isLoading = true
+
     private var account: AccountManagementServiceProtocol
 
     // Initialize with DIContainer
@@ -45,12 +51,19 @@ class AuthViewModel: ObservableObject {
         do {
             // Await the result of the async getAccount call
             let user = try await account.getAccount()
-            self.user = user
-            self.isLoggedIn = true
+            print("4")
+            DispatchQueue.main.async {
+                print("5")
+                self.user = user
+                self.isLoggedIn = true
+            }
         } catch {
             // Handle the error case
             self.error = error.localizedDescription
             self.isLoggedIn = false
+        }
+        DispatchQueue.main.async {
+            self.isLoading = false
         }
     }
 
@@ -58,9 +71,10 @@ class AuthViewModel: ObservableObject {
     func create(name: String, email: String, password: String) async {
         do {
             // Await the result of the async getAccount call
-            let user = try await account.createAccount(email, password, name)
-            self.user = user
-            self.isLoggedIn = true
+            let newUser = try await account.createAccount(email, password, name)
+            if newUser.email == email {
+                await self.login(email: email, password: password)
+            }
         } catch {
             // Handle the error case
             self.error = error.localizedDescription
@@ -90,10 +104,13 @@ class AuthViewModel: ObservableObject {
     }
 
     @MainActor
-    public func login(email: String, password: String) async {
+    func login(email: String, password: String) async {
         do {
+            print("1")
             try await account.createSession(email, password)
+            print("2")
             await self.getAccount()
+            print("3")
         } catch {
             self.error = error.localizedDescription
         }

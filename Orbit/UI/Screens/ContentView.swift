@@ -15,6 +15,8 @@ struct ContentView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
     @StateObject private var authVM: AuthViewModel
+
+    @State var isOneSecondAfterLaunch = false
     init(viewModel: ViewModel) {
         self.viewModel = viewModel
         _authVM =
@@ -27,10 +29,18 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            //            Group {
-            if authVM.isLoggedIn {
-                // Show the main app content (e.g., CountriesList)
-                CountriesList(viewModel: .init(container: viewModel.container))
+            ZStack {
+                if authVM.isLoading {
+                    // Show a loading indicator while checking login status
+                    ProgressView("Loading...")
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .transition(.opacity.combined(with: .scale))  // Loading transition
+                }
+                if authVM.isLoggedIn {
+                    CountriesList(
+                        viewModel: .init(container: viewModel.container)
+                    )
                     .attachEnvironmentOverrides(
                         onChange: viewModel.onChangeHandler
                     )
@@ -38,17 +48,35 @@ struct ContentView: View {
                         RootViewAppearance(
                             viewModel: .init(container: viewModel.container))
                     )
+                    .transition(
+                        .move(edge: .trailing)
+                    )
                     .environmentObject(authVM)
-            } else {
-                // Show the login view
-                LoginView()
-                    .environmentObject(authVM)
-            }
-            //            }
+                }
+                if !authVM.isLoggedIn && !authVM.isLoading {
+
+                    LoginView()
+                        //                            .transition(.move(edge: .leading))  // Regular transition
+                        .transition(
+                            .asymmetric(
+                                insertion: isOneSecondAfterLaunch
+                                    ? .move(edge: .leading) : .scale,
+                                removal: .move(edge: .leading))
+                        )  // Asymmetric transition
+
+                        .environmentObject(authVM)
+
+                }
+            }.animation(
+                .easeInOut, value: authVM.isLoggedIn || authVM.isLoading)
         }.onAppear {
             Task {
                 await authVM.initialize()
+                // wait for 1 second
+                try await Task.sleep(nanoseconds: 1 * 1_000_000_000)
+                isOneSecondAfterLaunch = true
             }
+
         }
     }
 }
