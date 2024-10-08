@@ -64,7 +64,7 @@ class UserViewModel: ObservableObject {
     // Aggregate unique interests from all users
     var allInterests: [String] {
         let interestsArray = users.compactMap { $0.interests }.flatMap { $0 }
-        return Array(Set(interestsArray))  // Remove duplicates
+        return Array(Set(interestsArray)).sorted()
     }
 
     // Filter users based on selected interests and search text
