@@ -9,7 +9,8 @@ struct HomeView: View {
         NavigationView {
             content
                 .navigationBarItems(trailing: logoutButton)
-                .navigationBarTitle("Users")
+                .navigationBarTitle("Users", displayMode: .inline)
+                .background(Color(UIColor.systemGroupedBackground))
         }
         .onAppear {
             Task {
@@ -21,58 +22,104 @@ struct HomeView: View {
     @ViewBuilder private var content: some View {
         if userVM.isLoading {
             ActivityIndicatorView().padding()
+                .transition(.opacity)
         } else if let error = userVM.error {
             failedView(error)
+                .transition(.opacity)
         } else {
             loadedView(userVM.filteredUsers)
+                .transition(.move(edge: .bottom))
+                .animation(.easeInOut(duration: 0.3))
         }
     }
 
     private var logoutButton: some View {
-        Button("Logout") {
+        Button(action: {
             Task {
                 await authVM.logout()
             }
+        }) {
+            Image(systemName: "rectangle.portrait.and.arrow.right")
+                .font(.headline)
+                .foregroundColor(.red)
         }
     }
 
     private func failedView(_ error: String) -> some View {
-        ErrorView(
-            error: error as! Error,
-            retryAction: {
+        VStack {
+            Text("Error loading users")
+                .font(.title)
+                .foregroundColor(.red)
+            Text(error)
+                .multilineTextAlignment(.center)
+                .padding()
+
+            Button(action: {
                 Task {
                     await userVM.listUsers()
                 }
+            }) {
+                Text("Retry")
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
             }
-        )
+        }
     }
 
     private func loadedView(_ users: [UserModel]) -> some View {
-        VStack {
-            SearchBar(text: $userVM.searchText)
+        VStack(alignment: .leading, spacing: 16) {
+            SearchBar(
+                text: $userVM.searchText, placeholder: "search for a user")
 
             // Horizontal tags for filtering by interests
             InterestsHorizontalTags(
                 interests: userVM.allInterests,
                 onTapInterest: { interest in
-                    userVM.toggleInterest(interest)
-                })
+                    withAnimation {
+                        userVM.toggleInterest(interest)
+                    }
+                }
+            )
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .background(Color(UIColor.secondarySystemBackground))
+            .cornerRadius(10)
+            .shadow(radius: 3)
 
-            List(users) { user in
-                HStack(alignment: .center, spacing: 10) {
-                    VStack(alignment: .leading) {
-                        Text(user.name)
-                            .font(.headline)
-                            .padding(.bottom, 1)
-                        InterestsHorizontalTags(
-                            interests: user.interests ?? [],
-                            onTapInterest: { interest in
-                                userVM.toggleInterest(interest)
-                            })
+            // List of users
+            ScrollView {
+                LazyVStack(spacing: 16) {  // Using LazyVStack for efficient loading and spacing
+                    ForEach(users) { user in
+                        HStack(alignment: .center, spacing: 16) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(user.name)
+                                    .font(.title)
+                                    .padding(.bottom, 1)
+
+                                // user-specific interests tags
+                                InterestsHorizontalTags(
+                                    interests: user.interests ?? [],
+                                    onTapInterest: { interest in
+                                        withAnimation {
+                                            userVM.toggleInterest(interest)
+                                        }
+                                    }
+                                )
+                            }
+//                            Spacer()  // Pushes the content to the leading edge
+                        }
+                        .padding()
+                        .background(.ultraThinMaterial)  // Apply the translucent background effect here
+                        .cornerRadius(10)
+                        .shadow(radius: 3)
+//                        .padding(.vertical)  // Add padding on the sides to space it from screen edges
                     }
                 }
             }
         }
+        .padding()
     }
 }
 
