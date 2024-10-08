@@ -14,18 +14,19 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
-    @StateObject private var authVM: AuthViewModel
+    @ObservedObject private var authVM = AuthViewModel()
+    @ObservedObject var userVM = UserViewModel()
 
     @State var isOneSecondAfterLaunch = false
-    init(viewModel: ViewModel) {
-        self.viewModel = viewModel
-        _authVM =
-            StateObject(
-                wrappedValue: AuthViewModel(
-                    viewModel.container.services.accountManagementService
-                )
-            )
-    }
+    //    init(viewModel: ViewModel) {
+    //        self.viewModel = viewModel
+    //        _authVM =
+    //            StateObject(
+    //                wrappedValue: AuthViewModel(
+    //                    viewModel.container.services.accountManagementService
+    //                )
+    //            )
+    //    }
 
     var body: some View {
         NavigationView {
@@ -38,20 +39,22 @@ struct ContentView: View {
                         .transition(.opacity.combined(with: .scale))  // Loading transition
                 }
                 if authVM.isLoggedIn {
-                    CountriesList(
-                        viewModel: .init(container: viewModel.container)
-                    )
-                    .attachEnvironmentOverrides(
-                        onChange: viewModel.onChangeHandler
-                    )
-                    .modifier(
-                        RootViewAppearance(
-                            viewModel: .init(container: viewModel.container))
-                    )
-                    .transition(
-                        .move(edge: .trailing)
-                    )
-                    .environmentObject(authVM)
+                    //                    CountriesList(
+                    //                        viewModel: .init(container: viewModel.container)
+                    //                    )
+                    //                    .attachEnvironmentOverrides(
+                    //                        onChange: viewModel.onChangeHandler
+                    //                    )
+                    //                    .modifier(
+                    //                        RootViewAppearance(
+                    //                            viewModel: .init(container: viewModel.container))
+                    //                    )
+                    //                    .transition(
+                    //                        .move(edge: .trailing)
+                    //                    )
+                    HomeView()
+                        .environmentObject(authVM)
+                        .environmentObject(userVM)
                 }
                 if !authVM.isLoggedIn && !authVM.isLoading {
 
@@ -65,6 +68,7 @@ struct ContentView: View {
                         )  // Asymmetric transition
 
                         .environmentObject(authVM)
+                        .environmentObject(userVM)
 
                 }
             }.animation(

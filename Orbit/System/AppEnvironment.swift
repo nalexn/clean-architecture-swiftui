@@ -113,7 +113,7 @@ extension AppEnvironment {
             })
 
         let appwriteService = AppwriteService()
-        let accountManagementService = AccountManagementService(appwriteServiceAccount: appwriteService.account)
+        let accountManagementService = AccountManagementService()
 
         return .init(
             countriesService: countriesService,

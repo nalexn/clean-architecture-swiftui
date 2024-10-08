@@ -14,16 +14,18 @@
 //  Copyright © 2024 CPSC 575. All rights reserved.
 //
 
-import JSONCodable
 import Appwrite
-import Foundation
 import AppwriteModels
+import Foundation
+import JSONCodable
 
 protocol AccountManagementServiceProtocol {
-    func createAccount(_ email: String, _ password: String, _ name: String) async throws
+    func createAccount(_ email: String, _ password: String, _ name: String)
+        async throws
         -> AppwriteModels.User<[String: AnyCodable]>
     func getAccount() async throws -> User<[String: AnyCodable]>
-    func createSession(_ email: String, _ password: String) async throws -> Session
+    func createSession(_ email: String, _ password: String) async throws
+        -> Session
     func createAnonymousSession() async throws -> Session
     func listSessions() async throws -> [Session]
     func deleteSessions() async throws
@@ -33,11 +35,11 @@ protocol AccountManagementServiceProtocol {
 }
 
 class AccountManagementService: AccountManagementServiceProtocol {
-    private let account: Account
+    private let account: Account = AppwriteService.shared.account
 
-    init(appwriteServiceAccount: Account) {
-        self.account = appwriteServiceAccount
-    }
+    //    init(appwriteServiceAccount: Account) {
+    //        self.account = appwriteServiceAccount
+    //    }
 
     // -------------------------------------------------------------------------
     func createAccount(
@@ -51,9 +53,9 @@ class AccountManagementService: AccountManagementServiceProtocol {
             password: password,
             name: name
         )
-
+        print("userServiceCreated: \(user.id)")
         return user
-//        return User.from(map: user.toMap())
+        //        return User.from(map: user.toMap())
     }
 
     func getAccount() async throws -> User<[String: AnyCodable]> {

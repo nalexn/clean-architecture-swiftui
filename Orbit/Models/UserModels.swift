@@ -10,15 +10,16 @@ import Appwrite
 import CoreLocation
 import Foundation
 
-struct CustomUserAttributes: Codable {
-     let bio: String?
-     let interests: [String]
-     let location: Location
-     let friends: [String]
-     let followers: [String]
-     let following: [String]
-     let profilePictureId: String?  // Reference to the File ID
-     let settings: Settings
+struct UserModel: Codable {
+    let accountId: String
+    //    let bio: String?
+    //    let interests: [String]?
+    //    let location: Location?
+    //    let friends: [String]?
+    //    let followers: [String]?
+    //    let following: [String]?
+    //    let profilePictureId: String?  // Reference to the File ID
+    //    let settings: Settings?
 }
 
 struct Location: Codable {
@@ -27,7 +28,8 @@ struct Location: Codable {
 
     var coordinate: CLLocationCoordinate2D? {
         guard type == "Point", coordinates.count == 2 else { return nil }
-        return CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
+        return CLLocationCoordinate2D(
+            latitude: coordinates[1], longitude: coordinates[0])
     }
 }
 
@@ -36,4 +38,4 @@ struct Settings: Codable {
     let notificationsEnabled: Bool
 }
 
-typealias UserDocument = AppwriteModels.Document<CustomUserAttributes>
+typealias UserDocument = AppwriteModels.Document<UserModel>

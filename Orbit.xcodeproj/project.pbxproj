@@ -23,6 +23,7 @@
 		257C72F82CB340530030F05E /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 257C72F02CB340530030F05E /* Poppins-Bold.ttf */; };
 		257C72FA2CB340690030F05E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C72F92CB340690030F05E /* Extensions.swift */; };
 		257C72FC2CB3423D0030F05E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 257C72FB2CB3423D0030F05E /* Assets.xcassets */; };
+		25C88CEE2CB440DA0048A28D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C88CED2CB440DA0048A28D /* HomeView.swift */; };
 		52333A932654463B0034072B /* UIOpenURLContext_Init.m in Sources */ = {isa = PBXBuildFile; fileRef = 52333A922654463B0034072B /* UIOpenURLContext_Init.m */; };
 		678E0BAF26B749A000B21166 /* Publisher+WeakAssign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678E0BAE26B749A000B21166 /* Publisher+WeakAssign.swift */; };
 		F60829712369CE0100DB292E /* RequestMocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60829702369CE0100DB292E /* RequestMocking.swift */; };
@@ -135,6 +136,7 @@
 		257C72F32CB340530030F05E /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		257C72F92CB340690030F05E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		257C72FB2CB3423D0030F05E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		25C88CED2CB440DA0048A28D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		52333A90265445F30034072B /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		52333A91265445F30034072B /* UIOpenURLContext_Init.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIOpenURLContext_Init.h; sourceTree = "<group>"; };
 		52333A922654463B0034072B /* UIOpenURLContext_Init.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIOpenURLContext_Init.m; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 		F62822B523647F8300823BA1 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				25C88CED2CB440DA0048A28D /* HomeView.swift */,
 				252FF6A02CB23AEC00D938F9 /* LoginView.swift */,
 				257C72EC2CB306350030F05E /* SignupView.swift */,
 				F64495E82360D66400C9BB1F /* ContentView.swift */,
@@ -762,6 +765,7 @@
 				F60B5E3F2438DA57009BCBB3 /* Store.swift in Sources */,
 				F62822B4236478DE00823BA1 /* ModalDetailsView.swift in Sources */,
 				F695DF8B2455B04100A65A04 /* UserPermissionsService.swift in Sources */,
+				25C88CEE2CB440DA0048A28D /* HomeView.swift in Sources */,
 				F6C1F9D723CE3034005A98C8 /* SearchBar.swift in Sources */,
 				F639004D2438A851002ED15A /* CountriesListViewModel.swift in Sources */,
 				F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */,

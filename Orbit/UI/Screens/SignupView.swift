@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct SignupView: View {
-    @State private var email = ""
-    @State private var password = ""
-    @State private var name = ""
+    @State private var email = "iiiii@gmail.com"
+    @State private var password = "rami6809"
+    @State private var name = "Rami"
 
     @EnvironmentObject var authVM: AuthViewModel
+    @EnvironmentObject var userVM: UserViewModel
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -62,8 +63,27 @@ struct SignupView: View {
                 Spacer().frame(height: 16)
                 Button("Create account") {
                     Task {
-                        await authVM.create(
+                        let newUser = await authVM.create(
                             name: name, email: email, password: password)
+                        guard let userId = newUser?.id else {
+                            print("Error: User ID is nil")
+                            return
+                        }
+                        let myUser = UserModel(
+                            // TODO: Refactor this
+                            accountId: userId
+                                //                            bio: nil,
+                                //                            interests: nil,
+                                //                            location: nil,
+                                //                            friends: nil,
+                                //                            followers: nil,
+                                //                            following: nil,
+                                //                            profilePictureId: nil,
+                                //                            settings: nil
+                        )
+                        print(myUser.accountId)
+                        await userVM
+                            .createUser(userData: myUser)
                     }
                 }
                 .regularFont()

@@ -26,12 +26,13 @@ class AuthViewModel: ObservableObject {
     @Published var user: User<[String: AnyCodable]>?
     @Published var isLoading = true
 
-    private var account: AccountManagementServiceProtocol
+    private var account: AccountManagementServiceProtocol =
+        AccountManagementService()
 
     // Initialize with DIContainer
-    init(_ account: AccountManagementServiceProtocol) {
-        self.account = account
-    }
+    //    init(_ account: AccountManagementServiceProtocol) {
+    //        self.account = account
+    //    }
     //    static let shared = AuthViewModel()
 
     @MainActor
@@ -68,18 +69,24 @@ class AuthViewModel: ObservableObject {
     }
 
     @MainActor
-    func create(name: String, email: String, password: String) async {
+    func create(name: String, email: String, password: String) async -> User<
+        [String: AnyCodable]
+    >? {
         do {
             // Await the result of the async getAccount call
             let newUser = try await account.createAccount(email, password, name)
+            print("newUser: \(newUser.email)")
             if newUser.email == email {
+                print()
                 await self.login(email: email, password: password)
+                return newUser
             }
         } catch {
             // Handle the error case
             self.error = error.localizedDescription
             self.isLoggedIn = false
         }
+        return nil
     }
 
     @MainActor

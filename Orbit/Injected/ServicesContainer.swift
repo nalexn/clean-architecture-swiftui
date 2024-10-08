@@ -25,7 +25,7 @@ extension DIContainer {
             self.imagesService = imagesService
             self.userPermissionsService = userPermissionsService
             self.appwriteService = appwriteService
-            self.accountManagementService = AccountManagementService(appwriteServiceAccount: appwriteService.account)
+            self.accountManagementService = AccountManagementService()
         }
 
         static var stub: Self {
@@ -34,7 +34,7 @@ extension DIContainer {
                 imagesService: StubImagesService(),
                 userPermissionsService: StubUserPermissionsService(),
                 appwriteService: AppwriteService(),
-                accountManagementService: AccountManagementService(appwriteServiceAccount: AppwriteService().account)
+                accountManagementService: AccountManagementService()
             )
         }
     }

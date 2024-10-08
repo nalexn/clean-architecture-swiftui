@@ -23,15 +23,17 @@ class AppwriteService: AppwriteServiceProtocol {
     let storage: Storage
     let realtime: Realtime
 
-    var databaseId = "YOUR_DATABASE_ID"
-    var collectionId = "YOUR_COLLECTION_ID"
-    var bucketId = "YOUR_BUCKET_ID"
-    var functionId = "YOUR_FUNCTION_ID"
-    var executionId = ""
-    var userId = ""
-    var userEmail = ""
-    var documentId = ""
-    var fileId = ""
+    let databaseId = "orbit"
+    let collectionId = "users"
+    let bucketId = "userAssets"
+    //    var functionId = "YOUR_FUNCTION_ID"
+    //    var executionId = ""
+    //    var userId = ""
+    //    var userEmail = ""
+    //    var documentId = ""
+    //    var fileId = ""
+
+    static let shared = AppwriteService()
 
     init() {
 

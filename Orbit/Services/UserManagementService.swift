@@ -10,50 +10,71 @@ import Appwrite
 import Foundation
 
 protocol UserManagementServiceProtocol {
-    func createUser(_ user: CustomUserAttributes) async throws -> UserDocument
+    func createUser(_ user: UserModel) async throws -> UserDocument
     func getUser(id: String) async throws -> UserDocument
-    func updateUser(id: String, updatedUser: CustomUserAttributes) async throws -> UserDocument
+    func updateUser(id: String, updatedUser: UserModel) async throws
+        -> UserDocument
     func deleteUser(id: String) async throws
     func listUsers(queries: [String]?) async throws -> [UserDocument]
 }
 
 class UserManagementService: UserManagementServiceProtocol {
-    private let appwriteService: AppwriteService
+    private let appwriteService: AppwriteService = AppwriteService.shared
 
-    init(appwriteService: AppwriteService) {
-        self.appwriteService = appwriteService
-    }
+    //    init(appwriteService: AppwriteService) {
+    //        self.appwriteService = appwriteService
+    //    }
 
     // Create
-    func createUser(_ user: CustomUserAttributes) async throws -> UserDocument {
-        let document = try await appwriteService.databases.createDocument(
+    func createUser(_ user: UserModel) async throws -> UserDocument {
+
+        print(appwriteService.collectionId, appwriteService.databaseId)
+
+        let document = try await appwriteService.databases.createDocument<
+            UserModel
+        >(
             databaseId: appwriteService.databaseId,
             collectionId: appwriteService.collectionId,
             documentId: ID.unique(),
-            data: user
+            data: user.toJson(),
+            permissions: nil,  // [Appwrite.Permission.write(Role.user(user.accountId))],
+            nestedType: UserModel.self
         )
-        return UserDocument.from(map: document.toMap())
+        print(document)
+        return document
+        //        return UserDocument.from(map: document.toMap())
     }
 
     // Read
     func getUser(id: String) async throws -> UserDocument {
-        let document = try await appwriteService.databases.getDocument(
-            databaseId: appwriteService.databaseId,
-            collectionId: appwriteService.collectionId,
-            documentId: id
-        )
-        return UserDocument.from(map: document.toMap())
-    }
-
-    // Update
-    func updateUser(id: String, updatedUser: CustomUserAttributes) async throws -> UserDocument {
-        let document = try await appwriteService.databases.updateDocument(
+        let document = try await appwriteService.databases.getDocument<
+            UserModel
+        >(
             databaseId: appwriteService.databaseId,
             collectionId: appwriteService.collectionId,
             documentId: id,
-            data: updatedUser
+            queries: nil,
+            nestedType: UserModel.self
+
         )
-        return UserDocument.from(map: document.toMap())
+        return document
+    }
+
+    // Update
+    func updateUser(id: String, updatedUser: UserModel) async throws
+        -> UserDocument
+    {
+        let document = try await appwriteService.databases.updateDocument<
+            UserModel
+        >(
+            databaseId: appwriteService.databaseId,
+            collectionId: appwriteService.collectionId,
+            documentId: id,
+            data: updatedUser,
+            permissions: nil,
+            nestedType: UserModel.self
+        )
+        return document
     }
 
     // Delete
@@ -67,11 +88,15 @@ class UserManagementService: UserManagementServiceProtocol {
 
     // List Users
     func listUsers(queries: [String]? = nil) async throws -> [UserDocument] {
-        let documents = try await appwriteService.databases.listDocuments(
+        let documents = try await appwriteService.databases.listDocuments<
+            UserModel
+        >(
             databaseId: appwriteService.databaseId,
             collectionId: appwriteService.collectionId,
-            queries: queries
+            queries: queries,
+            nestedType: UserModel.self
+
         )
-        return documents.documents.map { UserDocument.from(map: $0.toMap()) }
+        return documents.documents
     }
 }
