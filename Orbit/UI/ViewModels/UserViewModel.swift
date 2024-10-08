@@ -81,13 +81,15 @@ class UserViewModel: ObservableObject {
     }
 
     @MainActor
-    func listUsers(queries: [String]? = nil) async {
+    func listUsers(queries: [String]? = nil) async -> [UserModel]? {
         do {
             let userDocuments = try await userManagementService.listUsers(
                 queries: queries)
             self.users = userDocuments.map({ $0.data })
+            return self.users
         } catch {
             self.error = error.localizedDescription
         }
+        return nil
     }
 }

@@ -13,7 +13,7 @@ struct InterestsHorizontalTags: View {
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
+            HStack(spacing: 5) {
                 ForEach(interests, id: \.self) { interest in
                     Text(interest)
                         .padding()
