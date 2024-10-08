@@ -92,7 +92,6 @@ struct LoginView: View {
                     Spacer()
 
                 }
-                .foregroundColor(.white)
                 .padding([.leading, .trailing], 40)
 
             }
