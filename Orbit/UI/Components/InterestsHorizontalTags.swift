@@ -9,7 +9,8 @@ import SwiftUI
 
 struct InterestsHorizontalTags: View {
     var interests: [String]
-    @State var selectedInterests: [String] = []
+    var onTapInterest: (String) -> Void
+    @EnvironmentObject var userVM: UserViewModel
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -18,28 +19,20 @@ struct InterestsHorizontalTags: View {
                     Text(interest)
                         .padding()
                         .background(
-                            selectedInterests.contains(interest)
+                            userVM.selectedInterests.contains(interest)
                                 ? Color.blue : Color.gray.opacity(0.2)
                         )
                         .foregroundColor(
-                            selectedInterests.contains(interest)
+                            userVM.selectedInterests.contains(interest)
                                 ? Color.white : Color.black
                         )
                         .clipShape(Capsule())
                         .onTapGesture {
-                            toggleInterest(interest)
+                            onTapInterest(interest)
                         }
                 }
             }
             .padding()
-        }
-    }
-
-    private func toggleInterest(_ interest: String) {
-        if let index = selectedInterests.firstIndex(of: interest) {
-            selectedInterests.remove(at: index)
-        } else {
-            selectedInterests.append(interest)
         }
     }
 }

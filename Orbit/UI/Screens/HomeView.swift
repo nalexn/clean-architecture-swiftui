@@ -50,13 +50,25 @@ struct HomeView: View {
     private func loadedView(_ users: [UserModel]) -> some View {
         VStack {
             SearchBar(text: $userVM.searchText)
+
+            // Horizontal tags for filtering by interests
+            InterestsHorizontalTags(
+                interests: userVM.allInterests,
+                onTapInterest: { interest in
+                    userVM.toggleInterest(interest)
+                })
+
             List(users) { user in
                 HStack(alignment: .center, spacing: 10) {
                     VStack(alignment: .leading) {
                         Text(user.name)
                             .font(.headline)
                             .padding(.bottom, 1)
-                        InterestsHorizontalTags(interests: user.interests ?? [])
+                        InterestsHorizontalTags(
+                            interests: user.interests ?? [],
+                            onTapInterest: { interest in
+                                userVM.toggleInterest(interest)
+                            })
                     }
                 }
             }

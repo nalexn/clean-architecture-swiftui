@@ -16,6 +16,7 @@ class UserViewModel: ObservableObject {
     @Published var error: String?
     @Published var isLoading = false
     @Published var searchText: String = ""
+    @Published var selectedInterests: [String] = []
 
     private var userManagementService: UserManagementServiceProtocol =
         UserManagementService()
@@ -60,29 +61,54 @@ class UserViewModel: ObservableObject {
         }
     }
 
+    // Aggregate unique interests from all users
+    var allInterests: [String] {
+        let interestsArray = users.compactMap { $0.interests }.flatMap { $0 }
+        return Array(Set(interestsArray))  // Remove duplicates
+    }
+
+    // Filter users based on selected interests and search text
+    var filteredUsers: [UserModel] {
+        let usersFilteredBySearch =
+            searchText.isEmpty
+            ? users
+            : users.filter { user in
+                user.name.lowercased().contains(searchText.lowercased())
+                    || (user.interests?.joined(separator: " ").lowercased()
+                        .contains(searchText.lowercased()) ?? false)
+            }
+
+        if selectedInterests.isEmpty {
+            return usersFilteredBySearch
+        } else {
+            return usersFilteredBySearch.filter { user in
+                guard let userInterests = user.interests else { return false }
+                return !Set(userInterests).intersection(Set(selectedInterests))
+                    .isEmpty
+            }
+        }
+    }
+
     @MainActor
     func listUsers(queries: [String]? = nil) async {
         isLoading = true
         do {
             let userDocuments = try await userManagementService.listUsers(
                 queries: queries)
-            self.users = userDocuments.map({ $0.data })
+            self.users = userDocuments.map { $0.data }
         } catch {
             self.error = error.localizedDescription
         }
         isLoading = false
     }
 
-    // Filter users based on search text
-    var filteredUsers: [UserModel] {
-        if searchText.isEmpty {
-            return users
+    // Function to handle interest selection
+    func toggleInterest(_ interest: String) {
+        if let index = selectedInterests.firstIndex(of: interest) {
+            selectedInterests.remove(at: index)
         } else {
-            return users.filter { user in
-                user.name.lowercased().contains(searchText.lowercased())
-                    || (user.interests?.joined(separator: " ").lowercased()
-                        .contains(searchText.lowercased()) ?? false)
-            }
+            selectedInterests.append(interest)
         }
     }
+
 }
