@@ -12,26 +12,17 @@ import JSONCodable
 import SwiftUI
 
 class UserViewModel: ObservableObject {
-    //    @Published var currentUser: UserDocument
-    @Published var users: [UserModel] = [] {
-        didSet {
-            print("Users updated: \(users)")
-
-        }
-    }
-    @Published var error: String? {
-        didSet {
-            print("Error: \(error ?? "nil")")
-        }
-    }
-    @Published var isLoading = true
+    @Published var users: [UserModel] = []
+    @Published var error: String?
+    @Published var isLoading = false
+    @Published var searchText: String = ""
 
     private var userManagementService: UserManagementServiceProtocol =
         UserManagementService()
 
     @MainActor
     func initialize() async {
-        await self.listUsers()
+        await listUsers()
     }
 
     @MainActor
@@ -39,18 +30,7 @@ class UserViewModel: ObservableObject {
         do {
             let newUser = try await userManagementService.createUser(userData)
             print("User created: \(newUser)")
-            await self.listUsers()  // Refresh the user list after creation
-        } catch {
-            self.error = error.localizedDescription
-        }
-    }
-
-    @MainActor
-    func getUser(id: String) async {
-        do {
-            let user = try await userManagementService.getUser(id: id)
-            print("Retrieved user: \(user)")
-            // Handle the retrieved user as needed
+            await listUsers()  // Refresh the user list after creation
         } catch {
             self.error = error.localizedDescription
         }
@@ -63,7 +43,7 @@ class UserViewModel: ObservableObject {
                 try await userManagementService.updateUser(
                     id: id, updatedUser: updatedUser)
             print("User updated: \(updatedUserDocument)")
-            await self.listUsers()  // Refresh the user list after update
+            await listUsers()  // Refresh the user list after update
         } catch {
             self.error = error.localizedDescription
         }
@@ -74,22 +54,35 @@ class UserViewModel: ObservableObject {
         do {
             try await userManagementService.deleteUser(id: id)
             print("User deleted: \(id)")
-            await self.listUsers()  // Refresh the user list after deletion
+            await listUsers()  // Refresh the user list after deletion
         } catch {
             self.error = error.localizedDescription
         }
     }
 
     @MainActor
-    func listUsers(queries: [String]? = nil) async -> [UserModel]? {
+    func listUsers(queries: [String]? = nil) async {
+        isLoading = true
         do {
             let userDocuments = try await userManagementService.listUsers(
                 queries: queries)
             self.users = userDocuments.map({ $0.data })
-            return self.users
         } catch {
             self.error = error.localizedDescription
         }
-        return nil
+        isLoading = false
+    }
+
+    // Filter users based on search text
+    var filteredUsers: [UserModel] {
+        if searchText.isEmpty {
+            return users
+        } else {
+            return users.filter { user in
+                user.name.lowercased().contains(searchText.lowercased())
+                    || (user.interests?.joined(separator: " ").lowercased()
+                        .contains(searchText.lowercased()) ?? false)
+            }
+        }
     }
 }
