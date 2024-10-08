@@ -13,7 +13,7 @@ import SwiftUI
 
 class UserViewModel: ObservableObject {
     //    @Published var currentUser: UserDocument
-    @Published var users: [UserDocument] = [] {
+    @Published var users: [UserModel] = [] {
         didSet {
             print("Users updated: \(users)")
 
@@ -85,7 +85,7 @@ class UserViewModel: ObservableObject {
         do {
             let userDocuments = try await userManagementService.listUsers(
                 queries: queries)
-            self.users = userDocuments
+            self.users = userDocuments.map({ $0.data })
         } catch {
             self.error = error.localizedDescription
         }

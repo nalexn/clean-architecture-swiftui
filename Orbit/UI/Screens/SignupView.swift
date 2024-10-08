@@ -65,15 +65,18 @@ struct SignupView: View {
                     Task {
                         let newUser = await authVM.create(
                             name: name, email: email, password: password)
-                        guard let userId = newUser?.id else {
+                        guard let userId = newUser?.id,
+                            let userName = newUser?.name
+                        else {
                             print("Error: User ID is nil")
                             return
                         }
                         let myUser = UserModel(
                             // TODO: Refactor this
-                            accountId: userId
+                            accountId: userId,
+                            name: userName,
+                            interests: nil
                                 //                            bio: nil,
-                                //                            interests: nil,
                                 //                            location: nil,
                                 //                            friends: nil,
                                 //                            followers: nil,

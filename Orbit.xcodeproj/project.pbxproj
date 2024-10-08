@@ -23,6 +23,7 @@
 		257C72F82CB340530030F05E /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 257C72F02CB340530030F05E /* Poppins-Bold.ttf */; };
 		257C72FA2CB340690030F05E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C72F92CB340690030F05E /* Extensions.swift */; };
 		257C72FC2CB3423D0030F05E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 257C72FB2CB3423D0030F05E /* Assets.xcassets */; };
+		2598D7262CB5014800B00D53 /* InterestsHorizontalTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2598D7252CB5014800B00D53 /* InterestsHorizontalTags.swift */; };
 		25C88CEE2CB440DA0048A28D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C88CED2CB440DA0048A28D /* HomeView.swift */; };
 		52333A932654463B0034072B /* UIOpenURLContext_Init.m in Sources */ = {isa = PBXBuildFile; fileRef = 52333A922654463B0034072B /* UIOpenURLContext_Init.m */; };
 		678E0BAF26B749A000B21166 /* Publisher+WeakAssign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678E0BAE26B749A000B21166 /* Publisher+WeakAssign.swift */; };
@@ -136,6 +137,7 @@
 		257C72F32CB340530030F05E /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		257C72F92CB340690030F05E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		257C72FB2CB3423D0030F05E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2598D7252CB5014800B00D53 /* InterestsHorizontalTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestsHorizontalTags.swift; sourceTree = "<group>"; };
 		25C88CED2CB440DA0048A28D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		52333A90265445F30034072B /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		52333A91265445F30034072B /* UIOpenURLContext_Init.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIOpenURLContext_Init.h; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 		F62822B623647FA700823BA1 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				2598D7252CB5014800B00D53 /* InterestsHorizontalTags.swift */,
 				F6218DB12362FD3100917938 /* CountryCell.swift */,
 				F6BDB91523636865003E69F2 /* DetailRow.swift */,
 				F6218DB523634D4100917938 /* ErrorView.swift */,
@@ -783,6 +786,7 @@
 				F68B530A2376EE8C00D6337C /* ImageWebRepository.swift in Sources */,
 				252FF69D2CB2136400D938F9 /* UserManagementService.swift in Sources */,
 				F644960E2360EF6C00C9BB1F /* WebRepository.swift in Sources */,
+				2598D7262CB5014800B00D53 /* InterestsHorizontalTags.swift in Sources */,
 				F64496002360D8B000C9BB1F /* CountriesService.swift in Sources */,
 				F64495FD2360D81F00C9BB1F /* AppState.swift in Sources */,
 			);

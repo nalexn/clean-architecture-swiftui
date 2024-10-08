@@ -10,10 +10,14 @@ import Appwrite
 import CoreLocation
 import Foundation
 
-struct UserModel: Codable {
+struct UserModel: Codable, Identifiable {
     let accountId: String
+    var id: String {
+        return accountId
+    }
+    var name: String
+    var interests: [String]?
     //    let bio: String?
-    //    let interests: [String]?
     //    let location: Location?
     //    let friends: [String]?
     //    let followers: [String]?
