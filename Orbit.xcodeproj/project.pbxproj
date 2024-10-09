@@ -14,6 +14,7 @@
 		252FF69D2CB2136400D938F9 /* UserManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF69C2CB2135F00D938F9 /* UserManagementService.swift */; };
 		252FF69F2CB2151E00D938F9 /* AccountManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF69E2CB2151E00D938F9 /* AccountManagementService.swift */; };
 		252FF6A12CB23AEC00D938F9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252FF6A02CB23AEC00D938F9 /* LoginView.swift */; };
+		2543033E2CB7095500110CC0 /* LocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2543033D2CB7095500110CC0 /* LocationManagerDelegate.swift */; };
 		254F05802CB34F53002562C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 254F057F2CB34F53002562C6 /* Preview Assets.xcassets */; };
 		257C72EB2CB306100030F05E /* AppwriteLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C72EA2CB306100030F05E /* AppwriteLogo.swift */; };
 		257C72ED2CB306350030F05E /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C72EC2CB306350030F05E /* SignupView.swift */; };
@@ -129,6 +130,7 @@
 		252FF69C2CB2135F00D938F9 /* UserManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementService.swift; sourceTree = "<group>"; };
 		252FF69E2CB2151E00D938F9 /* AccountManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagementService.swift; sourceTree = "<group>"; };
 		252FF6A02CB23AEC00D938F9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		2543033D2CB7095500110CC0 /* LocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerDelegate.swift; sourceTree = "<group>"; };
 		254F057F2CB34F53002562C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		257C72EA2CB306100030F05E /* AppwriteLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteLogo.swift; sourceTree = "<group>"; };
 		257C72EC2CB306350030F05E /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
@@ -446,6 +448,7 @@
 		F64495FE2360D88D00C9BB1F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				2543033D2CB7095500110CC0 /* LocationManagerDelegate.swift */,
 				252FF69E2CB2151E00D938F9 /* AccountManagementService.swift */,
 				252FF69C2CB2135F00D938F9 /* UserManagementService.swift */,
 				252FF6942CB1E46E00D938F9 /* AppwriteService.swift */,
@@ -773,6 +776,7 @@
 				F695DF8B2455B04100A65A04 /* UserPermissionsService.swift in Sources */,
 				25C88CEE2CB440DA0048A28D /* HomeView.swift in Sources */,
 				25EBF8C42CB5F64100C755A7 /* MainTabView.swift in Sources */,
+				2543033E2CB7095500110CC0 /* LocationManagerDelegate.swift in Sources */,
 				F6C1F9D723CE3034005A98C8 /* SearchBar.swift in Sources */,
 				F639004D2438A851002ED15A /* CountriesListViewModel.swift in Sources */,
 				F6BDB91823637C5F003E69F2 /* ActivityIndicatorView.swift in Sources */,
@@ -1004,10 +1008,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Orbit/Resources\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3V2UU7RRK9;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Orbit/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1031,10 +1035,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Orbit/Resources\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3V2UU7RRK9;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Orbit/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
