@@ -6,17 +6,15 @@ struct HomeView: View {
     @EnvironmentObject private var authVM: AuthViewModel
 
     var body: some View {
-        NavigationView {
-            content
-                .navigationBarItems(trailing: logoutButton)
-                .navigationBarTitle("Users", displayMode: .inline)
-                .background(Color(UIColor.systemGroupedBackground))
-        }
-        .onAppear {
-            Task {
-                await userVM.listUsers()
+        content
+            .navigationBarItems(trailing: logoutButton)
+            .navigationBarTitle("Users", displayMode: .inline)
+            .background(Color(UIColor.systemGroupedBackground))
+            .onAppear {
+                Task {
+                    await userVM.listUsers()
+                }
             }
-        }
     }
 
     @ViewBuilder private var content: some View {
@@ -108,13 +106,13 @@ struct HomeView: View {
                                     }
                                 )
                             }
-//                            Spacer()  // Pushes the content to the leading edge
+                            //                            Spacer()  // Pushes the content to the leading edge
                         }
                         .padding()
                         .background(.ultraThinMaterial)  // Apply the translucent background effect here
                         .cornerRadius(10)
                         .shadow(radius: 3)
-//                        .padding(.vertical)  // Add padding on the sides to space it from screen edges
+                        //                        .padding(.vertical)  // Add padding on the sides to space it from screen edges
                     }
                 }
             }

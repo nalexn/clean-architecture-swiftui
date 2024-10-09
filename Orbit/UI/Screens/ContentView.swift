@@ -52,7 +52,7 @@ struct ContentView: View {
                     //                    .transition(
                     //                        .move(edge: .trailing)
                     //                    )
-                    HomeView()
+                    MainTabView()
                         .environmentObject(authVM)
                         .environmentObject(userVM)
                 }
