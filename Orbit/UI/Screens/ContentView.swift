@@ -14,7 +14,7 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
-    @ObservedObject private var authVM = AuthViewModel()
+    @ObservedObject var authVM = AuthViewModel()
     @ObservedObject var userVM = UserViewModel()
 
     @State var isOneSecondAfterLaunch = false

@@ -20,6 +20,7 @@ struct LoginView: View {
     @State private var isActiveSignup = false
 
     @EnvironmentObject var authVM: AuthViewModel
+    @EnvironmentObject var userVM: UserViewModel
 
     var body: some View {
 
@@ -33,7 +34,8 @@ struct LoginView: View {
                 //                    }
                 // Declare a NavigationLink with a value that matches your navigationDestination
                 NavigationLink(
-                    destination: SignupView(), isActive: $isActiveSignup
+                    destination: SignupView().environmentObject(authVM)
+                        .environmentObject(userVM), isActive: $isActiveSignup
                 ) {
                     EmptyView()
                 }

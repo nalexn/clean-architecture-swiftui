@@ -13,7 +13,6 @@ import JSONCodable
 import SwiftUI
 
 class UserViewModel: NSObject, ObservableObject, LocationManagerDelegate {
-    @EnvironmentObject private var authVM: AuthViewModel
 
     @Published var users: [UserModel] = []
     @Published var error: String?

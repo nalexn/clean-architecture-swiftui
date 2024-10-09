@@ -75,7 +75,7 @@ class AuthViewModel: ObservableObject {
         do {
             // Await the result of the async getAccount call
             let newUser = try await account.createAccount(email, password, name)
-            print("newUser: \(newUser.email)")
+            print("newUser: \(newUser.email) \(newUser.id)")
             if newUser.email == email {
                 print()
                 await self.login(email: email, password: password)
