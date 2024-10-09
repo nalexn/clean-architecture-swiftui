@@ -12,7 +12,7 @@ struct HomeView: View {
             .background(Color(UIColor.systemGroupedBackground))
             .onAppear {
                 Task {
-                    await userVM.listUsers()
+                    await userVM.initialize()
                 }
             }
     }

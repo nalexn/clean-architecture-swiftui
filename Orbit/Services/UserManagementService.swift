@@ -8,13 +8,15 @@
 
 import Appwrite
 import Foundation
+import JSONCodable
 
 protocol UserManagementServiceProtocol {
     func createUser(_ user: UserModel) async throws -> UserDocument
-    func getUser(id: String) async throws -> UserDocument
-    func updateUser(id: String, updatedUser: UserModel) async throws
-        -> UserDocument
-    func deleteUser(id: String) async throws
+    func getUser(_ accountId: String) async throws -> UserDocument?
+    func getCurrentUser() async throws -> UserModel?
+    func updateUser(accountId: String, updatedUser: UserModel) async throws
+        -> UserDocument?
+    func deleteUser(_ accountId: String) async throws
     func listUsers(queries: [String]?) async throws -> [UserDocument]
 }
 
@@ -46,43 +48,77 @@ class UserManagementService: UserManagementServiceProtocol {
     }
 
     // Read
-    func getUser(id: String) async throws -> UserDocument {
-        let document = try await appwriteService.databases.getDocument<
+    func getUser(_ accountId: String) async throws -> UserDocument? {
+        print("acctID: \(accountId)")
+        let query = Query.equal(
+            "accountId",
+            value: accountId
+        )  // Query by accountId
+        let response = try await appwriteService.databases.listDocuments<
             UserModel
         >(
             databaseId: appwriteService.databaseId,
             collectionId: appwriteService.collectionId,
-            documentId: id,
-            queries: nil,
+            queries: [query],
             nestedType: UserModel.self
 
         )
-        return document
+        // Check if any document was found
+        if let document = response.documents.first {
+            return document
+        } else {
+            throw NSError(domain: "User not found", code: 404, userInfo: nil)
+        }
     }
 
-    // Update
-    func updateUser(id: String, updatedUser: UserModel) async throws
-        -> UserDocument
+    func getCurrentUser() async throws -> UserModel? {
+        let document = try await appwriteService.account.get()
+        let userAccountId = document.id
+        return try await getUser(userAccountId)?.data
+    }
+
+    // Update the user based on accountId (not documentId)
+    func updateUser(accountId: String, updatedUser: UserModel) async throws
+        -> UserDocument?
     {
-        let document = try await appwriteService.databases.updateDocument<
-            UserModel
-        >(
-            databaseId: appwriteService.databaseId,
-            collectionId: appwriteService.collectionId,
-            documentId: id,
-            data: updatedUser,
-            permissions: nil,
-            nestedType: UserModel.self
-        )
-        return document
+        // First, fetch the document based on accountId
+        guard let userDocument = try await getUser(accountId) else {
+            print("can't update user")
+            return nil
+        }
+
+        // Now, use the documentId of the retrieved user document to update it
+        let documentId = userDocument.id  // Get the actual documentId from the user document
+
+        // Perform the update using the documentId
+        let updatedDocument = try await appwriteService.databases
+            .updateDocument<UserModel>(
+                databaseId: appwriteService.databaseId,
+                collectionId: appwriteService.collectionId,
+                documentId: documentId,  // Use the documentId instead of accountId
+                data: updatedUser,
+                permissions: nil,
+                nestedType: UserModel.self
+            )
+
+        return updatedDocument
     }
 
-    // Delete
-    func deleteUser(id: String) async throws {
+    // Delete the user based on accountId (not documentId)
+    func deleteUser(_ accountId: String) async throws {
+        // First, fetch the document based on accountId
+        guard let userDocument = try await getUser(accountId) else {
+            throw NSError(domain: "User not found", code: 404, userInfo: nil)
+        }
+
+        // Now, use the documentId of the retrieved user document to delete it
+        let documentId = userDocument.id  // Get the actual documentId from the user document
+
+        // Perform the delete operation using the documentId
         try await appwriteService.databases.deleteDocument(
             databaseId: appwriteService.databaseId,
             collectionId: appwriteService.collectionId,
-            documentId: id
+            documentId: documentId  // Use the documentId instead of accountId
         )
     }
 

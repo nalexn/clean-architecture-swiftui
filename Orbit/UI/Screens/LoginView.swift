@@ -23,82 +23,84 @@ struct LoginView: View {
 
     var body: some View {
 
-        NavigationStack {
-            AppwriteLogo {
-                VStack {
-                    // Declare a NavigationLink with a value that matches your navigationDestination
-                    // Replace the old NavigationLink with navigationDestination
-                    //                    navigationDestination(isPresented: $isActiveSignup) {
-                    //                        SignupView() // Show SignupView when
-                    //                    }
-                    // Declare a NavigationLink with a value that matches your navigationDestination
-                    NavigationLink(destination: SignupView(), isActive: $isActiveSignup) {
-                        EmptyView()
-                    }
-                    HStack {
-                        Text("Welcome back to\nOrbit")
-                            .largeSemiBoldFont()
-                            .padding(.top, 60)
-                            .multilineTextAlignment(.leading)
-                        Spacer()
-                    }
-                    Spacer().frame(height: 10)
-                    HStack {
-                        Text("Let's sign in.")
-                            .largeLightFont()
-                        Spacer()
-                    }
-                    .padding(.bottom, 30)
+        //        NavigationStack {
+        AppwriteLogo {
+            VStack {
+                // Declare a NavigationLink with a value that matches your navigationDestination
+                // Replace the old NavigationLink with navigationDestination
+                //                    navigationDestination(isPresented: $isActiveSignup) {
+                //                        SignupView() // Show SignupView when
+                //                    }
+                // Declare a NavigationLink with a value that matches your navigationDestination
+                NavigationLink(
+                    destination: SignupView(), isActive: $isActiveSignup
+                ) {
+                    EmptyView()
+                }
+                HStack {
+                    Text("Welcome back to\nOrbit")
+                        .largeSemiBoldFont()
+                        .padding(.top, 60)
+                        .multilineTextAlignment(.leading)
+                    Spacer()
+                }
+                Spacer().frame(height: 10)
+                HStack {
+                    Text("Let's sign in.")
+                        .largeLightFont()
+                    Spacer()
+                }
+                .padding(.bottom, 30)
 
-                    TextField("E-mail", text: self.$email)
-                        .padding()
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(16.0)
-
-                    SecureField("Password", text: self.$password)
-                        .padding()
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(16.0)
-
-                    Spacer().frame(height: 16)
-
-                    Button("Login") {
-                        Task {
-                            await authVM.login(email: email, password: password)
-                        }
-                    }
-                    .regularFont()
-                    .foregroundColor(.white)
+                TextField("E-mail", text: self.$email)
                     .padding()
-                    .frame(width: 300, height: 50)
-                    .background(Color.pink)
+                    .background(Color.gray.opacity(0.2))
                     .cornerRadius(16.0)
 
-                    HStack {
-                        Text("Anonymous Login")
-                            .onTapGesture {
-                                Task {
-                                    await authVM.loginAnonymous()
-                                }
-                            }
-                        Text(".")
-                        Text("Signup")
-                            .onTapGesture {
-                                isActiveSignup = true
-                            }
-                    }
-                    .regularFont()
-                    .padding(.top, 30)
-                    Spacer()
+                SecureField("Password", text: self.$password)
+                    .padding()
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(16.0)
 
+                Spacer().frame(height: 16)
+
+                Button("Login") {
+                    Task {
+                        await authVM.login(email: email, password: password)
+                    }
                 }
-                .padding([.leading, .trailing], 40)
+                .regularFont()
+                .foregroundColor(.white)
+                .padding()
+                .frame(width: 300, height: 50)
+                .background(Color.pink)
+                .cornerRadius(16.0)
+
+                HStack {
+                    Text("Anonymous Login")
+                        .onTapGesture {
+                            Task {
+                                await authVM.loginAnonymous()
+                            }
+                        }
+                    Text(".")
+                    Text("Signup")
+                        .onTapGesture {
+                            isActiveSignup = true
+                        }
+                }
+                .regularFont()
+                .padding(.top, 30)
+                Spacer()
 
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarHidden(true)
+            .padding([.leading, .trailing], 40)
+
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(true)
     }
+    //    }
 }
 
 struct LoginView_Previews: PreviewProvider {

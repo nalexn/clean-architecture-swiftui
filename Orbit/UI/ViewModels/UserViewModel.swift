@@ -7,23 +7,38 @@
 //
 
 @preconcurrency import Appwrite
+import CoreLocation
 import Foundation
 import JSONCodable
 import SwiftUI
 
-class UserViewModel: ObservableObject {
+class UserViewModel: NSObject, ObservableObject, LocationManagerDelegate {
+    @EnvironmentObject private var authVM: AuthViewModel
+
     @Published var users: [UserModel] = []
     @Published var error: String?
     @Published var isLoading = false
     @Published var searchText: String = ""
     @Published var selectedInterests: [String] = []
+    @Published var currentLocation: CLLocationCoordinate2D?
 
     private var userManagementService: UserManagementServiceProtocol =
         UserManagementService()
+    private var appwriteRealtimeClient = AppwriteService.shared.realtime
+    private var locationManager: LocationManager
+
+    init(locationManager: LocationManager = LocationManager()) {
+        self.locationManager = locationManager
+        super.init()
+        locationManager.delegate = self  // Set delegate to receive location updates
+        locationManager.locationManager.startUpdatingLocation()  // Start location updates
+    }
 
     @MainActor
     func initialize() async {
         await listUsers()
+        await subscribeToRealtimeUpdates()
+
     }
 
     @MainActor
@@ -42,7 +57,7 @@ class UserViewModel: ObservableObject {
         do {
             let updatedUserDocument =
                 try await userManagementService.updateUser(
-                    id: id, updatedUser: updatedUser)
+                    accountId: id, updatedUser: updatedUser)
             print("User updated: \(updatedUserDocument)")
             await listUsers()  // Refresh the user list after update
         } catch {
@@ -53,7 +68,7 @@ class UserViewModel: ObservableObject {
     @MainActor
     func deleteUser(id: String) async {
         do {
-            try await userManagementService.deleteUser(id: id)
+            try await userManagementService.deleteUser(id)
             print("User deleted: \(id)")
             await listUsers()  // Refresh the user list after deletion
         } catch {
@@ -69,6 +84,7 @@ class UserViewModel: ObservableObject {
 
     // Filter users based on selected interests and search text
     var filteredUsers: [UserModel] {
+        // Filter by search text
         let usersFilteredBySearch =
             searchText.isEmpty
             ? users
@@ -78,15 +94,20 @@ class UserViewModel: ObservableObject {
                         .contains(searchText.lowercased()) ?? false)
             }
 
+        // Filter by interests
+        let usersFilteredByInterests: [UserModel]
         if selectedInterests.isEmpty {
-            return usersFilteredBySearch
+            usersFilteredByInterests = usersFilteredBySearch
         } else {
-            return usersFilteredBySearch.filter { user in
+            usersFilteredByInterests = usersFilteredBySearch.filter { user in
                 guard let userInterests = user.interests else { return false }
                 return !Set(userInterests).intersection(Set(selectedInterests))
                     .isEmpty
             }
         }
+
+        return usersNearby(users: usersFilteredByInterests)
+
     }
 
     @MainActor
@@ -111,4 +132,94 @@ class UserViewModel: ObservableObject {
         }
     }
 
+    // MARK - Location
+    // LocationManagerDelegate method
+    func didUpdateLocation(latitude: Double, longitude: Double) {
+        self.currentLocation = CLLocationCoordinate2D(
+            latitude: latitude, longitude: longitude)
+        Task {
+            await updateCurrentUserLocation(
+                latitude: latitude, longitude: longitude)
+        }
+    }
+
+    // Update current user's location in the database
+    @MainActor
+    func updateCurrentUserLocation(latitude: Double, longitude: Double) async {
+
+        do {
+            guard
+                let currentUser =
+                    try await userManagementService.getCurrentUser()
+            else {
+                return
+            }
+            var updatedUser = currentUser
+            updatedUser.latitude = latitude
+            updatedUser.longitude = longitude
+
+            await updateUser(
+                id: currentUser.accountId, updatedUser: updatedUser)
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+
+    @MainActor
+    func subscribeToRealtimeUpdates() async {
+        do {
+            let subscription = try await appwriteRealtimeClient.subscribe(
+                channels: [
+                    "databases.\(AppwriteService.shared.databaseId).collections.users.documents"
+                ]) { event in
+                    if let payload = event.payload {
+                        Task {
+                            let updatedUser = try JSONDecoder().decode(
+                                UserModel.self,
+                                from: JSONSerialization.data(
+                                    withJSONObject: payload))
+                            self.handleRealtimeUserUpdate(updatedUser)
+                        }
+                    }
+                }
+        } catch {
+            self.error = error.localizedDescription
+            print(
+                "Error decoding user data: \(error.localizedDescription)"
+            )
+        }
+    }
+
+    @MainActor
+    func handleRealtimeUserUpdate(_ updatedUser: UserModel) {
+        if let index = users.firstIndex(where: { $0.id == updatedUser.id }) {
+            users[index] = updatedUser
+        } else {
+            users.append(updatedUser)
+        }
+    }
+
+    // Helper function to filter users by location proximity
+    func usersNearby(users: [UserModel], radius: Double = 10000) -> [UserModel]
+    {
+        guard let currentLocation = currentLocation else {
+            print("no location")
+            return []
+        }
+        print("currentUserLocation: \(currentLocation)")
+        return users.filter { user in
+            guard let userLat = user.latitude, let userLong = user.longitude
+            else { return false }
+            print("userLat: \(userLat), userLong: \(userLong)")
+            let userLocation = CLLocation(
+                latitude: Double(userLat), longitude: Double(userLong))
+            let currentCLLocation = CLLocation(
+                latitude: currentLocation.latitude,
+                longitude: currentLocation.longitude)
+            let distanceFromEachOther = currentCLLocation.distance(
+                from: userLocation)
+            print("distance: \(distanceFromEachOther)")
+            return distanceFromEachOther <= radius
+        }
+    }
 }

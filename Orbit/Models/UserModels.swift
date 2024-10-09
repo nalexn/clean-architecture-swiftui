@@ -17,29 +17,16 @@ struct UserModel: Codable, Identifiable {
     }
     var name: String
     var interests: [String]?
+    var latitude: Double?
+    var longitude: Double?
+    var isInterestedToMeet: Bool?
+    //    var isOnline: Bool
+    //    var lastActive: Date
+    //    var lastActive:
     //    let bio: String?
-    //    let location: Location?
     //    let friends: [String]?
-    //    let followers: [String]?
-    //    let following: [String]?
     //    let profilePictureId: String?  // Reference to the File ID
     //    let settings: Settings?
-}
-
-struct Location: Codable {
-    let type: String
-    let coordinates: [Double]
-
-    var coordinate: CLLocationCoordinate2D? {
-        guard type == "Point", coordinates.count == 2 else { return nil }
-        return CLLocationCoordinate2D(
-            latitude: coordinates[1], longitude: coordinates[0])
-    }
-}
-
-struct Settings: Codable {
-    let isPrivateProfile: Bool
-    let notificationsEnabled: Bool
 }
 
 typealias UserDocument = AppwriteModels.Document<UserModel>
