@@ -96,11 +96,10 @@ class UserManagementService: UserManagementServiceProtocol {
                 databaseId: appwriteService.databaseId,
                 collectionId: appwriteService.collectionId,
                 documentId: documentId,  // Use the documentId instead of accountId
-                data: updatedUser,
+                data: updatedUser.toJson(),
                 permissions: nil,
                 nestedType: UserModel.self
             )
-
         return updatedDocument
     }
 
