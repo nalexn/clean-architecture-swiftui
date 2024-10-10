@@ -34,8 +34,7 @@ struct LoginView: View {
                 //                    }
                 // Declare a NavigationLink with a value that matches your navigationDestination
                 NavigationLink(
-                    destination: SignupView().environmentObject(authVM)
-                        .environmentObject(userVM), isActive: $isActiveSignup
+                    destination: SignupView(), isActive: $isActiveSignup
                 ) {
                     EmptyView()
                 }

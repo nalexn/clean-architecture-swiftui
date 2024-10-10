@@ -21,9 +21,9 @@ struct HomeView: View {
         if userVM.isLoading {
             ActivityIndicatorView().padding()
                 .transition(.opacity)
-            // } else if let error = userVM.error {
-            //     failedView(error)
-            //         .transition(.opacity)
+        } else if let error = userVM.error {
+            failedView(error)
+                .transition(.opacity)
         } else {
             loadedView(userVM.filteredUsers)
                 .transition(.move(edge: .bottom))

@@ -47,6 +47,7 @@ class UserViewModel: NSObject, ObservableObject, LocationManagerDelegate {
             print("User created: \(newUser)")
             await listUsers()  // Refresh the user list after creation
         } catch {
+            print("Source: createUser - \(error.localizedDescription)")
             self.error = error.localizedDescription
         }
     }
@@ -57,9 +58,9 @@ class UserViewModel: NSObject, ObservableObject, LocationManagerDelegate {
             let updatedUserDocument =
                 try await userManagementService.updateUser(
                     accountId: id, updatedUser: updatedUser)
-            print("User updated: \(updatedUserDocument)")
             await listUsers()  // Refresh the user list after update
         } catch {
+            print("Source: updateUser - \(error.localizedDescription)")
             self.error = error.localizedDescription
         }
     }
@@ -72,6 +73,7 @@ class UserViewModel: NSObject, ObservableObject, LocationManagerDelegate {
             await listUsers()  // Refresh the user list after deletion
         } catch {
             self.error = error.localizedDescription
+            print("Source: deleteUser - \(error.localizedDescription)")
         }
     }
 
@@ -118,6 +120,7 @@ class UserViewModel: NSObject, ObservableObject, LocationManagerDelegate {
             self.users = userDocuments.map { $0.data }
         } catch {
             self.error = error.localizedDescription
+            print("Source: listUsers - \(error.localizedDescription)")
         }
         isLoading = false
     }
@@ -151,6 +154,7 @@ class UserViewModel: NSObject, ObservableObject, LocationManagerDelegate {
                 let currentUser =
                     try await userManagementService.getCurrentUser()
             else {
+                print("Current user not found. Anonymous login?")
                 return
             }
             var updatedUser = currentUser
@@ -160,6 +164,7 @@ class UserViewModel: NSObject, ObservableObject, LocationManagerDelegate {
             await updateUser(
                 id: currentUser.accountId, updatedUser: updatedUser)
         } catch {
+            print("Source: updateCurrentUserLocation - \(error.localizedDescription)")
             self.error = error.localizedDescription
         }
     }
@@ -199,10 +204,9 @@ class UserViewModel: NSObject, ObservableObject, LocationManagerDelegate {
     }
 
     // Helper function to filter users by location proximity
-    func usersNearby(users: [UserModel], radius: Double = 10000) -> [UserModel]
-    {
+    func usersNearby(users: [UserModel], radius: Double = 10000) -> [UserModel] {
         guard let currentLocation = currentLocation else {
-            print("no location")
+            print("user location not available")
             return []
         }
         print("currentUserLocation: \(currentLocation)")
