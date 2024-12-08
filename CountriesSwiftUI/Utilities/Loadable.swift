@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-typealias LoadableSubject<Value> = Binding<Loadable<Value>>
+typealias LoadableSubject<T> = Binding<Loadable<T>>
 
 enum Loadable<T> {
 
@@ -48,8 +48,7 @@ extension Loadable {
             } else {
                 let error = NSError(
                     domain: NSCocoaErrorDomain, code: NSUserCancelledError,
-                    userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Canceled by user",
-                                                                            comment: "")])
+                    userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Canceled by user", comment: "")])
                 self = .failed(error)
             }
         default: break
@@ -110,5 +109,20 @@ extension Loadable: Equatable where T: Equatable {
             return lhsE.localizedDescription == rhsE.localizedDescription
         default: return false
         }
+    }
+}
+
+extension LoadableSubject {
+    func load<T>(_ resource: @escaping () async throws -> T) where Value == Loadable<T> {
+        let cancelBag = CancelBag()
+        wrappedValue.setIsLoading(cancelBag: cancelBag)
+        let task = Task {
+            do {
+                wrappedValue = .loaded(try await resource())
+            } catch {
+                wrappedValue = .failed(error)
+            }
+        }
+        task.store(in: cancelBag)
     }
 }

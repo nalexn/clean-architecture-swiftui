@@ -6,7 +6,7 @@
 //  Copyright © 2019 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
+import Testing
 @testable import CountriesSwiftUI
 
 protocol Mock {
@@ -14,7 +14,7 @@ protocol Mock {
     var actions: MockActions<Action> { get }
     
     func register(_ action: Action)
-    func verify(file: StaticString, line: UInt)
+    func verify(sourceLocation: SourceLocation)
 }
 
 extension Mock {
@@ -22,8 +22,8 @@ extension Mock {
         actions.register(action)
     }
     
-    func verify(file: StaticString = #file, line: UInt = #line) {
-        actions.verify(file: file, line: line)
+    func verify(sourceLocation: SourceLocation = #_sourceLocation) {
+        actions.verify(sourceLocation: sourceLocation)
     }
 }
 
@@ -39,11 +39,11 @@ final class MockActions<Action> where Action: Equatable {
         factual.append(action)
     }
     
-    fileprivate func verify(file: StaticString, line: UInt) {
-        if factual == expected { return }
+    fileprivate func verify(sourceLocation: SourceLocation) {
         let factualNames = factual.map { "." + String(describing: $0) }
         let expectedNames = expected.map { "." + String(describing: $0) }
-        XCTFail("\(name)\n\nExpected:\n\n\(expectedNames)\n\nReceived:\n\n\(factualNames)", file: file, line: line)
+        let name = name
+        #expect(factual == expected, "\(name)\n\nExpected:\n\n\(expectedNames)\n\nReceived:\n\n\(factualNames)", sourceLocation: sourceLocation)
     }
     
     private var name: String {

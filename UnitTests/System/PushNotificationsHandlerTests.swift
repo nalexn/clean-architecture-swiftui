@@ -6,39 +6,38 @@
 //  Copyright © 2020 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
+import Testing
 import UserNotifications
 @testable import CountriesSwiftUI
 
-final class PushNotificationsHandlerTests: XCTestCase {
-    
-    var sut: RealPushNotificationsHandler!
+@MainActor
+@Suite struct PushNotificationsHandlerTests {
 
-    func test_isCenterDelegate() {
+    @Test func isCenterDelegate() {
         let mockedHandler = MockedDeepLinksHandler(expected: [])
-        sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
+        let sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
         let center = UNUserNotificationCenter.current()
-        XCTAssertTrue(center.delegate === sut)
+        #expect(center.delegate === sut)
         mockedHandler.verify()
     }
 
-    func test_emptyPayload() {
+    @Test func emptyPayload() async throws {
         let mockedHandler = MockedDeepLinksHandler(expected: [])
-        sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
-        let exp = XCTestExpectation(description: #function)
+        let sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
+        let exp = TestExpectation()
         sut.handleNotification(userInfo: [:]) {
             mockedHandler.verify()
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 0.1)
+        await exp.fulfillment()
     }
     
-    func test_deepLinkPayload() {
+    @Test func deepLinkPayload() async throws {
         let mockedHandler = MockedDeepLinksHandler(expected: [
             .open(.showCountryFlag(alpha3Code: "USA"))
         ])
-        sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
-        let exp = XCTestExpectation(description: #function)
+        let sut = RealPushNotificationsHandler(deepLinksHandler: mockedHandler)
+        let exp = TestExpectation()
         let userInfo: [String: Any] = [
             "aps": ["country": "USA"]
         ]
@@ -46,6 +45,6 @@ final class PushNotificationsHandlerTests: XCTestCase {
             mockedHandler.verify()
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 0.1)
+        await exp.fulfillment()
     }
 }

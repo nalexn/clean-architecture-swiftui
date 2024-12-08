@@ -6,13 +6,16 @@
 //  Copyright © 2019 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
+import Foundation
+import Testing
 import Combine
+import SwiftUI
+import ViewInspector
 @testable import CountriesSwiftUI
 
-final class LoadableTests: XCTestCase {
+@Suite struct LoadableTests {
 
-    func test_equality() {
+    @Test func equality() {
         let possibleValues: [Loadable<Int>] = [
             .notRequested,
             .isLoading(last: nil, cancelBag: CancelBag()),
@@ -24,15 +27,15 @@ final class LoadableTests: XCTestCase {
         possibleValues.enumerated().forEach { (index1, value1) in
             possibleValues.enumerated().forEach { (index2, value2) in
                 if index1 == index2 {
-                    XCTAssertEqual(value1, value2)
+                    #expect(value1 == value2)
                 } else {
-                    XCTAssertNotEqual(value1, value2)
+                    #expect(value1 != value2)
                 }
             }
         }
     }
-    
-    func test_cancelLoading() {
+
+    @Test func cancelLoading() {
         let cancenBag1 = CancelBag(), cancenBag2 = CancelBag()
         let subject = PassthroughSubject<Int, Never>()
         subject.sink { _ in }
@@ -40,18 +43,18 @@ final class LoadableTests: XCTestCase {
         subject.sink { _ in }
             .store(in: cancenBag2)
         var sut1 = Loadable<Int>.isLoading(last: nil, cancelBag: cancenBag1)
-        XCTAssertEqual(cancenBag1.subscriptions.count, 1)
+        #expect(cancenBag1.subscriptions.count == 1)
         sut1.cancelLoading()
-        XCTAssertEqual(cancenBag1.subscriptions.count, 0)
-        XCTAssertNotNil(sut1.error)
+        #expect(cancenBag1.subscriptions.count == 0)
+        #expect(sut1.error != nil)
         var sut2 = Loadable<Int>.isLoading(last: 7, cancelBag: cancenBag2)
-        XCTAssertEqual(cancenBag2.subscriptions.count, 1)
+        #expect(cancenBag2.subscriptions.count == 1)
         sut2.cancelLoading()
-        XCTAssertEqual(cancenBag2.subscriptions.count, 0)
-        XCTAssertEqual(sut2.value, 7)
+        #expect(cancenBag2.subscriptions.count == 0)
+        #expect(sut2.value == 7)
     }
-    
-    func test_map() {
+
+    @Test func map() {
         let values: [Loadable<Int>] = [
             .notRequested,
             .isLoading(last: nil, cancelBag: CancelBag()),
@@ -69,40 +72,76 @@ final class LoadableTests: XCTestCase {
         let sut = values.map { value in
             value.map { "\($0)" }
         }
-        XCTAssertEqual(sut, expect)
+        #expect(sut == expect)
     }
 
-    func test_helperFunctions() {
+    @MainActor
+    @Test func loadSuccess() async {
+        let resource: () async throws -> String = {
+            try await Task.sleep(nanoseconds: 100_000_000)
+            return "test"
+        }
+        let exp = TestExpectation()
+        var values: [Loadable<String>] = []
+        let sut = Binding<Loadable<String>>.init(get: {
+            return values.last ?? .notRequested
+        }, set: {
+            values.append($0)
+            if $0.value != nil {
+                exp.fulfill()
+            }
+        })
+        sut.load(resource)
+        await exp.fulfillment()
+        #expect(values == [.isLoading(last: nil, cancelBag: .test), .loaded("test")])
+    }
+
+    @MainActor
+    @Test func loadFailure() async {
+        let resource: () async throws -> String = {
+            try await Task.sleep(nanoseconds: 100_000_000)
+            throw NSError.test
+        }
+        let exp = TestExpectation()
+        var values: [Loadable<String>] = []
+        let sut = Binding<Loadable<String>>.init(get: {
+            return values.last ?? .notRequested
+        }, set: {
+            values.append($0)
+            if $0.error != nil {
+                exp.fulfill()
+            }
+        })
+        sut.load(resource)
+        await exp.fulfillment()
+        #expect(values == [.isLoading(last: nil, cancelBag: .test), .failed(NSError.test)])
+    }
+
+    @Test func helperFunctions() {
         let notRequested = Loadable<Int>.notRequested
         let loadingNil = Loadable<Int>.isLoading(last: nil, cancelBag: CancelBag())
         let loadingValue = Loadable<Int>.isLoading(last: 9, cancelBag: CancelBag())
         let loaded = Loadable<Int>.loaded(5)
         let failedErrValue = Loadable<Int>.failed(NSError.test)
         [notRequested, loadingNil].forEach {
-            XCTAssertNil($0.value)
+            #expect($0.value == nil)
         }
         [loadingValue, loaded].forEach {
-            XCTAssertNotNil($0.value)
+            #expect($0.value != nil)
         }
         [notRequested, loadingNil, loadingValue, loaded].forEach {
-            XCTAssertNil($0.error)
+            #expect($0.error == nil)
         }
-        XCTAssertNotNil(failedErrValue.error)
+        #expect(failedErrValue.error != nil)
     }
-    
-    func test_throwingMap() {
+
+    @Test func throwingMap() {
         let value = Loadable<Int>.loaded(5)
         let sut = value.map { _ in throw NSError.test }
-        XCTAssertNotNil(sut.error)
+        #expect(sut.error != nil)
     }
-    
-    func test_valueIsMissing() {
-        XCTAssertEqual(ValueIsMissingError().localizedDescription, "Data is missing")
-    }
-}
 
-extension CancelBag {
-    static var test: CancelBag {
-        return CancelBag(equalToAny: true)
+    @Test func valueIsMissing() {
+        #expect(ValueIsMissingError().localizedDescription == "Data is missing")
     }
 }

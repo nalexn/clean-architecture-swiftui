@@ -27,31 +27,52 @@ protocol UserPermissionsInteractor: AnyObject {
     func request(permission: Permission)
 }
 
+protocol SystemNotificationsSettings {
+    var authorizationStatus: UNAuthorizationStatus { get }
+}
+
+protocol SystemNotificationsCenter {
+    func currentSettings() async -> SystemNotificationsSettings
+    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
+}
+
+extension UNNotificationSettings: SystemNotificationsSettings { }
+extension UNUserNotificationCenter: SystemNotificationsCenter {
+    func currentSettings() async -> any SystemNotificationsSettings {
+        return await notificationSettings()
+    }
+}
+
 // MARK: - RealUserPermissionsInteractor
 
 final class RealUserPermissionsInteractor: UserPermissionsInteractor {
-    
+
     private let appState: Store<AppState>
     private let openAppSettings: () -> Void
-    
-    init(appState: Store<AppState>, openAppSettings: @escaping () -> Void) {
+    private let notificationCenter: SystemNotificationsCenter
+
+    init(appState: Store<AppState>,
+         notificationCenter: SystemNotificationsCenter = UNUserNotificationCenter.current(),
+         openAppSettings: @escaping () -> Void
+    ) {
         self.appState = appState
+        self.notificationCenter = notificationCenter
         self.openAppSettings = openAppSettings
     }
-    
+
     func resolveStatus(for permission: Permission) {
         let keyPath = AppState.permissionKeyPath(for: permission)
         let currentStatus = appState[keyPath]
         guard currentStatus == .unknown else { return }
-        let onResolve: (Permission.Status) -> Void = { [weak appState] status in
-            appState?[keyPath] = status
-        }
+        let appState = appState
         switch permission {
         case .pushNotifications:
-            pushNotificationsPermissionStatus(onResolve)
+            Task { @MainActor in
+                appState[keyPath] = await pushNotificationsPermissionStatus()
+            }
         }
     }
-    
+
     func request(permission: Permission) {
         let keyPath = AppState.permissionKeyPath(for: permission)
         let currentStatus = appState[keyPath]
@@ -61,11 +82,13 @@ final class RealUserPermissionsInteractor: UserPermissionsInteractor {
         }
         switch permission {
         case .pushNotifications:
-            requestPushNotificationsPermission()
+            Task {
+                await requestPushNotificationsPermission()
+            }
         }
     }
 }
-    
+
 // MARK: - Push Notifications
 
 extension UNAuthorizationStatus {
@@ -80,32 +103,27 @@ extension UNAuthorizationStatus {
 }
 
 private extension RealUserPermissionsInteractor {
-    
-    func pushNotificationsPermissionStatus(_ resolve: @escaping (Permission.Status) -> Void) {
-        let center = UNUserNotificationCenter.current()
-        center.getNotificationSettings { settings in
-            DispatchQueue.main.async {
-                resolve(settings.authorizationStatus.map)
-            }
-        }
+
+    func pushNotificationsPermissionStatus() async -> Permission.Status {
+        return await notificationCenter
+            .currentSettings()
+            .authorizationStatus.map
     }
-    
-    func requestPushNotificationsPermission() {
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound]) { (isGranted, error) in
-            DispatchQueue.main.async {
-                self.appState[\.permissions.push] = isGranted ? .granted : .denied
-            }
-        }
+
+    func requestPushNotificationsPermission() async {
+        let center = notificationCenter
+        let isGranted = (try? await center.requestAuthorization(options: [.alert, .sound])) ?? false
+        appState[\.permissions.push] = isGranted ? .granted : .denied
     }
 }
 
 // MARK: -
 
 final class StubUserPermissionsInteractor: UserPermissionsInteractor {
-    
+
     func resolveStatus(for permission: Permission) {
     }
     func request(permission: Permission) {
     }
 }
+

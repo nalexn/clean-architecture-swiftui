@@ -6,13 +6,14 @@
 //  Copyright © 2020 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
-import Combine
+import Foundation
+import UIKit
 @testable import CountriesSwiftUI
 
 // MARK: - SystemEventsHandler
 
 final class MockedSystemEventsHandler: Mock, SystemEventsHandler {
+    
     enum Action: Equatable {
         case openURL
         case becomeActive
@@ -41,10 +42,10 @@ final class MockedSystemEventsHandler: Mock, SystemEventsHandler {
     func handlePushRegistration(result: Result<Data, Error>) {
         register(.pushRegistration)
     }
-    
-    func appDidReceiveRemoteNotification(payload: NotificationPayload,
-                                         fetchCompletion: @escaping FetchCompletion) {
+
+    func appDidReceiveRemoteNotification(payload: [AnyHashable: Any]) async -> UIBackgroundFetchResult {
         register(.recevieRemoteNotification)
+        return .noData
     }
 }
 

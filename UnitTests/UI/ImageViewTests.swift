@@ -6,74 +6,75 @@
 //  Copyright © 2019 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
+import Testing
 import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
 @MainActor
-final class ImageViewTests: XCTestCase {
+@Suite struct ImageViewTests {
 
     let url = URL(string: "https://test.com/test.png")!
 
-    func test_imageView_notRequested() {
-        let interactors = DIContainer.Interactors.mocked(
-            imagesInteractor: [.loadImage(url)])
+    @Test func imageViewNotRequested() async throws {
+        let container = DIContainer(interactors: .mocked(
+            images: [.loadImage(url)]
+        ))
         let sut = ImageView(imageURL: url, image: .notRequested)
-        let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.find(text: ""))
-            interactors.verify()
+        try await ViewHosting.host(sut.inject(container)) {
+            try await sut.inspection.inspect { view in
+                #expect(throws: Never.self) { try view.find(text: "") }
+                container.interactors.verify()
+            }
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
-        wait(for: [exp], timeout: 2)
     }
     
-    func test_imageView_isLoading_initial() {
-        let interactors = DIContainer.Interactors.mocked()
+    @Test func imageViewIsLoadingInitial() async throws {
+        let container = DIContainer(interactors: .mocked())
         let sut = ImageView(imageURL: url, image:
-            .isLoading(last: nil, cancelBag: CancelBag()))
-        let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
-            interactors.verify()
+            .isLoading(last: nil, cancelBag: .test))
+        try await ViewHosting.host(sut.inject(container)) {
+            try await sut.inspection.inspect { view in
+                #expect(throws: Never.self) { try view.find(ViewType.ProgressView.self) }
+                container.interactors.verify()
+            }
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
-        wait(for: [exp], timeout: 2)
     }
     
-    func test_imageView_isLoading_refresh() {
-        let interactors = DIContainer.Interactors.mocked()
+    @Test func imageViewIsLoadingRefresh() async throws {
+        let container = DIContainer(interactors: .mocked())
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
         let sut = ImageView(imageURL: url, image:
-            .isLoading(last: image, cancelBag: CancelBag()))
-        let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.find(ActivityIndicatorView.self))
-            interactors.verify()
+            .isLoading(last: image, cancelBag: .test))
+        try await ViewHosting.host(sut.inject(container)) {
+            try await sut.inspection.inspect { view in
+                #expect(throws: Never.self) { try view.find(ViewType.ProgressView.self) }
+                container.interactors.verify()
+            }
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
-        wait(for: [exp], timeout: 2)
     }
     
-    func test_imageView_loaded() {
-        let interactors = DIContainer.Interactors.mocked()
+    @Test func imageViewLoaded() async throws {
+        let container = DIContainer(interactors: .mocked())
         let image = UIColor.red.image(CGSize(width: 10, height: 10))
         let sut = ImageView(imageURL: url, image: .loaded(image))
-        let exp = sut.inspection.inspect { view in
-            let loadedImage = try view.find(ViewType.Image.self).actualImage().uiImage()
-            XCTAssertEqual(loadedImage, image)
-            interactors.verify()
+        try await ViewHosting.host(sut.inject(container)) {
+            try await sut.inspection.inspect { view in
+                let loadedImage = try view.find(ViewType.Image.self).actualImage().uiImage()
+                #expect(loadedImage == image)
+                container.interactors.verify()
+            }
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
-        wait(for: [exp], timeout: 3)
     }
     
-    func test_imageView_failed() {
-        let interactors = DIContainer.Interactors.mocked()
+    @Test func imageViewFailed() async throws {
+        let container = DIContainer(interactors: .mocked())
         let sut = ImageView(imageURL: url, image: .failed(NSError.test))
-        let exp = sut.inspection.inspect { view in
-            XCTAssertNoThrow(try view.find(text: "Unable to load image"))
-            interactors.verify()
+        try await ViewHosting.host(sut.inject(container)) {
+            try await sut.inspection.inspect { view in
+                #expect(throws: Never.self) { try view.find(text: "Unable to load image") }
+                container.interactors.verify()
+            }
         }
-        ViewHosting.host(view: sut.inject(AppState(), interactors))
-        wait(for: [exp], timeout: 2)
     }
 }

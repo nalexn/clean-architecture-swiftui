@@ -6,42 +6,40 @@
 //  Copyright © 2020 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
+import Testing
 import SwiftUI
 import ViewInspector
 @testable import CountriesSwiftUI
 
 @MainActor
-final class RootViewAppearanceTests: XCTestCase {
+@Suite struct RootViewAppearanceTests {
 
-    func test_blur_whenInactive() {
+    @Test func blurWhenInactive() async throws {
         let sut = RootViewAppearance()
-        let container = DIContainer(appState: .init(AppState()),
-                                    interactors: .mocked())
-        XCTAssertFalse(container.appState.value.system.isActive)
-        let exp = sut.inspection.inspect { modifier in
-            let content = try modifier.implicitAnyView().viewModifierContent()
-            XCTAssertEqual(try content.blur().radius, 10)
-        }
+        let container = DIContainer(interactors: .mocked())
+        #expect(!container.appState.value.system.isActive)
         let view = EmptyView().modifier(sut)
-            .environment(\.injected, container)
-        ViewHosting.host(view: view)
-        wait(for: [exp], timeout: 0.1)
+            .inject(container)
+        try await ViewHosting.host(view) {
+            try await sut.inspection.inspect { modifier in
+                let content = try modifier.implicitAnyView().viewModifierContent()
+                #expect(try content.blur().radius == 10)
+            }
+        }
     }
     
-    func test_blur_whenActive() {
+    @Test func blurWhenActive() async throws {
         let sut = RootViewAppearance()
-        let container = DIContainer(appState: .init(AppState()),
-                                    interactors: .mocked())
+        let container = DIContainer(interactors: .mocked())
         container.appState[\.system.isActive] = true
-        XCTAssertTrue(container.appState.value.system.isActive)
-        let exp = sut.inspection.inspect { modifier in
-            let content = try modifier.implicitAnyView().viewModifierContent()
-            XCTAssertEqual(try content.blur().radius, 0)
-        }
+        #expect(container.appState.value.system.isActive)
         let view = EmptyView().modifier(sut)
-            .environment(\.injected, container)
-        ViewHosting.host(view: view)
-        wait(for: [exp], timeout: 0.1)
+            .inject(container)
+        try await ViewHosting.host(view) {
+            try await sut.inspection.inspect { modifier in
+                let content = try modifier.implicitAnyView().viewModifierContent()
+                #expect(try content.blur().radius == 0)
+            }
+        }
     }
 }

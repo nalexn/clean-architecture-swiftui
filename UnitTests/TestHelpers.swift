@@ -1,14 +1,13 @@
 //
 //  TestHelpers.swift
-//  UnitTests
+//  CountriesSwiftUI
 //
-//  Created by Alexey Naumov on 30.10.2019.
-//  Copyright © 2019 Alexey Naumov. All rights reserved.
+//  Created by Alexey on 15/11/24.
+//  Copyright © 2024 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
+import UIKit.UIColor
 import SwiftUI
-import Combine
 import ViewInspector
 @testable import CountriesSwiftUI
 
@@ -25,117 +24,7 @@ extension UIColor {
     }
 }
 
-// MARK: - Result
-
-extension Result where Success: Equatable {
-    func assertSuccess(value: Success, file: StaticString = #file, line: UInt = #line) {
-        switch self {
-        case let .success(resultValue):
-            XCTAssertEqual(resultValue, value, file: file, line: line)
-        case let .failure(error):
-            XCTFail("Unexpected error: \(error)", file: file, line: line)
-        }
-    }
-}
-
-extension Result where Success == Void {
-    func assertSuccess(file: StaticString = #file, line: UInt = #line) {
-        switch self {
-        case let .failure(error):
-            XCTFail("Unexpected error: \(error)", file: file, line: line)
-        case .success:
-            break
-        }
-    }
-}
-
-extension Result {
-    func assertFailure(_ message: String? = nil, file: StaticString = #file, line: UInt = #line) {
-        switch self {
-        case let .success(value):
-            XCTFail("Unexpected success: \(value)", file: file, line: line)
-        case let .failure(error):
-            if let message = message {
-                XCTAssertEqual(error.localizedDescription, message, file: file, line: line)
-            }
-        }
-    }
-}
-
-extension Result {
-    func publish() -> AnyPublisher<Success, Failure> {
-        return publisher.publish()
-    }
-}
-
-extension Publisher {
-    func publish() -> AnyPublisher<Output, Failure> {
-        delay(for: .milliseconds(10), scheduler: RunLoop.main)
-            .eraseToAnyPublisher()
-    }
-}
-
-// MARK: - XCTestCase
-
-func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T,
-                       _ expression2: @autoclosure () throws -> T,
-                       removing prefixes: [String],
-                       file: StaticString = #file, line: UInt = #line) where T: Equatable {
-    do {
-        let exp1 = try expression1()
-        let exp2 = try expression2()
-        if exp1 != exp2 {
-            let desc1 = prefixes.reduce(String(describing: exp1), { (str, prefix) in
-                str.replacingOccurrences(of: prefix, with: "")
-            })
-            let desc2 = prefixes.reduce(String(describing: exp2), { (str, prefix) in
-                str.replacingOccurrences(of: prefix, with: "")
-            })
-            XCTFail("XCTAssertEqual failed:\n\n\(desc1)\n\nis not equal to\n\n\(desc2)", file: file, line: line)
-        }
-    } catch {
-        XCTFail("Unexpected exception: \(error)")
-    }
-}
-
-protocol PrefixRemovable { }
-
-extension PrefixRemovable {
-    static var prefixes: [String] {
-        let name = String(reflecting: Self.self)
-        var components = name.components(separatedBy: ".")
-        let module = components.removeFirst()
-        let fullTypeName = components.joined(separator: ".")
-        return [
-            "\(module).",
-            "Loadable<\(fullTypeName)>",
-            "Loadable<LazyList<\(fullTypeName)>>"
-        ]
-    }
-}
-
-// MARK: - BindingWithPublisher
-
-struct BindingWithPublisher<Value> {
-    
-    let binding: Binding<Value>
-    let updatesRecorder: AnyPublisher<[Value], Never>
-    
-    init(value: Value, recordingTimeInterval: TimeInterval = 0.5) {
-        var value = value
-        var updates = [value]
-        binding = Binding<Value>(
-            get: { value },
-            set: { value = $0; updates.append($0) })
-        updatesRecorder = Future<[Value], Never> { completion in
-            DispatchQueue.main.asyncAfter(deadline: .now() + recordingTimeInterval) {
-                completion(.success(updates))
-            }
-        }.eraseToAnyPublisher()
-    }
-}
-
-// MARK: - Error
+// MARK: - Errors
 
 enum MockError: Swift.Error {
     case valueNotSet
@@ -148,4 +37,55 @@ extension NSError {
     }
 }
 
-extension Inspection: InspectionEmissary { }
+// MARK: - Misc
+
+extension CancelBag {
+    static var test: CancelBag {
+        return CancelBag(equalToAny: true)
+    }
+}
+
+struct TestExpectation {
+
+    private let signal: AsyncStream<Void>.Continuation?
+    private let stream: AsyncStream<Void>
+    private let expectedCount: Int
+
+    init(expectedCount: Int = 1) {
+        precondition(expectedCount > 0)
+        self.expectedCount = expectedCount
+        var signal: AsyncStream<Void>.Continuation?
+        self.stream = AsyncStream<Void> { signal = $0 }
+        self.signal = signal
+    }
+
+    func fulfill() {
+        signal?.yield()
+    }
+
+    func fulfillment() async {
+        await stream
+            .dropFirst(expectedCount - 1)
+            .first(where: { _ in true })
+    }
+}
+
+final class BindingWithHistory<Value> {
+
+    private(set) var binding: Binding<Value>
+    private(set) var history: [Value]
+
+    init(value: Value) {
+        binding = .constant(value)
+        history = [value]
+        var value = value
+        binding = Binding<Value>(get: {
+            value
+        }, set: { [weak self] in
+            value = $0
+            self?.history.append($0)
+        })
+    }
+}
+
+extension Inspection: @retroactive InspectionEmissary { }

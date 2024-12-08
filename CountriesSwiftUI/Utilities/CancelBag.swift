@@ -9,7 +9,7 @@
 import Combine
 
 final class CancelBag {
-    fileprivate(set) var subscriptions = Set<AnyCancellable>()
+    fileprivate(set) var subscriptions = [any Cancellable]()
     private let equalToAny: Bool
     
     init(equalToAny: Bool = false) {
@@ -25,9 +25,11 @@ final class CancelBag {
     }
 }
 
-extension AnyCancellable {
+extension Cancellable {
     
     func store(in cancelBag: CancelBag) {
-        cancelBag.subscriptions.insert(self)
+        cancelBag.subscriptions.append(self)
     }
 }
+
+extension Task: @retroactive Cancellable { }

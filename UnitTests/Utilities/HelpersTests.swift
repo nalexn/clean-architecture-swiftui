@@ -6,25 +6,31 @@
 //  Copyright © 2020 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
+import Foundation
+import Testing
 @testable import CountriesSwiftUI
 
-final class HelpersTests: XCTestCase {
+@Suite struct HelpersTests {
 
-    func test_localized_knownLocale() {
-        let sut = "Countries".localized(Locale(identifier: "fr"))
-        XCTAssertEqual(sut, "Des pays")
+    @Test func localizedDefaultLocale() {
+        let sut = "Countries".localized(Locale.backendDefault)
+        #expect(sut == "Countries")
     }
-    
-    func test_localized_unknownLocale() {
+
+    @Test func localizedKnownLocale() {
+        let sut = "Countries".localized(Locale(identifier: "de"))
+        #expect(sut == "Länder")
+    }
+
+    @Test func localizedUnknownLocale() {
         let sut = "Countries".localized(Locale(identifier: "ch"))
-        XCTAssertEqual(sut, "Countries")
+        #expect(sut == "Countries")
     }
-    
-    func test_result_isSuccess() {
+
+    @Test func resultIsSuccess() {
         let sut1 = Result<Void, Error>.success(())
         let sut2 = Result<Void, Error>.failure(NSError.test)
-        XCTAssertTrue(sut1.isSuccess)
-        XCTAssertFalse(sut2.isSuccess)
+        #expect(sut1.isSuccess)
+        #expect(!sut2.isSuccess)
     }
 }

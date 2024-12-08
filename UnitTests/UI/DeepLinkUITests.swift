@@ -6,39 +6,48 @@
 //  Copyright © 2020 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
+import Testing
+import SwiftData
 import ViewInspector
-import Combine
+import UIKit.UIColor
 @testable import CountriesSwiftUI
 
-final class DeepLinkUITests: XCTestCase {
-    
-    @MainActor
-    func test_countriesList_selectsCountry() {
+@MainActor
+@Suite struct DeepLinkUITests {
+
+    @Test func countriesListSelectsCountry() async throws {
         let store = appStateWithDeepLink()
-        let interactors = mockedInteractors(store: store)
+        let interactors = interactorsWithMockedRepos(store: store)
+        let modelContainer = ModelContainer.mock
+        let dbRepository = MainDBRepository(modelContainer: modelContainer)
+        let countries = ApiModel.Country.mockedData
+        try await dbRepository.store(countries: countries)
         let container = DIContainer(appState: store, interactors: interactors)
         let sut = CountriesList()
-        let exp = sut.inspection.inspect(after: 0.1) { view in
-            let firstRowLink = try view.content().find(ViewType.NavigationLink.self)
-            XCTAssertTrue(try firstRowLink.isActive())
+        let view = sut.inject(container).modelContainer(modelContainer)
+        try await ViewHosting.host(view) {
+            try await sut.inspection.inspect { view in
+                let actualView = try view.actualView()
+                #expect(!actualView.navigationPath.isEmpty)
+            }
         }
-        ViewHosting.host(view: sut.inject(container))
-        wait(for: [exp], timeout: 2)
     }
     
-    @MainActor
-    func test_countryDetails_presentsSheet() {
+    @Test func countryDetailsPresentsSheet() async throws {
         let store = appStateWithDeepLink()
-        let interactors = mockedInteractors(store: store)
+        let interactors = interactorsWithMockedRepos(store: store)
         let container = DIContainer(appState: store, interactors: interactors)
-        let sut = CountryDetails(country: Country.mockedData[0])
-        let exp = sut.inspection.inspect(after: 0.1) { view in
-            XCTAssertNoThrow(try view.find(ViewType.List.self))
-            XCTAssertTrue(store.value.routing.countryDetails.detailsSheet)
+        let country = ApiModel.Country.mockedData[0].dbModel()
+        country.flag = URL(string: "https://sample.com")
+        let countryDetails = DBModel.CountryDetails(alpha3Code: country.alpha3Code, capital: "Rome", currencies: [], neighbors: [])
+        let sut = CountryDetails(country: country, details: .loaded(countryDetails))
+        let view = sut.inject(container)
+        try await ViewHosting.host(view) {
+            try await sut.inspection.inspect(after: .seconds(0.5)) { view in
+                #expect(throws: Never.self) { try view.find(ModalFlagView.self) }
+                #expect(store.value.routing.countryDetails.detailsSheet)
+            }
         }
-        ViewHosting.host(view: sut.inject(container))
-        wait(for: [exp], timeout: 2)
     }
 }
 
@@ -48,45 +57,47 @@ final class DeepLinkUITests: XCTestCase {
 private extension DeepLinkUITests {
     
     func appStateWithDeepLink() -> Store<AppState> {
-        let countries = Country.mockedData
+        let countries = ApiModel.Country.mockedData
         var appState = AppState()
-        appState.routing.countriesList.countryDetails = countries[0].alpha3Code
+        appState.routing.countriesList.countryCode = countries[0].alpha3Code
         appState.routing.countryDetails.detailsSheet = true
         return Store(appState)
     }
     
-    func mockedInteractors(store: Store<AppState>) -> DIContainer.Interactors {
-        
-        let countries = Country.mockedData
+    func interactorsWithMockedRepos(store: Store<AppState>) -> DIContainer.Interactors {
+
+        let countries = ApiModel.Country.mockedData
         let testImage = UIColor.red.image(CGSize(width: 40, height: 40))
-        let detailsIntermediate = Country.Details.Intermediate(capital: "", currencies: [], borders: [])
-        let details = Country.Details(capital: "", currencies: [], neighbors: [])
-        
+        let detailsIntermediate = ApiModel.CountryDetails(capital: "", currencies: [], borders: [])
+        let details = DBModel.CountryDetails(alpha3Code: "", capital: "", currencies: [], neighbors: [])
+
         let countriesDBRepo = MockedCountriesDBRepository()
         let countriesWebRepo = MockedCountriesWebRepository()
         let imagesRepo = MockedImageWebRepository()
         
         // Mocking successful loading the list of countries:
-        countriesDBRepo.hasLoadedCountriesResult = .success(false)
-        countriesWebRepo.countriesResponse = .success(countries)
-        countriesDBRepo.storeCountriesResult = .success(())
-        countriesDBRepo.fetchCountriesResult = .success(countries.lazyList)
-        
+        countriesWebRepo.countriesResponses = [.success(countries)]
+        countriesDBRepo.storeCountriesResults = [.success(())]
+
         // Mocking successful loading the country details:
-        countriesDBRepo.fetchCountryDetailsResult = .success(nil)
-        countriesWebRepo.detailsResponse = .success(detailsIntermediate)
-        countriesDBRepo.storeCountryDetailsResult = .success(details)
-        
+        countriesDBRepo.countryDetailsResults = [.success(nil), .success(details)]
+        countriesWebRepo.detailsResponses = [.success(detailsIntermediate)]
+        countriesDBRepo.storeCountryDetailsResults = [.success(())]
+
         // Mocking successful loading of the flag:
-        imagesRepo.imageResponse = .success(testImage)
-        
-        let countriesInteractor = RealCountriesInteractor(webRepository: countriesWebRepo,
-                                                          dbRepository: countriesDBRepo,
-                                                          appState: store)
+        imagesRepo.imageResponses = [.success(testImage)]
+
+        let countriesInteractor = RealCountriesInteractor(
+            webRepository: countriesWebRepo,
+            dbRepository: countriesDBRepo)
         let imagesInteractor = RealImagesInteractor(webRepository: imagesRepo)
-        let permissionsInteractor = RealUserPermissionsInteractor(appState: store, openAppSettings: { })
-        return DIContainer.Interactors(countriesInteractor: countriesInteractor,
-                                       imagesInteractor: imagesInteractor,
-                                       userPermissionsInteractor: permissionsInteractor)
+        let permissionsInteractor = RealUserPermissionsInteractor(
+            appState: store, openAppSettings: { })
+        return DIContainer.Interactors(
+            images: imagesInteractor,
+            countries: countriesInteractor,
+            userPermissions: permissionsInteractor)
     }
 }
+
+extension InspectableSheet: PopupPresenter { }

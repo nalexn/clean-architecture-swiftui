@@ -6,30 +6,30 @@
 //  Copyright © 2019 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
+import Testing
 import SwiftUI
-import Combine
 import ViewInspector
 @testable import CountriesSwiftUI
 
 extension DIContainer.Interactors {
     static func mocked(
-        countriesInteractor: [MockedCountriesInteractor.Action] = [],
-        imagesInteractor: [MockedImagesInteractor.Action] = [],
-        permissionsInteractor: [MockedUserPermissionsInteractor.Action] = []
+        countries: [MockedCountriesInteractor.Action] = [],
+        images: [MockedImagesInteractor.Action] = [],
+        permissions: [MockedUserPermissionsInteractor.Action] = []
     ) -> DIContainer.Interactors {
-        .init(countriesInteractor: MockedCountriesInteractor(expected: countriesInteractor),
-              imagesInteractor: MockedImagesInteractor(expected: imagesInteractor),
-              userPermissionsInteractor: MockedUserPermissionsInteractor(expected: permissionsInteractor))
+        self.init(
+            images: MockedImagesInteractor(expected: images),
+            countries: MockedCountriesInteractor(expected: countries),
+            userPermissions: MockedUserPermissionsInteractor(expected: permissions))
     }
     
-    func verify(file: StaticString = #file, line: UInt = #line) {
-        (countriesInteractor as? MockedCountriesInteractor)?
-            .verify(file: file, line: line)
-        (imagesInteractor as? MockedImagesInteractor)?
-            .verify(file: file, line: line)
-        (userPermissionsInteractor as? MockedUserPermissionsInteractor)?
-            .verify(file: file, line: line)
+    func verify(sourceLocation: SourceLocation = #_sourceLocation) {
+        (countries as? MockedCountriesInteractor)?
+            .verify(sourceLocation: sourceLocation)
+        (images as? MockedImagesInteractor)?
+            .verify(sourceLocation: sourceLocation)
+        (userPermissions as? MockedUserPermissionsInteractor)?
+            .verify(sourceLocation: sourceLocation)
     }
 }
 
@@ -39,27 +39,23 @@ struct MockedCountriesInteractor: Mock, CountriesInteractor {
     
     enum Action: Equatable {
         case refreshCountriesList
-        case loadCountries(search: String, locale: Locale)
-        case loadCountryDetails(Country)
+        case loadCountryDetails(country: DBModel.Country, forceReload: Bool)
     }
     
     let actions: MockActions<Action>
-    
+    var detailsResponse: Result<DBModel.CountryDetails, Error> = .failure(MockError.valueNotSet)
+
     init(expected: [Action]) {
         self.actions = .init(expected: expected)
     }
-    
-    func refreshCountriesList() -> AnyPublisher<Void, Error> {
+
+    func refreshCountriesList() async throws {
         register(.refreshCountriesList)
-        return Just<Void>.withErrorType(Error.self)
     }
-    
-    func load(countries: LoadableSubject<LazyList<Country>>, search: String, locale: Locale) {
-        register(.loadCountries(search: search, locale: locale))
-    }
-    
-    func load(countryDetails: LoadableSubject<Country.Details>, country: Country) {
-        register(.loadCountryDetails(country))
+
+    func loadCountryDetails(country: DBModel.Country, forceReload: Bool) async throws -> DBModel.CountryDetails {
+        register(.loadCountryDetails(country: country, forceReload: forceReload))
+        return try detailsResponse.get()
     }
 }
 

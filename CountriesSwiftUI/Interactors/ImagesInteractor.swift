@@ -16,23 +16,19 @@ protocol ImagesInteractor {
 
 struct RealImagesInteractor: ImagesInteractor {
     
-    let webRepository: ImageWebRepository
+    let webRepository: ImagesWebRepository
     
-    init(webRepository: ImageWebRepository) {
+    init(webRepository: ImagesWebRepository) {
         self.webRepository = webRepository
     }
     
     func load(image: LoadableSubject<UIImage>, url: URL?) {
-        guard let url = url else {
+        guard let url else {
             image.wrappedValue = .notRequested; return
         }
-        let cancelBag = CancelBag()
-        image.wrappedValue.setIsLoading(cancelBag: cancelBag)
-        webRepository.load(imageURL: url)
-            .sinkToLoadable {
-                image.wrappedValue = $0
-            }
-            .store(in: cancelBag)
+        image.load {
+            try await webRepository.loadImage(url: url)
+        }
     }
 }
 

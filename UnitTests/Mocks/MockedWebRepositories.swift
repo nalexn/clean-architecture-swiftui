@@ -6,14 +6,13 @@
 //  Copyright © 2019 Alexey Naumov. All rights reserved.
 //
 
-import XCTest
-import Combine
+import Foundation
+import UIKit.UIImage
 @testable import CountriesSwiftUI
 
 class TestWebRepository: WebRepository {
     let session: URLSession = .mockedResponsesOnly
     let baseURL = "https://test.com"
-    let bgQueue = DispatchQueue(label: "test")
 }
 
 // MARK: - CountriesWebRepository
@@ -21,39 +20,42 @@ class TestWebRepository: WebRepository {
 final class MockedCountriesWebRepository: TestWebRepository, Mock, CountriesWebRepository {
     
     enum Action: Equatable {
-        case loadCountries
-        case loadCountryDetails(Country)
+        case countries
+        case details(country: DBModel.Country)
     }
     var actions = MockActions<Action>(expected: [])
     
-    var countriesResponse: Result<[Country], Error> = .failure(MockError.valueNotSet)
-    var detailsResponse: Result<Country.Details.Intermediate, Error> = .failure(MockError.valueNotSet)
-    
-    func loadCountries() -> AnyPublisher<[Country], Error> {
-        register(.loadCountries)
-        return countriesResponse.publish()
+    var countriesResponses: [Result<[ApiModel.Country], Error>] = []
+    var detailsResponses: [Result<ApiModel.CountryDetails, Error>] = []
+
+    func countries() async throws -> [ApiModel.Country] {
+        register(.countries)
+        guard !countriesResponses.isEmpty else { throw MockError.valueNotSet }
+        return try countriesResponses.removeFirst().get()
     }
-    
-    func loadCountryDetails(country: Country) -> AnyPublisher<Country.Details.Intermediate, Error> {
-        register(.loadCountryDetails(country))
-        return detailsResponse.publish()
+
+    func details(country: DBModel.Country) async throws -> ApiModel.CountryDetails {
+        register(.details(country: country))
+        guard !detailsResponses.isEmpty else { throw MockError.valueNotSet }
+        return try detailsResponses.removeFirst().get()
     }
 }
 
 // MARK: - ImageWebRepository
 
-final class MockedImageWebRepository: TestWebRepository, Mock, ImageWebRepository {
-    
+final class MockedImageWebRepository: TestWebRepository, Mock, ImagesWebRepository {
+
     enum Action: Equatable {
-        case loadImage(URL?)
+        case loadImage(URL)
     }
     var actions = MockActions<Action>(expected: [])
     
-    var imageResponse: Result<UIImage, Error> = .failure(MockError.valueNotSet)
-    
-    func load(imageURL: URL) -> AnyPublisher<UIImage, Error> {
-        register(.loadImage(imageURL))
-        return imageResponse.publish()
+    var imageResponses: [Result<UIImage, Error>] = []
+
+    func loadImage(url: URL) async throws -> UIImage {
+        register(.loadImage(url))
+        guard !imageResponses.isEmpty else { throw MockError.valueNotSet }
+        return try imageResponses.removeFirst().get()
     }
 }
 
@@ -63,14 +65,13 @@ final class MockedPushTokenWebRepository: TestWebRepository, Mock, PushTokenWebR
     enum Action: Equatable {
         case register(Data)
     }
-    var actions = MockActions<Action>(expected: [])
-    
+    let actions: MockActions<Action>
+
     init(expected: [Action]) {
-        self.actions = .init(expected: expected)
+        self.actions = MockActions<Action>(expected: expected)
     }
     
-    func register(devicePushToken: Data) -> AnyPublisher<Void, Error> {
+    func register(devicePushToken: Data) async throws {
         register(.register(devicePushToken))
-        return Just<Void>.withErrorType(Error.self)
     }
 }

@@ -2,14 +2,12 @@
 //  Helpers.swift
 //  CountriesSwiftUI
 //
-//  Created by Alexey Naumov on 10.11.2019.
-//  Copyright © 2019 Alexey Naumov. All rights reserved.
+//  Created by Alexey on 7/11/24.
+//  Copyright © 2024 Alexey Naumov. All rights reserved.
 //
 
-import SwiftUI
+import Foundation
 import Combine
-
-// MARK: - General
 
 extension ProcessInfo {
     var isRunningTests: Bool {
@@ -28,6 +26,16 @@ extension String {
     }
 }
 
+extension Locale {
+    static var backendDefault: Locale {
+        return Locale(identifier: "en")
+    }
+
+    var shortIdentifier: String {
+        return String(identifier.prefix(2))
+    }
+}
+
 extension Result {
     var isSuccess: Bool {
         switch self {
@@ -42,7 +50,7 @@ extension Result {
 internal final class Inspection<V> {
     let notice = PassthroughSubject<UInt, Never>()
     var callbacks = [UInt: (V) -> Void]()
-    
+
     func visit(_ view: V, _ line: UInt) {
         if let callback = callbacks.removeValue(forKey: line) {
             callback(view)

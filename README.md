@@ -23,17 +23,16 @@ For the example of handling the **authentication state** in the app, you can ref
 </p>
 
 ## Key features
-* Vanilla **SwiftUI** + **Combine** implementation
+* End of 2024 update: the project was fully revamped to use modern iOS stack technologies
 * Decoupled **Presentation**, **Business Logic**, and **Data Access** layers
-* Full test coverage, including the UI (thanks to the [ViewInspector](https://github.com/nalexn/ViewInspector))
-* **Redux**-like centralized `AppState` as the single source of truth
-* Data persistence with **CoreData**
+* Programmatic navigation. Push notifications with deep link
+* Redux-like centralized `AppState` as the single source of truth
 * Native SwiftUI dependency injection
-* **Programmatic navigation**. Push notifications with deep link
-* Simple yet flexible networking layer built on Generics
 * Handling of the system events (such as `didBecomeActive`, `willResignActive`)
-* Built with SOLID, DRY, KISS, YAGNI in mind
-* Designed for scalability. It can be used as a reference for building large production apps
+* Full test coverage, including the UI (thanks to the [ViewInspector](https://github.com/nalexn/ViewInspector))
+* Simple yet flexible networking layer built on async - await
+* UI - vanilla **SwiftUI** + **Combine**
+* Data persistence with **SwiftData**
 
 ## Architecture overview
 
@@ -73,4 +72,4 @@ Repositories provide asynchronous API (`Publisher` from Combine) for making [CRU
 
 ---
 
-[![Twitter](https://img.shields.io/badge/twitter-nallexn-blue)](https://twitter.com/nallexn) [![blog](https://img.shields.io/badge/blog-github-blue)](https://nalexn.github.io/?utm_source=nalexn_github) [![venmo](https://img.shields.io/badge/%F0%9F%8D%BA-Venmo-brightgreen)](https://venmo.com/nallexn)
+[![Twitter](https://img.shields.io/badge/twitter-nallexn-blue)](https://twitter.com/nallexn) [![blog](https://img.shields.io/badge/blog-github-blue)](https://nalexn.github.io/?utm_source=nalexn_github)
