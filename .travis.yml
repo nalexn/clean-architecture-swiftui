@@ -1,6 +1,6 @@
 os: osx
 language: swift
-osx_image: xcode12.2
+osx_image: xcode12.3
 xcode_project: CountriesSwiftUI.xcodeproj
 xcode_scheme: CountriesSwiftUI
 xcode_sdk: iphonesimulator14.2
