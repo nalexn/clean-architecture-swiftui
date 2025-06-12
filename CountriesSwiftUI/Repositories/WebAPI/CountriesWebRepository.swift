@@ -49,7 +49,7 @@ extension RealCountriesWebRepository.API: APICall {
     var path: String {
         switch self {
         case .allCountries:
-            return "/all"
+            return "/all?fields=name,translations,population,flag,alpha3Code"
         case let .countryDetails(countryName):
             let encodedName = countryName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
             return "/name/\(encodedName ?? countryName)"
