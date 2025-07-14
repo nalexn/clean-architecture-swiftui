@@ -20,7 +20,7 @@ struct RealCountriesWebRepository: CountriesWebRepository {
 
     init(session: URLSession) {
         self.session = session
-        self.baseURL = "https://restcountries.com/v3.1"
+        self.baseURL = "https://restcountries.com/v2"
     }
 
     func countries() async throws -> [ApiModel.Country] {
