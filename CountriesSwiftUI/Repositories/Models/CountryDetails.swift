@@ -16,7 +16,7 @@ extension DBModel {
         @Attribute(.unique) var alpha3Code: String
         var capital: String
         var currencies: [Currency]
-        var neighbors: [Country]
+        var neighbors: [Country]?
 
         init(alpha3Code: String, capital: String, currencies: [Currency], neighbors: [Country]) {
             self.alpha3Code = alpha3Code
@@ -33,6 +33,6 @@ extension ApiModel {
     struct CountryDetails: Codable, Equatable {
         let capital: String
         let currencies: [Currency]
-        let borders: [String]
+        let borders: [String]?
     }
 }

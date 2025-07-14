@@ -41,8 +41,8 @@ extension MainDBRepository: CountriesDBRepository {
         let alpha3Code = country.alpha3Code
         try modelContext.transaction {
             let currencies = countryDetails.currencies.map { $0.dbModel() }
-            let neighborsFetch = FetchDescriptor(predicate: #Predicate<DBModel.Country> {
-                countryDetails.borders.contains($0.alpha3Code)
+            let neighborsFetch = FetchDescriptor(predicate: #Predicate<DBModel.Country> { countryDBModel in
+                countryDetails.borders?.contains(countryDBModel.alpha3Code) == true
             })
             let neighbors = try modelContext.fetch(neighborsFetch)
             currencies.forEach {

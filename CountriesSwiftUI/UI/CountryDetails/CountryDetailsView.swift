@@ -105,8 +105,10 @@ private extension CountryDetails {
             if countryDetails.currencies.count > 0 {
                 currenciesSectionView(currencies: countryDetails.currencies)
             }
-            if countryDetails.neighbors.count > 0 {
-                neighborsSectionView(neighbors: countryDetails.neighbors)
+            if let neighbors = countryDetails.neighbors {
+                if neighbors.count  > 0 {
+                    neighborsSectionView(neighbors: neighbors)
+                }
             }
         }
         .listStyle(GroupedListStyle())
